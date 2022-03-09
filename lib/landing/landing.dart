@@ -6,8 +6,12 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 500,
-        child: Image.asset('assets/images/classroom.jpg',
-            width: double.infinity, fit: BoxFit.cover));
+      height: 500,
+      child: Image.asset(
+        'assets/images/classroom.jpg',
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
+    );
   }
 }
