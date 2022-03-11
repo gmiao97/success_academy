@@ -40,6 +40,7 @@ class ProfileBrowse extends StatelessWidget {
                 style: const TextStyle(fontSize: 40),
               ),
               const SizedBox(height: 50),
+              // TODO: Add error handling.
               FutureBuilder<List<QueryDocumentSnapshot<ProfileModel>>>(
                 future: getProfilesForUser(account.user!.uid),
                 builder: (BuildContext context,

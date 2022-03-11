@@ -62,7 +62,6 @@ class _SignupFormState extends State<SignupForm> {
   final ProfileModel _profileModel = ProfileModel();
 
   void _selectDate(BuildContext context) async {
-    // TODO: Date picker locale
     final DateTime? dateOfBirth = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),

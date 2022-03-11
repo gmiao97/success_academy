@@ -30,16 +30,18 @@ void main() async {
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final locale =
+        context.select<AccountModel, String>((account) => account.locale);
+
     // TODO: Import 'dart:io' show Platform; if (Platform.isIOS)
     return MaterialApp(
       title: constants.homePageAppBarName,
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      locale: const Locale('ja'),
+      locale: Locale(locale),
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -65,12 +67,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final style =
         TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
-    final isSignedIn =
-        context.select<AccountModel, bool>((account) => account.isSignedIn);
+    final account = context.watch<AccountModel>();
 
-    if (isSignedIn) {
+    if (account.isSignedIn) {
       return const SignedInHome();
     }
+    // TODO: Refactor to use shared Scaffold.
     return Scaffold(
         appBar: AppBar(
           title: const Text(constants.homePageAppBarName),
@@ -80,10 +82,24 @@ class HomePage extends StatelessWidget {
             TextButton(
               style: style,
               onPressed: () {
+                account.locale = account.locale == 'en' ? 'ja' : 'en';
+              },
+              child: Text(
+                account.locale == 'en' ? '🇺🇸' : '🇯🇵',
+                style: const TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+            TextButton(
+              style: style,
+              onPressed: () {
                 Navigator.pushNamed(context, constants.routeSignIn);
               },
-              child: Text(S.of(context).signIn),
-            )
+              child: Text(
+                S.of(context).signIn,
+              ),
+            ),
           ],
         ),
         body: const LandingPage());
