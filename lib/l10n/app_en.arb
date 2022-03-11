@@ -1,0 +1,20 @@
+{
+  "signIn": "Sign in",
+  "signOut": "Sign out",
+  "goBack": "Go back",
+  "next": "Next",
+
+  "selectProfile": "Select profile",
+  "addProfile": "Add profile",
+
+  "lastNameLabel": "Last Name",
+  "lastNameHint": "Smith",
+  "lastNameValidation": "Please enter student's last name",
+  "firstNameLabel": "First Name",
+  "firstNameHint": "John",
+  "firstNameValidation": "Please enter student's first name",
+  "timeZoneLabel": "Time Zone",
+  "timeZoneValidation": "Please select a valid time zone",
+  "dateOfBirthLabel": "Date of Birth",
+  "dateOfBirthValidation": "Please select a date"
+}

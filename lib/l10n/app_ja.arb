@@ -1,0 +1,20 @@
+{
+  "signIn": "サインイン",
+  "signOut": "サインアウト",
+  "goBack": "戻る",
+  "next": "次へ",
+
+  "selectProfile": "プロフィールを選択してください",
+  "addProfile": "プロフィール追加",
+
+  "lastNameLabel": "性",
+  "lastNameHint": "山田",
+  "lastNameValidation": "名字を入力してください",
+  "firstNameLabel": "名",
+  "firstNameHint": "太郎",
+  "firstNameValidation": "名前を入力してください",
+  "timeZoneLabel": "時間帯",
+  "timeZoneValidation": "有効の時間帯を選択してください",
+  "dateOfBirthLabel": "生年月日",
+  "dateOfBirthValidation": "日付を選択してください"
+}

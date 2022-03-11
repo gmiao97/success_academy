@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
@@ -26,7 +27,7 @@ class ProfileBrowse extends StatelessWidget {
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
               },
-              child: const Text(constants.signOutText),
+              child: Text(AppLocalizations.of(context)!.signOut),
             )
           ],
         ),
@@ -34,9 +35,9 @@ class ProfileBrowse extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                constants.profileSelectionText,
-                style: TextStyle(fontSize: 40),
+              Text(
+                AppLocalizations.of(context)!.selectProfile,
+                style: const TextStyle(fontSize: 40),
               ),
               const SizedBox(height: 50),
               FutureBuilder<List<QueryDocumentSnapshot<ProfileModel>>>(
@@ -105,7 +106,7 @@ class AddProfileCard extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
                 size: 50,
               ),
-              const Text(constants.profileCreationText),
+              Text(AppLocalizations.of(context)!.addProfile),
             ],
           ),
         ),

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account_model.dart';
@@ -36,6 +38,17 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
+      locale: const Locale('ja'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        // TODO: GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('ja', ''),
+      ],
       initialRoute: constants.routeHome,
       routes: {
         constants.routeHome: (context) => const HomePage(),
@@ -70,7 +83,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, constants.routeSignIn);
               },
-              child: const Text(constants.signInText),
+              child: Text(AppLocalizations.of(context)!.signIn),
             )
           ],
         ),
@@ -96,7 +109,7 @@ class SignInPage extends StatelessWidget {
             onPressed: () {
               Navigator.maybePop(context);
             },
-            child: const Text(constants.backButtonText),
+            child: Text(AppLocalizations.of(context)!.goBack),
           ),
           margin: const EdgeInsets.all(10),
         ),

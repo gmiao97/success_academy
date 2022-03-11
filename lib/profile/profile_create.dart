@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
@@ -31,7 +32,7 @@ class ProfileCreate extends StatelessWidget {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
             },
-            child: const Text(constants.signOutText),
+            child: Text(AppLocalizations.of(context)!.signOut),
           )
         ],
       ),
@@ -88,10 +89,10 @@ class _SignupFormState extends State<SignupForm> {
         children: [
           const SizedBox(height: 50),
           TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.account_circle),
-              labelText: constants.lastNameLabelText,
-              hintText: constants.lastNameLabelText,
+            decoration: InputDecoration(
+              icon: const Icon(Icons.account_circle),
+              labelText: AppLocalizations.of(context)!.lastNameLabel,
+              hintText: AppLocalizations.of(context)!.lastNameHint,
             ),
             onChanged: (value) {
               setState(() {
@@ -100,16 +101,16 @@ class _SignupFormState extends State<SignupForm> {
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
-                return constants.lastNameValidateText;
+                return AppLocalizations.of(context)!.lastNameValidation;
               }
               return null;
             },
           ),
           TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.account_circle),
-              labelText: constants.firstNameLabelText,
-              hintText: constants.firstNameHintText,
+            decoration: InputDecoration(
+              icon: const Icon(Icons.account_circle),
+              labelText: AppLocalizations.of(context)!.firstNameLabel,
+              hintText: AppLocalizations.of(context)!.firstNameHint,
             ),
             onChanged: (value) {
               setState(() {
@@ -118,7 +119,7 @@ class _SignupFormState extends State<SignupForm> {
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
-                return constants.firstNameValidateText;
+                return AppLocalizations.of(context)!.firstNameValidation;
               }
               return null;
             },
@@ -126,10 +127,10 @@ class _SignupFormState extends State<SignupForm> {
           TypeAheadFormField(
             textFieldConfiguration: TextFieldConfiguration(
               controller: _timeZoneController,
-              decoration: const InputDecoration(
-                  icon: Icon(Icons.public),
-                  labelText: constants.timeZoneLabelText,
-                  hintText: constants.timeZoneHintText),
+              decoration: InputDecoration(
+                icon: const Icon(Icons.public),
+                labelText: AppLocalizations.of(context)!.timeZoneLabel,
+              ),
             ),
             onSuggestionSelected: <String>(suggestion) {
               _timeZoneController.text = suggestion;
@@ -147,7 +148,7 @@ class _SignupFormState extends State<SignupForm> {
                     .contains(pattern.toLowerCase())),
             validator: (String? value) {
               if (!tz.timeZoneDatabase.locations.keys.contains(value)) {
-                return constants.timeZoneValidateText;
+                return AppLocalizations.of(context)!.timeZoneValidation;
               }
               return null;
             },
@@ -156,17 +157,16 @@ class _SignupFormState extends State<SignupForm> {
             keyboardType: TextInputType.datetime,
             readOnly: true,
             controller: _dateOfBirthController,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.calendar_month),
-              labelText: constants.dateOfBirthLabelText,
-              hintText: constants.dateOfBirthHintText,
+            decoration: InputDecoration(
+              icon: const Icon(Icons.calendar_month),
+              labelText: AppLocalizations.of(context)!.dateOfBirthLabel,
             ),
             onTap: () {
               _selectDate(context);
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
-                return constants.dateOfBirthValidateText;
+                return AppLocalizations.of(context)!.dateOfBirthValidation;
               }
               return null;
             },
@@ -181,7 +181,7 @@ class _SignupFormState extends State<SignupForm> {
                   Navigator.pushNamed(context, constants.routeHome);
                 }
               },
-              child: const Text(constants.nextText),
+              child: Text(AppLocalizations.of(context)!.next),
             ),
           ),
         ],

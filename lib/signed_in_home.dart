@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
@@ -30,7 +31,7 @@ class SignedInHome extends StatelessWidget {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
             },
-            child: const Text(constants.signOutText),
+            child: Text(AppLocalizations.of(context)!.signOut),
           )
         ],
       ),
