@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:random_string/random_string.dart';
+import 'package:success_academy/constants.dart' as constants;
 
 class ProfileModel {
   ProfileModel();
@@ -36,13 +37,13 @@ class StudentProfileModel {
   StudentProfileModel();
 
   StudentProfileModel.fromJson(Map<String, Object?> json)
-      : schoolGrade = json['school_grade'] as int;
+      : dateOfBirth = DateTime.parse(json['date_of_birth'] as String);
 
-  late int schoolGrade;
+  late DateTime dateOfBirth;
 
   Map<String, Object?> toJson() {
     return {
-      'school_grade': schoolGrade,
+      'date_of_birth': constants.dateFormatter.format(dateOfBirth),
     };
   }
 }

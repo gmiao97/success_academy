@@ -5,7 +5,7 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 500,
       child: Image.asset(
         'assets/images/classroom.jpg',

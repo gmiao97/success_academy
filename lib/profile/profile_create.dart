@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account_model.dart';
@@ -55,7 +56,25 @@ class SignupForm extends StatefulWidget {
 
 class _SignupFormState extends State<SignupForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _timeZoneController = TextEditingController();
+  final TextEditingController _dateOfBirthController = TextEditingController();
   final ProfileModel _profileModel = ProfileModel();
+
+  void _selectDate(BuildContext context) async {
+    // TODO: Date picker locale
+    final DateTime? dateOfBirth = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100));
+    if (dateOfBirth != null) {
+      setState(() {
+        _dateOfBirthController.text =
+            constants.dateFormatter.format(dateOfBirth);
+        _profileModel.studentProfile.dateOfBirth = dateOfBirth;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,42 +123,50 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
           ),
-          DropdownButtonFormField(
-            hint: const Text(constants.timeZoneHintText),
-            icon: const Icon(Icons.access_time),
-            items: tz.timeZoneDatabase.locations.keys
-                .map((value) => DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    ))
-                .toList(),
-            onChanged: <String>(value) {
+          TypeAheadFormField(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: _timeZoneController,
+              decoration: const InputDecoration(
+                  icon: Icon(Icons.public),
+                  labelText: constants.timeZoneLabelText,
+                  hintText: constants.timeZoneHintText),
+            ),
+            onSuggestionSelected: <String>(suggestion) {
+              _timeZoneController.text = suggestion;
               setState(() {
-                _profileModel.timeZone = value;
+                _profileModel.timeZone = suggestion;
               });
             },
+            itemBuilder: (context, suggestion) => ListTile(
+              title: Text(suggestion as String),
+            ),
+            suggestionsCallback: (pattern) => tz.timeZoneDatabase.locations.keys
+                .where((timezone) => timezone
+                    .toLowerCase()
+                    .replaceAll('_', ' ')
+                    .contains(pattern.toLowerCase())),
             validator: (String? value) {
-              if (value == null || value.isEmpty) {
+              if (!tz.timeZoneDatabase.locations.keys.contains(value)) {
                 return constants.timeZoneValidateText;
               }
               return null;
             },
           ),
           TextFormField(
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.datetime,
+            readOnly: true,
+            controller: _dateOfBirthController,
             decoration: const InputDecoration(
-              icon: Icon(Icons.school),
-              labelText: constants.schoolGradeLabelText,
-              hintText: constants.schoolGradeHintText,
+              icon: Icon(Icons.calendar_month),
+              labelText: constants.dateOfBirthLabelText,
+              hintText: constants.dateOfBirthHintText,
             ),
-            onChanged: (value) {
-              setState(() {
-                _profileModel.studentProfile.schoolGrade = int.parse(value);
-              });
+            onTap: () {
+              _selectDate(context);
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
-                return constants.schoolGradeValidateText;
+                return constants.dateOfBirthValidateText;
               }
               return null;
             },

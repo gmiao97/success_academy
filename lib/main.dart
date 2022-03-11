@@ -30,6 +30,7 @@ class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // TODO: Import 'dart:io' show Platform; if (Platform.isIOS)
     return MaterialApp(
       title: constants.homePageAppBarName,
       theme: ThemeData(

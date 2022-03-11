@@ -38,7 +38,7 @@ class SignedInHome extends StatelessWidget {
         child: SizedBox(
           width: 500,
           child: Text(
-              'Hi, my name is ${profile.firstName} ${profile.lastName} and I\'m in grade ${profile.studentProfile.schoolGrade} and my referral code is ${profile.referralCode}'),
+              'Hi, my name is ${profile.firstName} ${profile.lastName} and I\'m in grade ${profile.studentProfile.dateOfBirth} and my referral code is ${profile.referralCode}'),
         ),
       ),
     );
