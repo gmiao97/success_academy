@@ -22,3 +22,6 @@ const firstNameHintText = 'Enter student\'s first name';
 const firstNameValidateText = 'Please enter student\'s first name';
 const timeZoneHintText = 'Enter time zone';
 const timeZoneValidateText = 'Please enter time zone';
+const schoolGradeLabelText = 'School Grade';
+const schoolGradeHintText = 'Enter student\'s school grade';
+const schoolGradeValidateText = 'Please enter student\'s school grade';

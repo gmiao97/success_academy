@@ -40,10 +40,7 @@ class ProfileBrowse extends StatelessWidget {
               ),
               const SizedBox(height: 50),
               FutureBuilder<List<QueryDocumentSnapshot<ProfileModel>>>(
-                future: profileModelRef
-                    .where('uid', isEqualTo: account.user!.uid)
-                    .get()
-                    .then((snapshot) => snapshot.docs),
+                future: getProfilesForUser(account.user!.uid),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<QueryDocumentSnapshot<ProfileModel>>>
                         snapshot) {
@@ -56,9 +53,8 @@ class ProfileBrowse extends StatelessWidget {
                         const AddProfileCard(),
                       ],
                     );
-                    // return Text(snapshot.data![0].data().lastName);
                   }
-                  return const Text("loading");
+                  return const CircularProgressIndicator(value: null);
                 },
               ),
             ],

@@ -125,6 +125,25 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
           ),
+          TextFormField(
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              icon: Icon(Icons.school),
+              labelText: constants.schoolGradeLabelText,
+              hintText: constants.schoolGradeHintText,
+            ),
+            onChanged: (value) {
+              setState(() {
+                _profileModel.studentProfile.schoolGrade = int.parse(value);
+              });
+            },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return constants.schoolGradeValidateText;
+              }
+              return null;
+            },
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
