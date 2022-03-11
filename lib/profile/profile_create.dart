@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -32,7 +32,7 @@ class ProfileCreate extends StatelessWidget {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
             },
-            child: Text(AppLocalizations.of(context)!.signOut),
+            child: Text(S.of(context).signOut),
           )
         ],
       ),
@@ -91,8 +91,8 @@ class _SignupFormState extends State<SignupForm> {
           TextFormField(
             decoration: InputDecoration(
               icon: const Icon(Icons.account_circle),
-              labelText: AppLocalizations.of(context)!.lastNameLabel,
-              hintText: AppLocalizations.of(context)!.lastNameHint,
+              labelText: S.of(context).lastNameLabel,
+              hintText: S.of(context).lastNameHint,
             ),
             onChanged: (value) {
               setState(() {
@@ -101,7 +101,7 @@ class _SignupFormState extends State<SignupForm> {
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.lastNameValidation;
+                return S.of(context).lastNameValidation;
               }
               return null;
             },
@@ -109,8 +109,8 @@ class _SignupFormState extends State<SignupForm> {
           TextFormField(
             decoration: InputDecoration(
               icon: const Icon(Icons.account_circle),
-              labelText: AppLocalizations.of(context)!.firstNameLabel,
-              hintText: AppLocalizations.of(context)!.firstNameHint,
+              labelText: S.of(context).firstNameLabel,
+              hintText: S.of(context).firstNameHint,
             ),
             onChanged: (value) {
               setState(() {
@@ -119,7 +119,7 @@ class _SignupFormState extends State<SignupForm> {
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.firstNameValidation;
+                return S.of(context).firstNameValidation;
               }
               return null;
             },
@@ -129,7 +129,7 @@ class _SignupFormState extends State<SignupForm> {
               controller: _timeZoneController,
               decoration: InputDecoration(
                 icon: const Icon(Icons.public),
-                labelText: AppLocalizations.of(context)!.timeZoneLabel,
+                labelText: S.of(context).timeZoneLabel,
               ),
             ),
             onSuggestionSelected: <String>(suggestion) {
@@ -148,7 +148,7 @@ class _SignupFormState extends State<SignupForm> {
                     .contains(pattern.toLowerCase())),
             validator: (String? value) {
               if (!tz.timeZoneDatabase.locations.keys.contains(value)) {
-                return AppLocalizations.of(context)!.timeZoneValidation;
+                return S.of(context).timeZoneValidation;
               }
               return null;
             },
@@ -159,14 +159,14 @@ class _SignupFormState extends State<SignupForm> {
             controller: _dateOfBirthController,
             decoration: InputDecoration(
               icon: const Icon(Icons.calendar_month),
-              labelText: AppLocalizations.of(context)!.dateOfBirthLabel,
+              labelText: S.of(context).dateOfBirthLabel,
             ),
             onTap: () {
               _selectDate(context);
             },
             validator: (String? value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.dateOfBirthValidation;
+                return S.of(context).dateOfBirthValidation;
               }
               return null;
             },
@@ -181,7 +181,7 @@ class _SignupFormState extends State<SignupForm> {
                   Navigator.pushNamed(context, constants.routeHome);
                 }
               },
-              child: Text(AppLocalizations.of(context)!.next),
+              child: Text(S.of(context).next),
             ),
           ),
         ],
