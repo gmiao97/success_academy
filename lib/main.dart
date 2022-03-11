@@ -72,7 +72,6 @@ class HomePage extends StatelessWidget {
     if (account.isSignedIn) {
       return const SignedInHome();
     }
-    // TODO: Refactor to use shared Scaffold.
     return Scaffold(
         appBar: AppBar(
           title: const Text(constants.homePageAppBarName),

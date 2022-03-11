@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +6,7 @@ import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/utils.dart' as utils;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
@@ -15,28 +15,14 @@ class ProfileCreate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style =
-        TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     final account = context.watch<AccountModel>();
 
     if (!account.isSignedIn || account.profile != null) {
       return const HomePage();
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(constants.homePageAppBarName),
-        centerTitle: false,
-        actions: [
-          TextButton(
-            style: style,
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-            },
-            child: Text(S.of(context).signOut),
-          )
-        ],
-      ),
-      body: Center(
+    return utils.buildLoggedInScaffold(
+      context,
+      Center(
         child: SizedBox(
           width: 500,
           child: SignupForm(),

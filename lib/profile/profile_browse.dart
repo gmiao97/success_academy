@@ -1,67 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/utils.dart' as utils;
 
 class ProfileBrowse extends StatelessWidget {
   const ProfileBrowse({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final style =
-        TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     final account = context.read<AccountModel>();
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text(constants.homePageAppBarName),
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          actions: [
-            TextButton(
-              style: style,
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
+    return utils.buildLoggedInScaffold(
+      context,
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              S.of(context).selectProfile,
+              style: const TextStyle(fontSize: 40),
+            ),
+            const SizedBox(height: 50),
+            // TODO: Add error handling.
+            FutureBuilder<List<QueryDocumentSnapshot<ProfileModel>>>(
+              future: getProfilesForUser(account.user!.uid),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<QueryDocumentSnapshot<ProfileModel>>>
+                      snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (var profileSnapshot in snapshot.data!)
+                        buildProfileCard(context, profileSnapshot.data()),
+                      const AddProfileCard(),
+                    ],
+                  );
+                }
+                return const CircularProgressIndicator(value: null);
               },
-              child: Text(S.of(context).signOut),
-            )
+            ),
           ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                S.of(context).selectProfile,
-                style: const TextStyle(fontSize: 40),
-              ),
-              const SizedBox(height: 50),
-              // TODO: Add error handling.
-              FutureBuilder<List<QueryDocumentSnapshot<ProfileModel>>>(
-                future: getProfilesForUser(account.user!.uid),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<QueryDocumentSnapshot<ProfileModel>>>
-                        snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (var profileSnapshot in snapshot.data!)
-                          buildProfileCard(context, profileSnapshot.data()),
-                        const AddProfileCard(),
-                      ],
-                    );
-                  }
-                  return const CircularProgressIndicator(value: null);
-                },
-              ),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
 
