@@ -70,6 +70,9 @@ class HomePage extends StatelessWidget {
         TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     final account = context.watch<AccountModel>();
 
+    if (account.authStatus == AuthStatus.emailVerification) {
+      return const EmailVerificationPage();
+    }
     if (account.authStatus == AuthStatus.signedIn) {
       return const SignedInHome();
     }
@@ -114,27 +117,7 @@ class SignInPage extends StatelessWidget {
     final account = context.watch<AccountModel>();
 
     if (account.authStatus == AuthStatus.emailVerification) {
-      return utils.buildLoggedInScaffold(
-        context: context,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Please click the link in the verification email"),
-              ElevatedButton(
-                onPressed: () async {
-                  final user = FirebaseAuth.instance.currentUser!;
-                  await user.reload();
-                  if (user.emailVerified) {
-                    account.authStatus = AuthStatus.signedIn;
-                  }
-                },
-                child: const Text("Reload"),
-              ),
-            ],
-          ),
-        ),
-      );
+      return const EmailVerificationPage();
     }
     if (account.authStatus == AuthStatus.signedIn) {
       return const HomePage();
@@ -151,6 +134,8 @@ class SignInPage extends StatelessWidget {
           margin: const EdgeInsets.all(10),
         ),
         const SizedBox(
+          width: 500,
+          height: 500,
           child: Card(
             child: SignInScreen(
               providerConfigs: [
@@ -161,10 +146,58 @@ class SignInPage extends StatelessWidget {
               ],
             ),
           ),
-          width: 500,
-          height: 500,
         ),
       ],
+    );
+  }
+}
+
+// TODO: Make refresh after email verification automatic.
+class EmailVerificationPage extends StatelessWidget {
+  const EmailVerificationPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final account = context.watch<AccountModel>();
+
+    return utils.buildLoggedInScaffold(
+      context: context,
+      body: Center(
+        child: Card(
+          child: Container(
+            height: 500,
+            width: 700,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  S.of(context).verifyEmailMessage(
+                        account.user!.email as String,
+                      ),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                const SizedBox(height: 50),
+                Text(
+                  S.of(context).verifyEmailAction,
+                ),
+                const SizedBox(height: 50),
+                ElevatedButton(
+                  onPressed: () async {
+                    final user = FirebaseAuth.instance.currentUser!;
+                    await user.reload();
+                    if (user.emailVerified) {
+                      account.authStatus = AuthStatus.signedIn;
+                    }
+                  },
+                  child: Text(S.of(context).reloadPage),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

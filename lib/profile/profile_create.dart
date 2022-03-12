@@ -20,6 +20,9 @@ class ProfileCreate extends StatelessWidget {
     if (account.authStatus == AuthStatus.signedOut) {
       return const HomePage();
     }
+    if (account.authStatus == AuthStatus.emailVerification) {
+      return const EmailVerificationPage();
+    }
     return utils.buildLoggedInScaffold(
       context: context,
       body: Center(

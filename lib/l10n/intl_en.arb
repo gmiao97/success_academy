@@ -16,5 +16,8 @@
   "timeZoneLabel": "Time Zone",
   "timeZoneValidation": "Please select a valid time zone",
   "dateOfBirthLabel": "Date of Birth",
-  "dateOfBirthValidation": "Please select a date"
+  "dateOfBirthValidation": "Please select a date",
+  "verifyEmailMessage": "A verification link has been sent to your email at {address}",
+  "verifyEmailAction": "Please click on the link in your email to continue the registration process. If you don't see a message in your inbox, please check your spam or junk mail folder.",
+  "reloadPage": "Reload page"
 }

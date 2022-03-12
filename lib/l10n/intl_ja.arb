@@ -16,5 +16,8 @@
   "timeZoneLabel": "時間帯",
   "timeZoneValidation": "有効の時間帯を選択してください",
   "dateOfBirthLabel": "生年月日",
-  "dateOfBirthValidation": "日付を選択してください"
+  "dateOfBirthValidation": "日付を選択してください",
+  "verifyEmailMessage": "確認リンクがメールアドレス（{address}）に送信されました",
+  "verifyEmailAction": "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。",
+  "reloadPage": "再読み込み"
 }

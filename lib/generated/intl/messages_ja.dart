@@ -20,6 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ja';
 
+  static String m0(address) => "確認リンクがメールアドレス（${address}）に送信されました";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
@@ -36,12 +38,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameValidation":
             MessageLookupByLibrary.simpleMessage("名字を入力してください"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
+        "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("時間帯"),
         "timeZoneValidation":
-            MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください")
+            MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
+        "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
+            "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
+        "verifyEmailMessage": m0
       };
 }

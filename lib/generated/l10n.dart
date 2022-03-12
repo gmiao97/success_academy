@@ -209,6 +209,36 @@ class S {
       args: [],
     );
   }
+
+  /// `A verification link has been sent to your email at {address}`
+  String verifyEmailMessage(Object address) {
+    return Intl.message(
+      'A verification link has been sent to your email at $address',
+      name: 'verifyEmailMessage',
+      desc: '',
+      args: [address],
+    );
+  }
+
+  /// `Please click on the link in your email to continue the registration process. If you don't see a message in your inbox, please check your spam or junk mail folder.`
+  String get verifyEmailAction {
+    return Intl.message(
+      'Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder.',
+      name: 'verifyEmailAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reload page`
+  String get reloadPage {
+    return Intl.message(
+      'Reload page',
+      name: 'reloadPage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
