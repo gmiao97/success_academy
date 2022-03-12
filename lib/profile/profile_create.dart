@@ -17,12 +17,12 @@ class ProfileCreate extends StatelessWidget {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
-    if (!account.isSignedIn || account.profile != null) {
+    if (account.authStatus == AuthStatus.signedOut) {
       return const HomePage();
     }
     return utils.buildLoggedInScaffold(
-      context,
-      Center(
+      context: context,
+      body: Center(
         child: SizedBox(
           width: 500,
           child: SignupForm(),

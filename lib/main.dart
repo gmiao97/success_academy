@@ -12,6 +12,7 @@ import 'package:success_academy/l10n/FlutterFireUIJaLocalizationsDelegate.dart';
 import 'package:success_academy/landing/landing.dart';
 import 'package:success_academy/signed_in_home.dart';
 import 'package:success_academy/profile/profile_create.dart';
+import 'package:success_academy/utils.dart' as utils;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,7 +70,7 @@ class HomePage extends StatelessWidget {
         TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     final account = context.watch<AccountModel>();
 
-    if (account.isSignedIn) {
+    if (account.authStatus == AuthStatus.signedIn) {
       return const SignedInHome();
     }
     return Scaffold(
@@ -110,10 +111,32 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSignedIn =
-        context.select<AccountModel, bool>((account) => account.isSignedIn);
+    final account = context.watch<AccountModel>();
 
-    if (isSignedIn) {
+    if (account.authStatus == AuthStatus.emailVerification) {
+      return utils.buildLoggedInScaffold(
+        context: context,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Please click the link in the verification email"),
+              ElevatedButton(
+                onPressed: () async {
+                  final user = FirebaseAuth.instance.currentUser!;
+                  await user.reload();
+                  if (user.emailVerified) {
+                    account.authStatus = AuthStatus.signedIn;
+                  }
+                },
+                child: const Text("Reload"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (account.authStatus == AuthStatus.signedIn) {
       return const HomePage();
     }
     return Column(

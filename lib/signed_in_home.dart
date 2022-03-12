@@ -17,8 +17,8 @@ class SignedInHome extends StatelessWidget {
       return const ProfileBrowse();
     }
     return utils.buildLoggedInScaffold(
-      context,
-      Center(
+      context: context,
+      body: Center(
         child: SizedBox(
           width: 500,
           child: Text(

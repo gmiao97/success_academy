@@ -15,8 +15,8 @@ class ProfileBrowse extends StatelessWidget {
     final account = context.read<AccountModel>();
 
     return utils.buildLoggedInScaffold(
-      context,
-      Center(
+      context: context,
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

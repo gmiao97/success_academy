@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/i10n.dart';
 
+// BUG: This application's locale, en, is not supported by all of its localization delegates.
 class FlutterFireUIJaLocalizationsDelegate
     extends LocalizationsDelegate<FlutterFireUILocalizations> {
   @override

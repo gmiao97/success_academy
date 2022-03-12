@@ -5,7 +5,8 @@ import 'package:success_academy/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 
-Scaffold buildLoggedInScaffold(BuildContext context, Widget body) {
+Scaffold buildLoggedInScaffold(
+    {required BuildContext context, required Widget body}) {
   final account = context.watch<AccountModel>();
   final style =
       TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);

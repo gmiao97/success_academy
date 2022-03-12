@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:success_academy/profile/profile_model.dart';
 
+enum AuthStatus { signedIn, signedOut, emailVerification }
+
 class AccountModel extends ChangeNotifier {
   AccountModel() {
     init();
@@ -11,10 +13,18 @@ class AccountModel extends ChangeNotifier {
   void init() async {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
-        _isSignedIn = true;
-        _user = user;
+        if (!user.emailVerified) {
+          if (_authStatus != AuthStatus.emailVerification) {
+            user.sendEmailVerification();
+          }
+          _authStatus = AuthStatus.emailVerification;
+          _user = user;
+        } else {
+          _authStatus = AuthStatus.signedIn;
+          _user = user;
+        }
       } else {
-        _isSignedIn = false;
+        _authStatus = AuthStatus.signedOut;
         _user = null;
         _profile = null;
       }
@@ -24,18 +34,18 @@ class AccountModel extends ChangeNotifier {
     _locale = prefs.getString('locale') ?? 'en';
   }
 
-  bool _isSignedIn = false;
+  AuthStatus _authStatus = AuthStatus.signedOut;
   String _locale = 'en';
   User? _user;
   ProfileModel? _profile;
 
-  bool get isSignedIn => _isSignedIn;
+  AuthStatus get authStatus => _authStatus;
   User? get user => _user;
   ProfileModel? get profile => _profile;
   String get locale => _locale;
 
-  set profile(ProfileModel? profile) {
-    _profile = profile;
+  set authStatus(AuthStatus authStatus) {
+    _authStatus = authStatus;
     notifyListeners();
   }
 
@@ -43,6 +53,11 @@ class AccountModel extends ChangeNotifier {
     _locale = locale;
     notifyListeners();
     _updateSharedPreferencesLocale(locale);
+  }
+
+  set profile(ProfileModel? profile) {
+    _profile = profile;
+    notifyListeners();
   }
 
   void _updateSharedPreferencesLocale(String locale) async {
