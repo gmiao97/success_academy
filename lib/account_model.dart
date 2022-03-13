@@ -37,14 +37,14 @@ class AccountModel extends ChangeNotifier {
   AuthStatus _authStatus = AuthStatus.signedOut;
   String _locale = 'en';
   User? _user;
-  _MyUserModel? _myUser;
+  MyUserModel? _myUser;
   ProfileModel? _profile;
 
   AuthStatus get authStatus => _authStatus;
   String get locale => _locale;
   User? get user => _user;
   ProfileModel? get profile => _profile;
-  _MyUserModel? get myUser => _myUser;
+  MyUserModel? get myUser => _myUser;
 
   set authStatus(AuthStatus authStatus) {
     _authStatus = authStatus;
@@ -84,7 +84,7 @@ class AccountModel extends ChangeNotifier {
   void _createUsersDocIfNotExist(String uid) {
     _myUserModelRef.doc(uid).get().then((documentSnapshot) {
       if (!documentSnapshot.exists) {
-        _myUserModelRef.doc(uid).set(_MyUserModel(randomAlphaNumeric(8)));
+        _myUserModelRef.doc(uid).set(MyUserModel(randomAlphaNumeric(8)));
       }
     });
   }
@@ -97,10 +97,10 @@ class AccountModel extends ChangeNotifier {
   }
 }
 
-class _MyUserModel {
-  _MyUserModel(this.referralCode);
+class MyUserModel {
+  MyUserModel(this.referralCode);
 
-  _MyUserModel._fromJson(Map<String, Object?> json)
+  MyUserModel._fromJson(Map<String, Object?> json)
       : referralCode = json['referral_code'] as String;
 
 // TODO: Add check to prevent repeats
@@ -113,9 +113,9 @@ class _MyUserModel {
   }
 }
 
-final CollectionReference<_MyUserModel> _myUserModelRef =
-    FirebaseFirestore.instance.collection('users').withConverter<_MyUserModel>(
+final CollectionReference<MyUserModel> _myUserModelRef =
+    FirebaseFirestore.instance.collection('users').withConverter<MyUserModel>(
           fromFirestore: (snapshot, _) =>
-              _MyUserModel._fromJson(snapshot.data()!),
+              MyUserModel._fromJson(snapshot.data()!),
           toFirestore: (myUserModel, _) => myUserModel._toJson(),
         );
