@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:success_academy/profile/profile_model.dart';
 
@@ -11,22 +13,20 @@ class AccountModel extends ChangeNotifier {
   }
 
   void init() async {
-    FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user != null) {
-        if (!user.emailVerified) {
+    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
+      if (firebaseUser != null) {
+        _initAccount(firebaseUser);
+        if (!firebaseUser.emailVerified) {
           if (_authStatus != AuthStatus.emailVerification) {
-            user.sendEmailVerification();
+            // Only send verification email once on initial auth status change
+            firebaseUser.sendEmailVerification();
           }
           _authStatus = AuthStatus.emailVerification;
-          _user = user;
         } else {
           _authStatus = AuthStatus.signedIn;
-          _user = user;
         }
       } else {
-        _authStatus = AuthStatus.signedOut;
-        _user = null;
-        _profile = null;
+        _signOut();
       }
       notifyListeners();
     });
@@ -37,12 +37,14 @@ class AccountModel extends ChangeNotifier {
   AuthStatus _authStatus = AuthStatus.signedOut;
   String _locale = 'en';
   User? _user;
+  _MyUserModel? _myUser;
   ProfileModel? _profile;
 
   AuthStatus get authStatus => _authStatus;
+  String get locale => _locale;
   User? get user => _user;
   ProfileModel? get profile => _profile;
-  String get locale => _locale;
+  _MyUserModel? get myUser => _myUser;
 
   set authStatus(AuthStatus authStatus) {
     _authStatus = authStatus;
@@ -60,8 +62,60 @@ class AccountModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void _initAccount(User user) {
+    _user = user;
+    _myUserModelRef.doc(user.uid).get().then((documentSnapshot) {
+      _myUser = documentSnapshot.data();
+    });
+    _createUsersDocIfNotExist(user.uid);
+  }
+
+  void _signOut() {
+    _authStatus = AuthStatus.signedOut;
+    _user = null;
+    _profile = null;
+  }
+
   void _updateSharedPreferencesLocale(String locale) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('locale', locale);
   }
+
+  void _createUsersDocIfNotExist(String uid) {
+    _myUserModelRef.doc(uid).get().then((documentSnapshot) {
+      if (!documentSnapshot.exists) {
+        _myUserModelRef.doc(uid).set(_MyUserModel(randomAlphaNumeric(8)));
+      }
+    });
+  }
+
+  // Only called if user is not null
+  Future<List<QueryDocumentSnapshot<ProfileModel>>> getProfilesForUser() {
+    return getProfileModelRefForUser(_user!.uid)
+        .get()
+        .then((querySnapshot) => querySnapshot.docs);
+  }
 }
+
+class _MyUserModel {
+  _MyUserModel(this.referralCode);
+
+  _MyUserModel._fromJson(Map<String, Object?> json)
+      : referralCode = json['referral_code'] as String;
+
+// TODO: Add check to prevent repeats
+  final String? referralCode;
+
+  Map<String, Object?> _toJson() {
+    return {
+      'referral_code': referralCode,
+    };
+  }
+}
+
+final CollectionReference<_MyUserModel> _myUserModelRef =
+    FirebaseFirestore.instance.collection('users').withConverter<_MyUserModel>(
+          fromFirestore: (snapshot, _) =>
+              _MyUserModel._fromJson(snapshot.data()!),
+          toFirestore: (myUserModel, _) => myUserModel._toJson(),
+        );

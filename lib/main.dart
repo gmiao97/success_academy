@@ -173,7 +173,7 @@ class EmailVerificationPage extends StatelessWidget {
               children: [
                 Text(
                   S.of(context).verifyEmailMessage(
-                        account.user!.email as String,
+                        account.user?.email as String,
                       ),
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 20),
@@ -185,6 +185,7 @@ class EmailVerificationPage extends StatelessWidget {
                 const SizedBox(height: 50),
                 ElevatedButton(
                   onPressed: () async {
+                    // BUG: Only reloads when clicked twice.
                     final user = FirebaseAuth.instance.currentUser!;
                     await user.reload();
                     if (user.emailVerified) {

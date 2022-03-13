@@ -27,7 +27,7 @@ class ProfileBrowse extends StatelessWidget {
             const SizedBox(height: 50),
             // TODO: Add error handling.
             FutureBuilder<List<QueryDocumentSnapshot<ProfileModel>>>(
-              future: getProfilesForUser(account.user!.uid),
+              future: account.getProfilesForUser(),
               builder: (BuildContext context,
                   AsyncSnapshot<List<QueryDocumentSnapshot<ProfileModel>>>
                       snapshot) {
@@ -36,7 +36,7 @@ class ProfileBrowse extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       for (var profileSnapshot in snapshot.data!)
-                        buildProfileCard(context, profileSnapshot.data()),
+                        _buildProfileCard(context, profileSnapshot.data()),
                       const AddProfileCard(),
                     ],
                   );
@@ -51,7 +51,7 @@ class ProfileBrowse extends StatelessWidget {
   }
 }
 
-Card buildProfileCard(BuildContext context, ProfileModel profile) {
+Card _buildProfileCard(BuildContext context, ProfileModel profile) {
   final account = context.read<AccountModel>();
 
   return Card(

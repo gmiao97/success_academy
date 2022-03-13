@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account_model.dart';
 import 'package:success_academy/profile/profile_browse.dart';
-import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/utils.dart' as utils;
 
 class SignedInHome extends StatelessWidget {
@@ -10,10 +9,9 @@ class SignedInHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profile = context
-        .select<AccountModel, ProfileModel?>((account) => account.profile);
+    final user = context.watch<AccountModel>();
 
-    if (profile == null) {
+    if (user.profile == null) {
       return const ProfileBrowse();
     }
     return utils.buildLoggedInScaffold(
@@ -22,7 +20,7 @@ class SignedInHome extends StatelessWidget {
         child: SizedBox(
           width: 500,
           child: Text(
-              'Hi, my name is ${profile.firstName} ${profile.lastName} and I\'m in grade ${profile.studentProfile.dateOfBirth} and my referral code is ${profile.referralCode}'),
+              'Hi, my name is ${user.profile?.firstName} ${user.profile?.lastName} and I\'m in grade ${user.profile?.studentProfile.dateOfBirth} and my referral code is ${user.myUser?.referralCode}'),
         ),
       ),
     );

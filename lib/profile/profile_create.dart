@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,7 @@ class _SignupFormState extends State<SignupForm> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(1900),
-        lastDate: DateTime(2100));
+        lastDate: DateTime.now());
     if (dateOfBirth != null) {
       setState(() {
         _dateOfBirthController.text =
@@ -68,7 +69,6 @@ class _SignupFormState extends State<SignupForm> {
   @override
   Widget build(BuildContext context) {
     final account = context.read<AccountModel>();
-    _profileModel.uid = account.user!.uid;
 
     return Form(
       key: _formKey,
@@ -165,11 +165,29 @@ class _SignupFormState extends State<SignupForm> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   // Process data.
-                  await profileModelRef.add(_profileModel);
+                  await getProfileModelRefForUser(account.user!.uid)
+                      .add(_profileModel);
                   Navigator.pushNamed(context, constants.routeHome);
                 }
               },
               child: Text(S.of(context).next),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                FirebaseFirestore.instance
+                    .collection('products')
+                    .where('active', isEqualTo: true)
+                    .get()
+                    .then((querySnapshot) {
+                  for (var doc in querySnapshot.docs) {
+                    debugPrint('${doc.id} => ${doc.data()}');
+                  }
+                });
+              },
+              child: const Text("Stripe"),
             ),
           ),
         ],
