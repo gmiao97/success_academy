@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
+        "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
             MessageLookupByLibrary.simpleMessage("生徒の生年月日を選択してください"),
@@ -37,12 +38,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
         "lastNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
+        "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース"),
+        "minimumPreschoolCourse":
+            MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
+        "pickPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
+        "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("時間帯"),
         "timeZoneValidation":
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),

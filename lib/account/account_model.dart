@@ -5,8 +5,6 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:success_academy/profile/profile_model.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest_10y.dart' as tz;
 
 enum AuthStatus { signedIn, signedOut, emailVerification }
 
@@ -16,7 +14,6 @@ class AccountModel extends ChangeNotifier {
   }
 
   void init() async {
-    tz.initializeTimeZones();
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
       if (firebaseUser != null) {
         _initAccount(firebaseUser);
@@ -112,7 +109,7 @@ class MyUserModel {
       : referralCode = json['referral_code'] as String,
         timeZone = json['time_zone'] as String;
 
-// TODO: Add check to prevent repeats
+  // TODO: Add check to prevent repeats
   final String referralCode;
   String timeZone;
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account_model.dart';
+import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/firebase_options.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -173,8 +173,7 @@ class EmailVerificationPage extends StatelessWidget {
                   S.of(context).verifyEmailMessage(
                         account.user?.email as String,
                       ),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 20),
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 50),
                 Text(
@@ -184,9 +183,9 @@ class EmailVerificationPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     // BUG: Only reloads when clicked twice.
-                    final user = FirebaseAuth.instance.currentUser!;
-                    await user.reload();
-                    if (user.emailVerified) {
+                    final firebaseUser = FirebaseAuth.instance.currentUser!;
+                    await firebaseUser.reload();
+                    if (firebaseUser.emailVerified) {
                       account.authStatus = AuthStatus.signedIn;
                     }
                   },

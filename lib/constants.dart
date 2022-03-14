@@ -8,4 +8,6 @@ const routeHome = '/';
 const routeSignIn = '/sign-in';
 const routeCreateProfile = '/create-profile';
 
+const maxProfileCount = 5;
+
 final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');

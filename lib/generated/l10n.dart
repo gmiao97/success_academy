@@ -110,6 +110,16 @@ class S {
     );
   }
 
+  /// `Create Profile`
+  String get createProfile {
+    return Intl.message(
+      'Create Profile',
+      name: 'createProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Student Last Name`
   String get lastNameLabel {
     return Intl.message(
@@ -170,26 +180,6 @@ class S {
     );
   }
 
-  /// `Time Zone`
-  String get timeZoneLabel {
-    return Intl.message(
-      'Time Zone',
-      name: 'timeZoneLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please select a valid time zone`
-  String get timeZoneValidation {
-    return Intl.message(
-      'Please select a valid time zone',
-      name: 'timeZoneValidation',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Student Date of Birth`
   String get dateOfBirthLabel {
     return Intl.message(
@@ -205,6 +195,66 @@ class S {
     return Intl.message(
       'Please select studen\'t date of birth',
       name: 'dateOfBirthValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum Course`
+  String get minimumCourse {
+    return Intl.message(
+      'Minimum Course',
+      name: 'minimumCourse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum Course + Preschool Class`
+  String get minimumPreschoolCourse {
+    return Intl.message(
+      'Minimum Course + Preschool Class',
+      name: 'minimumPreschoolCourse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a subscription plan`
+  String get pickPlan {
+    return Intl.message(
+      'Choose a subscription plan',
+      name: 'pickPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue to subscription purchase`
+  String get stripePurchase {
+    return Intl.message(
+      'Continue to subscription purchase',
+      name: 'stripePurchase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time Zone`
+  String get timeZoneLabel {
+    return Intl.message(
+      'Time Zone',
+      name: 'timeZoneLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a valid time zone`
+  String get timeZoneValidation {
+    return Intl.message(
+      'Please select a valid time zone',
+      name: 'timeZoneValidation',
       desc: '',
       args: [],
     );

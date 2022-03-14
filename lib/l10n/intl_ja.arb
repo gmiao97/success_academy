@@ -7,16 +7,24 @@
   "selectProfile": "プロフィールを選択してください",
   "addProfile": "プロフィール追加",
 
+  "createProfile": "プロフィール作成",
   "lastNameLabel": "生徒性",
   "lastNameHint": "山田",
   "lastNameValidation": "生徒の名字を入力してください",
   "firstNameLabel": "生徒名",
   "firstNameHint": "太郎",
   "firstNameValidation": "生徒の名前を入力してください",
-  "timeZoneLabel": "時間帯",
-  "timeZoneValidation": "有効の時間帯を選択してください",
   "dateOfBirthLabel": "生徒生年月日",
   "dateOfBirthValidation": "生徒の生年月日を選択してください",
+
+  "minimumCourse": "ミニマムコース",
+  "minimumPreschoolCourse": "ミニマムコース＋未就学児クラス",
+  "pickPlan": "サブスクリプションのコースを選択",
+  "stripePurchase": "サブスクリプション購入へ",
+
+  "timeZoneLabel": "時間帯",
+  "timeZoneValidation": "有効の時間帯を選択してください",
+
   "verifyEmailMessage": "確認リンクがメールアドレス（{address}）に送信されました",
   "verifyEmailAction": "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。",
   "reloadPage": "再読み込み"

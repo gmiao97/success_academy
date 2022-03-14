@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account_model.dart';
+import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
@@ -37,7 +37,9 @@ class ProfileBrowse extends StatelessWidget {
                     children: [
                       for (var profileSnapshot in snapshot.data!)
                         _buildProfileCard(context, profileSnapshot.data()),
-                      const AddProfileCard(),
+                      snapshot.data!.length < constants.maxProfileCount
+                          ? const _AddProfileWidget()
+                          : const SizedBox.shrink(),
                     ],
                   );
                 }
@@ -70,8 +72,8 @@ Card _buildProfileCard(BuildContext context, ProfileModel profile) {
   );
 }
 
-class AddProfileCard extends StatelessWidget {
-  const AddProfileCard({Key? key}) : super(key: key);
+class _AddProfileWidget extends StatelessWidget {
+  const _AddProfileWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

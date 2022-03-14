@@ -1,15 +1,15 @@
+import 'dart:html' as html;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account_model.dart';
+import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/utils.dart' as utils;
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest_10y.dart' as tz;
 
 class ProfileCreate extends StatelessWidget {
   const ProfileCreate({Key? key}) : super(key: key);
@@ -30,9 +30,9 @@ class ProfileCreate extends StatelessWidget {
         child: Card(
           child: Container(
             width: 700,
-            height: 500,
+            height: 700,
             padding: const EdgeInsets.all(20),
-            child: SignupForm(),
+            child: const _SignupForm(),
           ),
         ),
       ),
@@ -40,20 +40,22 @@ class ProfileCreate extends StatelessWidget {
   }
 }
 
-class SignupForm extends StatefulWidget {
-  SignupForm({Key? key}) : super(key: key) {
-    tz.initializeTimeZones();
-  }
+// Corresponds to metadata field 'id' in price in Stripe dashboard
+enum _SubscriptionPlan { minimum, minimumPreschool }
+
+class _SignupForm extends StatefulWidget {
+  const _SignupForm({Key? key}) : super(key: key);
 
   @override
   _SignupFormState createState() => _SignupFormState();
 }
 
-class _SignupFormState extends State<SignupForm> {
+class _SignupFormState extends State<_SignupForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _timeZoneController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
   final ProfileModel _profileModel = ProfileModel();
+  _SubscriptionPlan? _subscriptionPlan = _SubscriptionPlan.minimum;
+  bool _stripeRedirectClicked = false;
 
   void _selectDate(BuildContext context) async {
     final DateTime? dateOfBirth = await showDatePicker(
@@ -70,6 +72,50 @@ class _SignupFormState extends State<SignupForm> {
     }
   }
 
+  Future<void> _startStripeSubscriptionCheckoutSession(
+      {required String uid, required String profileId}) async {
+    String? selectedPriceId;
+    final stripeProductsDocList = await FirebaseFirestore.instance
+        .collection('products')
+        .where('active', isEqualTo: true)
+        .get()
+        .then((query) => query.docs);
+    for (final productDoc in stripeProductsDocList) {
+      final stripePricesDocList = await productDoc.reference
+          .collection('prices')
+          .get()
+          .then((query) => query.docs);
+      for (final priceDoc in stripePricesDocList) {
+        if (priceDoc.get('metadata.id') ==
+            EnumToString.convertToString(_subscriptionPlan)) {
+          selectedPriceId = priceDoc.id;
+        }
+      }
+    }
+
+    final checkoutSessionDoc = await FirebaseFirestore.instance
+        .collection('customers')
+        .doc(uid)
+        .collection('checkout_sessions')
+        .add(
+      {
+        'price': selectedPriceId,
+        'success_url': html.window.location.origin,
+        'cancel_url': html.window.location.origin,
+        'metadata': {
+          'profile_id': profileId,
+        },
+      },
+    );
+    checkoutSessionDoc.snapshots().listen(
+      (doc) {
+        if (doc.data()!.containsKey('url')) {
+          html.window.location.replace(doc.data()!['url']);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final account = context.read<AccountModel>();
@@ -79,7 +125,11 @@ class _SignupFormState extends State<SignupForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 50),
+          Text(
+            S.of(context).createProfile,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 25),
           TextFormField(
             decoration: InputDecoration(
               icon: const Icon(Icons.account_circle),
@@ -116,34 +166,6 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
           ),
-          // TODO: Move this to account settings.
-          // TypeAheadFormField(
-          //   textFieldConfiguration: TextFieldConfiguration(
-          //     controller: _timeZoneController,
-          //     decoration: InputDecoration(
-          //       icon: const Icon(Icons.public),
-          //       labelText: S.of(context).timeZoneLabel,
-          //     ),
-          //   ),
-          //   onSuggestionSelected: <String>(suggestion) {
-          //     _timeZoneController.text = suggestion;
-          //     // Update timeZone in myUser model, Update in firestore.
-          //   },
-          //   itemBuilder: (context, suggestion) => ListTile(
-          //     title: Text(suggestion as String),
-          //   ),
-          //   suggestionsCallback: (pattern) => tz.timeZoneDatabase.locations.keys
-          //       .where((timezone) => timezone
-          //           .toLowerCase()
-          //           .replaceAll('_', ' ')
-          //           .contains(pattern.toLowerCase())),
-          //   validator: (String? value) {
-          //     if (!tz.timeZoneDatabase.locations.keys.contains(value)) {
-          //       return S.of(context).timeZoneValidation;
-          //     }
-          //     return null;
-          //   },
-          // ),
           TextFormField(
             keyboardType: TextInputType.datetime,
             readOnly: true,
@@ -164,34 +186,55 @@ class _SignupFormState extends State<SignupForm> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  // Process data.
-                  await getProfileModelRefForUser(account.user!.uid)
-                      .add(_profileModel);
-                  Navigator.pushNamed(context, constants.routeHome);
-                }
-              },
-              child: Text(S.of(context).next),
+            child: Text(
+              S.of(context).pickPlan,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
+          ),
+          Column(
+            children: [
+              RadioListTile<_SubscriptionPlan>(
+                title: Text(S.of(context).minimumCourse),
+                value: _SubscriptionPlan.minimum,
+                groupValue: _subscriptionPlan,
+                onChanged: (value) {
+                  setState(() {
+                    _subscriptionPlan = value;
+                  });
+                },
+              ),
+              RadioListTile<_SubscriptionPlan>(
+                title: Text(S.of(context).minimumPreschoolCourse),
+                value: _SubscriptionPlan.minimumPreschool,
+                groupValue: _subscriptionPlan,
+                onChanged: (value) {
+                  setState(() {
+                    _subscriptionPlan = value;
+                  });
+                },
+              )
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                FirebaseFirestore.instance
-                    .collection('products')
-                    .where('active', isEqualTo: true)
-                    .get()
-                    .then((querySnapshot) {
-                  for (var doc in querySnapshot.docs) {
-                    debugPrint('${doc.id} => ${doc.data()}');
-                  }
-                });
-              },
-              child: const Text("Stripe"),
-            ),
+            child: _stripeRedirectClicked
+                ? const CircularProgressIndicator(value: null)
+                : ElevatedButton.icon(
+                    label: Text(S.of(context).stripePurchase),
+                    icon: const Icon(Icons.exit_to_app),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _stripeRedirectClicked = true;
+                        });
+                        final profileDoc =
+                            await getProfileModelRefForUser(account.user!.uid)
+                                .add(_profileModel);
+                        await _startStripeSubscriptionCheckoutSession(
+                            uid: account.user!.uid, profileId: profileDoc.id);
+                      }
+                    },
+                  ),
           ),
         ],
       ),
