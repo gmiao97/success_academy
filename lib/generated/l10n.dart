@@ -110,10 +110,10 @@ class S {
     );
   }
 
-  /// `Last Name`
+  /// `Student Last Name`
   String get lastNameLabel {
     return Intl.message(
-      'Last Name',
+      'Student Last Name',
       name: 'lastNameLabel',
       desc: '',
       args: [],
@@ -140,10 +140,10 @@ class S {
     );
   }
 
-  /// `First Name`
+  /// `Student First Name`
   String get firstNameLabel {
     return Intl.message(
-      'First Name',
+      'Student First Name',
       name: 'firstNameLabel',
       desc: '',
       args: [],
@@ -190,20 +190,20 @@ class S {
     );
   }
 
-  /// `Date of Birth`
+  /// `Student Date of Birth`
   String get dateOfBirthLabel {
     return Intl.message(
-      'Date of Birth',
+      'Student Date of Birth',
       name: 'dateOfBirthLabel',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please select a date`
+  /// `Please select studen't date of birth`
   String get dateOfBirthValidation {
     return Intl.message(
-      'Please select a date',
+      'Please select studen\'t date of birth',
       name: 'dateOfBirthValidation',
       desc: '',
       args: [],

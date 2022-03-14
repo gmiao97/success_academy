@@ -22,7 +22,7 @@ class ProfileBrowse extends StatelessWidget {
           children: [
             Text(
               S.of(context).selectProfile,
-              style: const TextStyle(fontSize: 40),
+              style: Theme.of(context).textTheme.headline4,
             ),
             const SizedBox(height: 50),
             // TODO: Add error handling.

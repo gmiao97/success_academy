@@ -8,21 +8,17 @@ class ProfileModel {
       : studentProfile = _StudentProfileModel._fromJson(
             json['student_profile'] as Map<String, Object?>),
         lastName = json['last_name'] as String,
-        firstName = json['first_name'] as String,
-        timeZone = json['time_zone'] as String;
+        firstName = json['first_name'] as String;
 
   late _StudentProfileModel studentProfile = _StudentProfileModel();
   late String lastName;
   late String firstName;
-  late String timeZone;
-  // TODO: Add preferred language and customize welcome email and stripe based on it.
 
   Map<String, Object?> _toJson() {
     return {
       'student_profile': studentProfile._toJson(),
       'last_name': lastName,
       'first_name': firstName,
-      'time_zone': timeZone,
     };
   }
 }

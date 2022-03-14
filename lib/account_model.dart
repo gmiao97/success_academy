@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:success_academy/profile/profile_model.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_10y.dart' as tz;
 
 enum AuthStatus { signedIn, signedOut, emailVerification }
 
@@ -13,6 +16,7 @@ class AccountModel extends ChangeNotifier {
   }
 
   void init() async {
+    tz.initializeTimeZones();
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
       if (firebaseUser != null) {
         _initAccount(firebaseUser);
@@ -41,6 +45,7 @@ class AccountModel extends ChangeNotifier {
   ProfileModel? _profile;
 
   AuthStatus get authStatus => _authStatus;
+  // TODO: Add preferred language and customize welcome email and stripe based on it.
   String get locale => _locale;
   User? get user => _user;
   ProfileModel? get profile => _profile;
@@ -62,12 +67,12 @@ class AccountModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _initAccount(User user) {
-    _user = user;
-    _myUserModelRef.doc(user.uid).get().then((documentSnapshot) {
+  void _initAccount(User firebaseUser) {
+    _user = firebaseUser;
+    _myUserModelRef.doc(firebaseUser.uid).get().then((documentSnapshot) {
       _myUser = documentSnapshot.data();
     });
-    _createUsersDocIfNotExist(user.uid);
+    _createUsersDocIfNotExist(firebaseUser.uid);
   }
 
   void _signOut() {
@@ -84,7 +89,10 @@ class AccountModel extends ChangeNotifier {
   void _createUsersDocIfNotExist(String uid) {
     _myUserModelRef.doc(uid).get().then((documentSnapshot) {
       if (!documentSnapshot.exists) {
-        _myUserModelRef.doc(uid).set(MyUserModel(randomAlphaNumeric(8)));
+        FlutterNativeTimezone.getLocalTimezone().then((localTimeZone) {
+          _myUserModelRef.doc(uid).set(MyUserModel(
+              referralCode: randomAlphaNumeric(8), timeZone: localTimeZone));
+        });
       }
     });
   }
@@ -98,17 +106,20 @@ class AccountModel extends ChangeNotifier {
 }
 
 class MyUserModel {
-  MyUserModel(this.referralCode);
+  MyUserModel({required this.referralCode, required this.timeZone});
 
   MyUserModel._fromJson(Map<String, Object?> json)
-      : referralCode = json['referral_code'] as String;
+      : referralCode = json['referral_code'] as String,
+        timeZone = json['time_zone'] as String;
 
 // TODO: Add check to prevent repeats
-  final String? referralCode;
+  final String referralCode;
+  String timeZone;
 
   Map<String, Object?> _toJson() {
     return {
       'referral_code': referralCode,
+      'time_zone': timeZone,
     };
   }
 }

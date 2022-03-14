@@ -25,18 +25,18 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
-        "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生年月日"),
+        "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
-            MessageLookupByLibrary.simpleMessage("日付を選択してください"),
+            MessageLookupByLibrary.simpleMessage("生徒の生年月日を選択してください"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("太郎"),
-        "firstNameLabel": MessageLookupByLibrary.simpleMessage("名"),
+        "firstNameLabel": MessageLookupByLibrary.simpleMessage("生徒名"),
         "firstNameValidation":
-            MessageLookupByLibrary.simpleMessage("名前を入力してください"),
+            MessageLookupByLibrary.simpleMessage("生徒の名前を入力してください"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("山田"),
-        "lastNameLabel": MessageLookupByLibrary.simpleMessage("性"),
+        "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
         "lastNameValidation":
-            MessageLookupByLibrary.simpleMessage("名字を入力してください"),
+            MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":

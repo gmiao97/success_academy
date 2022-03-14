@@ -24,9 +24,7 @@ Scaffold buildLoggedInScaffold(
           },
           child: Text(
             account.locale == 'en' ? '🇺🇸' : '🇯🇵',
-            style: const TextStyle(
-              fontSize: 20.0,
-            ),
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
         TextButton(

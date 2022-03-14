@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^3.1.10
   random_string: ^2.3.1
   flutter_typeahead: ^3.2.4
+  flutter_native_timezone: ^2.0.0
 
 dev_dependencies:
   flutter_test:

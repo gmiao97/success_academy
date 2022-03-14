@@ -27,16 +27,18 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
         "dateOfBirthLabel":
-            MessageLookupByLibrary.simpleMessage("Date of Birth"),
-        "dateOfBirthValidation":
-            MessageLookupByLibrary.simpleMessage("Please select a date"),
+            MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
+        "dateOfBirthValidation": MessageLookupByLibrary.simpleMessage(
+            "Please select studen\'t date of birth"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("John"),
-        "firstNameLabel": MessageLookupByLibrary.simpleMessage("First Name"),
+        "firstNameLabel":
+            MessageLookupByLibrary.simpleMessage("Student First Name"),
         "firstNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s first name"),
         "goBack": MessageLookupByLibrary.simpleMessage("Go back"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("Smith"),
-        "lastNameLabel": MessageLookupByLibrary.simpleMessage("Last Name"),
+        "lastNameLabel":
+            MessageLookupByLibrary.simpleMessage("Student Last Name"),
         "lastNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s last name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
