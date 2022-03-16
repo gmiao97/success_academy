@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("Select Profile"),
+        "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
+        "copy": MessageLookupByLibrary.simpleMessage("Copy Code"),
         "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
         "dateOfBirthLabel":
             MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
@@ -43,13 +45,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student Last Name"),
         "lastNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s last name"),
+        "manageSubscription":
+            MessageLookupByLibrary.simpleMessage("Manage Subscriptions"),
         "minimumCourse":
             MessageLookupByLibrary.simpleMessage("Minimum Course - \$30/month"),
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
             "Minimum Course + Preschool Class - \$40/month"),
+        "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
+        "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile Information"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),

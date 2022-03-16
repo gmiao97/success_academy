@@ -25,31 +25,30 @@ class ProfileCreate extends StatelessWidget {
       return const EmailVerificationPage();
     }
     return utils.buildLoggedInScaffold(
-      context: context,
-      body: Center(
-        child: Card(
-          child: Container(
-            width: 700,
-            height: 700,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.maybePop(context);
-                    },
-                    child: Text(S.of(context).goBack),
-                  ),
-                  margin: const EdgeInsets.all(10),
+        context: context,
+        body: Center(
+          child: Column(
+            children: [
+              Container(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.maybePop(context);
+                  },
+                  child: Text(S.of(context).goBack),
                 ),
-                const _SignupForm(),
-              ],
-            ),
+                margin: const EdgeInsets.all(10),
+              ),
+              Card(
+                child: Container(
+                  width: 700,
+                  height: 700,
+                  padding: const EdgeInsets.all(20),
+                  child: const _SignupForm(),
+                ),
+              ),
+            ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -86,7 +85,9 @@ class _SignupFormState extends State<_SignupForm> {
   }
 
   Future<void> _startStripeSubscriptionCheckoutSession(
-      {required String userId, required String profileId}) async {
+      {required String userId,
+      required String profileId,
+      required _SubscriptionPlan subscriptionPlan}) async {
     String? selectedPriceId;
     final stripeProductsDocList = await FirebaseFirestore.instance
         .collection('products')
@@ -100,7 +101,7 @@ class _SignupFormState extends State<_SignupForm> {
           .then((query) => query.docs);
       for (final priceDoc in stripePricesDocList) {
         if (priceDoc.get('metadata.id') ==
-            EnumToString.convertToString(_subscriptionPlan)) {
+            EnumToString.convertToString(subscriptionPlan)) {
           selectedPriceId = priceDoc.id;
         }
       }
@@ -245,7 +246,8 @@ class _SignupFormState extends State<_SignupForm> {
                                 .add(_profileModel);
                         await _startStripeSubscriptionCheckoutSession(
                             userId: account.user!.uid,
-                            profileId: profileDoc.id);
+                            profileId: profileDoc.id,
+                            subscriptionPlan: _subscriptionPlan!);
                       }
                     },
                   ),

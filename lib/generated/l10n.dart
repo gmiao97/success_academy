@@ -200,6 +200,66 @@ class S {
     );
   }
 
+  /// `Profile Information`
+  String get profile {
+    return Intl.message(
+      'Profile Information',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get name {
+    return Intl.message(
+      'Name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Referral Code`
+  String get myCode {
+    return Intl.message(
+      'Referral Code',
+      name: 'myCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy Code`
+  String get copy {
+    return Intl.message(
+      'Copy Code',
+      name: 'copy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Code Copied!`
+  String get copied {
+    return Intl.message(
+      'Code Copied!',
+      name: 'copied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage Subscriptions`
+  String get manageSubscription {
+    return Intl.message(
+      'Manage Subscriptions',
+      name: 'manageSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Minimum Course - $30/month`
   String get minimumCourse {
     return Intl.message(

@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("プロフィール選択"),
+        "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
+        "copy": MessageLookupByLibrary.simpleMessage("コードをコピー"),
         "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
@@ -39,11 +41,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
         "lastNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
+        "manageSubscription":
+            MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),
         "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース・月＄３０"),
         "minimumPreschoolCourse":
             MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄４０"),
+        "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
+        "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
         "pickPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択"),
+        "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),

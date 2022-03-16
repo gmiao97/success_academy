@@ -7,6 +7,7 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/utils.dart' as utils;
 
+// TODO: Make UI responsive for different screen sizes
 class ProfileBrowse extends StatelessWidget {
   const ProfileBrowse({Key? key}) : super(key: key);
 
@@ -66,7 +67,10 @@ Card _buildProfileCard(BuildContext context, ProfileModel profile) {
       child: SizedBox(
         width: 200,
         height: 200,
-        child: Text('${profile.lastName}, ${profile.firstName}'),
+        child: Center(
+          child: Text(profile.firstName,
+              style: Theme.of(context).textTheme.headlineMedium),
+        ),
       ),
     ),
   );

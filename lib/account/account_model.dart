@@ -8,6 +8,7 @@ import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:success_academy/profile/profile_model.dart';
 
+// Add loading state to display spinner while initializing user
 enum AuthStatus { signedIn, signedOut, emailVerification }
 
 class AccountModel extends ChangeNotifier {

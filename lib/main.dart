@@ -10,7 +10,7 @@ import 'package:success_academy/firebase_options.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/l10n/FlutterFireUIJaLocalizationsDelegate.dart';
 import 'package:success_academy/landing/landing.dart';
-import 'package:success_academy/profile_home.dart';
+import 'package:success_academy/profile/profile_home.dart';
 import 'package:success_academy/profile/profile_create.dart';
 import 'package:success_academy/utils.dart' as utils;
 

@@ -17,6 +17,13 @@
   "dateOfBirthLabel": "生徒生年月日",
   "dateOfBirthValidation": "生徒の生年月日を選択してください",
 
+  "profile": "プロフィール",
+  "name": "名前",
+  "myCode": "紹介コード",
+  "copy": "コードをコピー",
+  "copied": "コードをコピーしました",
+  "manageSubscription": "サブスクリプション管理",
+
   "minimumCourse": "ミニマムコース・月＄３０",
   "minimumPreschoolCourse": "ミニマムコース＋未就学児クラス・月＄４０",
   "pickPlan": "サブスクリプションのコースを選択",
