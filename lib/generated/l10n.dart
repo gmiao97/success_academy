@@ -200,20 +200,20 @@ class S {
     );
   }
 
-  /// `Minimum Course`
+  /// `Minimum Course - $30/month`
   String get minimumCourse {
     return Intl.message(
-      'Minimum Course',
+      'Minimum Course - \$30/month',
       name: 'minimumCourse',
       desc: '',
       args: [],
     );
   }
 
-  /// `Minimum Course + Preschool Class`
+  /// `Minimum Course + Preschool Class - $40/month`
   String get minimumPreschoolCourse {
     return Intl.message(
-      'Minimum Course + Preschool Class',
+      'Minimum Course + Preschool Class - \$40/month',
       name: 'minimumPreschoolCourse',
       desc: '',
       args: [],

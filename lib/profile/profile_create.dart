@@ -32,7 +32,20 @@ class ProfileCreate extends StatelessWidget {
             width: 700,
             height: 700,
             padding: const EdgeInsets.all(20),
-            child: const _SignupForm(),
+            child: Column(
+              children: [
+                Container(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.maybePop(context);
+                    },
+                    child: Text(S.of(context).goBack),
+                  ),
+                  margin: const EdgeInsets.all(10),
+                ),
+                const _SignupForm(),
+              ],
+            ),
           ),
         ),
       ),

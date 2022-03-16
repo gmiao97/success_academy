@@ -43,9 +43,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student Last Name"),
         "lastNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s last name"),
-        "minimumCourse": MessageLookupByLibrary.simpleMessage("Minimum Course"),
+        "minimumCourse":
+            MessageLookupByLibrary.simpleMessage("Minimum Course - \$30/month"),
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
-            "Minimum Course + Preschool Class"),
+            "Minimum Course + Preschool Class - \$40/month"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),

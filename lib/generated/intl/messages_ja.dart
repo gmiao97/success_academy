@@ -39,9 +39,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
         "lastNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
-        "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース"),
+        "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース・月＄３０"),
         "minimumPreschoolCourse":
-            MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス"),
+            MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄４０"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
         "pickPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),

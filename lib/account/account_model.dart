@@ -33,8 +33,8 @@ class AccountModel extends ChangeNotifier {
       }
       notifyListeners();
     });
-    final prefs = await SharedPreferences.getInstance();
-    _locale = prefs.getString('locale') ?? 'en';
+    final prefs = await _getSharedPreferencesInstance();
+    _locale = prefs?.getString('locale') ?? 'en';
   }
 
   AuthStatus _authStatus = AuthStatus.signedOut;
@@ -108,17 +108,20 @@ class AccountModel extends ChangeNotifier {
   }
 
   Future<ProfileModel?> _loadSharedPreferencesProfile() async {
-    final prefs = await SharedPreferences.getInstance();
-    final profileJsonString = prefs.getString('profile');
+    final prefs = await _getSharedPreferencesInstance();
+    final profileJsonString = prefs?.getString('profile');
     if (profileJsonString != null) {
-      return ProfileModel.fromJson(jsonDecode(profileJsonString));
+      final profileJson = jsonDecode(profileJsonString);
+      if (profileJson != null) {
+        return ProfileModel.fromJson(jsonDecode(profileJsonString));
+      }
     }
     return null;
   }
 
   void _updateSharedPreferencesProfile(ProfileModel? profile) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('profile', jsonEncode(profile?.toJson()));
+    final prefs = await _getSharedPreferencesInstance();
+    prefs?.setString('profile', jsonEncode(profile?.toJson()));
   }
 
   /// Create document in 'users' collection for user uid if not already existing
@@ -172,3 +175,11 @@ final CollectionReference<MyUserModel> _myUserModelRef =
               MyUserModel._fromJson(snapshot.data()!),
           toFirestore: (myUserModel, _) => myUserModel._toJson(),
         );
+
+Future<SharedPreferences?> _getSharedPreferencesInstance() async {
+  try {
+    return await SharedPreferences.getInstance();
+  } on Exception {
+    return null;
+  }
+}
