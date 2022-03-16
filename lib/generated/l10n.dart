@@ -289,6 +289,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Select Profile`
+  String get changeProfile {
+    return Intl.message(
+      'Select Profile',
+      name: 'changeProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

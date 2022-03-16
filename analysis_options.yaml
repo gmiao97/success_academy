@@ -30,3 +30,4 @@ linter:
 analyzer:
   errors:
     todo: ignore
+    slash_for_doc_comments: ignore

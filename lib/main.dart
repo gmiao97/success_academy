@@ -10,7 +10,7 @@ import 'package:success_academy/firebase_options.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/l10n/FlutterFireUIJaLocalizationsDelegate.dart';
 import 'package:success_academy/landing/landing.dart';
-import 'package:success_academy/signed_in_home.dart';
+import 'package:success_academy/profile_home.dart';
 import 'package:success_academy/profile/profile_create.dart';
 import 'package:success_academy/utils.dart' as utils;
 
@@ -28,6 +28,11 @@ void main() async {
   );
 }
 
+// BUG
+// Error: Assertion failed:
+// ../…/painting/text_painter.dart:953
+// !_debugNeedsLayout
+// is not true
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
@@ -74,7 +79,7 @@ class HomePage extends StatelessWidget {
       return const EmailVerificationPage();
     }
     if (account.authStatus == AuthStatus.signedIn) {
-      return const SignedInHome();
+      return const ProfileHome();
     }
     return Scaffold(
         appBar: AppBar(

@@ -27,5 +27,8 @@
 
   "verifyEmailMessage": "確認リンクがメールアドレス（{address}）に送信されました",
   "verifyEmailAction": "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。",
-  "reloadPage": "再読み込み"
+  "reloadPage": "再読み込み",
+
+  "changeProfile": "プロフィール選択",
+  "settings": "設定"
 }

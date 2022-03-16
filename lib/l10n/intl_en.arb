@@ -27,5 +27,8 @@
 
   "verifyEmailMessage": "A verification link has been sent to your email at {address}",
   "verifyEmailAction": "Please click on the link in your email to continue the registration process. If you don't see a message in your inbox, please check your spam or junk mail folder.",
-  "reloadPage": "Reload page"
+  "reloadPage": "Reload page",
+
+  "changeProfile": "Select Profile",
+  "settings": "Settings"
 }

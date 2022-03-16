@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +16,9 @@ class AccountModel extends ChangeNotifier {
   }
 
   void init() async {
-    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
+    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
       if (firebaseUser != null) {
-        _initAccount(firebaseUser);
+        await _initAccount(firebaseUser);
         if (!firebaseUser.emailVerified) {
           if (_authStatus != AuthStatus.emailVerification) {
             // Only send verification email once on initial auth status change
@@ -61,15 +63,28 @@ class AccountModel extends ChangeNotifier {
 
   set profile(ProfileModel? profile) {
     _profile = profile;
+    _updateSharedPreferencesProfile(profile);
     notifyListeners();
   }
 
-  void _initAccount(User firebaseUser) {
+  /**
+   * Initialize account model with firebase user data, data from 'user'
+   * collection, and profile data from shared preferences if existing.
+   * 
+   * Creates new document in 'users' collection if not already existing.
+   */
+  Future<void> _initAccount(User firebaseUser) async {
     _user = firebaseUser;
+    _createUsersDocIfNotExist(firebaseUser.uid);
     _myUserModelRef.doc(firebaseUser.uid).get().then((documentSnapshot) {
       _myUser = documentSnapshot.data();
     });
-    _createUsersDocIfNotExist(firebaseUser.uid);
+    final profile = await _loadSharedPreferencesProfile();
+    final profileBelongsToUser = await _profileBelongsToUser(
+        userId: firebaseUser.uid, profileId: profile?.profileId);
+    if (profileBelongsToUser) {
+      _profile = profile;
+    }
   }
 
   void _signOut() {
@@ -83,20 +98,50 @@ class AccountModel extends ChangeNotifier {
     prefs.setString('locale', locale);
   }
 
-  void _createUsersDocIfNotExist(String uid) {
-    _myUserModelRef.doc(uid).get().then((documentSnapshot) {
+  Future<bool> _profileBelongsToUser(
+      {required String userId, required String? profileId}) async {
+    if (profileId == null) {
+      return false;
+    }
+    return getProfilesForUser(userId)
+        .then((documentRefs) => documentRefs.any((doc) => doc.id == profileId));
+  }
+
+  Future<ProfileModel?> _loadSharedPreferencesProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final profileJsonString = prefs.getString('profile');
+    if (profileJsonString != null) {
+      return ProfileModel.fromJson(jsonDecode(profileJsonString));
+    }
+    return null;
+  }
+
+  void _updateSharedPreferencesProfile(ProfileModel? profile) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('profile', jsonEncode(profile?.toJson()));
+  }
+
+  /// Create document in 'users' collection for user uid if not already existing
+  void _createUsersDocIfNotExist(String userId) {
+    _myUserModelRef.doc(userId).get().then((documentSnapshot) {
       if (!documentSnapshot.exists) {
         FlutterNativeTimezone.getLocalTimezone().then((localTimeZone) {
-          _myUserModelRef.doc(uid).set(MyUserModel(
+          _myUserModelRef.doc(userId).set(MyUserModel(
               referralCode: randomAlphaNumeric(8), timeZone: localTimeZone));
         });
       }
     });
   }
 
-  // Only called if user is not null
-  Future<List<QueryDocumentSnapshot<ProfileModel>>> getProfilesForUser() {
-    return getProfileModelRefForUser(_user!.uid)
+  /** 
+   * Get list of query snapshots for all profiles under the user
+   * 
+   * Returns list of document snapshots for each profile under 'profiles 
+   * subcollection in the user doc under 'users' collection. 
+   */
+  Future<List<QueryDocumentSnapshot<ProfileModel>>> getProfilesForUser(
+      String userId) {
+    return getProfileModelRefForUser(userId)
         .get()
         .then((querySnapshot) => querySnapshot.docs);
   }

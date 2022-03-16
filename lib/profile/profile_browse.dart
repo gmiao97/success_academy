@@ -27,7 +27,7 @@ class ProfileBrowse extends StatelessWidget {
             const SizedBox(height: 50),
             // TODO: Add error handling.
             FutureBuilder<List<QueryDocumentSnapshot<ProfileModel>>>(
-              future: account.getProfilesForUser(),
+              future: account.getProfilesForUser(account.user!.uid),
               builder: (BuildContext context,
                   AsyncSnapshot<List<QueryDocumentSnapshot<ProfileModel>>>
                       snapshot) {

@@ -39,3 +39,66 @@ Scaffold buildLoggedInScaffold(
     body: body,
   );
 }
+
+Scaffold buildProfileScaffold(
+    {required BuildContext context, required Widget body}) {
+  final account = context.watch<AccountModel>();
+  final style =
+      TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text(constants.homePageAppBarName),
+      centerTitle: false,
+      actions: [
+        TextButton(
+          style: style,
+          onPressed: () {
+            account.locale = account.locale == 'en' ? 'ja' : 'en';
+          },
+          child: Text(
+            account.locale == 'en' ? '🇺🇸' : '🇯🇵',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        TextButton(
+          style: style,
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+          },
+          child: Text(S.of(context).signOut),
+        )
+      ],
+    ),
+    drawer: Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
+            child: Text(
+              constants.homePageAppBarName,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_circle),
+            title: Text(S.of(context).changeProfile),
+            onTap: () {
+              account.profile = null;
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text(S.of(context).settings),
+          ),
+        ],
+      ),
+    ),
+    body: body,
+  );
+}

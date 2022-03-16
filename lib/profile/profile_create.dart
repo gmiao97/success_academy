@@ -73,7 +73,7 @@ class _SignupFormState extends State<_SignupForm> {
   }
 
   Future<void> _startStripeSubscriptionCheckoutSession(
-      {required String uid, required String profileId}) async {
+      {required String userId, required String profileId}) async {
     String? selectedPriceId;
     final stripeProductsDocList = await FirebaseFirestore.instance
         .collection('products')
@@ -95,7 +95,7 @@ class _SignupFormState extends State<_SignupForm> {
 
     final checkoutSessionDoc = await FirebaseFirestore.instance
         .collection('customers')
-        .doc(uid)
+        .doc(userId)
         .collection('checkout_sessions')
         .add(
       {
@@ -231,7 +231,8 @@ class _SignupFormState extends State<_SignupForm> {
                             await getProfileModelRefForUser(account.user!.uid)
                                 .add(_profileModel);
                         await _startStripeSubscriptionCheckoutSession(
-                            uid: account.user!.uid, profileId: profileDoc.id);
+                            userId: account.user!.uid,
+                            profileId: profileDoc.id);
                       }
                     },
                   ),
