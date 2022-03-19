@@ -39,5 +39,8 @@
   "changeProfile": "プロフィール選択",
   "viewProfile": "プロフィールを見る",
   "lessonCalendar": "レッスンカレンダー",
-  "settings": "設定"
+  "settings": "設定",
+
+  "calendarHeader": "{name}のカレンダー",
+  "today": "今日"
 }

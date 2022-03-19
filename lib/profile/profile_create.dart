@@ -140,7 +140,7 @@ class _SignupFormState extends State<_SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.read<AccountModel>();
+    final account = context.watch<AccountModel>();
 
     return Form(
       key: _formKey,

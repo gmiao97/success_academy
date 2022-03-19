@@ -389,6 +389,26 @@ class S {
       args: [],
     );
   }
+
+  /// `{name}'s Calendar`
+  String calendarHeader(Object name) {
+    return Intl.message(
+      '$name\'s Calendar',
+      name: 'calendarHeader',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message(
+      'Today',
+      name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -20,12 +20,15 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(address) =>
+  static String m0(name) => "${name}\'s Calendar";
+
+  static String m1(address) =>
       "A verification link has been sent to your email at ${address}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
+        "calendarHeader": m0,
         "changeProfile": MessageLookupByLibrary.simpleMessage("Select Profile"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
         "copy": MessageLookupByLibrary.simpleMessage("Copy Code"),
@@ -69,9 +72,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("Time Zone"),
         "timeZoneValidation": MessageLookupByLibrary.simpleMessage(
             "Please select a valid time zone"),
+        "today": MessageLookupByLibrary.simpleMessage("Today"),
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
-        "verifyEmailMessage": m0,
+        "verifyEmailMessage": m1,
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
       };
 }

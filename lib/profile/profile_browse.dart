@@ -13,7 +13,7 @@ class ProfileBrowse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.read<AccountModel>();
+    final account = context.watch<AccountModel>();
 
     return utils.buildLoggedInScaffold(
       context: context,
@@ -55,7 +55,7 @@ class ProfileBrowse extends StatelessWidget {
 }
 
 Card _buildProfileCard(BuildContext context, ProfileModel profile) {
-  final account = context.read<AccountModel>();
+  final account = context.watch<AccountModel>();
 
   return Card(
     elevation: 10.0,

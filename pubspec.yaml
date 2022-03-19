@@ -48,6 +48,8 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   enum_to_string: ^2.0.1
   cloud_functions: ^3.2.10
+  table_calendar: ^3.0.4
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

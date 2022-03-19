@@ -39,5 +39,8 @@
   "changeProfile": "Select Profile",
   "viewProfile": "View Profile",
   "lessonCalendar": "Lesson Calendar",
-  "settings": "Settings"
+  "settings": "Settings",
+
+  "calendarHeader": "{name}'s Calendar",
+  "today": "Today"
 }
