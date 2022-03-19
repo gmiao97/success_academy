@@ -61,7 +61,7 @@ class ProfileCreate extends StatelessWidget {
 }
 
 // Corresponds to metadata field 'id' in price in Stripe dashboard
-enum _SubscriptionPlan { minimum, minimumPreschool }
+enum SubscriptionPlan { minimum, minimumPreschool }
 
 class _SignupForm extends StatefulWidget {
   const _SignupForm({Key? key}) : super(key: key);
@@ -74,7 +74,7 @@ class _SignupFormState extends State<_SignupForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _dateOfBirthController = TextEditingController();
   final ProfileModel _profileModel = ProfileModel();
-  _SubscriptionPlan? _subscriptionPlan = _SubscriptionPlan.minimum;
+  SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
   bool _stripeRedirectClicked = false;
 
   void _selectDate(BuildContext context) async {
@@ -90,52 +90,6 @@ class _SignupFormState extends State<_SignupForm> {
         _profileModel.studentProfile.dateOfBirth = dateOfBirth;
       });
     }
-  }
-
-  Future<void> _startStripeSubscriptionCheckoutSession(
-      {required String userId,
-      required String profileId,
-      required _SubscriptionPlan subscriptionPlan}) async {
-    String? selectedPriceId;
-    final stripeProductsDocList = await FirebaseFirestore.instance
-        .collection('products')
-        .where('active', isEqualTo: true)
-        .get()
-        .then((query) => query.docs);
-    for (final productDoc in stripeProductsDocList) {
-      final stripePricesDocList = await productDoc.reference
-          .collection('prices')
-          .get()
-          .then((query) => query.docs);
-      for (final priceDoc in stripePricesDocList) {
-        if (priceDoc.get('metadata.id') ==
-            EnumToString.convertToString(subscriptionPlan)) {
-          selectedPriceId = priceDoc.id;
-        }
-      }
-    }
-
-    final checkoutSessionDoc = await FirebaseFirestore.instance
-        .collection('customers')
-        .doc(userId)
-        .collection('checkout_sessions')
-        .add(
-      {
-        'price': selectedPriceId,
-        'success_url': html.window.location.origin,
-        'cancel_url': html.window.location.origin,
-        'metadata': {
-          'profile_id': profileId,
-        },
-      },
-    );
-    checkoutSessionDoc.snapshots().listen(
-      (doc) {
-        if (doc.data()!.containsKey('url')) {
-          html.window.location.replace(doc.data()!['url']);
-        }
-      },
-    );
   }
 
   @override
@@ -206,62 +160,137 @@ class _SignupFormState extends State<_SignupForm> {
               return null;
             },
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Text(
-              S.of(context).pickPlan,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          Column(
-            children: [
-              RadioListTile<_SubscriptionPlan>(
-                title: Text(S.of(context).minimumCourse),
-                value: _SubscriptionPlan.minimum,
-                groupValue: _subscriptionPlan,
-                onChanged: (value) {
-                  setState(() {
-                    _subscriptionPlan = value;
-                  });
-                },
-              ),
-              RadioListTile<_SubscriptionPlan>(
-                title: Text(S.of(context).minimumPreschoolCourse),
-                value: _SubscriptionPlan.minimumPreschool,
-                groupValue: _subscriptionPlan,
-                onChanged: (value) {
-                  setState(() {
-                    _subscriptionPlan = value;
-                  });
-                },
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: _stripeRedirectClicked
-                ? const CircularProgressIndicator(value: null)
-                : ElevatedButton.icon(
-                    label: Text(S.of(context).stripePurchase),
-                    icon: const Icon(Icons.exit_to_app),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() {
-                          _stripeRedirectClicked = true;
-                        });
-                        final profileDoc =
-                            await getProfileModelRefForUser(account.user!.uid)
-                                .add(_profileModel);
-                        await _startStripeSubscriptionCheckoutSession(
-                            userId: account.user!.uid,
-                            profileId: profileDoc.id,
-                            subscriptionPlan: _subscriptionPlan!);
-                      }
-                    },
-                  ),
+          StripeSubscriptionCreate(
+            subscriptionPlan: _subscriptionPlan,
+            stripeRedirectClicked: _stripeRedirectClicked,
+            onSubscriptionChange: (selectedSubscription) {
+              setState(() {
+                _subscriptionPlan = selectedSubscription;
+              });
+            },
+            onStripeSubmitClicked: () async {
+              if (_formKey.currentState!.validate()) {
+                setState(() {
+                  _stripeRedirectClicked = true;
+                });
+                final profileDoc =
+                    await getProfileModelRefForUser(account.user!.uid)
+                        .add(_profileModel);
+                await startStripeSubscriptionCheckoutSession(
+                  userId: account.user!.uid,
+                  profileId: profileDoc.id,
+                  subscriptionPlan: _subscriptionPlan!,
+                );
+              }
+            },
           ),
         ],
       ),
     );
   }
+}
+
+typedef _SubscriptionChangedCallback = Function(SubscriptionPlan?);
+
+class StripeSubscriptionCreate extends StatelessWidget {
+  const StripeSubscriptionCreate({
+    Key? key,
+    required this.subscriptionPlan,
+    required this.stripeRedirectClicked,
+    required this.onSubscriptionChange,
+    required this.onStripeSubmitClicked,
+  }) : super(key: key);
+
+  final SubscriptionPlan? subscriptionPlan;
+  final bool stripeRedirectClicked;
+  final _SubscriptionChangedCallback onSubscriptionChange;
+  final VoidCallback onStripeSubmitClicked;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Text(
+            S.of(context).pickPlan,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        Column(
+          children: [
+            RadioListTile<SubscriptionPlan>(
+              title: Text(S.of(context).minimumCourse),
+              value: SubscriptionPlan.minimum,
+              groupValue: subscriptionPlan,
+              onChanged: onSubscriptionChange,
+            ),
+            RadioListTile<SubscriptionPlan>(
+              title: Text(S.of(context).minimumPreschoolCourse),
+              value: SubscriptionPlan.minimumPreschool,
+              groupValue: subscriptionPlan,
+              onChanged: onSubscriptionChange,
+            )
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: stripeRedirectClicked
+              ? const CircularProgressIndicator(value: null)
+              : ElevatedButton.icon(
+                  label: Text(S.of(context).stripePurchase),
+                  icon: const Icon(Icons.exit_to_app),
+                  onPressed: onStripeSubmitClicked,
+                ),
+        ),
+      ],
+    );
+  }
+}
+
+Future<void> startStripeSubscriptionCheckoutSession(
+    {required String userId,
+    required String profileId,
+    required SubscriptionPlan subscriptionPlan}) async {
+  String? selectedPriceId;
+  final stripeProductsDocList = await FirebaseFirestore.instance
+      .collection('products')
+      .where('active', isEqualTo: true)
+      .get()
+      .then((query) => query.docs);
+  for (final productDoc in stripeProductsDocList) {
+    final stripePricesDocList = await productDoc.reference
+        .collection('prices')
+        .get()
+        .then((query) => query.docs);
+    for (final priceDoc in stripePricesDocList) {
+      if (priceDoc.get('metadata.id') ==
+          EnumToString.convertToString(subscriptionPlan)) {
+        selectedPriceId = priceDoc.id;
+      }
+    }
+  }
+
+  final checkoutSessionDoc = await FirebaseFirestore.instance
+      .collection('customers')
+      .doc(userId)
+      .collection('checkout_sessions')
+      .add(
+    {
+      'price': selectedPriceId,
+      'success_url': html.window.location.origin,
+      'cancel_url': html.window.location.origin,
+      'metadata': {
+        'profile_id': profileId,
+      },
+    },
+  );
+  checkoutSessionDoc.snapshots().listen(
+    (doc) {
+      if (doc.data()!.containsKey('url')) {
+        html.window.location.replace(doc.data()!['url']);
+      }
+    },
+  );
 }

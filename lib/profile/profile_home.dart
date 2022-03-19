@@ -9,10 +9,19 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_browse.dart';
+import 'package:success_academy/profile/profile_create.dart';
 import 'package:success_academy/utils.dart' as utils;
 
-class ProfileHome extends StatelessWidget {
+class ProfileHome extends StatefulWidget {
   const ProfileHome({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileHome> createState() => _ProfileHomeState();
+}
+
+class _ProfileHomeState extends State<ProfileHome> {
+  bool _stripeRedirectClicked = false;
+  SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
 
   Future<bool> hasSubscription(
       {required String userId, required String profileId}) async {
@@ -21,7 +30,7 @@ class ProfileHome extends StatelessWidget {
         .doc(userId)
         .collection('subscriptions')
         .where('status', whereIn: ['trialing', 'active']).get();
-    // Subscription metadata is written create profile widget.
+    // Subscription metadata is written in startStripeSubscriptionCheckoutSession.
     return subscriptionsQuery.docs.any((subscriptionDoc) =>
         subscriptionDoc.get('metadata.profile_id') as String == profileId);
   }
@@ -131,15 +140,38 @@ class ProfileHome extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // Profile has subscription
                     if (snapshot.data == true) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          redirectToStripePortal();
-                        },
-                        child: Text(S.of(context).manageSubscription),
-                      );
+                      return _stripeRedirectClicked
+                          ? const CircularProgressIndicator(value: null)
+                          : ElevatedButton(
+                              child: Text(S.of(context).manageSubscription),
+                              onPressed: () {
+                                setState(() {
+                                  _stripeRedirectClicked = true;
+                                });
+                                redirectToStripePortal();
+                              },
+                            );
                     }
                     // TODO: Add redirect to purchase subscription
-                    return const Text('No subscription');
+                    return StripeSubscriptionCreate(
+                      subscriptionPlan: _subscriptionPlan,
+                      stripeRedirectClicked: _stripeRedirectClicked,
+                      onSubscriptionChange: (selectedSubscription) {
+                        setState(() {
+                          _subscriptionPlan = selectedSubscription;
+                        });
+                      },
+                      onStripeSubmitClicked: () async {
+                        setState(() {
+                          _stripeRedirectClicked = true;
+                        });
+                        await startStripeSubscriptionCheckoutSession(
+                          userId: account.user!.uid,
+                          profileId: account.profile!.profileId,
+                          subscriptionPlan: _subscriptionPlan!,
+                        );
+                      },
+                    );
                   }
                   return const CircularProgressIndicator(value: null);
                 },
