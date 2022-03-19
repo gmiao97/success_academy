@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:success_academy/profile/profile_model.dart';
 
 // Add loading state to display spinner while initializing user
-enum AuthStatus { signedIn, signedOut, emailVerification }
+enum AuthStatus { signedIn, signedOut, emailVerification, loading }
 
 class AccountModel extends ChangeNotifier {
   AccountModel() {
@@ -38,7 +38,7 @@ class AccountModel extends ChangeNotifier {
     _locale = prefs?.getString('locale') ?? 'en';
   }
 
-  AuthStatus _authStatus = AuthStatus.signedOut;
+  AuthStatus _authStatus = AuthStatus.loading;
   String _locale = 'en';
   User? _user;
   MyUserModel? _myUser;

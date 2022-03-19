@@ -11,6 +11,7 @@ import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/utils.dart' as utils;
 
+// TODO: Create teacher profile
 class ProfileCreate extends StatelessWidget {
   const ProfileCreate({Key? key}) : super(key: key);
 
@@ -18,6 +19,13 @@ class ProfileCreate extends StatelessWidget {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
+    if (account.authStatus == AuthStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(
+          value: null,
+        ),
+      );
+    }
     if (account.authStatus == AuthStatus.signedOut) {
       return const HomePage();
     }

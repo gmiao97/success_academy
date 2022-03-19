@@ -7,6 +7,7 @@ const googleAuthProviderConfigurationClientId =
 const routeHome = '/';
 const routeSignIn = '/sign-in';
 const routeCreateProfile = '/create-profile';
+const routeCalendar = '/calendar';
 
 const maxProfileCount = 5;
 

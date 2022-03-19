@@ -37,5 +37,7 @@
   "reloadPage": "再読み込み",
 
   "changeProfile": "プロフィール選択",
+  "viewProfile": "プロフィールを見る",
+  "lessonCalendar": "レッスンカレンダー",
   "settings": "設定"
 }

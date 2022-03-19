@@ -122,6 +122,7 @@ class ProfileHome extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 25),
+              // BUG: Can't differentiate between multiple profile subscriptions.
               FutureBuilder<bool>(
                 future: hasSubscription(
                     profileId: account.profile!.profileId,
@@ -137,7 +138,8 @@ class ProfileHome extends StatelessWidget {
                         child: Text(S.of(context).manageSubscription),
                       );
                     }
-                    return Text('No subscription');
+                    // TODO: Add redirect to purchase subscription
+                    return const Text('No subscription');
                   }
                   return const CircularProgressIndicator(value: null);
                 },

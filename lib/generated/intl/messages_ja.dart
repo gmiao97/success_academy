@@ -41,6 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
         "lastNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
+        "lessonCalendar": MessageLookupByLibrary.simpleMessage("レッスンカレンダー"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),
         "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース・月＄３０"),
@@ -63,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
-        "verifyEmailMessage": m0
+        "verifyEmailMessage": m0,
+        "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る")
       };
 }

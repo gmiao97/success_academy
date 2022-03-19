@@ -45,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student Last Name"),
         "lastNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s last name"),
+        "lessonCalendar":
+            MessageLookupByLibrary.simpleMessage("Lesson Calendar"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("Manage Subscriptions"),
         "minimumCourse":
@@ -69,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please select a valid time zone"),
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
-        "verifyEmailMessage": m0
+        "verifyEmailMessage": m0,
+        "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
       };
 }

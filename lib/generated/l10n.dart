@@ -360,6 +360,26 @@ class S {
     );
   }
 
+  /// `View Profile`
+  String get viewProfile {
+    return Intl.message(
+      'View Profile',
+      name: 'viewProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson Calendar`
+  String get lessonCalendar {
+    return Intl.message(
+      'Lesson Calendar',
+      name: 'lessonCalendar',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get settings {
     return Intl.message(

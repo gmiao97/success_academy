@@ -37,5 +37,7 @@
   "reloadPage": "Reload page",
 
   "changeProfile": "Select Profile",
+  "viewProfile": "View Profile",
+  "lessonCalendar": "Lesson Calendar",
   "settings": "Settings"
 }

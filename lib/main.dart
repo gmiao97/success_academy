@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/calendar.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/firebase_options.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -28,8 +29,7 @@ void main() async {
   );
 }
 
-// BUG
-// Error: Assertion failed:
+// BUG Error: Assertion failed:
 // ../…/painting/text_painter.dart:953
 // !_debugNeedsLayout
 // is not true
@@ -61,6 +61,7 @@ class App extends StatelessWidget {
         constants.routeHome: (context) => const HomePage(),
         constants.routeSignIn: (context) => const SignInPage(),
         constants.routeCreateProfile: (context) => const ProfileCreate(),
+        constants.routeCalendar: (context) => const Calendar(),
       },
     );
   }
@@ -75,6 +76,13 @@ class HomePage extends StatelessWidget {
         TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     final account = context.watch<AccountModel>();
 
+    if (account.authStatus == AuthStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(
+          value: null,
+        ),
+      );
+    }
     if (account.authStatus == AuthStatus.emailVerification) {
       return const EmailVerificationPage();
     }
@@ -119,6 +127,13 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
+    if (account.authStatus == AuthStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(
+          value: null,
+        ),
+      );
+    }
     if (account.authStatus == AuthStatus.emailVerification) {
       return const EmailVerificationPage();
     }

@@ -79,22 +79,37 @@ Scaffold buildProfileScaffold(
               color: Theme.of(context).primaryColor,
             ),
             child: Text(
-              constants.homePageAppBarName,
+              account.profile!.firstName,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
               ),
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle),
+            leading: const Icon(Icons.change_circle),
             title: Text(S.of(context).changeProfile),
             onTap: () {
               account.profile = null;
             },
           ),
           ListTile(
+            leading: const Icon(Icons.account_circle),
+            title: Text(S.of(context).viewProfile),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeHome);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_month),
+            title: Text(S.of(context).lessonCalendar),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeCalendar);
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.settings),
             title: Text(S.of(context).settings),
+            onTap: () {},
           ),
         ],
       ),
