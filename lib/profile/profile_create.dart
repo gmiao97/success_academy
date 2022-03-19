@@ -87,7 +87,7 @@ class _SignupFormState extends State<_SignupForm> {
       setState(() {
         _dateOfBirthController.text =
             constants.dateFormatter.format(dateOfBirth);
-        _profileModel.studentProfile.dateOfBirth = dateOfBirth;
+        _profileModel.dateOfBirth = dateOfBirth;
       });
     }
   }

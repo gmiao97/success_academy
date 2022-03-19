@@ -60,6 +60,14 @@ class _CalendarState extends State<Calendar> {
             calendarFormat: _calendarFormat,
             locale: account.locale,
             daysOfWeekHeight: 25,
+            availableCalendarFormats: {
+              CalendarFormat.month:
+                  account.locale == 'en' ? 'Display Monthly' : '月間表示',
+              CalendarFormat.twoWeeks:
+                  account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
+              CalendarFormat.week:
+                  account.locale == 'en' ? 'Display Weekly' : '一週間表示',
+            },
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDay, day);
             },

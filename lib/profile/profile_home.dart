@@ -91,7 +91,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                   children: [
                     TextSpan(
                       text: constants.dateFormatter
-                          .format(account.profile!.studentProfile.dateOfBirth),
+                          .format(account.profile!.dateOfBirth),
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ],
@@ -165,6 +165,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                         setState(() {
                           _stripeRedirectClicked = true;
                         });
+                        // TODO: No trial (+reinitiation fee?) for people who already had trial
                         await startStripeSubscriptionCheckoutSession(
                           userId: account.user!.uid,
                           profileId: account.profile!.profileId,
