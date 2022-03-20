@@ -53,10 +53,44 @@ class _ProfileHomeState extends State<ProfileHome> {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
+    if (account.teacherProfile != null) {
+      return utils.buildTeacherProfileScaffold(
+        context: context,
+        body: Center(
+          child: SizedBox(
+            width: 700,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  S.of(context).teacherProfile,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+                const SizedBox(height: 25),
+                RichText(
+                  text: TextSpan(
+                    text: '${S.of(context).name}     ',
+                    style: Theme.of(context).textTheme.titleMedium,
+                    children: [
+                      TextSpan(
+                        text:
+                            '${account.teacherProfile?.lastName}, ${account.teacherProfile?.firstName}',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
     if (account.profile == null) {
       return const ProfileBrowse();
     }
-    return utils.buildProfileScaffold(
+    return utils.buildStudentProfileScaffold(
       context: context,
       body: Center(
         child: SizedBox(
@@ -66,7 +100,7 @@ class _ProfileHomeState extends State<ProfileHome> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                S.of(context).profile,
+                S.of(context).studentProfile,
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 25),

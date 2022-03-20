@@ -43,13 +43,15 @@ class AccountModel extends ChangeNotifier {
   User? _user;
   MyUserModel? _myUser;
   ProfileModel? _profile;
+  TeacherProfileModel? _teacherProfile;
 
   AuthStatus get authStatus => _authStatus;
   // TODO: Add preferred language and customize welcome email and stripe based on it.
   String get locale => _locale;
   User? get user => _user;
-  ProfileModel? get profile => _profile;
   MyUserModel? get myUser => _myUser;
+  ProfileModel? get profile => _profile;
+  TeacherProfileModel? get teacherProfile => _teacherProfile;
 
   set authStatus(AuthStatus authStatus) {
     _authStatus = authStatus;
@@ -80,11 +82,22 @@ class AccountModel extends ChangeNotifier {
     _myUserModelRef.doc(firebaseUser.uid).get().then((documentSnapshot) {
       _myUser = documentSnapshot.data();
     });
-    final profile = await _loadSharedPreferencesProfile();
-    final profileBelongsToUser = await _profileBelongsToUser(
-        userId: firebaseUser.uid, profileId: profile?.profileId);
-    if (profileBelongsToUser) {
-      _profile = profile;
+    await _initProfile(firebaseUser.uid);
+  }
+
+  Future<void> _initProfile(String userId) async {
+    //Teacher profile
+    final teacherProfile = await getTeacherProfileForUser(userId);
+    if (teacherProfile != null) {
+      _teacherProfile = teacherProfile;
+    } else {
+      // Student profile
+      final profile = await _loadSharedPreferencesProfile();
+      final profileBelongsToUser = await _profileBelongsToUser(
+          userId: userId, profileId: profile?.profileId);
+      if (profileBelongsToUser) {
+        _profile = profile;
+      }
     }
   }
 
@@ -92,6 +105,7 @@ class AccountModel extends ChangeNotifier {
     _authStatus = AuthStatus.signedOut;
     _user = null;
     _profile = null;
+    _teacherProfile = null;
   }
 
   void _updateSharedPreferencesLocale(String locale) async {
@@ -148,6 +162,12 @@ class AccountModel extends ChangeNotifier {
     return getProfileModelRefForUser(userId)
         .get()
         .then((querySnapshot) => querySnapshot.docs);
+  }
+
+  Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
+    return getTeacherProfileModelRefForUser(userId).limit(1).get().then(
+        (querySnapshot) =>
+            querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null);
   }
 }
 

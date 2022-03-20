@@ -53,3 +53,34 @@ CollectionReference<ProfileModel> getProfileModelRefForUser(userId) {
         toFirestore: (profileModel, _) => profileModel._toFirestoreJson(),
       );
 }
+
+class TeacherProfileModel {
+  TeacherProfileModel();
+
+  TeacherProfileModel.fromJson(Map<String, Object?> json)
+      : lastName = json['last_name'] as String,
+        firstName = json['first_name'] as String;
+
+  late String lastName;
+  late String firstName;
+
+  Map<String, Object?> toJson() {
+    return {
+      'last_name': lastName,
+      'first_name': firstName,
+    };
+  }
+}
+
+CollectionReference<TeacherProfileModel> getTeacherProfileModelRefForUser(
+    userId) {
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .collection('teacher_profile')
+      .withConverter<TeacherProfileModel>(
+        fromFirestore: (snapshot, _) =>
+            TeacherProfileModel.fromJson(snapshot.data()!),
+        toFirestore: (teacherProfileModel, _) => teacherProfileModel.toJson(),
+      );
+}

@@ -17,7 +17,8 @@
   "dateOfBirthLabel": "生徒生年月日",
   "dateOfBirthValidation": "生徒の生年月日を選択してください",
 
-  "profile": "プロフィール",
+  "studentProfile": "生徒プロフィール",
+  "teacherProfile": "講師プロフィール",
   "name": "名前",
   "myCode": "紹介コード",
   "copy": "コードをコピー",
@@ -42,5 +43,6 @@
   "settings": "設定",
 
   "calendarHeader": "{name}のカレンダー",
+  "timeZone": "時間帯： {timeZone}",
   "today": "今日"
 }

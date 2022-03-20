@@ -22,7 +22,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "${name}のカレンダー";
 
-  static String m1(address) => "確認リンクがメールアドレス（${address}）に送信されました";
+  static String m1(timeZone) => "時間帯： ${timeZone}";
+
+  static String m2(address) => "確認リンクがメールアドレス（${address}）に送信されました";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -54,7 +56,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
         "pickPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択"),
-        "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
@@ -62,13 +63,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
+        "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
+        "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),
+        "timeZone": m1,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("時間帯"),
         "timeZoneValidation":
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "today": MessageLookupByLibrary.simpleMessage("今日"),
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
-        "verifyEmailMessage": m1,
+        "verifyEmailMessage": m2,
         "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る")
       };
 }

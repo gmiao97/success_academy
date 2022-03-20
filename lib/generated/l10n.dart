@@ -200,11 +200,21 @@ class S {
     );
   }
 
-  /// `Profile Information`
-  String get profile {
+  /// `Student Profile Information`
+  String get studentProfile {
     return Intl.message(
-      'Profile Information',
-      name: 'profile',
+      'Student Profile Information',
+      name: 'studentProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Teacher Profile Information`
+  String get teacherProfile {
+    return Intl.message(
+      'Teacher Profile Information',
+      name: 'teacherProfile',
       desc: '',
       args: [],
     );
@@ -397,6 +407,16 @@ class S {
       name: 'calendarHeader',
       desc: '',
       args: [name],
+    );
+  }
+
+  /// `Timezone: {timeZone}`
+  String timeZone(Object timeZone) {
+    return Intl.message(
+      'Timezone: $timeZone',
+      name: 'timeZone',
+      desc: '',
+      args: [timeZone],
     );
   }
 

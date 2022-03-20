@@ -22,7 +22,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "${name}\'s Calendar";
 
-  static String m1(address) =>
+  static String m1(timeZone) => "Timezone: ${timeZone}";
+
+  static String m2(address) =>
       "A verification link has been sent to your email at ${address}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -61,7 +63,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),
-        "profile": MessageLookupByLibrary.simpleMessage("Profile Information"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
@@ -69,13 +70,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage(
             "Continue to subscription purchase"),
+        "studentProfile":
+            MessageLookupByLibrary.simpleMessage("Student Profile Information"),
+        "teacherProfile":
+            MessageLookupByLibrary.simpleMessage("Teacher Profile Information"),
+        "timeZone": m1,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("Time Zone"),
         "timeZoneValidation": MessageLookupByLibrary.simpleMessage(
             "Please select a valid time zone"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
-        "verifyEmailMessage": m1,
+        "verifyEmailMessage": m2,
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
       };
 }

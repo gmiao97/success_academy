@@ -40,7 +40,7 @@ Scaffold buildLoggedInScaffold(
   );
 }
 
-Scaffold buildProfileScaffold(
+Scaffold buildStudentProfileScaffold(
     {required BuildContext context, required Widget body}) {
   final account = context.watch<AccountModel>();
   final style =
@@ -91,6 +91,77 @@ Scaffold buildProfileScaffold(
             onTap: () {
               account.profile = null;
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_circle),
+            title: Text(S.of(context).viewProfile),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeHome);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_month),
+            title: Text(S.of(context).lessonCalendar),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeCalendar);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text(S.of(context).settings),
+            onTap: () {},
+          ),
+        ],
+      ),
+    ),
+    body: body,
+  );
+}
+
+Scaffold buildTeacherProfileScaffold(
+    {required BuildContext context, required Widget body}) {
+  final account = context.watch<AccountModel>();
+  final style =
+      TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text(constants.homePageAppBarName),
+      centerTitle: false,
+      actions: [
+        TextButton(
+          style: style,
+          onPressed: () {
+            account.locale = account.locale == 'en' ? 'ja' : 'en';
+          },
+          child: Text(
+            account.locale == 'en' ? '🇺🇸' : '🇯🇵',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        TextButton(
+          style: style,
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+          },
+          child: Text(S.of(context).signOut),
+        )
+      ],
+    ),
+    drawer: Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
+            child: Text(
+              account.teacherProfile!.firstName,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
+              ),
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.account_circle),
