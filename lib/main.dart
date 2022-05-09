@@ -191,7 +191,7 @@ class EmailVerificationPage extends StatelessWidget {
               children: [
                 Text(
                   S.of(context).verifyEmailMessage(
-                        account.user?.email as String,
+                        account.firebaseUser?.email as String,
                       ),
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),

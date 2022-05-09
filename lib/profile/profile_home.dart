@@ -169,7 +169,7 @@ class _ProfileHomeState extends State<ProfileHome> {
               FutureBuilder<bool>(
                 future: hasSubscription(
                     profileId: account.profile!.profileId,
-                    userId: account.user!.uid),
+                    userId: account.firebaseUser!.uid),
                 builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // Profile has subscription
@@ -201,7 +201,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                         });
                         // TODO: No trial (+reinitiation fee?) for people who already had trial
                         await startStripeSubscriptionCheckoutSession(
-                          userId: account.user!.uid,
+                          userId: account.firebaseUser!.uid,
                           profileId: account.profile!.profileId,
                           subscriptionPlan: _subscriptionPlan!,
                         );

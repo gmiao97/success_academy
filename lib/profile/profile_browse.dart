@@ -5,6 +5,8 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/services/profile_service.dart'
+    as profile_service;
 import 'package:success_academy/utils.dart' as utils;
 
 // TODO: Make UI responsive for different screen sizes
@@ -27,10 +29,12 @@ class ProfileBrowse extends StatelessWidget {
             ),
             const SizedBox(height: 50),
             // TODO: Add error handling.
-            FutureBuilder<List<QueryDocumentSnapshot<ProfileModel>>>(
-              future: account.getProfilesForUser(account.user!.uid),
+            FutureBuilder<List<QueryDocumentSnapshot<StudentProfileModel>>>(
+              future: profile_service
+                  .getStudentProfilesForUser(account.firebaseUser!.uid),
               builder: (BuildContext context,
-                  AsyncSnapshot<List<QueryDocumentSnapshot<ProfileModel>>>
+                  AsyncSnapshot<
+                          List<QueryDocumentSnapshot<StudentProfileModel>>>
                       snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Row(
@@ -54,7 +58,7 @@ class ProfileBrowse extends StatelessWidget {
   }
 }
 
-Card _buildProfileCard(BuildContext context, ProfileModel profile) {
+Card _buildProfileCard(BuildContext context, StudentProfileModel profile) {
   final account = context.watch<AccountModel>();
 
   return Card(

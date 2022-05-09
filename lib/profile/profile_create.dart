@@ -9,6 +9,8 @@ import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/services/profile_service.dart'
+    as profile_service;
 import 'package:success_academy/utils.dart' as utils;
 
 // TODO: Create teacher profile
@@ -73,7 +75,7 @@ class _SignupForm extends StatefulWidget {
 class _SignupFormState extends State<_SignupForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _dateOfBirthController = TextEditingController();
-  final ProfileModel _profileModel = ProfileModel();
+  final StudentProfileModel _profileModel = StudentProfileModel();
   SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
   bool _stripeRedirectClicked = false;
 
@@ -173,11 +175,10 @@ class _SignupFormState extends State<_SignupForm> {
                 setState(() {
                   _stripeRedirectClicked = true;
                 });
-                final profileDoc =
-                    await getProfileModelRefForUser(account.user!.uid)
-                        .add(_profileModel);
+                final profileDoc = await profile_service.addStudentProfile(
+                    account.firebaseUser!.uid, _profileModel);
                 await startStripeSubscriptionCheckoutSession(
-                  userId: account.user!.uid,
+                  userId: account.firebaseUser!.uid,
                   profileId: profileDoc.id,
                   subscriptionPlan: _subscriptionPlan!,
                 );
