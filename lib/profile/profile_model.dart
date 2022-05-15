@@ -1,5 +1,8 @@
 import 'package:success_academy/constants.dart' as constants;
 
+// Corresponds to metadata field 'id' in price in Stripe dashboard
+enum SubscriptionPlan { minimum, minimumPreschool }
+
 class StudentProfileModel {
   StudentProfileModel();
 

@@ -1,7 +1,3 @@
-import 'dart:html' as html;
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
@@ -11,9 +7,12 @@ import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
+import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/utils.dart' as utils;
 
 // TODO: Create teacher profile
+// TODO: Initiation fee
+// TODO: Welcome email
 class ProfileCreate extends StatelessWidget {
   const ProfileCreate({Key? key}) : super(key: key);
 
@@ -61,9 +60,6 @@ class ProfileCreate extends StatelessWidget {
         ));
   }
 }
-
-// Corresponds to metadata field 'id' in price in Stripe dashboard
-enum SubscriptionPlan { minimum, minimumPreschool }
 
 class _SignupForm extends StatefulWidget {
   const _SignupForm({Key? key}) : super(key: key);
@@ -177,7 +173,7 @@ class _SignupFormState extends State<_SignupForm> {
                 });
                 final profileDoc = await profile_service.addStudentProfile(
                     account.firebaseUser!.uid, _profileModel);
-                await startStripeSubscriptionCheckoutSession(
+                await stripe_service.startStripeSubscriptionCheckoutSession(
                   userId: account.firebaseUser!.uid,
                   profileId: profileDoc.id,
                   subscriptionPlan: _subscriptionPlan!,
@@ -248,50 +244,4 @@ class StripeSubscriptionCreate extends StatelessWidget {
       ],
     );
   }
-}
-
-Future<void> startStripeSubscriptionCheckoutSession(
-    {required String userId,
-    required String profileId,
-    required SubscriptionPlan subscriptionPlan}) async {
-  String? selectedPriceId;
-  final stripeProductsDocList = await FirebaseFirestore.instance
-      .collection('products')
-      .where('active', isEqualTo: true)
-      .get()
-      .then((query) => query.docs);
-  for (final productDoc in stripeProductsDocList) {
-    final stripePricesDocList = await productDoc.reference
-        .collection('prices')
-        .get()
-        .then((query) => query.docs);
-    for (final priceDoc in stripePricesDocList) {
-      if (priceDoc.get('metadata.id') ==
-          EnumToString.convertToString(subscriptionPlan)) {
-        selectedPriceId = priceDoc.id;
-      }
-    }
-  }
-
-  final checkoutSessionDoc = await FirebaseFirestore.instance
-      .collection('customers')
-      .doc(userId)
-      .collection('checkout_sessions')
-      .add(
-    {
-      'price': selectedPriceId,
-      'success_url': html.window.location.origin,
-      'cancel_url': html.window.location.origin,
-      'metadata': {
-        'profile_id': profileId,
-      },
-    },
-  );
-  checkoutSessionDoc.snapshots().listen(
-    (doc) {
-      if (doc.data()!.containsKey('url')) {
-        html.window.location.replace(doc.data()!['url']);
-      }
-    },
-  );
 }

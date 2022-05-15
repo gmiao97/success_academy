@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class EventModel {
   EventModel({required this.title, required this.start, required this.end});
 
-  EventModel._fromJson(Map<String, Object?> json)
+  EventModel.fromJson(Map<String, Object?> json)
       : title = json['title'] as String,
         start = (json['start'] as Timestamp).toDate(),
         end = (json['end'] as Timestamp).toDate();
@@ -12,7 +12,7 @@ class EventModel {
   DateTime start;
   DateTime end;
 
-  Map<String, Object?> _toJson() {
+  Map<String, Object?> toJson() {
     return {
       'title': title,
       'start': Timestamp.fromDate(start),
@@ -20,9 +20,3 @@ class EventModel {
     };
   }
 }
-
-final CollectionReference<EventModel> eventModelRef = FirebaseFirestore.instance
-    .collection('events')
-    .withConverter<EventModel>(
-        fromFirestore: (snapshot, _) => EventModel._fromJson(snapshot.data()!),
-        toFirestore: (eventModel, _) => eventModel._toJson());

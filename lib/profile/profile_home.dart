@@ -1,7 +1,3 @@
-import 'dart:html' as html;
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +6,8 @@ import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_create.dart';
+import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/utils.dart' as utils;
 
 class ProfileHome extends StatefulWidget {
@@ -25,28 +23,11 @@ class _ProfileHomeState extends State<ProfileHome> {
 
   Future<bool> hasSubscription(
       {required String userId, required String profileId}) async {
-    final subscriptionsQuery = await FirebaseFirestore.instance
-        .collection('customers')
-        .doc(userId)
-        .collection('subscriptions')
-        .where('status', whereIn: ['trialing', 'active']).get();
+    final subscriptionDocs =
+        await stripe_service.getSubscriptionsForUser(userId);
     // Subscription metadata is written in startStripeSubscriptionCheckoutSession.
-    return subscriptionsQuery.docs.any((subscriptionDoc) =>
-        subscriptionDoc.get('metadata.profile_id') as String == profileId);
-  }
-
-  void redirectToStripePortal() async {
-    HttpsCallable getStripePortalCallable =
-        FirebaseFunctions.instanceFor(region: 'us-west2')
-            .httpsCallable('ext-firestore-stripe-payments-createPortalLink');
-    try {
-      final data = await getStripePortalCallable
-          .call(<String, dynamic>{'returnUrl': html.window.location.origin});
-      html.window.location.assign(data.data['url']);
-    } catch (e) {
-      // Collect client error logs to be viewable.
-      debugPrint(e.toString());
-    }
+    return subscriptionDocs
+        .any((doc) => doc.get('metadata.profile_id') as String == profileId);
   }
 
   @override
@@ -182,7 +163,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 setState(() {
                                   _stripeRedirectClicked = true;
                                 });
-                                redirectToStripePortal();
+                                stripe_service.redirectToStripePortal();
                               },
                             );
                     }
@@ -200,7 +181,8 @@ class _ProfileHomeState extends State<ProfileHome> {
                           _stripeRedirectClicked = true;
                         });
                         // TODO: No trial (+reinitiation fee?) for people who already had trial
-                        await startStripeSubscriptionCheckoutSession(
+                        await stripe_service
+                            .startStripeSubscriptionCheckoutSession(
                           userId: account.firebaseUser!.uid,
                           profileId: account.profile!.profileId,
                           subscriptionPlan: _subscriptionPlan!,
