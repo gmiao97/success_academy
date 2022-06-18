@@ -41,13 +41,17 @@ Future<void> startStripeSubscriptionCheckoutSession(
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
   for (final doc in priceDocs) {
-    if (doc.get('metadata.id') ==
-        EnumToString.convertToString(subscriptionPlan)) {
-      selectedPriceId = doc.id;
+    try {
+      if (doc.get('metadata.id') ==
+          EnumToString.convertToString(subscriptionPlan)) {
+        selectedPriceId = doc.id;
+      }
+    } on StateError {
+      debugPrint('No metadata.id field found for price ${doc.id}');
     }
   }
 
-  final checkoutSessionDoc = await FirebaseFirestore.instance
+  final checkoutSessionDoc = await db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')

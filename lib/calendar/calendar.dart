@@ -50,6 +50,26 @@ class _StudentCalendarState extends State<StudentCalendar> {
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
+  List<EventModel> _getAllFreeLessonsForDay(DateTime day) {
+    return [
+      EventModel(
+        title: 'Event 1',
+        start: DateTime.parse('2022-06-16 20:18:04Z'),
+        end: DateTime.parse('2022-06-16 22:18:04Z'),
+      )
+    ];
+    // if (day.weekday == DateTime.monday) {
+    //   return [
+    //     EventModel(
+    //       title: 'Cyclic event',
+    //       start: DateTime.now(),
+    //       end: DateTime.now(),
+    //     )
+    //   ];
+    // }
+    // return [];
+  }
+
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
@@ -100,7 +120,9 @@ class _StudentCalendarState extends State<StudentCalendar> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
-            eventLoader: (day) => [],
+            eventLoader: (day) {
+              return _getAllFreeLessonsForDay(day);
+            },
           ),
         ],
       ),
