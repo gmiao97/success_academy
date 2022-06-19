@@ -1,4 +1,5 @@
 import 'dart:html' as html;
+import 'dart:io';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,8 @@ Future<void> redirectToStripePortal() async {
         .call(<String, dynamic>{'returnUrl': html.window.location.origin});
     html.window.location.assign(data.data['url']);
   } catch (e) {
-    // Collect client error logs to be viewable.
-    debugPrint(e.toString());
+    // TODO: Collect client error logs to be viewable.
+    debugPrint('redirectToStripePortal failed: $e');
+    throw HttpException('redirectToStripePortal failed: $e');
   }
 }

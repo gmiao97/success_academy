@@ -1,8 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:success_academy/calendar/event_model.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/material.dart';
 
-final CollectionReference<EventModel> eventModelRef = FirebaseFirestore.instance
-    .collection('events')
-    .withConverter<EventModel>(
-        fromFirestore: (snapshot, _) => EventModel.fromJson(snapshot.data()!),
-        toFirestore: (eventModel, _) => eventModel.toJson());
+final FirebaseFunctions functions =
+    FirebaseFunctions.instanceFor(region: 'us-west2');
+
+// Map<DateTime, List<EventModel>>
+Future<List<dynamic>> getAllEventsFromFreeLessonCalendar({
+  required String timeZone,
+  required String timeMin,
+  required String timeMax,
+}) async {
+  HttpsCallable getEventsFromFreeLessonCalendarCallable =
+      functions.httpsCallable('listAllEventsFromFreeLessonCalendar');
+
+  try {
+    final result = await getEventsFromFreeLessonCalendarCallable(
+        {'timeZone': timeZone, 'timeMin': timeMin, 'timeMax': timeMax});
+    return result.data;
+  } catch (e) {
+    debugPrint('listAllEventsFromFreeLessonCalendar failed: $e');
+    rethrow;
+  }
+}

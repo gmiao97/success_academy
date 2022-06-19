@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_browse.dart';
+import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_10y.dart' as tz;
 
 class Calendar extends StatelessWidget {
   const Calendar({Key? key}) : super(key: key);
@@ -46,28 +50,60 @@ class StudentCalendar extends StatefulWidget {
 }
 
 class _StudentCalendarState extends State<StudentCalendar> {
+  late final ValueNotifier<List<EventModel>> _selectedEvents;
+  final DateTime _firstDay =
+      DateUtils.dateOnly(DateTime.now().subtract(const Duration(days: 365)));
+  final DateTime _lastDay =
+      DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
+  Map<DateTime, List<EventModel>> _allFreeLessons = {};
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
-  List<EventModel> _getAllFreeLessonsForDay(DateTime day) {
-    return [
-      EventModel(
-        title: 'Event 1',
-        start: DateTime.parse('2022-06-16 20:18:04Z'),
-        end: DateTime.parse('2022-06-16 22:18:04Z'),
-      )
-    ];
-    // if (day.weekday == DateTime.monday) {
-    //   return [
-    //     EventModel(
-    //       title: 'Cyclic event',
-    //       start: DateTime.now(),
-    //       end: DateTime.now(),
-    //     )
-    //   ];
-    // }
-    // return [];
+  @override
+  void initState() {
+    super.initState();
+    tz.initializeTimeZones();
+    _setAllFreeLessons();
+    _selectedEvents = ValueNotifier([]);
+  }
+
+  @override
+  void dispose() {
+    _selectedEvents.dispose();
+    super.dispose();
+  }
+
+  List<EventModel> _getEventsForDay(DateTime day) {
+    return _allFreeLessons[day] ?? [];
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        _selectedEvents.value = _getEventsForDay(selectedDay);
+      });
+    }
+  }
+
+  Future<void> _setAllFreeLessons() {
+    final timeZoneName = context.read<AccountModel>().myUser!.timeZone;
+    final timeZone = tz.getLocation(timeZoneName);
+
+    return event_service
+        .getAllEventsFromFreeLessonCalendar(
+          timeZone: timeZoneName,
+          timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
+          timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+        )
+        .then((eventList) => setState(() {
+              _allFreeLessons = buildEventMap(eventList, timeZone);
+            }))
+        .catchError((e) => null
+            // TODO: Show error state.
+            );
   }
 
   @override
@@ -89,8 +125,8 @@ class _StudentCalendarState extends State<StudentCalendar> {
             },
           ),
           TableCalendar(
-            firstDay: DateTime.utc(2010, 1, 1),
-            lastDay: DateTime.now().add(const Duration(days: 500)),
+            firstDay: _firstDay,
+            lastDay: _lastDay,
             focusedDay: _focusedDay,
             calendarFormat: _calendarFormat,
             locale: account.locale,
@@ -106,12 +142,7 @@ class _StudentCalendarState extends State<StudentCalendar> {
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDay, day);
             },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            },
+            onDaySelected: _onDaySelected,
             onFormatChanged: (format) {
               setState(() {
                 _calendarFormat = format;
@@ -120,9 +151,37 @@ class _StudentCalendarState extends State<StudentCalendar> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
-            eventLoader: (day) {
-              return _getAllFreeLessonsForDay(day);
-            },
+            eventLoader: (day) => _getEventsForDay(day),
+          ),
+          const SizedBox(height: 8.0),
+          Expanded(
+            child: ValueListenableBuilder<List<EventModel>>(
+              valueListenable: _selectedEvents,
+              builder: (context, value, _) {
+                return ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: ListTile(
+                        onTap: () {},
+                        title: Text(value[index].summary),
+                        subtitle: Text(
+                          '${DateFormat.jm().format(value[index].start)} - ${DateFormat.jm().format(value[index].end)}',
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -221,7 +280,7 @@ class _CalendarHeader extends StatelessWidget {
         children: [
           Text(
             S.of(context).calendarHeader(header),
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headline6,
           ),
           Text(
             S.of(context).timeZone(timeZone.replaceAll('_', ' ')),
