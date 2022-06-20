@@ -3,10 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
+import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
+import 'package:success_academy/services/profile_service.dart'
+    as profile_service;
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -62,6 +65,7 @@ class _StudentCalendarState extends State<StudentCalendar> {
 
   @override
   void initState() {
+    // TODO: Calendar refresh
     super.initState();
     tz.initializeTimeZones();
     _setAllFreeLessons();
@@ -99,7 +103,8 @@ class _StudentCalendarState extends State<StudentCalendar> {
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
         )
         .then((eventList) => setState(() {
-              _allFreeLessons = buildEventMap(eventList, timeZone);
+              _allFreeLessons =
+                  buildEventMap(CalendarType.free, eventList, timeZone);
             }))
         .catchError((e) => null
             // TODO: Show error state.
@@ -153,7 +158,11 @@ class _StudentCalendarState extends State<StudentCalendar> {
             },
             eventLoader: (day) => _getEventsForDay(day),
           ),
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 10),
+          Text(
+            _selectedDay != null ? dateFormatter.format(_selectedDay!) : '',
+            style: Theme.of(context).textTheme.headline6,
+          ),
           Expanded(
             child: ValueListenableBuilder<List<EventModel>>(
               valueListenable: _selectedEvents,
@@ -169,6 +178,7 @@ class _StudentCalendarState extends State<StudentCalendar> {
                       decoration: BoxDecoration(
                         border: Border.all(),
                         borderRadius: BorderRadius.circular(12.0),
+                        color: Color(value[index].color),
                       ),
                       child: ListTile(
                         onTap: () {},

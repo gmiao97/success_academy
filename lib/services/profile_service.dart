@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -69,4 +71,24 @@ Future<DocumentReference<StudentProfileModel>> addStudentProfile(
   final profileDoc =
       await _getStudentProfileModelRefForUser(userId).add(profileModel);
   return profileDoc;
+}
+
+Future<bool> profileHasSubscription(
+    {required String userId, required String profileId}) async {
+  final subscriptionDocs = await stripe_service.getSubscriptionsForUser(userId);
+  // Subscription metadata is written in startStripeSubscriptionCheckoutSession.
+  return subscriptionDocs
+      .any((doc) => doc.get('metadata.profile_id') as String == profileId);
+}
+
+Future<SubscriptionPlan?> getSubscriptionTypeForProfile(
+    {required String userId, required String profileId}) async {
+  final subscriptionDocs = await stripe_service.getSubscriptionsForUser(userId);
+  // Subscription metadata is written in startStripeSubscriptionCheckoutSession.
+  return EnumToString.fromString(
+      SubscriptionPlan.values,
+      subscriptionDocs
+          .firstWhere(
+              (doc) => doc.get('metadata.profile_id') as String == profileId)
+          .get('items')[0]['plan']['metadata']['id']);
 }

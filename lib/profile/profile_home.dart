@@ -7,6 +7,8 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_create.dart';
 import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/services/profile_service.dart'
+    as profile_service;
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/utils.dart' as utils;
 
@@ -20,15 +22,6 @@ class ProfileHome extends StatefulWidget {
 class _ProfileHomeState extends State<ProfileHome> {
   bool _stripeRedirectClicked = false;
   SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
-
-  Future<bool> hasSubscription(
-      {required String userId, required String profileId}) async {
-    final subscriptionDocs =
-        await stripe_service.getSubscriptionsForUser(userId);
-    // Subscription metadata is written in startStripeSubscriptionCheckoutSession.
-    return subscriptionDocs
-        .any((doc) => doc.get('metadata.profile_id') as String == profileId);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +141,7 @@ class _ProfileHomeState extends State<ProfileHome> {
               const SizedBox(height: 25),
               // BUG: Can't differentiate between multiple profile subscriptions.
               FutureBuilder<bool>(
-                future: hasSubscription(
+                future: profile_service.profileHasSubscription(
                     profileId: account.profile!.profileId,
                     userId: account.firebaseUser!.uid),
                 builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
