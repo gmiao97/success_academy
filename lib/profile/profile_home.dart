@@ -144,7 +144,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                 future: profile_service.profileHasSubscription(
                     profileId: account.profile!.profileId,
                     userId: account.firebaseUser!.uid),
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // Profile has subscription
                     if (snapshot.data == true) {

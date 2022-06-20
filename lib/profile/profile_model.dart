@@ -20,6 +20,7 @@ class StudentProfileModel {
         dateOfBirth = DateTime.parse(json['date_of_birth'] as String);
 
   // TODO: Add field to indicate whether student has already had a subscription.
+
   /// Store the profile document id in order to add it to subscription metadata
   String _profileId = '';
   late String lastName;

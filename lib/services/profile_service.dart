@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:success_academy/profile/profile_model.dart';
@@ -84,11 +85,16 @@ Future<bool> profileHasSubscription(
 Future<SubscriptionPlan?> getSubscriptionTypeForProfile(
     {required String userId, required String profileId}) async {
   final subscriptionDocs = await stripe_service.getSubscriptionsForUser(userId);
-  // Subscription metadata is written in startStripeSubscriptionCheckoutSession.
-  return EnumToString.fromString(
-      SubscriptionPlan.values,
-      subscriptionDocs
-          .firstWhere(
-              (doc) => doc.get('metadata.profile_id') as String == profileId)
-          .get('items')[0]['plan']['metadata']['id']);
+  try {
+    return EnumToString.fromString(
+        SubscriptionPlan.values,
+        subscriptionDocs
+            .firstWhere(
+                (doc) => doc.get('metadata.profile_id') as String == profileId)
+            .get('items')[0]['plan']['metadata']['id']);
+  } on StateError {
+    debugPrint(
+        'getSubscriptionTypeForProfile: No subscription found for profile $profileId');
+    return null;
+  }
 }

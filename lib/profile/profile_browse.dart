@@ -32,10 +32,7 @@ class ProfileBrowse extends StatelessWidget {
             FutureBuilder<List<QueryDocumentSnapshot<StudentProfileModel>>>(
               future: profile_service
                   .getStudentProfilesForUser(account.firebaseUser!.uid),
-              builder: (BuildContext context,
-                  AsyncSnapshot<
-                          List<QueryDocumentSnapshot<StudentProfileModel>>>
-                      snapshot) {
+              builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,

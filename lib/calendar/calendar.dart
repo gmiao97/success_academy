@@ -7,6 +7,7 @@ import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_browse.dart';
+import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
@@ -58,6 +59,7 @@ class _StudentCalendarState extends State<StudentCalendar> {
       DateUtils.dateOnly(DateTime.now().subtract(const Duration(days: 365)));
   final DateTime _lastDay =
       DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
+  SubscriptionPlan? _subscriptionType;
   Map<DateTime, List<EventModel>> _allFreeLessons = {};
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -68,7 +70,7 @@ class _StudentCalendarState extends State<StudentCalendar> {
     // TODO: Calendar refresh
     super.initState();
     tz.initializeTimeZones();
-    _setAllFreeLessons();
+    _setAllEvents(accountContext: context.read<AccountModel>());
     _selectedEvents = ValueNotifier([]);
   }
 
@@ -79,7 +81,18 @@ class _StudentCalendarState extends State<StudentCalendar> {
   }
 
   List<EventModel> _getEventsForDay(DateTime day) {
-    return _allFreeLessons[day] ?? [];
+    if (_subscriptionType == null ||
+        _subscriptionType == SubscriptionPlan.monthly) {
+      return [];
+    }
+
+    List<EventModel> events = [];
+    if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
+      // events.addAll(_allPreschoolLessons[day] ?? []);
+    }
+    events.addAll(_allFreeLessons[day] ?? []);
+    // events.addAll(_allPrivateLessons[day] ?? []);
+    return events;
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -92,8 +105,33 @@ class _StudentCalendarState extends State<StudentCalendar> {
     }
   }
 
-  Future<void> _setAllFreeLessons() {
-    final timeZoneName = context.read<AccountModel>().myUser!.timeZone;
+  Future<void> _setSubscriptionType(
+      {required AccountModel accountContext}) async {
+    final subscriptionType =
+        await profile_service.getSubscriptionTypeForProfile(
+            profileId: accountContext.profile!.profileId,
+            userId: accountContext.firebaseUser!.uid);
+    setState(() {
+      _subscriptionType = subscriptionType;
+    });
+  }
+
+  Future<void> _setAllEvents({required AccountModel accountContext}) async {
+    await _setSubscriptionType(accountContext: accountContext);
+
+    if (_subscriptionType == null ||
+        _subscriptionType == SubscriptionPlan.monthly) {
+      return;
+    }
+    if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
+      // _setAllPreschoolLessons();
+    }
+    await _setAllFreeLessons(accountContext: accountContext);
+    // _setAllPrivateLessons();
+  }
+
+  Future<void> _setAllFreeLessons({required AccountModel accountContext}) {
+    final timeZoneName = accountContext.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
     return event_service
