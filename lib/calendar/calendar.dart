@@ -61,6 +61,8 @@ class _StudentCalendarState extends State<StudentCalendar> {
       DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
   SubscriptionPlan? _subscriptionType;
   Map<DateTime, List<EventModel>> _allFreeLessons = {};
+  Map<DateTime, List<EventModel>> _allPreschoolLessons = {};
+  Map<DateTime, List<EventModel>> _allPrivateLessons = {};
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
@@ -88,10 +90,10 @@ class _StudentCalendarState extends State<StudentCalendar> {
 
     List<EventModel> events = [];
     if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
-      // events.addAll(_allPreschoolLessons[day] ?? []);
+      events.addAll(_allPreschoolLessons[day] ?? []);
     }
     events.addAll(_allFreeLessons[day] ?? []);
-    // events.addAll(_allPrivateLessons[day] ?? []);
+    events.addAll(_allPrivateLessons[day] ?? []);
     return events;
   }
 
@@ -124,10 +126,10 @@ class _StudentCalendarState extends State<StudentCalendar> {
       return;
     }
     if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
-      // _setAllPreschoolLessons();
+      await _setAllPreschoolLessons(accountContext: accountContext);
     }
     await _setAllFreeLessons(accountContext: accountContext);
-    // _setAllPrivateLessons();
+    await _setAllPrivateLessons(accountContext: accountContext);
   }
 
   Future<void> _setAllFreeLessons({required AccountModel accountContext}) {
@@ -143,6 +145,44 @@ class _StudentCalendarState extends State<StudentCalendar> {
         .then((eventList) => setState(() {
               _allFreeLessons =
                   buildEventMap(CalendarType.free, eventList, timeZone);
+            }))
+        .catchError((e) => null
+            // TODO: Show error state.
+            );
+  }
+
+  Future<void> _setAllPreschoolLessons({required AccountModel accountContext}) {
+    final timeZoneName = accountContext.myUser!.timeZone;
+    final timeZone = tz.getLocation(timeZoneName);
+
+    return event_service
+        .getAllEventsFromPreschoolLessonCalendar(
+          timeZone: timeZoneName,
+          timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
+          timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+        )
+        .then((eventList) => setState(() {
+              _allPreschoolLessons =
+                  buildEventMap(CalendarType.preschool, eventList, timeZone);
+            }))
+        .catchError((e) => null
+            // TODO: Show error state.
+            );
+  }
+
+  Future<void> _setAllPrivateLessons({required AccountModel accountContext}) {
+    final timeZoneName = accountContext.myUser!.timeZone;
+    final timeZone = tz.getLocation(timeZoneName);
+
+    return event_service
+        .getAllEventsFromPrivateLessonCalendar(
+          timeZone: timeZoneName,
+          timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
+          timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+        )
+        .then((eventList) => setState(() {
+              _allPrivateLessons =
+                  buildEventMap(CalendarType.private, eventList, timeZone);
             }))
         .catchError((e) => null
             // TODO: Show error state.
