@@ -235,6 +235,25 @@ class _StudentCalendarState extends State<StudentCalendar> {
               _focusedDay = focusedDay;
             },
             eventLoader: (day) => _getEventsForDay(day),
+            calendarBuilders: CalendarBuilders(
+              markerBuilder: ((context, day, events) {
+                if (events.isNotEmpty) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.amber[600],
+                    ),
+                    height: 20,
+                    width: 20,
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${events.length}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  );
+                }
+              }),
+            ),
           ),
           const SizedBox(height: 10),
           Text(
