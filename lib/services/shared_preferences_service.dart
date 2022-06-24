@@ -25,9 +25,9 @@ Future<StudentProfileModel?> loadStudentProfile() async {
   return null;
 }
 
-void updateStudentProfile(StudentProfileModel? profile) async {
+void updateStudentProfile(StudentProfileModel? studentProfile) async {
   final prefs = await _getSharedPreferencesInstance();
-  prefs?.setString('profile', jsonEncode(profile?.toJson()));
+  prefs?.setString('profile', jsonEncode(studentProfile?.toJson()));
 }
 
 Future<SharedPreferences?> _getSharedPreferencesInstance() async {

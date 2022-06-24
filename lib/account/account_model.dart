@@ -40,7 +40,7 @@ class AccountModel extends ChangeNotifier {
   String _locale = 'en';
   User? _firebaseUser;
   MyUserModel? _myUser;
-  StudentProfileModel? _profile;
+  StudentProfileModel? _studentProfile;
   TeacherProfileModel? _teacherProfile;
 
   AuthStatus get authStatus => _authStatus;
@@ -48,7 +48,7 @@ class AccountModel extends ChangeNotifier {
   String get locale => _locale;
   User? get firebaseUser => _firebaseUser;
   MyUserModel? get myUser => _myUser;
-  StudentProfileModel? get profile => _profile;
+  StudentProfileModel? get studentProfile => _studentProfile;
   TeacherProfileModel? get teacherProfile => _teacherProfile;
 
   set authStatus(AuthStatus authStatus) {
@@ -62,9 +62,9 @@ class AccountModel extends ChangeNotifier {
     shared_preferences_service.updateLocale(locale);
   }
 
-  set profile(StudentProfileModel? profile) {
-    _profile = profile;
-    shared_preferences_service.updateStudentProfile(profile);
+  set studentProfile(StudentProfileModel? studentProfile) {
+    _studentProfile = studentProfile;
+    shared_preferences_service.updateStudentProfile(studentProfile);
     notifyListeners();
   }
 
@@ -87,12 +87,13 @@ class AccountModel extends ChangeNotifier {
       _teacherProfile = teacherProfile;
     } else {
       // Student profile
-      final profile = await shared_preferences_service.loadStudentProfile();
+      final studentProfile =
+          await shared_preferences_service.loadStudentProfile();
       final studentProfileBelongsToUser =
           await profile_service.studentProfileBelongsToUser(
-              userId: userId, profileId: profile?.profileId);
+              userId: userId, profileId: studentProfile?.profileId);
       if (studentProfileBelongsToUser) {
-        _profile = profile;
+        _studentProfile = studentProfile;
       }
     }
   }
@@ -100,7 +101,7 @@ class AccountModel extends ChangeNotifier {
   void _signOut() {
     _authStatus = AuthStatus.signedOut;
     _firebaseUser = null;
-    _profile = null;
+    _studentProfile = null;
     _teacherProfile = null;
   }
 }

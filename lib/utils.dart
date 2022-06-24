@@ -79,7 +79,7 @@ Scaffold buildStudentProfileScaffold(
               color: Theme.of(context).primaryColor,
             ),
             child: Text(
-              account.profile!.firstName,
+              account.studentProfile!.firstName,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
               ),
@@ -89,7 +89,7 @@ Scaffold buildStudentProfileScaffold(
             leading: const Icon(Icons.change_circle),
             title: Text(S.of(context).changeProfile),
             onTap: () {
-              account.profile = null;
+              account.studentProfile = null;
             },
           ),
           ListTile(

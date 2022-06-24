@@ -35,7 +35,7 @@ class Calendar extends StatelessWidget {
     if (account.authStatus == AuthStatus.signedOut) {
       return const HomePage();
     }
-    if (account.profile == null) {
+    if (account.studentProfile == null) {
       return const ProfileBrowse();
     }
     return const BaseCalendar();
@@ -147,7 +147,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
       {required AccountModel accountContext}) async {
     final subscriptionType =
         await profile_service.getSubscriptionTypeForProfile(
-            profileId: accountContext.profile!.profileId,
+            profileId: accountContext.studentProfile!.profileId,
             userId: accountContext.firebaseUser!.uid);
     setState(() {
       _subscriptionType = subscriptionType;

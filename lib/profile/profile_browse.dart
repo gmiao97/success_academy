@@ -63,7 +63,7 @@ Card _buildProfileCard(BuildContext context, StudentProfileModel profile) {
     child: InkWell(
       splashColor: Theme.of(context).colorScheme.primary.withAlpha(30),
       onTap: () {
-        account.profile = profile;
+        account.studentProfile = profile;
       },
       child: SizedBox(
         width: 200,

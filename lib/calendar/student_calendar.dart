@@ -56,7 +56,7 @@ class StudentCalendar extends StatelessWidget {
       body: Column(
         children: [
           CalendarHeader(
-            header: account.profile!.firstName,
+            header: account.studentProfile!.firstName,
             timeZone: account.myUser!.timeZone,
             onTodayButtonTap: onTodayButtonTap,
           ),

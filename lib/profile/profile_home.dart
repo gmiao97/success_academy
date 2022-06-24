@@ -61,7 +61,7 @@ class _ProfileHomeState extends State<ProfileHome> {
         ),
       );
     }
-    if (account.profile == null) {
+    if (account.studentProfile == null) {
       return const ProfileBrowse();
     }
     return utils.buildStudentProfileScaffold(
@@ -85,7 +85,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                   children: [
                     TextSpan(
                       text:
-                          '${account.profile?.lastName}, ${account.profile?.firstName}',
+                          '${account.studentProfile?.lastName}, ${account.studentProfile?.firstName}',
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ],
@@ -99,7 +99,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                   children: [
                     TextSpan(
                       text: constants.dateFormatter
-                          .format(account.profile!.dateOfBirth),
+                          .format(account.studentProfile!.dateOfBirth),
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ],
@@ -142,7 +142,7 @@ class _ProfileHomeState extends State<ProfileHome> {
               // BUG: Can't differentiate between multiple profile subscriptions.
               FutureBuilder<bool>(
                 future: profile_service.profileHasSubscription(
-                    profileId: account.profile!.profileId,
+                    profileId: account.studentProfile!.profileId,
                     userId: account.firebaseUser!.uid),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
@@ -177,7 +177,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                         await stripe_service
                             .startStripeSubscriptionCheckoutSession(
                           userId: account.firebaseUser!.uid,
-                          profileId: account.profile!.profileId,
+                          profileId: account.studentProfile!.profileId,
                           subscriptionPlan: _subscriptionPlan!,
                         );
                       },
