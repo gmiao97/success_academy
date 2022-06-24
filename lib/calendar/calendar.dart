@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/constants.dart';
+import 'package:success_academy/calendar/student_calendar.dart';
+import 'package:success_academy/calendar/teacher_calendar.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_browse.dart';
@@ -11,7 +11,6 @@ import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
-import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
@@ -36,24 +35,21 @@ class Calendar extends StatelessWidget {
     if (account.authStatus == AuthStatus.signedOut) {
       return const HomePage();
     }
-    if (account.teacherProfile != null) {
-      return const TeacherCalendar();
-    }
     if (account.profile == null) {
       return const ProfileBrowse();
     }
-    return const StudentCalendar();
+    return const BaseCalendar();
   }
 }
 
-class StudentCalendar extends StatefulWidget {
-  const StudentCalendar({Key? key}) : super(key: key);
+class BaseCalendar extends StatefulWidget {
+  const BaseCalendar({Key? key}) : super(key: key);
 
   @override
-  State<StudentCalendar> createState() => _StudentCalendarState();
+  State<BaseCalendar> createState() => _BaseCalendarState();
 }
 
-class _StudentCalendarState extends State<StudentCalendar> {
+class _BaseCalendarState extends State<BaseCalendar> {
   late final ValueNotifier<List<EventModel>> _selectedEvents;
   final DateTime _firstDay =
       DateUtils.dateOnly(DateTime.now().subtract(const Duration(days: 365)));
@@ -66,6 +62,27 @@ class _StudentCalendarState extends State<StudentCalendar> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
+
+  final CalendarBuilders _calendarBuilders = CalendarBuilders(
+    markerBuilder: ((context, day, events) {
+      if (events.isNotEmpty) {
+        return Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.amber[600],
+          ),
+          height: 20,
+          width: 20,
+          alignment: Alignment.center,
+          child: Text(
+            '${events.length}',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        );
+      }
+      return null;
+    }),
+  );
 
   @override
   void initState() {
@@ -97,6 +114,13 @@ class _StudentCalendarState extends State<StudentCalendar> {
     return events;
   }
 
+  void _onTodayButtonTap() {
+    setState(() {
+      _focusedDay = DateTime.now();
+      _selectedDay = _focusedDay;
+    });
+  }
+
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
@@ -105,6 +129,18 @@ class _StudentCalendarState extends State<StudentCalendar> {
         _selectedEvents.value = _getEventsForDay(selectedDay);
       });
     }
+  }
+
+  void _onFormatChanged(format) {
+    setState(() {
+      _calendarFormat = format;
+    });
+  }
+
+  void _onPageChanged(focusedDay) {
+    setState(() {
+      _focusedDay = focusedDay;
+    });
   }
 
   Future<void> _setSubscriptionType(
@@ -193,181 +229,41 @@ class _StudentCalendarState extends State<StudentCalendar> {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
-    return utils.buildStudentProfileScaffold(
-      context: context,
-      body: Column(
-        children: [
-          _CalendarHeader(
-            header: account.profile!.firstName,
-            timeZone: account.myUser!.timeZone,
-            onTodayButtonTap: () {
-              setState(() {
-                _focusedDay = DateTime.now();
-                _selectedDay = _focusedDay;
-              });
-            },
-          ),
-          TableCalendar(
-            firstDay: _firstDay,
-            lastDay: _lastDay,
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            locale: account.locale,
-            daysOfWeekHeight: 25,
-            availableCalendarFormats: {
-              CalendarFormat.month:
-                  account.locale == 'en' ? 'Display Monthly' : '月間表示',
-              CalendarFormat.twoWeeks:
-                  account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
-              CalendarFormat.week:
-                  account.locale == 'en' ? 'Display Weekly' : '一週間表示',
-            },
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: _onDaySelected,
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-            eventLoader: (day) => _getEventsForDay(day),
-            calendarBuilders: CalendarBuilders(
-              markerBuilder: ((context, day, events) {
-                if (events.isNotEmpty) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.amber[600],
-                    ),
-                    height: 20,
-                    width: 20,
-                    alignment: Alignment.center,
-                    child: Text(
-                      '${events.length}',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  );
-                }
-              }),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            _selectedDay != null ? dateFormatter.format(_selectedDay!) : '',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          Expanded(
-            child: ValueListenableBuilder<List<EventModel>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                        color: Color(value[index].color),
-                      ),
-                      child: ListTile(
-                        onTap: () {},
-                        title: Text(value[index].summary),
-                        subtitle: Text(
-                          '${DateFormat.jm().format(value[index].start)} - ${DateFormat.jm().format(value[index].end)}',
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+    if (account.teacherProfile != null) {
+      return TeacherCalendar(
+        selectedDay: _selectedDay,
+        focusedDay: _focusedDay,
+        calendarFormat: _calendarFormat,
+        calendarBuilders: _calendarBuilders,
+        onTodayButtonTap: _onTodayButtonTap,
+        onDaySelected: _onDaySelected,
+        onFormatChanged: _onFormatChanged,
+        onPageChanged: _onPageChanged,
+      );
+    }
+    return StudentCalendar(
+      selectedDay: _selectedDay,
+      selectedEvents: _selectedEvents,
+      firstDay: _firstDay,
+      lastDay: _lastDay,
+      subscriptionType: _subscriptionType,
+      allFreeLessons: _allFreeLessons,
+      allPreschoolLessons: _allPreschoolLessons,
+      allPrivateLessons: _allPrivateLessons,
+      focusedDay: _focusedDay,
+      calendarFormat: _calendarFormat,
+      onTodayButtonTap: _onTodayButtonTap,
+      onDaySelected: _onDaySelected,
+      onFormatChanged: _onFormatChanged,
+      onPageChanged: _onPageChanged,
+      getEventsForDay: _getEventsForDay,
+      calendarBuilders: _calendarBuilders,
     );
   }
 }
 
-class TeacherCalendar extends StatefulWidget {
-  const TeacherCalendar({Key? key}) : super(key: key);
-
-  @override
-  State<TeacherCalendar> createState() => _TeacherCalendarState();
-}
-
-class _TeacherCalendarState extends State<TeacherCalendar> {
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-  CalendarFormat _calendarFormat = CalendarFormat.week;
-
-  @override
-  Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    return utils.buildTeacherProfileScaffold(
-      context: context,
-      body: Column(
-        children: [
-          _CalendarHeader(
-            header: account.teacherProfile!.firstName,
-            timeZone: account.myUser!.timeZone,
-            onTodayButtonTap: () {
-              setState(() {
-                _focusedDay = DateTime.now();
-                _selectedDay = _focusedDay;
-              });
-            },
-          ),
-          TableCalendar(
-            firstDay: DateTime.utc(2010, 1, 1),
-            lastDay: DateTime.now().add(const Duration(days: 500)),
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            locale: account.locale,
-            daysOfWeekHeight: 25,
-            availableCalendarFormats: {
-              CalendarFormat.month:
-                  account.locale == 'en' ? 'Display Monthly' : '月間表示',
-              CalendarFormat.twoWeeks:
-                  account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
-              CalendarFormat.week:
-                  account.locale == 'en' ? 'Display Weekly' : '一週間表示',
-            },
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            },
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-            eventLoader: (day) => [],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CalendarHeader extends StatelessWidget {
-  const _CalendarHeader(
+class CalendarHeader extends StatelessWidget {
+  const CalendarHeader(
       {Key? key,
       required this.header,
       required this.timeZone,
