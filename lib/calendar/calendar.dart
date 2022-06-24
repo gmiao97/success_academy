@@ -35,15 +35,17 @@ class Calendar extends StatelessWidget {
     if (account.authStatus == AuthStatus.signedOut) {
       return const HomePage();
     }
-    if (account.studentProfile == null) {
+    if (account.userType == UserType.studentNoProfile) {
       return const ProfileBrowse();
     }
-    return const BaseCalendar();
+    return BaseCalendar(userType: account.userType);
   }
 }
 
 class BaseCalendar extends StatefulWidget {
-  const BaseCalendar({Key? key}) : super(key: key);
+  const BaseCalendar({Key? key, required this.userType}) : super(key: key);
+
+  final UserType userType;
 
   @override
   State<BaseCalendar> createState() => _BaseCalendarState();
@@ -227,9 +229,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    if (account.teacherProfile != null) {
+    if (widget.userType == UserType.teacher) {
       return TeacherCalendar(
         selectedDay: _selectedDay,
         focusedDay: _focusedDay,

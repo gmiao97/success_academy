@@ -9,6 +9,7 @@ import 'package:success_academy/services/user_service.dart' as user_service;
 
 // Add loading state to display spinner while initializing user
 enum AuthStatus { signedIn, signedOut, emailVerification, loading }
+enum UserType { student, studentNoProfile, teacher, admin }
 
 class AccountModel extends ChangeNotifier {
   AccountModel() {
@@ -50,6 +51,15 @@ class AccountModel extends ChangeNotifier {
   MyUserModel? get myUser => _myUser;
   StudentProfileModel? get studentProfile => _studentProfile;
   TeacherProfileModel? get teacherProfile => _teacherProfile;
+  UserType get userType {
+    if (teacherProfile != null) {
+      return UserType.teacher;
+    }
+    if (studentProfile == null) {
+      return UserType.studentNoProfile;
+    }
+    return UserType.student;
+  }
 
   set authStatus(AuthStatus authStatus) {
     _authStatus = authStatus;

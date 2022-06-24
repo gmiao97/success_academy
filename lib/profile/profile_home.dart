@@ -27,7 +27,7 @@ class _ProfileHomeState extends State<ProfileHome> {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
-    if (account.teacherProfile != null) {
+    if (account.userType == UserType.teacher) {
       return utils.buildTeacherProfileScaffold(
         context: context,
         body: Center(
@@ -61,7 +61,7 @@ class _ProfileHomeState extends State<ProfileHome> {
         ),
       );
     }
-    if (account.studentProfile == null) {
+    if (account.userType == UserType.studentNoProfile) {
       return const ProfileBrowse();
     }
     return utils.buildStudentProfileScaffold(
