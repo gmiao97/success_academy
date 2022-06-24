@@ -102,18 +102,24 @@ class _BaseCalendarState extends State<BaseCalendar> {
   }
 
   List<EventModel> _getEventsForDay(DateTime day) {
-    if (_subscriptionType == null ||
-        _subscriptionType == SubscriptionPlan.monthly) {
-      return [];
+    if (widget.userType == UserType.teacher) {}
+
+    if (widget.userType == UserType.student) {
+      if (_subscriptionType == null ||
+          _subscriptionType == SubscriptionPlan.monthly) {
+        return [];
+      }
+
+      List<EventModel> events = [];
+      if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
+        events.addAll(_allPreschoolLessons[day] ?? []);
+      }
+      events.addAll(_allFreeLessons[day] ?? []);
+      events.addAll(_allPrivateLessons[day] ?? []);
+      return events;
     }
 
-    List<EventModel> events = [];
-    if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
-      events.addAll(_allPreschoolLessons[day] ?? []);
-    }
-    events.addAll(_allFreeLessons[day] ?? []);
-    events.addAll(_allPrivateLessons[day] ?? []);
-    return events;
+    return [];
   }
 
   void _onTodayButtonTap() {
@@ -157,17 +163,21 @@ class _BaseCalendarState extends State<BaseCalendar> {
   }
 
   Future<void> _setAllEvents({required AccountModel accountContext}) async {
-    await _setSubscriptionType(accountContext: accountContext);
+    if (widget.userType == UserType.teacher) {}
 
-    if (_subscriptionType == null ||
-        _subscriptionType == SubscriptionPlan.monthly) {
-      return;
+    if (widget.userType == UserType.student) {
+      await _setSubscriptionType(accountContext: accountContext);
+
+      if (_subscriptionType == null ||
+          _subscriptionType == SubscriptionPlan.monthly) {
+        return;
+      }
+      if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
+        await _setAllPreschoolLessons(accountContext: accountContext);
+      }
+      await _setAllFreeLessons(accountContext: accountContext);
+      await _setAllPrivateLessons(accountContext: accountContext);
     }
-    if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
-      await _setAllPreschoolLessons(accountContext: accountContext);
-    }
-    await _setAllFreeLessons(accountContext: accountContext);
-    await _setAllPrivateLessons(accountContext: accountContext);
   }
 
   Future<void> _setAllFreeLessons({required AccountModel accountContext}) {
@@ -175,7 +185,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     final timeZone = tz.getLocation(timeZoneName);
 
     return event_service
-        .getAllEventsFromFreeLessonCalendar(
+        .listEventsFromFreeLessonCalendar(
           timeZone: timeZoneName,
           timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
@@ -194,7 +204,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     final timeZone = tz.getLocation(timeZoneName);
 
     return event_service
-        .getAllEventsFromPreschoolLessonCalendar(
+        .listEventsFromPreschoolLessonCalendar(
           timeZone: timeZoneName,
           timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
@@ -213,7 +223,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     final timeZone = tz.getLocation(timeZoneName);
 
     return event_service
-        .getAllEventsFromPrivateLessonCalendar(
+        .listEventsFromPrivateLessonCalendar(
           timeZone: timeZoneName,
           timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
