@@ -1,9 +1,12 @@
 import 'package:timezone/timezone.dart' as tz;
 
-enum EventType { free, preschool, private, myPreschool, myPrivate }
+// If change, also change _filterNames in calendar_header.dart, _fillColorMap,
+// _borderColorMap.
+enum EventType { free, myFree, preschool, private, myPreschool, myPrivate }
 
 Map<EventType, int> _fillColorMap = {
-  EventType.free: 0xfffbd75b, // yellow
+  EventType.free: 0xffe1e1e1, // grey
+  EventType.myFree: 0xfffbd75b, // yellow
   EventType.preschool: 0xffe1e1e1, // grey
   EventType.myPreschool: 0xffa4bdfc, // blue
   EventType.private: 0xffe1e1e1, // grey
@@ -12,6 +15,7 @@ Map<EventType, int> _fillColorMap = {
 
 Map<EventType, int> _borderColorMap = {
   EventType.free: 0xfffbd75b, // yellow
+  EventType.myFree: 0xfffbd75b, // yellow
   EventType.preschool: 0xffa4bdfc, // blue
   EventType.myPreschool: 0xffa4bdfc, // blue
   EventType.private: 0xffdbadff, // purple

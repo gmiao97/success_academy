@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumPreschoolCourse":
             MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄４０"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
+        "myFreeFilter": MessageLookupByLibrary.simpleMessage("登録済みのフリーレッスン"),
         "myPreschoolFilter":
             MessageLookupByLibrary.simpleMessage("登録済みの未就学児レッスン"),
         "myPrivateFilter": MessageLookupByLibrary.simpleMessage("登録済みの個別レッスン"),

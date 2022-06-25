@@ -50,6 +50,7 @@
   "cancel": "キャンセル",
   "filterTitle": "レッスンの種類で表示する",
   "freeFilter": "すべてのフリーレッスン",
+  "myFreeFilter": "登録済みのフリーレッスン",
   "preschoolFilter": "すべての未就学児レッスン",
   "privateFilter": "すべての個別レッスン",
   "myPreschoolFilter": "登録済みの未就学児レッスン",

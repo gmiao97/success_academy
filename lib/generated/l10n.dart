@@ -480,6 +480,16 @@ class S {
     );
   }
 
+  /// `My free lessons`
+  String get myFreeFilter {
+    return Intl.message(
+      'My free lessons',
+      name: 'myFreeFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `All preschool lessons`
   String get preschoolFilter {
     return Intl.message(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_header.dart';
@@ -81,6 +82,39 @@ class TeacherCalendar extends StatelessWidget {
             onPageChanged: onPageChanged,
             eventLoader: getEventsForDay,
             calendarBuilders: calendarBuilders,
+          ),
+          Expanded(
+            child: ValueListenableBuilder<List<EventModel>>(
+              valueListenable: selectedEvents,
+              builder: (context, value, _) {
+                return ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(value[index].bordercolor),
+                          width: 3,
+                        ),
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Color(value[index].fillColor),
+                      ),
+                      child: ListTile(
+                        onTap: () {},
+                        title: Text(value[index].summary),
+                        subtitle: Text(
+                          '${DateFormat.jm().format(value[index].start)} - ${DateFormat.jm().format(value[index].end)}',
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),

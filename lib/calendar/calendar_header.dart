@@ -25,6 +25,7 @@ class CalendarHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<EventType, String> _filterNames = {
       EventType.free: S.of(context).freeFilter,
+      EventType.myFree: S.of(context).myFreeFilter,
       EventType.preschool: S.of(context).preschoolFilter,
       EventType.private: S.of(context).privateFilter,
       EventType.myPreschool: S.of(context).myPreschoolFilter,
