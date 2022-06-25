@@ -63,8 +63,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
-  late final List<CalendarType> _availableEventFilters;
-  List<CalendarType> _eventFilters = [];
+  late final List<EventType> _availableEventFilters;
+  List<EventType> _eventFilters = [];
 
   final CalendarBuilders _calendarBuilders = CalendarBuilders(
     markerBuilder: ((context, day, events) {
@@ -74,12 +74,12 @@ class _BaseCalendarState extends State<BaseCalendar> {
             shape: BoxShape.circle,
             color: Colors.amber[600],
           ),
-          height: 20,
-          width: 20,
+          height: 15,
+          width: 15,
           alignment: Alignment.center,
           child: Text(
             '${events.length}',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         );
       }
@@ -146,7 +146,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     });
   }
 
-  void _onEventFilterConfirm(List<CalendarType> filters) {
+  void _onEventFilterConfirm(List<EventType> filters) {
     setState(() {
       _eventFilters = filters;
     });
@@ -167,8 +167,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
     final filters = [];
     if (widget.userType == UserType.teacher) {
       filters.addAll([
-        CalendarType.myPreschool,
-        CalendarType.myPrivate,
+        EventType.myPreschool,
+        EventType.myPrivate,
       ]);
     }
     if (widget.userType == UserType.student) {
@@ -177,10 +177,10 @@ class _BaseCalendarState extends State<BaseCalendar> {
       if (_subscriptionType != null &&
           _subscriptionType != SubscriptionPlan.monthly) {
         if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
-          filters.addAll([CalendarType.preschool, CalendarType.myPreschool]);
+          filters.addAll([EventType.preschool, EventType.myPreschool]);
         }
-        filters.addAll(
-            [CalendarType.free, CalendarType.private, CalendarType.myPrivate]);
+        filters
+            .addAll([EventType.free, EventType.private, EventType.myPrivate]);
       }
     }
 
@@ -192,25 +192,25 @@ class _BaseCalendarState extends State<BaseCalendar> {
 
   Future<void> _setAllEvents() async {
     final sanitizedFilters = List.from(_eventFilters);
-    sanitizedFilters.contains(CalendarType.preschool) &&
-        sanitizedFilters.remove(CalendarType.myPreschool);
-    sanitizedFilters.contains(CalendarType.private) &&
-        sanitizedFilters.remove(CalendarType.myPrivate);
+    sanitizedFilters.contains(EventType.preschool) &&
+        sanitizedFilters.remove(EventType.myPreschool);
+    sanitizedFilters.contains(EventType.private) &&
+        sanitizedFilters.remove(EventType.myPrivate);
 
     List<EventModel> events = [];
     for (final filter in sanitizedFilters) {
       switch (filter) {
-        case CalendarType.free:
+        case EventType.free:
           events.addAll(await _getFreeLessons());
           break;
-        case CalendarType.myPreschool:
+        case EventType.myPreschool:
           break;
-        case CalendarType.myPrivate:
+        case EventType.myPrivate:
           break;
-        case CalendarType.preschool:
+        case EventType.preschool:
           events.addAll(await _getPreschoolLessons());
           break;
-        case CalendarType.private:
+        case EventType.private:
           events.addAll(await _getPrivateLessons());
           break;
       }
@@ -235,8 +235,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
         )
         .then((eventList) => eventList
-            .map((event) =>
-                EventModel.fromJson(event, timeZone, CalendarType.free))
+            .map(
+                (event) => EventModel.fromJson(event, timeZone, EventType.free))
             .toList())
         .catchError((e) {}
             // TODO: Show error state.
@@ -255,7 +255,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
         )
         .then((eventList) => eventList
             .map((event) =>
-                EventModel.fromJson(event, timeZone, CalendarType.preschool))
+                EventModel.fromJson(event, timeZone, EventType.preschool))
             .toList())
         .catchError((e) {}
             // TODO: Show error state.
@@ -274,7 +274,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
         )
         .then((eventList) => eventList
             .map((event) =>
-                EventModel.fromJson(event, timeZone, CalendarType.private))
+                EventModel.fromJson(event, timeZone, EventType.private))
             .toList())
         .catchError((e) {}
             // TODO: Show error state.

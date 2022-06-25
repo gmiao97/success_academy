@@ -35,14 +35,14 @@ class StudentCalendar extends StatelessWidget {
   final DateTime focusedDay;
   final CalendarFormat calendarFormat;
   final CalendarBuilders calendarBuilders;
-  final List<CalendarType> availableEventFilters;
-  final List<CalendarType> eventFilters;
+  final List<EventType> availableEventFilters;
+  final List<EventType> eventFilters;
   final VoidCallback onTodayButtonTap;
   final Function(DateTime, DateTime) onDaySelected;
   final Function(CalendarFormat) onFormatChanged;
   final Function(DateTime) onPageChanged;
   final List<EventModel> Function(DateTime) getEventsForDay;
-  final Function(List<CalendarType>) onEventFilterConfirm;
+  final Function(List<EventType>) onEventFilterConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +102,12 @@ class StudentCalendar extends StatelessWidget {
                         vertical: 4.0,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(),
+                        border: Border.all(
+                          color: Color(value[index].bordercolor),
+                          width: 3,
+                        ),
                         borderRadius: BorderRadius.circular(12.0),
-                        color: Color(value[index].color),
+                        color: Color(value[index].fillColor),
                       ),
                       child: ListTile(
                         onTap: () {},

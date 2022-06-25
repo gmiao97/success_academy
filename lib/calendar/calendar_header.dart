@@ -17,18 +17,18 @@ class CalendarHeader extends StatelessWidget {
   final String header;
   final String timeZone;
   final VoidCallback onTodayButtonTap;
-  final List<CalendarType> availableEventFilters;
-  final List<CalendarType> eventFilters;
-  final void Function(List<CalendarType>) onEventFilterConfirm;
+  final List<EventType> availableEventFilters;
+  final List<EventType> eventFilters;
+  final void Function(List<EventType>) onEventFilterConfirm;
 
   @override
   Widget build(BuildContext context) {
-    final Map<CalendarType, String> _filterNames = {
-      CalendarType.free: S.of(context).freeFilter,
-      CalendarType.preschool: S.of(context).preschoolFilter,
-      CalendarType.private: S.of(context).privateFilter,
-      CalendarType.myPreschool: S.of(context).myPreschoolFilter,
-      CalendarType.myPrivate: S.of(context).myPrivateFilter,
+    final Map<EventType, String> _filterNames = {
+      EventType.free: S.of(context).freeFilter,
+      EventType.preschool: S.of(context).preschoolFilter,
+      EventType.private: S.of(context).privateFilter,
+      EventType.myPreschool: S.of(context).myPreschoolFilter,
+      EventType.myPrivate: S.of(context).myPrivateFilter,
     };
 
     return Padding(
@@ -49,7 +49,7 @@ class CalendarHeader extends StatelessWidget {
             label: Text(S.of(context).today),
             icon: const Icon(Icons.calendar_today),
           ),
-          MultiSelectDialogField<CalendarType>(
+          MultiSelectDialogField<EventType>(
             items: availableEventFilters
                 .map((type) => MultiSelectItem(type, _filterNames[type]!))
                 .toList(),
