@@ -5,7 +5,6 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
-import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
@@ -16,10 +15,6 @@ class StudentCalendar extends StatelessWidget {
     required this.selectedEvents,
     required this.firstDay,
     required this.lastDay,
-    required this.subscriptionType,
-    required this.allFreeLessons,
-    required this.allPreschoolLessons,
-    required this.allPrivateLessons,
     required this.focusedDay,
     required this.calendarFormat,
     required this.onTodayButtonTap,
@@ -34,10 +29,6 @@ class StudentCalendar extends StatelessWidget {
   final ValueNotifier<List<EventModel>> selectedEvents;
   final DateTime firstDay;
   final DateTime lastDay;
-  final SubscriptionPlan? subscriptionType;
-  final Map<DateTime, List<EventModel>> allFreeLessons;
-  final Map<DateTime, List<EventModel>> allPreschoolLessons;
-  final Map<DateTime, List<EventModel>> allPrivateLessons;
   final DateTime focusedDay;
   final CalendarFormat calendarFormat;
   final VoidCallback onTodayButtonTap;

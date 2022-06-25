@@ -58,12 +58,12 @@ class _BaseCalendarState extends State<BaseCalendar> {
   final DateTime _lastDay =
       DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
   SubscriptionPlan? _subscriptionType;
-  Map<DateTime, List<EventModel>> _allFreeLessons = {};
-  Map<DateTime, List<EventModel>> _allPreschoolLessons = {};
-  Map<DateTime, List<EventModel>> _allPrivateLessons = {};
+  Map<DateTime, List<EventModel>> _events = {};
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
+  late final List<CalendarType> _availableEventFilters;
+  List<CalendarType> _eventFilters = [];
 
   final CalendarBuilders _calendarBuilders = CalendarBuilders(
     markerBuilder: ((context, day, events) {
@@ -91,7 +91,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     // TODO: Calendar refresh
     super.initState();
     tz.initializeTimeZones();
-    _setAllEvents(accountContext: context.read<AccountModel>());
+    initCalendar(accountContext: context.read<AccountModel>());
     _selectedEvents = ValueNotifier([]);
   }
 
@@ -101,25 +101,13 @@ class _BaseCalendarState extends State<BaseCalendar> {
     super.dispose();
   }
 
+  Future<void> initCalendar({required AccountModel accountContext}) async {
+    await _setEventFilters(accountContext);
+    await _setAllEvents(accountContext);
+  }
+
   List<EventModel> _getEventsForDay(DateTime day) {
-    if (widget.userType == UserType.teacher) {}
-
-    if (widget.userType == UserType.student) {
-      if (_subscriptionType == null ||
-          _subscriptionType == SubscriptionPlan.monthly) {
-        return [];
-      }
-
-      List<EventModel> events = [];
-      if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
-        events.addAll(_allPreschoolLessons[day] ?? []);
-      }
-      events.addAll(_allFreeLessons[day] ?? []);
-      events.addAll(_allPrivateLessons[day] ?? []);
-      return events;
-    }
-
-    return [];
+    return _events[day] ?? [];
   }
 
   void _onTodayButtonTap() {
@@ -151,8 +139,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     });
   }
 
-  Future<void> _setSubscriptionType(
-      {required AccountModel accountContext}) async {
+  Future<void> _setSubscriptionType(accountContext) async {
     final subscriptionType =
         await profile_service.getSubscriptionTypeForProfile(
             profileId: accountContext.studentProfile!.profileId,
@@ -162,25 +149,64 @@ class _BaseCalendarState extends State<BaseCalendar> {
     });
   }
 
-  Future<void> _setAllEvents({required AccountModel accountContext}) async {
-    if (widget.userType == UserType.teacher) {}
-
-    if (widget.userType == UserType.student) {
-      await _setSubscriptionType(accountContext: accountContext);
-
-      if (_subscriptionType == null ||
-          _subscriptionType == SubscriptionPlan.monthly) {
-        return;
-      }
-      if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
-        await _setAllPreschoolLessons(accountContext: accountContext);
-      }
-      await _setAllFreeLessons(accountContext: accountContext);
-      await _setAllPrivateLessons(accountContext: accountContext);
+  Future<void> _setEventFilters(accountContext) async {
+    final filters = [];
+    if (widget.userType == UserType.teacher) {
+      filters.addAll([
+        CalendarType.myPreschool,
+        CalendarType.myPrivate,
+      ]);
     }
+    if (widget.userType == UserType.student) {
+      await _setSubscriptionType(accountContext);
+
+      if (_subscriptionType != null &&
+          _subscriptionType != SubscriptionPlan.monthly) {
+        if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
+          filters.addAll([CalendarType.preschool, CalendarType.myPreschool]);
+        }
+        filters.addAll(
+            [CalendarType.free, CalendarType.private, CalendarType.myPrivate]);
+      }
+    }
+
+    setState(() {
+      _availableEventFilters = List.from(filters);
+      _eventFilters = List.from(filters);
+    });
   }
 
-  Future<void> _setAllFreeLessons({required AccountModel accountContext}) {
+  Future<void> _setAllEvents(AccountModel accountContext) async {
+    final sanitizedFilters = List.from(_eventFilters);
+    sanitizedFilters.contains(CalendarType.preschool) &&
+        sanitizedFilters.remove(CalendarType.myPreschool);
+    sanitizedFilters.contains(CalendarType.private) &&
+        sanitizedFilters.remove(CalendarType.myPrivate);
+
+    List<EventModel> events = [];
+    for (final filter in sanitizedFilters) {
+      switch (filter) {
+        case CalendarType.free:
+          events.addAll(await _getFreeLessons(accountContext));
+          break;
+        case CalendarType.myPreschool:
+          break;
+        case CalendarType.myPrivate:
+          break;
+        case CalendarType.preschool:
+          events.addAll(await _getPreschoolLessons(accountContext));
+          break;
+        case CalendarType.private:
+          events.addAll(await _getPrivateLessons(accountContext));
+          break;
+      }
+    }
+    setState(() {
+      _events = buildEventMap(events);
+    });
+  }
+
+  Future<List<EventModel>> _getFreeLessons(AccountModel accountContext) {
     final timeZoneName = accountContext.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
@@ -190,16 +216,16 @@ class _BaseCalendarState extends State<BaseCalendar> {
           timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
         )
-        .then((eventList) => setState(() {
-              _allFreeLessons =
-                  buildEventMap(CalendarType.free, eventList, timeZone);
-            }))
-        .catchError((e) => null
+        .then((eventList) => eventList
+            .map((event) =>
+                EventModel.fromJson(event, timeZone, CalendarType.free))
+            .toList())
+        .catchError((e) {}
             // TODO: Show error state.
             );
   }
 
-  Future<void> _setAllPreschoolLessons({required AccountModel accountContext}) {
+  Future<List<EventModel>> _getPreschoolLessons(AccountModel accountContext) {
     final timeZoneName = accountContext.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
@@ -209,16 +235,16 @@ class _BaseCalendarState extends State<BaseCalendar> {
           timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
         )
-        .then((eventList) => setState(() {
-              _allPreschoolLessons =
-                  buildEventMap(CalendarType.preschool, eventList, timeZone);
-            }))
-        .catchError((e) => null
+        .then((eventList) => eventList
+            .map((event) =>
+                EventModel.fromJson(event, timeZone, CalendarType.preschool))
+            .toList())
+        .catchError((e) {}
             // TODO: Show error state.
             );
   }
 
-  Future<void> _setAllPrivateLessons({required AccountModel accountContext}) {
+  Future<List<EventModel>> _getPrivateLessons(accountContext) {
     final timeZoneName = accountContext.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
@@ -228,11 +254,11 @@ class _BaseCalendarState extends State<BaseCalendar> {
           timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
         )
-        .then((eventList) => setState(() {
-              _allPrivateLessons =
-                  buildEventMap(CalendarType.private, eventList, timeZone);
-            }))
-        .catchError((e) => null
+        .then((eventList) => eventList
+            .map((event) =>
+                EventModel.fromJson(event, timeZone, CalendarType.private))
+            .toList())
+        .catchError((e) {}
             // TODO: Show error state.
             );
   }
@@ -256,10 +282,6 @@ class _BaseCalendarState extends State<BaseCalendar> {
       selectedEvents: _selectedEvents,
       firstDay: _firstDay,
       lastDay: _lastDay,
-      subscriptionType: _subscriptionType,
-      allFreeLessons: _allFreeLessons,
-      allPreschoolLessons: _allPreschoolLessons,
-      allPrivateLessons: _allPrivateLessons,
       focusedDay: _focusedDay,
       calendarFormat: _calendarFormat,
       onTodayButtonTap: _onTodayButtonTap,

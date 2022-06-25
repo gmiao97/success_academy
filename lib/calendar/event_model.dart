@@ -1,6 +1,14 @@
 import 'package:timezone/timezone.dart' as tz;
 
-enum CalendarType { free, preschool, private }
+enum CalendarType { free, preschool, private, myPreschool, myPrivate }
+
+Map<CalendarType, int> _colorMap = {
+  CalendarType.free: 0xfffbd75b,
+  CalendarType.preschool: 0xffa4bdfc,
+  CalendarType.myPreschool: 0xffa4bdfc,
+  CalendarType.private: 0xffdbadff,
+  CalendarType.myPrivate: 0xffdbadff,
+};
 
 class EventModel {
   EventModel({
@@ -9,12 +17,13 @@ class EventModel {
     required this.end,
   });
 
-  EventModel.fromJson(
-      Map<String, Object?> json, tz.Location timeZone, this.color)
+  EventModel.fromJson(Map<String, Object?> json, tz.Location timeZone,
+      CalendarType calendarType)
       : summary = json['summary'] as String,
         start =
             tz.TZDateTime.parse(timeZone, (json['start'] as Map)['dateTime']),
-        end = tz.TZDateTime.parse(timeZone, (json['end'] as Map)['dateTime']);
+        end = tz.TZDateTime.parse(timeZone, (json['end'] as Map)['dateTime']),
+        color = _colorMap[calendarType] ?? 0xffe1e1e1;
 
   String summary;
   tz.TZDateTime start;
@@ -28,31 +37,14 @@ class EventModel {
   }
 }
 
-Map<DateTime, List<EventModel>> buildEventMap(
-    CalendarType type, List<dynamic> eventList, tz.Location timeZone) {
+Map<DateTime, List<EventModel>> buildEventMap(List<EventModel> eventList) {
   Map<DateTime, List<EventModel>> eventMap = {};
   for (final event in eventList) {
-    final localStartTime =
-        tz.TZDateTime.parse(timeZone, event['start']['dateTime']);
     // table_calendar DateTimes for each day are in UTC, so this needs to match.
-    final localStartDay = DateTime.utc(
-        localStartTime.year, localStartTime.month, localStartTime.day);
+    final localStartDay =
+        DateTime.utc(event.start.year, event.start.month, event.start.day);
 
-    int color;
-    switch (type) {
-      case CalendarType.free:
-        color = 0xfffbd75b;
-        break;
-      case CalendarType.preschool:
-        color = 0xffa4bdfc;
-        break;
-      case CalendarType.private:
-        color = 0xffdbadff;
-        break;
-    }
-    eventMap
-        .putIfAbsent(localStartDay, () => [])
-        .add(EventModel.fromJson(event, timeZone, color));
+    eventMap.putIfAbsent(localStartDay, () => []).add(event);
   }
   return eventMap;
 }
