@@ -29,10 +29,6 @@ void main() async {
   );
 }
 
-// BUG Error: Assertion failed:
-// ../…/painting/text_painter.dart:953
-// !_debugNeedsLayout
-// is not true
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 

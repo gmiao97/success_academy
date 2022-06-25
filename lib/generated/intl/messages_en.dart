@@ -31,19 +31,25 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
         "calendarHeader": m0,
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("Select Profile"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
         "copy": MessageLookupByLibrary.simpleMessage("Copy Code"),
         "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
         "dateOfBirthLabel":
             MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
         "dateOfBirthValidation": MessageLookupByLibrary.simpleMessage(
-            "Please select studen\'t date of birth"),
+            "Please select student\'s date of birth"),
+        "filter": MessageLookupByLibrary.simpleMessage("Lesson Filter"),
+        "filterTitle":
+            MessageLookupByLibrary.simpleMessage("Display by lesson type"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("John"),
         "firstNameLabel":
             MessageLookupByLibrary.simpleMessage("Student First Name"),
         "firstNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s first name"),
+        "freeFilter": MessageLookupByLibrary.simpleMessage("All free lessons"),
         "goBack": MessageLookupByLibrary.simpleMessage("Go back"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("Smith"),
         "lastNameLabel":
@@ -59,10 +65,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
             "Minimum Course + Preschool Class - \$40/month"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
+        "myPreschoolFilter":
+            MessageLookupByLibrary.simpleMessage("My preschool lessons"),
+        "myPrivateFilter":
+            MessageLookupByLibrary.simpleMessage("My private lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),
+        "preschoolFilter":
+            MessageLookupByLibrary.simpleMessage("All preschool lessons"),
+        "privateFilter":
+            MessageLookupByLibrary.simpleMessage("All private lessons"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),

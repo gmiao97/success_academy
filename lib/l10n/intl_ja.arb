@@ -44,5 +44,14 @@
 
   "calendarHeader": "{name}のカレンダー",
   "timeZone": "時間帯： {timeZone}",
-  "today": "今日"
+  "today": "今日",
+  "filter": "レッスンのフィルター",
+  "confirm": "サブミット",
+  "cancel": "キャンセル",
+  "filterTitle": "レッスンの種類で表示する",
+  "freeFilter": "すべてのフリーレッスン",
+  "preschoolFilter": "すべての未就学児レッスン",
+  "privateFilter": "すべての個別レッスン",
+  "myPreschoolFilter": "登録済みの未就学児レッスン",
+  "myPrivateFilter": "登録済みの個別レッスン"
 }

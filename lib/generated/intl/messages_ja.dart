@@ -30,17 +30,22 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
         "calendarHeader": m0,
+        "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("プロフィール選択"),
+        "confirm": MessageLookupByLibrary.simpleMessage("サブミット"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
         "copy": MessageLookupByLibrary.simpleMessage("コードをコピー"),
         "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
             MessageLookupByLibrary.simpleMessage("生徒の生年月日を選択してください"),
+        "filter": MessageLookupByLibrary.simpleMessage("レッスンのフィルター"),
+        "filterTitle": MessageLookupByLibrary.simpleMessage("レッスンの種類で表示する"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("太郎"),
         "firstNameLabel": MessageLookupByLibrary.simpleMessage("生徒名"),
         "firstNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名前を入力してください"),
+        "freeFilter": MessageLookupByLibrary.simpleMessage("すべてのフリーレッスン"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("山田"),
         "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
@@ -53,9 +58,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumPreschoolCourse":
             MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄４０"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
+        "myPreschoolFilter":
+            MessageLookupByLibrary.simpleMessage("登録済みの未就学児レッスン"),
+        "myPrivateFilter": MessageLookupByLibrary.simpleMessage("登録済みの個別レッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
         "pickPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択"),
+        "preschoolFilter": MessageLookupByLibrary.simpleMessage("すべての未就学児レッスン"),
+        "privateFilter": MessageLookupByLibrary.simpleMessage("すべての個別レッスン"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),

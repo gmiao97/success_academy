@@ -15,7 +15,7 @@
   "firstNameHint": "John",
   "firstNameValidation": "Please enter student's first name",
   "dateOfBirthLabel": "Student Date of Birth",
-  "dateOfBirthValidation": "Please select studen't date of birth",
+  "dateOfBirthValidation": "Please select student's date of birth",
 
   "studentProfile": "Student Profile Information",
   "teacherProfile": "Teacher Profile Information",
@@ -44,5 +44,14 @@
 
   "calendarHeader": "{name}'s Calendar",
   "timeZone": "Timezone: {timeZone}",
-  "today": "Today"
+  "today": "Today",
+  "filter": "Lesson Filter",
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "filterTitle": "Display by lesson type",
+  "freeFilter": "All free lessons",
+  "preschoolFilter": "All preschool lessons",
+  "privateFilter": "All private lessons",
+  "myPreschoolFilter": "My preschool lessons",
+  "myPrivateFilter": "My private lessons"
 }

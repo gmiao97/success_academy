@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/calendar.dart';
+import 'package:success_academy/calendar/calendar_header.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
@@ -39,6 +39,9 @@ class TeacherCalendar extends StatelessWidget {
             header: account.teacherProfile!.firstName,
             timeZone: account.myUser!.timeZone,
             onTodayButtonTap: onTodayButtonTap,
+            availableEventFilters: const [],
+            eventFilters: const [],
+            onEventFilterConfirm: (filters) {},
           ),
           TableCalendar(
             firstDay: DateTime.utc(2010, 1, 1),

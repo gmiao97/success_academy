@@ -4,7 +4,6 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/calendar/student_calendar.dart';
 import 'package:success_academy/calendar/teacher_calendar.dart';
-import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_model.dart';
@@ -58,6 +57,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
   final DateTime _lastDay =
       DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
   SubscriptionPlan? _subscriptionType;
+  bool _isCalendarInitialized = false;
+  AccountModel? _accountContext;
   Map<DateTime, List<EventModel>> _events = {};
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -92,7 +93,6 @@ class _BaseCalendarState extends State<BaseCalendar> {
     super.initState();
     tz.initializeTimeZones();
     initCalendar(accountContext: context.read<AccountModel>());
-    _selectedEvents = ValueNotifier([]);
   }
 
   @override
@@ -102,8 +102,12 @@ class _BaseCalendarState extends State<BaseCalendar> {
   }
 
   Future<void> initCalendar({required AccountModel accountContext}) async {
-    await _setEventFilters(accountContext);
-    await _setAllEvents(accountContext);
+    _selectedEvents = ValueNotifier([]);
+    setState(() {
+      _accountContext = context.read<AccountModel>();
+    });
+    await _setEventFilters();
+    await _setAllEvents();
   }
 
   List<EventModel> _getEventsForDay(DateTime day) {
@@ -111,9 +115,12 @@ class _BaseCalendarState extends State<BaseCalendar> {
   }
 
   void _onTodayButtonTap() {
+    final now = DateTime.now();
+    final today = DateTime.utc(now.year, now.month, now.day);
     setState(() {
-      _focusedDay = DateTime.now();
-      _selectedDay = _focusedDay;
+      _focusedDay = today;
+      _selectedDay = today;
+      _selectedEvents.value = _getEventsForDay(today);
     });
   }
 
@@ -127,16 +134,23 @@ class _BaseCalendarState extends State<BaseCalendar> {
     }
   }
 
-  void _onFormatChanged(format) {
+  void _onFormatChanged(CalendarFormat format) {
     setState(() {
       _calendarFormat = format;
     });
   }
 
-  void _onPageChanged(focusedDay) {
+  void _onPageChanged(DateTime focusedDay) {
     setState(() {
       _focusedDay = focusedDay;
     });
+  }
+
+  void _onEventFilterConfirm(List<CalendarType> filters) {
+    setState(() {
+      _eventFilters = filters;
+    });
+    _setAllEvents();
   }
 
   Future<void> _setSubscriptionType(accountContext) async {
@@ -149,7 +163,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     });
   }
 
-  Future<void> _setEventFilters(accountContext) async {
+  Future<void> _setEventFilters() async {
     final filters = [];
     if (widget.userType == UserType.teacher) {
       filters.addAll([
@@ -158,7 +172,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
       ]);
     }
     if (widget.userType == UserType.student) {
-      await _setSubscriptionType(accountContext);
+      await _setSubscriptionType(_accountContext);
 
       if (_subscriptionType != null &&
           _subscriptionType != SubscriptionPlan.monthly) {
@@ -176,7 +190,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     });
   }
 
-  Future<void> _setAllEvents(AccountModel accountContext) async {
+  Future<void> _setAllEvents() async {
     final sanitizedFilters = List.from(_eventFilters);
     sanitizedFilters.contains(CalendarType.preschool) &&
         sanitizedFilters.remove(CalendarType.myPreschool);
@@ -187,27 +201,31 @@ class _BaseCalendarState extends State<BaseCalendar> {
     for (final filter in sanitizedFilters) {
       switch (filter) {
         case CalendarType.free:
-          events.addAll(await _getFreeLessons(accountContext));
+          events.addAll(await _getFreeLessons());
           break;
         case CalendarType.myPreschool:
           break;
         case CalendarType.myPrivate:
           break;
         case CalendarType.preschool:
-          events.addAll(await _getPreschoolLessons(accountContext));
+          events.addAll(await _getPreschoolLessons());
           break;
         case CalendarType.private:
-          events.addAll(await _getPrivateLessons(accountContext));
+          events.addAll(await _getPrivateLessons());
           break;
       }
     }
     setState(() {
       _events = buildEventMap(events);
+      _isCalendarInitialized = true;
     });
+    if (_selectedDay != null) {
+      _selectedEvents.value = _getEventsForDay(_selectedDay!);
+    }
   }
 
-  Future<List<EventModel>> _getFreeLessons(AccountModel accountContext) {
-    final timeZoneName = accountContext.myUser!.timeZone;
+  Future<List<EventModel>> _getFreeLessons() {
+    final timeZoneName = _accountContext!.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
     return event_service
@@ -225,8 +243,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
             );
   }
 
-  Future<List<EventModel>> _getPreschoolLessons(AccountModel accountContext) {
-    final timeZoneName = accountContext.myUser!.timeZone;
+  Future<List<EventModel>> _getPreschoolLessons() {
+    final timeZoneName = _accountContext!.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
     return event_service
@@ -244,8 +262,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
             );
   }
 
-  Future<List<EventModel>> _getPrivateLessons(accountContext) {
-    final timeZoneName = accountContext.myUser!.timeZone;
+  Future<List<EventModel>> _getPrivateLessons() {
+    final timeZoneName = _accountContext!.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
     return event_service
@@ -265,6 +283,13 @@ class _BaseCalendarState extends State<BaseCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_isCalendarInitialized) {
+      return const Center(
+        child: CircularProgressIndicator(
+          value: null,
+        ),
+      );
+    }
     if (widget.userType == UserType.teacher) {
       return TeacherCalendar(
         selectedDay: _selectedDay,
@@ -284,49 +309,15 @@ class _BaseCalendarState extends State<BaseCalendar> {
       lastDay: _lastDay,
       focusedDay: _focusedDay,
       calendarFormat: _calendarFormat,
+      calendarBuilders: _calendarBuilders,
+      availableEventFilters: _availableEventFilters,
+      eventFilters: _eventFilters,
       onTodayButtonTap: _onTodayButtonTap,
       onDaySelected: _onDaySelected,
       onFormatChanged: _onFormatChanged,
       onPageChanged: _onPageChanged,
       getEventsForDay: _getEventsForDay,
-      calendarBuilders: _calendarBuilders,
-    );
-  }
-}
-
-class CalendarHeader extends StatelessWidget {
-  const CalendarHeader(
-      {Key? key,
-      required this.header,
-      required this.timeZone,
-      required this.onTodayButtonTap})
-      : super(key: key);
-
-  final String header;
-  final String timeZone;
-  final VoidCallback onTodayButtonTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            S.of(context).calendarHeader(header),
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          Text(
-            S.of(context).timeZone(timeZone.replaceAll('_', ' ')),
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          IconButton(
-            onPressed: onTodayButtonTap,
-            icon: const Icon(Icons.calendar_today),
-          ),
-        ],
-      ),
+      onEventFilterConfirm: _onEventFilterConfirm,
     );
   }
 }

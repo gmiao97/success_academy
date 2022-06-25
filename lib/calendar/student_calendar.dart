@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/calendar.dart';
+import 'package:success_academy/calendar/calendar_header.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/utils.dart' as utils;
@@ -17,12 +17,15 @@ class StudentCalendar extends StatelessWidget {
     required this.lastDay,
     required this.focusedDay,
     required this.calendarFormat,
+    required this.calendarBuilders,
+    required this.availableEventFilters,
+    required this.eventFilters,
     required this.onTodayButtonTap,
     required this.onDaySelected,
     required this.onFormatChanged,
     required this.onPageChanged,
     required this.getEventsForDay,
-    required this.calendarBuilders,
+    required this.onEventFilterConfirm,
   }) : super(key: key);
 
   final DateTime? selectedDay;
@@ -31,12 +34,15 @@ class StudentCalendar extends StatelessWidget {
   final DateTime lastDay;
   final DateTime focusedDay;
   final CalendarFormat calendarFormat;
+  final CalendarBuilders calendarBuilders;
+  final List<CalendarType> availableEventFilters;
+  final List<CalendarType> eventFilters;
   final VoidCallback onTodayButtonTap;
   final Function(DateTime, DateTime) onDaySelected;
   final Function(CalendarFormat) onFormatChanged;
   final Function(DateTime) onPageChanged;
   final List<EventModel> Function(DateTime) getEventsForDay;
-  final CalendarBuilders calendarBuilders;
+  final Function(List<CalendarType>) onEventFilterConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +56,9 @@ class StudentCalendar extends StatelessWidget {
             header: account.studentProfile!.firstName,
             timeZone: account.myUser!.timeZone,
             onTodayButtonTap: onTodayButtonTap,
+            availableEventFilters: availableEventFilters,
+            eventFilters: eventFilters,
+            onEventFilterConfirm: onEventFilterConfirm,
           ),
           TableCalendar(
             firstDay: firstDay,

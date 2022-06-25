@@ -190,10 +190,10 @@ class S {
     );
   }
 
-  /// `Please select studen't date of birth`
+  /// `Please select student's date of birth`
   String get dateOfBirthValidation {
     return Intl.message(
-      'Please select studen\'t date of birth',
+      'Please select student\'s date of birth',
       name: 'dateOfBirthValidation',
       desc: '',
       args: [],
@@ -425,6 +425,96 @@ class S {
     return Intl.message(
       'Today',
       name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson Filter`
+  String get filter {
+    return Intl.message(
+      'Lesson Filter',
+      name: 'filter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Display by lesson type`
+  String get filterTitle {
+    return Intl.message(
+      'Display by lesson type',
+      name: 'filterTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All free lessons`
+  String get freeFilter {
+    return Intl.message(
+      'All free lessons',
+      name: 'freeFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All preschool lessons`
+  String get preschoolFilter {
+    return Intl.message(
+      'All preschool lessons',
+      name: 'preschoolFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All private lessons`
+  String get privateFilter {
+    return Intl.message(
+      'All private lessons',
+      name: 'privateFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My preschool lessons`
+  String get myPreschoolFilter {
+    return Intl.message(
+      'My preschool lessons',
+      name: 'myPreschoolFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My private lessons`
+  String get myPrivateFilter {
+    return Intl.message(
+      'My private lessons',
+      name: 'myPrivateFilter',
       desc: '',
       args: [],
     );
