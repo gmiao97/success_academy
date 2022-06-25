@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_header.dart';
+import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
@@ -10,22 +11,36 @@ class TeacherCalendar extends StatelessWidget {
     Key? key,
     required this.focusedDay,
     required this.selectedDay,
+    required this.selectedEvents,
+    required this.firstDay,
+    required this.lastDay,
     required this.calendarFormat,
     required this.calendarBuilders,
+    required this.availableEventFilters,
+    required this.eventFilters,
     required this.onTodayButtonTap,
     required this.onDaySelected,
     required this.onFormatChanged,
     required this.onPageChanged,
+    required this.getEventsForDay,
+    required this.onEventFilterConfirm,
   }) : super(key: key);
 
   final DateTime focusedDay;
   final DateTime? selectedDay;
+  final ValueNotifier<List<EventModel>> selectedEvents;
+  final DateTime firstDay;
+  final DateTime lastDay;
   final CalendarFormat calendarFormat;
   final CalendarBuilders calendarBuilders;
+  final List<EventType> availableEventFilters;
+  final List<EventType> eventFilters;
   final VoidCallback onTodayButtonTap;
   final Function(DateTime, DateTime) onDaySelected;
   final Function(CalendarFormat) onFormatChanged;
   final Function(DateTime) onPageChanged;
+  final List<EventModel> Function(DateTime) getEventsForDay;
+  final void Function(List<EventType>) onEventFilterConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +54,13 @@ class TeacherCalendar extends StatelessWidget {
             header: account.teacherProfile!.firstName,
             timeZone: account.myUser!.timeZone,
             onTodayButtonTap: onTodayButtonTap,
-            availableEventFilters: const [],
-            eventFilters: const [],
-            onEventFilterConfirm: (filters) {},
+            availableEventFilters: availableEventFilters,
+            eventFilters: eventFilters,
+            onEventFilterConfirm: onEventFilterConfirm,
           ),
           TableCalendar(
-            firstDay: DateTime.utc(2010, 1, 1),
-            lastDay: DateTime.now().add(const Duration(days: 500)),
+            firstDay: firstDay,
+            lastDay: lastDay,
             focusedDay: focusedDay,
             calendarFormat: calendarFormat,
             locale: account.locale,
@@ -64,7 +79,7 @@ class TeacherCalendar extends StatelessWidget {
             onDaySelected: onDaySelected,
             onFormatChanged: onFormatChanged,
             onPageChanged: onPageChanged,
-            eventLoader: (day) => [],
+            eventLoader: getEventsForDay,
             calendarBuilders: calendarBuilders,
           ),
         ],

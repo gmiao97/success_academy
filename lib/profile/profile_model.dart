@@ -13,6 +13,7 @@ class StudentProfileModel {
         firstName = json['first_name'] as String,
         dateOfBirth = DateTime.parse(json['date_of_birth'] as String);
 
+  /// Used to read profile from shared preferences.
   StudentProfileModel.fromJson(Map<String, Object?> json)
       : _profileId = json['id'] as String,
         lastName = json['last_name'] as String,
@@ -37,6 +38,7 @@ class StudentProfileModel {
     };
   }
 
+  /// Used to write profile to shared preferences.
   Map<String, Object?> toJson() {
     return {
       'id': _profileId,
@@ -50,12 +52,16 @@ class StudentProfileModel {
 class TeacherProfileModel {
   TeacherProfileModel();
 
-  TeacherProfileModel.fromJson(Map<String, Object?> json)
-      : lastName = json['last_name'] as String,
+  TeacherProfileModel.fromJson(String profileId, Map<String, Object?> json)
+      : _profileId = profileId,
+        lastName = json['last_name'] as String,
         firstName = json['first_name'] as String;
 
+  String _profileId = '';
   late String lastName;
   late String firstName;
+
+  String get profileId => _profileId;
 
   Map<String, Object?> toJson() {
     return {

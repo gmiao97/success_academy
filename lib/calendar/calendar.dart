@@ -167,7 +167,6 @@ class _BaseCalendarState extends State<BaseCalendar> {
     final filters = [];
     if (widget.userType == UserType.teacher) {
       filters.addAll([
-        EventType.myPreschool,
         EventType.myPrivate,
       ]);
     }
@@ -293,13 +292,20 @@ class _BaseCalendarState extends State<BaseCalendar> {
     if (widget.userType == UserType.teacher) {
       return TeacherCalendar(
         selectedDay: _selectedDay,
+        selectedEvents: _selectedEvents,
+        firstDay: _firstDay,
+        lastDay: _lastDay,
         focusedDay: _focusedDay,
         calendarFormat: _calendarFormat,
         calendarBuilders: _calendarBuilders,
+        availableEventFilters: _availableEventFilters,
+        eventFilters: _eventFilters,
         onTodayButtonTap: _onTodayButtonTap,
         onDaySelected: _onDaySelected,
         onFormatChanged: _onFormatChanged,
         onPageChanged: _onPageChanged,
+        getEventsForDay: _getEventsForDay,
+        onEventFilterConfirm: _onEventFilterConfirm,
       );
     }
     return StudentCalendar(

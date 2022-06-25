@@ -6,7 +6,7 @@ import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
-CollectionReference<StudentProfileModel> _getStudentProfileModelRefForUser(
+CollectionReference<StudentProfileModel> _studentProfileModelRefForUser(
     userId) {
   return db
       .collection('myUsers')
@@ -19,7 +19,7 @@ CollectionReference<StudentProfileModel> _getStudentProfileModelRefForUser(
       );
 }
 
-CollectionReference<TeacherProfileModel> _getTeacherProfileModelRefForUser(
+CollectionReference<TeacherProfileModel> _teacherProfileModelRefForUser(
     userId) {
   return db
       .collection('myUsers')
@@ -27,7 +27,7 @@ CollectionReference<TeacherProfileModel> _getTeacherProfileModelRefForUser(
       .collection('teacher_profile')
       .withConverter<TeacherProfileModel>(
         fromFirestore: (snapshot, _) =>
-            TeacherProfileModel.fromJson(snapshot.data()!),
+            TeacherProfileModel.fromJson(snapshot.id, snapshot.data()!),
         toFirestore: (teacherProfileModel, _) => teacherProfileModel.toJson(),
       );
 }
@@ -40,7 +40,7 @@ CollectionReference<TeacherProfileModel> _getTeacherProfileModelRefForUser(
   */
 Future<List<QueryDocumentSnapshot<StudentProfileModel>>>
     getStudentProfilesForUser(String userId) {
-  return _getStudentProfileModelRefForUser(userId)
+  return _studentProfileModelRefForUser(userId)
       .get()
       .then((querySnapshot) => querySnapshot.docs);
 }
@@ -51,7 +51,7 @@ Future<List<QueryDocumentSnapshot<StudentProfileModel>>>
   * There should only be a single teacher profile under a user. 
   */
 Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
-  return _getTeacherProfileModelRefForUser(userId).limit(1).get().then(
+  return _teacherProfileModelRefForUser(userId).limit(1).get().then(
       (querySnapshot) =>
           querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null);
 }
@@ -70,7 +70,7 @@ Future<bool> studentProfileBelongsToUser(
 Future<DocumentReference<StudentProfileModel>> addStudentProfile(
     String userId, StudentProfileModel profileModel) async {
   final profileDoc =
-      await _getStudentProfileModelRefForUser(userId).add(profileModel);
+      await _studentProfileModelRefForUser(userId).add(profileModel);
   return profileDoc;
 }
 
