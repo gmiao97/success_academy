@@ -29,7 +29,6 @@ Future<List<dynamic>> listEventsFromPreschoolLessonCalendar({
   required String timeZone,
   required String timeMin,
   required String timeMax,
-  String? teacherId,
   List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
@@ -40,7 +39,6 @@ Future<List<dynamic>> listEventsFromPreschoolLessonCalendar({
       'timeZone': timeZone,
       'timeMin': timeMin,
       'timeMax': timeMax,
-      'teacherId': teacherId,
       'studentIdList': studentIdList,
     });
     return result.data;
@@ -127,7 +125,7 @@ Future<dynamic> deleteEventFromPrivateLessonCalendar({
 }
 
 Future<dynamic> addEventToFreeLessonCalendar({
-  required String eventName,
+  required String summary,
   required String description,
   required String startTime,
   required String endTime,
@@ -139,7 +137,7 @@ Future<dynamic> addEventToFreeLessonCalendar({
 
   try {
     final result = await callable({
-      'eventName': eventName,
+      'summary': summary,
       'description': description,
       'startTime': startTime,
       'endTime': endTime,
@@ -154,13 +152,12 @@ Future<dynamic> addEventToFreeLessonCalendar({
 }
 
 Future<dynamic> addEventToPreschoolLessonCalendar({
-  required String eventName,
+  required String summary,
   required String description,
   required String startTime,
   required String endTime,
   required String timeZone,
   List<String>? recurrence,
-  required String teacherId,
   List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
@@ -168,13 +165,12 @@ Future<dynamic> addEventToPreschoolLessonCalendar({
 
   try {
     final result = await callable({
-      'eventName': eventName,
+      'summary': summary,
       'description': description,
       'startTime': startTime,
       'endTime': endTime,
       'timeZone': timeZone,
       'recurrence': recurrence,
-      'teacherId': teacherId,
       'studentIdList': studentIdList,
     });
     return result.data;
@@ -185,7 +181,7 @@ Future<dynamic> addEventToPreschoolLessonCalendar({
 }
 
 Future<dynamic> addEventToPrivateLessonCalendar({
-  required String eventName,
+  required String summary,
   required String description,
   required String startTime,
   required String endTime,
@@ -200,7 +196,7 @@ Future<dynamic> addEventToPrivateLessonCalendar({
 
   try {
     final result = await callable({
-      'eventName': eventName,
+      'summary': summary,
       'description': description,
       'startTime': startTime,
       'endTime': endTime,
@@ -219,7 +215,7 @@ Future<dynamic> addEventToPrivateLessonCalendar({
 
 Future<dynamic> updateEventInFreeLessonCalendar({
   required String eventId,
-  required String eventName,
+  required String summary,
   required String description,
   required String startTime,
   required String endTime,
@@ -232,7 +228,7 @@ Future<dynamic> updateEventInFreeLessonCalendar({
   try {
     final result = await callable({
       'eventId': eventId,
-      'eventName': eventName,
+      'summary': summary,
       'description': description,
       'startTime': startTime,
       'endTime': endTime,
@@ -248,13 +244,12 @@ Future<dynamic> updateEventInFreeLessonCalendar({
 
 Future<dynamic> updateEventInPreschoolLessonCalendar({
   required String eventId,
-  required String eventName,
+  required String summary,
   required String description,
   required String startTime,
   required String endTime,
   required String timeZone,
   List<String>? recurrence,
-  required String teacherId,
   List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
@@ -263,13 +258,12 @@ Future<dynamic> updateEventInPreschoolLessonCalendar({
   try {
     final result = await callable({
       'eventId': eventId,
-      'eventName': eventName,
+      'summary': summary,
       'description': description,
       'startTime': startTime,
       'endTime': endTime,
       'timeZone': timeZone,
       'recurrence': recurrence,
-      'teacherId': teacherId,
       'studentIdList': studentIdList,
     });
     return result.data;
@@ -281,7 +275,7 @@ Future<dynamic> updateEventInPreschoolLessonCalendar({
 
 Future<dynamic> updateEventInPrivateLessonCalendar({
   required String eventId,
-  required String eventName,
+  required String summary,
   required String description,
   required String startTime,
   required String endTime,
@@ -297,7 +291,7 @@ Future<dynamic> updateEventInPrivateLessonCalendar({
   try {
     final result = await callable({
       'eventId': eventId,
-      'eventName': eventName,
+      'summary': summary,
       'description': description,
       'startTime': startTime,
       'endTime': endTime,

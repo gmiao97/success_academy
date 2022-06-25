@@ -44,11 +44,6 @@ class CalendarHeader extends StatelessWidget {
             S.of(context).timeZone(timeZone.replaceAll('_', ' ')),
             style: Theme.of(context).textTheme.headline6,
           ),
-          ElevatedButton.icon(
-            onPressed: onTodayButtonTap,
-            label: Text(S.of(context).today),
-            icon: const Icon(Icons.calendar_today),
-          ),
           MultiSelectDialogField<EventType>(
             items: availableEventFilters
                 .map((type) => MultiSelectItem(type, _filterNames[type]!))
@@ -62,6 +57,11 @@ class CalendarHeader extends StatelessWidget {
             confirmText: Text(S.of(context).confirm),
             cancelText: Text(S.of(context).cancel),
             title: Text(S.of(context).filterTitle),
+          ),
+          ElevatedButton.icon(
+            onPressed: onTodayButtonTap,
+            label: Text(S.of(context).today),
+            icon: const Icon(Icons.calendar_today),
           ),
         ],
       ),
