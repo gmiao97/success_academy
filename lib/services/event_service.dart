@@ -8,6 +8,8 @@ Future<List<dynamic>> listEventsFromFreeLessonCalendar({
   required String timeZone,
   required String timeMin,
   required String timeMax,
+  String? teacherId,
+  List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
       functions.httpsCallable('listEventsFromFreeLessonCalendar');
@@ -17,6 +19,8 @@ Future<List<dynamic>> listEventsFromFreeLessonCalendar({
       'timeZone': timeZone,
       'timeMin': timeMin,
       'timeMax': timeMax,
+      'teacherId': teacherId,
+      'studentIdList': studentIdList,
     });
     return result.data;
   } catch (e) {
@@ -29,6 +33,7 @@ Future<List<dynamic>> listEventsFromPreschoolLessonCalendar({
   required String timeZone,
   required String timeMin,
   required String timeMax,
+  String? teacherId,
   List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
@@ -39,6 +44,7 @@ Future<List<dynamic>> listEventsFromPreschoolLessonCalendar({
       'timeZone': timeZone,
       'timeMin': timeMin,
       'timeMax': timeMax,
+      'teacherId': teacherId,
       'studentIdList': studentIdList,
     });
     return result.data;
@@ -131,6 +137,8 @@ Future<dynamic> addEventToFreeLessonCalendar({
   required String endTime,
   required String timeZone,
   List<String>? recurrence,
+  String? teacherId,
+  List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
       functions.httpsCallable('addEventToFreeLessonCalendar');
@@ -143,6 +151,8 @@ Future<dynamic> addEventToFreeLessonCalendar({
       'endTime': endTime,
       'timeZone': timeZone,
       'recurrence': recurrence,
+      'teacherId': teacherId,
+      'studentIdList': studentIdList,
     });
     return result.data;
   } catch (e) {
@@ -158,6 +168,7 @@ Future<dynamic> addEventToPreschoolLessonCalendar({
   required String endTime,
   required String timeZone,
   List<String>? recurrence,
+  String? teacherId,
   List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
@@ -171,6 +182,7 @@ Future<dynamic> addEventToPreschoolLessonCalendar({
       'endTime': endTime,
       'timeZone': timeZone,
       'recurrence': recurrence,
+      'teacherId': teacherId,
       'studentIdList': studentIdList,
     });
     return result.data;
@@ -221,6 +233,8 @@ Future<dynamic> updateEventInFreeLessonCalendar({
   required String endTime,
   required String timeZone,
   List<String>? recurrence,
+  String? teacherId,
+  List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
       functions.httpsCallable('updateEventInFreeLessonCalendar');
@@ -234,6 +248,8 @@ Future<dynamic> updateEventInFreeLessonCalendar({
       'endTime': endTime,
       'timeZone': timeZone,
       'recurrence': recurrence,
+      'teacherId': teacherId,
+      'studentIdList': studentIdList,
     });
     return result.data;
   } catch (e) {
@@ -250,6 +266,7 @@ Future<dynamic> updateEventInPreschoolLessonCalendar({
   required String endTime,
   required String timeZone,
   List<String>? recurrence,
+  String? teacherId,
   List<String>? studentIdList,
 }) async {
   HttpsCallable callable =
@@ -264,6 +281,7 @@ Future<dynamic> updateEventInPreschoolLessonCalendar({
       'endTime': endTime,
       'timeZone': timeZone,
       'recurrence': recurrence,
+      'teacherId': teacherId,
       'studentIdList': studentIdList,
     });
     return result.data;
