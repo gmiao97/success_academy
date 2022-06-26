@@ -54,5 +54,6 @@
   "preschoolFilter": "All preschool lessons",
   "privateFilter": "All private lessons",
   "myPreschoolFilter": "My preschool lessons",
-  "myPrivateFilter": "My private lessons"
+  "myPrivateFilter": "My private lessons",
+  "createEvent": "Add lesson"
 }

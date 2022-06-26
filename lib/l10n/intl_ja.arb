@@ -54,5 +54,6 @@
   "preschoolFilter": "すべての未就学児レッスン",
   "privateFilter": "すべての個別レッスン",
   "myPreschoolFilter": "登録済みの未就学児レッスン",
-  "myPrivateFilter": "登録済みの個別レッスン"
+  "myPrivateFilter": "登録済みの個別レッスン",
+  "creatEvent": "レッスン作成"
 }

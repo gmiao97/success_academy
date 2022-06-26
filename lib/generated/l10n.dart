@@ -529,6 +529,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Add lesson`
+  String get createEvent {
+    return Intl.message(
+      'Add lesson',
+      name: 'createEvent',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

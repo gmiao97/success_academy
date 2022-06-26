@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_header.dart';
@@ -111,9 +110,9 @@ class StudentCalendar extends StatelessWidget {
                       ),
                       child: ListTile(
                         onTap: () {},
-                        title: Text(value[index].summary),
+                        title: Text(value[index].summary ?? ''),
                         subtitle: Text(
-                          '${DateFormat.jm().format(value[index].start)} - ${DateFormat.jm().format(value[index].end)}',
+                          '${timeFormatter.format(value[index].startTime)} - ${timeFormatter.format(value[index].endTime)}',
                         ),
                       ),
                     );

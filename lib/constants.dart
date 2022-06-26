@@ -12,3 +12,4 @@ const routeCalendar = '/calendar';
 const maxProfileCount = 5;
 
 final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');
+final DateFormat timeFormatter = DateFormat.jm();

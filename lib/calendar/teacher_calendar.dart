@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_header.dart';
 import 'package:success_academy/calendar/event_model.dart';
+import 'package:success_academy/constants.dart';
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
@@ -83,6 +84,18 @@ class TeacherCalendar extends StatelessWidget {
             eventLoader: getEventsForDay,
             calendarBuilders: calendarBuilders,
           ),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.add,
+              size: 30,
+            ),
+            label: Text(S.of(context).createEvent),
+          ),
+          Text(
+            selectedDay != null ? dateFormatter.format(selectedDay!) : '',
+            style: Theme.of(context).textTheme.headline6,
+          ),
           Expanded(
             child: ValueListenableBuilder<List<EventModel>>(
               valueListenable: selectedEvents,
@@ -105,9 +118,9 @@ class TeacherCalendar extends StatelessWidget {
                       ),
                       child: ListTile(
                         onTap: () {},
-                        title: Text(value[index].summary),
+                        title: Text(value[index].summary ?? ''),
                         subtitle: Text(
-                          '${DateFormat.jm().format(value[index].start)} - ${DateFormat.jm().format(value[index].end)}',
+                          '${timeFormatter.format(value[index].startTime)} - ${timeFormatter.format(value[index].endTime)}',
                         ),
                       ),
                     );

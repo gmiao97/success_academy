@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
         "copy": MessageLookupByLibrary.simpleMessage("Copy Code"),
+        "createEvent": MessageLookupByLibrary.simpleMessage("Add lesson"),
         "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
         "dateOfBirthLabel":
             MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
