@@ -1,30 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:success_academy/constants.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 // If change, also change _filterNames in calendar_header.dart, _fillColorMap,
-// _borderColorMap.
+// _borderColorMap, _eventTypeNames in event_dialog.dart.
 enum EventType { free, myFree, preschool, private, myPreschool, myPrivate }
 
 Map<EventType, int> _fillColorMap = {
-  EventType.free: 0xffe1e1e1, // grey
-  EventType.myFree: 0xfffbd75b, // yellow
-  EventType.preschool: 0xffe1e1e1, // grey
-  EventType.myPreschool: 0xffa4bdfc, // blue
-  EventType.private: 0xffe1e1e1, // grey
-  EventType.myPrivate: 0xffdbadff, // purple
+  EventType.free: grey,
+  EventType.myFree: yellow,
+  EventType.preschool: grey,
+  EventType.myPreschool: blue,
+  EventType.private: grey,
+  EventType.myPrivate: purple,
 };
 
 Map<EventType, int> _borderColorMap = {
-  EventType.free: 0xfffbd75b, // yellow
-  EventType.myFree: 0xfffbd75b, // yellow
-  EventType.preschool: 0xffa4bdfc, // blue
-  EventType.myPreschool: 0xffa4bdfc, // blue
-  EventType.private: 0xffdbadff, // purple
-  EventType.myPrivate: 0xffdbadff, // purple
+  EventType.free: yellow,
+  EventType.myFree: yellow,
+  EventType.preschool: blue,
+  EventType.myPreschool: blue,
+  EventType.private: purple,
+  EventType.myPrivate: purple,
 };
 
 class EventModel {
-  EventModel();
+  EventModel({
+    required this.summary,
+    required this.description,
+    required this.startTime,
+    required this.endTime,
+    required this.timeZone,
+    this.recurrence,
+    this.teacherId,
+    this.studentIdList,
+    this.numPoints,
+  });
 
   /// Build object from response returned by Google Calendar API.
   EventModel.fromJson(
@@ -37,12 +48,12 @@ class EventModel {
             tz.TZDateTime.parse(timeZone, (json['start'] as Map)['dateTime']),
         endTime =
             tz.TZDateTime.parse(timeZone, (json['end'] as Map)['dateTime']),
-        fillColor = _fillColorMap[eventType] ?? 0xffe1e1e1, // grey
-        bordercolor = _borderColorMap[eventType] ?? 0xffe1e1e1, // grey
+        fillColor = _fillColorMap[eventType] ?? grey,
+        bordercolor = _borderColorMap[eventType] ?? grey,
         recurrence = json['recurrence'] as List<String>?,
         timeZone = (json['start'] as Map)['timeZone'] as String {
-    Map<String, String>? extendedProperties =
-        (json['extendedProperties'] as Map?)?['shared'] as Map<String, String>?;
+    Map<String, dynamic>? extendedProperties = (json['extendedProperties']
+        as Map?)?['shared'] as Map<String, dynamic>?;
     if (extendedProperties != null) {
       try {
         teacherId = extendedProperties.entries
@@ -61,19 +72,18 @@ class EventModel {
 
   String? eventId;
   String? recurrenceId;
-  late String summary;
-  late String description;
-  late tz.TZDateTime startTime;
-  late tz.TZDateTime endTime;
-  late String timeZone;
+  String summary;
+  String description;
+  tz.TZDateTime startTime;
+  tz.TZDateTime endTime;
+  String timeZone;
   List<String>? recurrence;
   String? teacherId;
   List<String>? studentIdList;
   int? numPoints;
-  late EventType eventType;
-  int fillColor = 0xffe1e1e1; // grey
-  int bordercolor = 0xffe1e1e1; // grey
-
+  EventType? eventType;
+  int fillColor = grey;
+  int bordercolor = grey;
   Map<String, Object?> toJson() {
     return {
       'summary': summary,

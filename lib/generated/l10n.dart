@@ -460,6 +460,36 @@ class S {
     );
   }
 
+  /// `Free lesson`
+  String get free {
+    return Intl.message(
+      'Free lesson',
+      name: 'free',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preschool lesson`
+  String get preschool {
+    return Intl.message(
+      'Preschool lesson',
+      name: 'preschool',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private lesson`
+  String get private {
+    return Intl.message(
+      'Private lesson',
+      name: 'private',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Display by lesson type`
   String get filterTitle {
     return Intl.message(

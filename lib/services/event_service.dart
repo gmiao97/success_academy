@@ -1,5 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:success_academy/calendar/event_model.dart';
 
 final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'us-west2');
@@ -130,30 +131,12 @@ Future<dynamic> deleteEventFromPrivateLessonCalendar({
   }
 }
 
-Future<dynamic> addEventToFreeLessonCalendar({
-  required String summary,
-  required String description,
-  required String startTime,
-  required String endTime,
-  required String timeZone,
-  List<String>? recurrence,
-  String? teacherId,
-  List<String>? studentIdList,
-}) async {
+Future<dynamic> addEventToFreeLessonCalendar(EventModel event) async {
   HttpsCallable callable =
       functions.httpsCallable('addEventToFreeLessonCalendar');
 
   try {
-    final result = await callable({
-      'summary': summary,
-      'description': description,
-      'startTime': startTime,
-      'endTime': endTime,
-      'timeZone': timeZone,
-      'recurrence': recurrence,
-      'teacherId': teacherId,
-      'studentIdList': studentIdList,
-    });
+    final result = await callable(event.toJson());
     return result.data;
   } catch (e) {
     debugPrint('addEventToFreeLessonCalendar failed: $e');
@@ -161,30 +144,12 @@ Future<dynamic> addEventToFreeLessonCalendar({
   }
 }
 
-Future<dynamic> addEventToPreschoolLessonCalendar({
-  required String summary,
-  required String description,
-  required String startTime,
-  required String endTime,
-  required String timeZone,
-  List<String>? recurrence,
-  String? teacherId,
-  List<String>? studentIdList,
-}) async {
+Future<dynamic> addEventToPreschoolLessonCalendar(EventModel event) async {
   HttpsCallable callable =
       functions.httpsCallable('addEventToPreschoolLessonCalendar');
 
   try {
-    final result = await callable({
-      'summary': summary,
-      'description': description,
-      'startTime': startTime,
-      'endTime': endTime,
-      'timeZone': timeZone,
-      'recurrence': recurrence,
-      'teacherId': teacherId,
-      'studentIdList': studentIdList,
-    });
+    final result = await callable(event.toJson());
     return result.data;
   } catch (e) {
     debugPrint('addEventToPreschoolLessonCalendar failed: $e');
@@ -192,32 +157,12 @@ Future<dynamic> addEventToPreschoolLessonCalendar({
   }
 }
 
-Future<dynamic> addEventToPrivateLessonCalendar({
-  required String summary,
-  required String description,
-  required String startTime,
-  required String endTime,
-  required String timeZone,
-  List<String>? recurrence,
-  required String teacherId,
-  List<String>? studentIdList,
-  required int numPoints,
-}) async {
+Future<dynamic> addEventToPrivateLessonCalendar(EventModel event) async {
   HttpsCallable callable =
       functions.httpsCallable('addEventToPrivateLessonCalendar');
 
   try {
-    final result = await callable({
-      'summary': summary,
-      'description': description,
-      'startTime': startTime,
-      'endTime': endTime,
-      'timeZone': timeZone,
-      'recurrence': recurrence,
-      'teacherId': teacherId,
-      'studentIdList': studentIdList,
-      'numPoints': numPoints,
-    });
+    final result = await callable(event.toJson());
     return result.data;
   } catch (e) {
     debugPrint('addEventToPrivateLessonCalendar failed: $e');

@@ -13,3 +13,8 @@ const maxProfileCount = 5;
 
 final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');
 final DateFormat timeFormatter = DateFormat.jm();
+
+const int grey = 0xffe1e1e1;
+const int yellow = 0xfffbd75b;
+const int blue = 0xffa4bdfc;
+const int purple = 0xffdbadff;

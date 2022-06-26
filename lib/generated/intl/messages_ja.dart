@@ -60,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "firstNameLabel": MessageLookupByLibrary.simpleMessage("生徒名"),
         "firstNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名前を入力してください"),
+        "free": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
         "freeFilter": MessageLookupByLibrary.simpleMessage("すべてのフリーレッスン"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("山田"),
@@ -80,7 +81,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
         "pickPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択"),
+        "preschool": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
         "preschoolFilter": MessageLookupByLibrary.simpleMessage("すべての未就学児レッスン"),
+        "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateFilter": MessageLookupByLibrary.simpleMessage("すべての個別レッスン"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":

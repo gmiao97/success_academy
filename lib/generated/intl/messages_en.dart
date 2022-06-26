@@ -66,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student First Name"),
         "firstNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s first name"),
+        "free": MessageLookupByLibrary.simpleMessage("Free lesson"),
         "freeFilter": MessageLookupByLibrary.simpleMessage("All free lessons"),
         "goBack": MessageLookupByLibrary.simpleMessage("Go back"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("Smith"),
@@ -91,8 +92,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),
+        "preschool": MessageLookupByLibrary.simpleMessage("Preschool lesson"),
         "preschoolFilter":
             MessageLookupByLibrary.simpleMessage("All preschool lessons"),
+        "private": MessageLookupByLibrary.simpleMessage("Private lesson"),
         "privateFilter":
             MessageLookupByLibrary.simpleMessage("All private lessons"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),

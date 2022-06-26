@@ -88,7 +88,7 @@ class TeacherCalendar extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: () => showDialog(
               context: context,
-              builder: (context) => CreateEventDialog(
+              builder: (context) => TeacherCreateEventDialog(
                 firstDay: firstDay,
                 lastDay: lastDay,
                 selectedDay: selectedDay,
