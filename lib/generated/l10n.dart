@@ -539,6 +539,106 @@ class S {
       args: [],
     );
   }
+
+  /// `Title`
+  String get eventSummaryLabel {
+    return Intl.message(
+      'Title',
+      name: 'eventSummaryLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter lesson title`
+  String get eventSummaryValidation {
+    return Intl.message(
+      'Please enter lesson title',
+      name: 'eventSummaryValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get eventDescriptionLabel {
+    return Intl.message(
+      'Description',
+      name: 'eventDescriptionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter lesson description`
+  String get eventDescriptionValidation {
+    return Intl.message(
+      'Please enter lesson description',
+      name: 'eventDescriptionValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get eventDateLabel {
+    return Intl.message(
+      'Date',
+      name: 'eventDateLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start`
+  String get eventStartLabel {
+    return Intl.message(
+      'Start',
+      name: 'eventStartLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a start time`
+  String get eventStartValidation {
+    return Intl.message(
+      'Please select a start time',
+      name: 'eventStartValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End`
+  String get eventEndLabel {
+    return Intl.message(
+      'End',
+      name: 'eventEndLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select an end time`
+  String get eventEndValidation {
+    return Intl.message(
+      'Please select an end time',
+      name: 'eventEndValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start time must be before end time`
+  String get eventValidTimeValidation {
+    return Intl.message(
+      'Start time must be before end time',
+      name: 'eventValidTimeValidation',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

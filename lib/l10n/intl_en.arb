@@ -55,5 +55,16 @@
   "privateFilter": "All private lessons",
   "myPreschoolFilter": "My preschool lessons",
   "myPrivateFilter": "My private lessons",
-  "createEvent": "Add lesson"
+  "createEvent": "Add lesson",
+
+  "eventSummaryLabel": "Title",
+  "eventSummaryValidation": "Please enter lesson title",
+  "eventDescriptionLabel": "Description",
+  "eventDescriptionValidation": "Please enter lesson description",
+  "eventDateLabel": "Date",
+  "eventStartLabel": "Start",
+  "eventStartValidation": "Please select a start time",
+  "eventEndLabel": "End",
+  "eventEndValidation": "Please select an end time",
+  "eventValidTimeValidation": "Start time must be before end time"
 }

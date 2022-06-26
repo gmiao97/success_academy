@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
@@ -10,7 +10,6 @@ import 'package:success_academy/services/profile_service.dart'
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/utils.dart' as utils;
 
-// TODO: Create teacher profile
 // TODO: Initiation fee
 // TODO: Welcome email
 class ProfileCreate extends StatelessWidget {
@@ -75,16 +74,21 @@ class _SignupFormState extends State<_SignupForm> {
   SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
   bool _stripeRedirectClicked = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _profileModel.dateOfBirth = DateTime.now();
+  }
+
   void _selectDate(BuildContext context) async {
     final DateTime? dateOfBirth = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: _profileModel.dateOfBirth,
         firstDate: DateTime(1900),
         lastDate: DateTime.now());
     if (dateOfBirth != null) {
       setState(() {
-        _dateOfBirthController.text =
-            constants.dateFormatter.format(dateOfBirth);
+        _dateOfBirthController.text = dateFormatter.format(dateOfBirth);
         _profileModel.dateOfBirth = dateOfBirth;
       });
     }

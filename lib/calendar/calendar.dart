@@ -92,7 +92,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     // TODO: Calendar refresh
     super.initState();
     tz.initializeTimeZones();
-    initCalendar(accountContext: context.read<AccountModel>());
+    initCalendar();
   }
 
   @override
@@ -101,7 +101,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
     super.dispose();
   }
 
-  Future<void> initCalendar({required AccountModel accountContext}) async {
+  Future<void> initCalendar() async {
     _selectedEvents = ValueNotifier([]);
     setState(() {
       _accountContext = context.read<AccountModel>();

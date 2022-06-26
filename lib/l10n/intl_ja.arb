@@ -46,7 +46,7 @@
   "timeZone": "時間帯： {timeZone}",
   "today": "今日",
   "filter": "レッスンのフィルター",
-  "confirm": "サブミット",
+  "confirm": "決定",
   "cancel": "キャンセル",
   "filterTitle": "レッスンの種類で表示する",
   "freeFilter": "すべてのフリーレッスン",
@@ -55,5 +55,16 @@
   "privateFilter": "すべての個別レッスン",
   "myPreschoolFilter": "登録済みの未就学児レッスン",
   "myPrivateFilter": "登録済みの個別レッスン",
-  "creatEvent": "レッスン作成"
+  "creatEvent": "レッスン作成",
+
+  "eventSummaryLabel": "タイトル",
+  "eventSummaryValidation": "レッスンのタイトルを入力してください",
+  "eventDescriptionLabel": "説明",
+  "eventDescriptionValidation": "レッスンの説明を入力してください",
+  "eventDateLabel": "日付",
+  "eventStartLabel": "開始",
+  "eventStartValidation": "開始時間を選択してください",
+  "eventEndLabel": "終了",
+  "eventEndValidation": "終了時間を選択してください",
+  "eventValidTimeValidation": "開始時間は終了時間より前である必要があります"
 }

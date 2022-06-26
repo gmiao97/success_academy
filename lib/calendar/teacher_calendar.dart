@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_header.dart';
+import 'package:success_academy/calendar/event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -85,7 +86,15 @@ class TeacherCalendar extends StatelessWidget {
             calendarBuilders: calendarBuilders,
           ),
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => CreateEventDialog(
+                firstDay: firstDay,
+                lastDay: lastDay,
+                selectedDay: selectedDay,
+                eventTypes: const [EventType.private],
+              ),
+            ),
             icon: const Icon(
               Icons.add,
               size: 30,
@@ -118,7 +127,7 @@ class TeacherCalendar extends StatelessWidget {
                       ),
                       child: ListTile(
                         onTap: () {},
-                        title: Text(value[index].summary ?? ''),
+                        title: Text(value[index].summary),
                         subtitle: Text(
                           '${timeFormatter.format(value[index].startTime)} - ${timeFormatter.format(value[index].endTime)}',
                         ),

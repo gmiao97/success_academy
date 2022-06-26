@@ -24,13 +24,15 @@ Map<EventType, int> _borderColorMap = {
 };
 
 class EventModel {
+  EventModel();
+
   /// Build object from response returned by Google Calendar API.
   EventModel.fromJson(
       Map<String, Object?> json, tz.Location timeZone, this.eventType)
-      : eventId = json['id'] as String,
+      : eventId = json['id'] as String?,
         recurrenceId = json['recurringEventId'] as String?,
-        summary = json['summary'] as String?,
-        description = json['description'] as String?,
+        summary = json['summary'] as String,
+        description = json['description'] as String,
         startTime =
             tz.TZDateTime.parse(timeZone, (json['start'] as Map)['dateTime']),
         endTime =
@@ -57,18 +59,18 @@ class EventModel {
     }
   }
 
-  String eventId;
+  String? eventId;
   String? recurrenceId;
-  String? summary;
-  String? description;
-  tz.TZDateTime startTime;
-  tz.TZDateTime endTime;
-  String timeZone;
+  late String summary;
+  late String description;
+  late tz.TZDateTime startTime;
+  late tz.TZDateTime endTime;
+  late String timeZone;
   List<String>? recurrence;
   String? teacherId;
   List<String>? studentIdList;
   int? numPoints;
-  EventType eventType;
+  late EventType eventType;
   int fillColor = 0xffe1e1e1; // grey
   int bordercolor = 0xffe1e1e1; // grey
 

@@ -5,6 +5,8 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 
+int timeOfDayToInt(TimeOfDay time) => time.hour * 60 + time.minute;
+
 Scaffold buildLoggedInScaffold(
     {required BuildContext context, required Widget body}) {
   final account = context.watch<AccountModel>();

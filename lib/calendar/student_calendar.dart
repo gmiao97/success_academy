@@ -110,7 +110,7 @@ class StudentCalendar extends StatelessWidget {
                       ),
                       child: ListTile(
                         onTap: () {},
-                        title: Text(value[index].summary ?? ''),
+                        title: Text(value[index].summary),
                         subtitle: Text(
                           '${timeFormatter.format(value[index].startTime)} - ${timeFormatter.format(value[index].endTime)}',
                         ),

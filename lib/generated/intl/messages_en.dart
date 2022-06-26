@@ -42,6 +42,22 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
         "dateOfBirthValidation": MessageLookupByLibrary.simpleMessage(
             "Please select student\'s date of birth"),
+        "eventDateLabel": MessageLookupByLibrary.simpleMessage("Date"),
+        "eventDescriptionLabel":
+            MessageLookupByLibrary.simpleMessage("Description"),
+        "eventDescriptionValidation": MessageLookupByLibrary.simpleMessage(
+            "Please enter lesson description"),
+        "eventEndLabel": MessageLookupByLibrary.simpleMessage("End"),
+        "eventEndValidation":
+            MessageLookupByLibrary.simpleMessage("Please select an end time"),
+        "eventStartLabel": MessageLookupByLibrary.simpleMessage("Start"),
+        "eventStartValidation":
+            MessageLookupByLibrary.simpleMessage("Please select a start time"),
+        "eventSummaryLabel": MessageLookupByLibrary.simpleMessage("Title"),
+        "eventSummaryValidation":
+            MessageLookupByLibrary.simpleMessage("Please enter lesson title"),
+        "eventValidTimeValidation": MessageLookupByLibrary.simpleMessage(
+            "Start time must be before end time"),
         "filter": MessageLookupByLibrary.simpleMessage("Lesson Filter"),
         "filterTitle":
             MessageLookupByLibrary.simpleMessage("Display by lesson type"),

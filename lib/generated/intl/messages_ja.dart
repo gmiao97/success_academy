@@ -32,13 +32,28 @@ class MessageLookup extends MessageLookupByLibrary {
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("プロフィール選択"),
-        "confirm": MessageLookupByLibrary.simpleMessage("サブミット"),
+        "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
         "copy": MessageLookupByLibrary.simpleMessage("コードをコピー"),
         "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
             MessageLookupByLibrary.simpleMessage("生徒の生年月日を選択してください"),
+        "eventDateLabel": MessageLookupByLibrary.simpleMessage("日付"),
+        "eventDescriptionLabel": MessageLookupByLibrary.simpleMessage("説明"),
+        "eventDescriptionValidation":
+            MessageLookupByLibrary.simpleMessage("レッスンの説明を入力してください"),
+        "eventEndLabel": MessageLookupByLibrary.simpleMessage("終了"),
+        "eventEndValidation":
+            MessageLookupByLibrary.simpleMessage("終了時間を選択してください"),
+        "eventStartLabel": MessageLookupByLibrary.simpleMessage("開始"),
+        "eventStartValidation":
+            MessageLookupByLibrary.simpleMessage("開始時間を選択してください"),
+        "eventSummaryLabel": MessageLookupByLibrary.simpleMessage("タイトル"),
+        "eventSummaryValidation":
+            MessageLookupByLibrary.simpleMessage("レッスンのタイトルを入力してください"),
+        "eventValidTimeValidation":
+            MessageLookupByLibrary.simpleMessage("開始時間は終了時間より前である必要があります"),
         "filter": MessageLookupByLibrary.simpleMessage("レッスンのフィルター"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("レッスンの種類で表示する"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("太郎"),
