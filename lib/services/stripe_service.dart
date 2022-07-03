@@ -29,7 +29,10 @@ Future<List<QueryDocumentSnapshot>> _getAllPrices() async {
   final productDocs = await _getProducts();
   final priceDocs = <QueryDocumentSnapshot>[];
   for (final doc in productDocs) {
-    final priceQuery = await doc.reference.collection('prices').get();
+    final priceQuery = await doc.reference
+        .collection('prices')
+        .where('active', isEqualTo: true)
+        .get();
     priceDocs.addAll(priceQuery.docs);
   }
   return priceDocs;
