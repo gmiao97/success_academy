@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/account/account_settings.dart';
 import 'package:success_academy/calendar/calendar.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/firebase_options.dart';
@@ -58,6 +59,7 @@ class App extends StatelessWidget {
         constants.routeSignIn: (context) => const SignInPage(),
         constants.routeCreateProfile: (context) => const ProfileCreate(),
         constants.routeCalendar: (context) => const Calendar(),
+        constants.routeSettings: (context) => const AccountSettings(),
       },
     );
   }

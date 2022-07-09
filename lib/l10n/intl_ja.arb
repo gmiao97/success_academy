@@ -40,7 +40,7 @@
   "changeProfile": "プロフィール選択",
   "viewProfile": "プロフィールを見る",
   "lessonCalendar": "レッスンカレンダー",
-  "settings": "設定",
+  "settings": "アカウント設定",
 
   "calendarHeader": "{name}のカレンダー",
   "timeZone": "時間帯： {timeZone}",
@@ -69,5 +69,7 @@
   "eventStartValidation": "開始時間を選択してください",
   "eventEndLabel": "終了",
   "eventEndValidation": "終了時間を選択してください",
-  "eventValidTimeValidation": "開始時間は終了時間より前である必要があります"
+  "eventValidTimeValidation": "開始時間は終了時間より前である必要があります",
+
+  "accountUpdated": "アカウント設定を更新しました"
 }

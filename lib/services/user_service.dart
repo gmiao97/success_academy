@@ -27,3 +27,11 @@ Future<MyUserModel?> getMyUserDoc(String userId) async {
   final userDoc = await _myUserModelRef.doc(userId).get();
   return userDoc.data();
 }
+
+Future<void> updateMyUser({required String userId, String? timeZone}) {
+  Map<String, Object?> json = {};
+  if (timeZone != null) {
+    json['time_zone'] = timeZone;
+  }
+  return _myUserModelRef.doc(userId).update(json);
+}

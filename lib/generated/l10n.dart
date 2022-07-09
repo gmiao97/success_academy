@@ -390,10 +390,10 @@ class S {
     );
   }
 
-  /// `Settings`
+  /// `Account Settings`
   String get settings {
     return Intl.message(
-      'Settings',
+      'Account Settings',
       name: 'settings',
       desc: '',
       args: [],
@@ -665,6 +665,16 @@ class S {
     return Intl.message(
       'Start time must be before end time',
       name: 'eventValidTimeValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account settings updated`
+  String get accountUpdated {
+    return Intl.message(
+      'Account settings updated',
+      name: 'accountUpdated',
       desc: '',
       args: [],
     );

@@ -111,7 +111,9 @@ Scaffold buildStudentProfileScaffold(
           ListTile(
             leading: const Icon(Icons.settings),
             title: Text(S.of(context).settings),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeSettings);
+            },
           ),
         ],
       ),
@@ -182,7 +184,9 @@ Scaffold buildTeacherProfileScaffold(
           ListTile(
             leading: const Icon(Icons.settings),
             title: Text(S.of(context).settings),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeSettings);
+            },
           ),
         ],
       ),

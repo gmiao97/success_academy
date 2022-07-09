@@ -28,6 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accountUpdated":
+            MessageLookupByLibrary.simpleMessage("アカウント設定を更新しました"),
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
@@ -88,7 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
-        "settings": MessageLookupByLibrary.simpleMessage("設定"),
+        "settings": MessageLookupByLibrary.simpleMessage("アカウント設定"),
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),

@@ -40,7 +40,7 @@
   "changeProfile": "Select Profile",
   "viewProfile": "View Profile",
   "lessonCalendar": "Lesson Calendar",
-  "settings": "Settings",
+  "settings": "Account Settings",
 
   "calendarHeader": "{name}'s Calendar",
   "timeZone": "Timezone: {timeZone}",
@@ -69,5 +69,7 @@
   "eventStartValidation": "Please select a start time",
   "eventEndLabel": "End",
   "eventEndValidation": "Please select an end time",
-  "eventValidTimeValidation": "Start time must be before end time"
+  "eventValidTimeValidation": "Start time must be before end time",
+
+  "accountUpdated": "Account settings updated"
 }
