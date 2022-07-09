@@ -60,6 +60,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please enter lesson title"),
         "eventValidTimeValidation": MessageLookupByLibrary.simpleMessage(
             "Start time must be before end time"),
+        "failedAccountUpdate": MessageLookupByLibrary.simpleMessage(
+            "Failed to update account settings"),
         "filter": MessageLookupByLibrary.simpleMessage("Lesson Filter"),
         "filterTitle":
             MessageLookupByLibrary.simpleMessage("Display by lesson type"),

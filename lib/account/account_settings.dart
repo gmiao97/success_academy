@@ -146,7 +146,14 @@ class _SettingsState extends State<Settings> {
                             ),
                           );
                         },
-                      );
+                      ).catchError((e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(S.of(context).failedAccountUpdate),
+                          ),
+                        );
+                        debugPrint("Failed to update account settings: $e");
+                      });
                     }
                   },
                   child: Text(S.of(context).confirm),

@@ -679,6 +679,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Failed to update account settings`
+  String get failedAccountUpdate {
+    return Intl.message(
+      'Failed to update account settings',
+      name: 'failedAccountUpdate',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

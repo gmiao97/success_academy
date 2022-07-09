@@ -56,6 +56,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("レッスンのタイトルを入力してください"),
         "eventValidTimeValidation":
             MessageLookupByLibrary.simpleMessage("開始時間は終了時間より前である必要があります"),
+        "failedAccountUpdate":
+            MessageLookupByLibrary.simpleMessage("アカウント設定更新に失敗しました"),
         "filter": MessageLookupByLibrary.simpleMessage("レッスンのフィルター"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("レッスンの種類で表示する"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("太郎"),

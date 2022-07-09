@@ -71,5 +71,6 @@
   "eventEndValidation": "Please select an end time",
   "eventValidTimeValidation": "Start time must be before end time",
 
-  "accountUpdated": "Account settings updated"
+  "accountUpdated": "Account settings updated",
+  "failedAccountUpdate": "Failed to update account settings"
 }
