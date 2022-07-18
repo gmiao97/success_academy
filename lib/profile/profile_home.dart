@@ -9,6 +9,7 @@ import 'package:success_academy/profile/profile_create.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
+import 'package:success_academy/services/user_service.dart' as user_service;
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/utils.dart' as utils;
 
@@ -22,6 +23,7 @@ class ProfileHome extends StatefulWidget {
 class _ProfileHomeState extends State<ProfileHome> {
   bool _stripeRedirectClicked = false;
   SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
+  bool _isReferral = false;
 
   @override
   Widget build(BuildContext context) {
@@ -106,32 +108,6 @@ class _ProfileHomeState extends State<ProfileHome> {
                 ),
               ),
               const SizedBox(height: 25),
-              RichText(
-                text: TextSpan(
-                  text: '${S.of(context).myCode}     ',
-                  style: Theme.of(context).textTheme.titleMedium,
-                  children: [
-                    TextSpan(
-                      text: account.myUser?.referralCode,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  Clipboard.setData(
-                      ClipboardData(text: account.myUser?.referralCode));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(S.of(context).copied),
-                    ),
-                  );
-                },
-                child: Text(S.of(context).copy),
-              ),
-              const SizedBox(height: 25),
               const Divider(),
               const SizedBox(height: 25),
               Text(
@@ -148,17 +124,49 @@ class _ProfileHomeState extends State<ProfileHome> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // Profile has subscription
                     if (snapshot.data == true) {
-                      return _stripeRedirectClicked
-                          ? const CircularProgressIndicator(value: null)
-                          : ElevatedButton(
-                              child: Text(S.of(context).manageSubscription),
-                              onPressed: () {
-                                setState(() {
-                                  _stripeRedirectClicked = true;
-                                });
-                                stripe_service.redirectToStripePortal();
-                              },
-                            );
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              text: '${S.of(context).myCode}     ',
+                              style: Theme.of(context).textTheme.titleMedium,
+                              children: [
+                                TextSpan(
+                                  text: account.myUser?.referralCode,
+                                  style: Theme.of(context).textTheme.headline6,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          OutlinedButton(
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(
+                                  text: account.myUser?.referralCode));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(S.of(context).copied),
+                                ),
+                              );
+                            },
+                            child: Text(S.of(context).copy),
+                          ),
+                          const SizedBox(height: 25),
+                          _stripeRedirectClicked
+                              ? const CircularProgressIndicator(value: null)
+                              : ElevatedButton(
+                                  child: Text(S.of(context).manageSubscription),
+                                  onPressed: () {
+                                    setState(() {
+                                      _stripeRedirectClicked = true;
+                                    });
+                                    stripe_service.redirectToStripePortal();
+                                  },
+                                ),
+                        ],
+                      );
                     }
                     // TODO: Add redirect to purchase subscription
                     return StripeSubscriptionCreate(
@@ -168,6 +176,15 @@ class _ProfileHomeState extends State<ProfileHome> {
                         setState(() {
                           _subscriptionPlan = selectedSubscription;
                         });
+                      },
+                      setReferral: (code) async {
+                        List<String> referralCodes =
+                            await user_service.getMyUserReferralCodes();
+                        if (referralCodes.contains(code)) {
+                          _isReferral = true;
+                          return true;
+                        }
+                        return false;
                       },
                       onStripeSubmitClicked: () async {
                         setState(() {
@@ -179,6 +196,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                           userId: account.firebaseUser!.uid,
                           profileId: account.studentProfile!.profileId,
                           subscriptionPlan: _subscriptionPlan!,
+                          isReferral: _isReferral,
                         );
                       },
                     );

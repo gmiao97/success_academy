@@ -35,3 +35,8 @@ Future<void> updateMyUser({required String userId, String? timeZone}) {
   }
   return _myUserModelRef.doc(userId).update(json);
 }
+
+Future<List<String>> getMyUserReferralCodes() async {
+  final myUsers = await _myUserModelRef.get();
+  return myUsers.docs.map((doc) => doc.get('referral_code') as String).toList();
+}

@@ -16,6 +16,8 @@
   "firstNameValidation": "生徒の名前を入力してください",
   "dateOfBirthLabel": "生徒生年月日",
   "dateOfBirthValidation": "生徒の生年月日を選択してください",
+  "referralLabel": "紹介コードを入力してください",
+  "referralValidation": "入力された紹介コードは無効です",
 
   "studentProfile": "生徒プロフィール",
   "teacherProfile": "講師プロフィール",
@@ -27,7 +29,7 @@
 
   "minimumCourse": "ミニマムコース・月＄３０",
   "minimumPreschoolCourse": "ミニマムコース＋未就学児クラス・月＄４０",
-  "pickPlan": "サブスクリプションのコースを選択",
+  "pickPlan": "サブスクリプションのコースを選択してください",
   "stripePurchase": "サブスクリプション購入へ",
 
   "timeZoneLabel": "時間帯",

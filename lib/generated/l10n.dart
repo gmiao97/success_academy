@@ -200,6 +200,26 @@ class S {
     );
   }
 
+  /// `Enter referral code`
+  String get referralLabel {
+    return Intl.message(
+      'Enter referral code',
+      name: 'referralLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid referral code`
+  String get referralValidation {
+    return Intl.message(
+      'Invalid referral code',
+      name: 'referralValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Student Profile Information`
   String get studentProfile {
     return Intl.message(

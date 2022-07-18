@@ -41,7 +41,8 @@ Future<List<QueryDocumentSnapshot>> _getAllPrices() async {
 Future<void> startStripeSubscriptionCheckoutSession(
     {required String userId,
     required String profileId,
-    required SubscriptionPlan subscriptionPlan}) async {
+    required SubscriptionPlan subscriptionPlan,
+    required isReferral}) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
   for (final doc in priceDocs) {
@@ -66,6 +67,7 @@ Future<void> startStripeSubscriptionCheckoutSession(
       'cancel_url': html.window.location.origin,
       'metadata': {
         'profile_id': profileId,
+        'is_referral': isReferral,
       },
     },
   );

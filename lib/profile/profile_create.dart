@@ -7,6 +7,7 @@ import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
+import 'package:success_academy/services/user_service.dart' as user_service;
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/utils.dart' as utils;
 
@@ -49,7 +50,7 @@ class ProfileCreate extends StatelessWidget {
               Card(
                 child: Container(
                   width: 700,
-                  height: 700,
+                  height: 600,
                   padding: const EdgeInsets.all(20),
                   child: const _SignupForm(),
                 ),
@@ -72,6 +73,7 @@ class _SignupFormState extends State<_SignupForm> {
   final TextEditingController _dateOfBirthController = TextEditingController();
   final StudentProfileModel _profileModel = StudentProfileModel();
   SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
+  bool _isReferral = false;
   bool _stripeRedirectClicked = false;
 
   @override
@@ -170,6 +172,15 @@ class _SignupFormState extends State<_SignupForm> {
                 _subscriptionPlan = selectedSubscription;
               });
             },
+            setReferral: (code) async {
+              List<String> referralCodes =
+                  await user_service.getMyUserReferralCodes();
+              if (referralCodes.contains(code)) {
+                _isReferral = true;
+                return true;
+              }
+              return false;
+            },
             onStripeSubmitClicked: () async {
               if (_formKey.currentState!.validate()) {
                 setState(() {
@@ -181,6 +192,7 @@ class _SignupFormState extends State<_SignupForm> {
                   userId: account.firebaseUser!.uid,
                   profileId: profileDoc.id,
                   subscriptionPlan: _subscriptionPlan!,
+                  isReferral: _isReferral,
                 );
               }
             },
@@ -193,19 +205,45 @@ class _SignupFormState extends State<_SignupForm> {
 
 typedef _SubscriptionChangedCallback = Function(SubscriptionPlan?);
 
-class StripeSubscriptionCreate extends StatelessWidget {
+class StripeSubscriptionCreate extends StatefulWidget {
   const StripeSubscriptionCreate({
     Key? key,
     required this.subscriptionPlan,
     required this.stripeRedirectClicked,
+    required this.setReferral,
     required this.onSubscriptionChange,
     required this.onStripeSubmitClicked,
   }) : super(key: key);
 
   final SubscriptionPlan? subscriptionPlan;
   final bool stripeRedirectClicked;
+  final Function(String?) setReferral;
   final _SubscriptionChangedCallback onSubscriptionChange;
   final VoidCallback onStripeSubmitClicked;
+
+  @override
+  State<StripeSubscriptionCreate> createState() =>
+      _StripeSubscriptionCreateState();
+}
+
+class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
+  FocusNode _focusNode = FocusNode();
+  String? _referralCode;
+  bool _showReferralError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() async {
+      if (!_focusNode.hasFocus) {
+        final isReferral = await widget.setReferral(_referralCode);
+        setState(() {
+          _showReferralError =
+              _referralCode != null && _referralCode!.isNotEmpty && !isReferral;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,25 +262,37 @@ class StripeSubscriptionCreate extends StatelessWidget {
             RadioListTile<SubscriptionPlan>(
               title: Text(S.of(context).minimumCourse),
               value: SubscriptionPlan.minimum,
-              groupValue: subscriptionPlan,
-              onChanged: onSubscriptionChange,
+              groupValue: widget.subscriptionPlan,
+              onChanged: widget.onSubscriptionChange,
             ),
             RadioListTile<SubscriptionPlan>(
               title: Text(S.of(context).minimumPreschoolCourse),
               value: SubscriptionPlan.minimumPreschool,
-              groupValue: subscriptionPlan,
-              onChanged: onSubscriptionChange,
+              groupValue: widget.subscriptionPlan,
+              onChanged: widget.onSubscriptionChange,
             )
           ],
         ),
+        TextFormField(
+          focusNode: _focusNode,
+          decoration: InputDecoration(
+            icon: const Icon(Icons.connect_without_contact),
+            labelText: S.of(context).referralLabel,
+            errorText:
+                _showReferralError ? S.of(context).referralValidation : null,
+          ),
+          onChanged: (value) {
+            _referralCode = value;
+          },
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: stripeRedirectClicked
+          child: widget.stripeRedirectClicked
               ? const CircularProgressIndicator(value: null)
               : ElevatedButton.icon(
                   label: Text(S.of(context).stripePurchase),
                   icon: const Icon(Icons.exit_to_app),
-                  onPressed: onStripeSubmitClicked,
+                  onPressed: widget.onStripeSubmitClicked,
                 ),
         ),
       ],

@@ -84,11 +84,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "myPrivateFilter": MessageLookupByLibrary.simpleMessage("登録済みの個別レッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
-        "pickPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択"),
+        "pickPlan":
+            MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択してください"),
         "preschool": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
         "preschoolFilter": MessageLookupByLibrary.simpleMessage("すべての未就学児レッスン"),
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateFilter": MessageLookupByLibrary.simpleMessage("すべての個別レッスン"),
+        "referralLabel": MessageLookupByLibrary.simpleMessage("紹介コードを入力してください"),
+        "referralValidation":
+            MessageLookupByLibrary.simpleMessage("入力された紹介コードは無効です"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),

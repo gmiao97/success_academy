@@ -102,6 +102,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "private": MessageLookupByLibrary.simpleMessage("Private lesson"),
         "privateFilter":
             MessageLookupByLibrary.simpleMessage("All private lessons"),
+        "referralLabel":
+            MessageLookupByLibrary.simpleMessage("Enter referral code"),
+        "referralValidation":
+            MessageLookupByLibrary.simpleMessage("Invalid referral code"),
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),
         "settings": MessageLookupByLibrary.simpleMessage("Account Settings"),
