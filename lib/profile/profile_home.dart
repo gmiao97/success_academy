@@ -168,7 +168,6 @@ class _ProfileHomeState extends State<ProfileHome> {
                         ],
                       );
                     }
-                    // TODO: Add redirect to purchase subscription
                     return StripeSubscriptionCreate(
                       subscriptionPlan: _subscriptionPlan,
                       stripeRedirectClicked: _stripeRedirectClicked,

@@ -12,8 +12,8 @@ Future<List<dynamic>> listEventsFromFreeLessonCalendar({
   String? teacherId,
   List<String>? studentIdList,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('listEventsFromFreeLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-listEventsFromFreeLessonCalendar');
 
   try {
     final result = await callable({
@@ -37,8 +37,8 @@ Future<List<dynamic>> listEventsFromPreschoolLessonCalendar({
   String? teacherId,
   List<String>? studentIdList,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('listEventsFromPreschoolLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-listEventsFromPreschoolLessonCalendar');
 
   try {
     final result = await callable({
@@ -62,8 +62,8 @@ Future<List<dynamic>> listEventsFromPrivateLessonCalendar({
   String? teacherId,
   List<String>? studentIdList,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('listEventsFromPrivateLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-listEventsFromPrivateLessonCalendar');
 
   try {
     final result = await callable({
@@ -83,8 +83,8 @@ Future<List<dynamic>> listEventsFromPrivateLessonCalendar({
 Future<dynamic> deleteEventFromFreeLessonCalendar({
   required String eventId,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('deleteEventFromFreeLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-deleteEventFromFreeLessonCalendar');
 
   try {
     final result = await callable({
@@ -100,8 +100,8 @@ Future<dynamic> deleteEventFromFreeLessonCalendar({
 Future<dynamic> deleteEventFromPreschoolLessonCalendar({
   required String eventId,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('deleteEventFromPreschoolLessonCalendar');
+  HttpsCallable callable = functions.httpsCallable(
+      'calendarFunctions-deleteEventFromPreschoolLessonCalendar');
 
   try {
     final result = await callable({
@@ -117,8 +117,8 @@ Future<dynamic> deleteEventFromPreschoolLessonCalendar({
 Future<dynamic> deleteEventFromPrivateLessonCalendar({
   required String eventId,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('deleteEventFromPrivateLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-deleteEventFromPrivateLessonCalendar');
 
   try {
     final result = await callable({
@@ -133,7 +133,7 @@ Future<dynamic> deleteEventFromPrivateLessonCalendar({
 
 Future<dynamic> addEventToFreeLessonCalendar(EventModel event) async {
   HttpsCallable callable =
-      functions.httpsCallable('addEventToFreeLessonCalendar');
+      functions.httpsCallable('calendarFunctions-addEventToFreeLessonCalendar');
 
   try {
     final result = await callable(event.toJson());
@@ -145,8 +145,8 @@ Future<dynamic> addEventToFreeLessonCalendar(EventModel event) async {
 }
 
 Future<dynamic> addEventToPreschoolLessonCalendar(EventModel event) async {
-  HttpsCallable callable =
-      functions.httpsCallable('addEventToPreschoolLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-addEventToPreschoolLessonCalendar');
 
   try {
     final result = await callable(event.toJson());
@@ -158,8 +158,8 @@ Future<dynamic> addEventToPreschoolLessonCalendar(EventModel event) async {
 }
 
 Future<dynamic> addEventToPrivateLessonCalendar(EventModel event) async {
-  HttpsCallable callable =
-      functions.httpsCallable('addEventToPrivateLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-addEventToPrivateLessonCalendar');
 
   try {
     final result = await callable(event.toJson());
@@ -181,8 +181,8 @@ Future<dynamic> updateEventInFreeLessonCalendar({
   String? teacherId,
   List<String>? studentIdList,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('updateEventInFreeLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-updateEventInFreeLessonCalendar');
 
   try {
     final result = await callable({
@@ -214,8 +214,8 @@ Future<dynamic> updateEventInPreschoolLessonCalendar({
   String? teacherId,
   List<String>? studentIdList,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('updateEventInPreschoolLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-updateEventInPreschoolLessonCalendar');
 
   try {
     final result = await callable({
@@ -248,8 +248,8 @@ Future<dynamic> updateEventInPrivateLessonCalendar({
   List<String>? studentIdList,
   required int numPoints,
 }) async {
-  HttpsCallable callable =
-      functions.httpsCallable('updateEventInPrivateLessonCalendar');
+  HttpsCallable callable = functions
+      .httpsCallable('calendarFunctions-updateEventInPrivateLessonCalendar');
 
   try {
     final result = await callable({
