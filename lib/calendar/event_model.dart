@@ -1,31 +1,27 @@
+import 'dart:convert';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:success_academy/constants.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 // If change, also change _filterNames in calendar_header.dart, _fillColorMap,
 // _borderColorMap, _eventTypeNames in event_dialog.dart.
-enum EventType { free, myFree, preschool, private, myPreschool, myPrivate }
+enum EventType {
+  unknown,
+  free,
+  preschool,
+  private,
+}
 
-Map<EventType, int> _fillColorMap = {
-  EventType.free: grey,
-  EventType.myFree: yellow,
-  EventType.preschool: grey,
-  EventType.myPreschool: blue,
-  EventType.private: grey,
-  EventType.myPrivate: purple,
-};
-
-Map<EventType, int> _borderColorMap = {
+Map<EventType, int> _eventColorMap = {
+  EventType.unknown: grey,
   EventType.free: yellow,
-  EventType.myFree: yellow,
   EventType.preschool: blue,
-  EventType.myPreschool: blue,
   EventType.private: purple,
-  EventType.myPrivate: purple,
 };
 
 class EventModel {
   EventModel({
+    required this.eventType,
     required this.summary,
     required this.description,
     required this.startTime,
@@ -38,54 +34,46 @@ class EventModel {
   });
 
   /// Build object from response returned by Google Calendar API.
-  EventModel.fromJson(
-      Map<String, Object?> json, tz.Location timeZone, this.eventType)
+  EventModel.fromJson(Map<String, Object?> json)
       : eventId = json['id'] as String?,
         recurrenceId = json['recurringEventId'] as String?,
         summary = json['summary'] as String,
         description = json['description'] as String,
-        startTime =
-            tz.TZDateTime.parse(timeZone, (json['start'] as Map)['dateTime']),
-        endTime =
-            tz.TZDateTime.parse(timeZone, (json['end'] as Map)['dateTime']),
-        fillColor = _fillColorMap[eventType] ?? grey,
-        bordercolor = _borderColorMap[eventType] ?? grey,
+        startTime = DateTime.parse((json['start'] as Map)['dateTime']),
+        endTime = DateTime.parse((json['end'] as Map)['dateTime']),
         recurrence = json['recurrence'] as List<String>?,
         timeZone = (json['start'] as Map)['timeZone'] as String {
-    Map<String, dynamic>? extendedProperties = (json['extendedProperties']
-        as Map?)?['shared'] as Map<String, dynamic>?;
-    if (extendedProperties != null) {
-      try {
-        teacherId = extendedProperties.entries
-            .singleWhere((entry) => entry.value == 'teacher')
-            .key;
-      } on StateError {
-        debugPrint(
-            'extendedProperties does not contain teacher id for event: $eventId');
-      }
-      studentIdList = extendedProperties.entries
-          .where((entry) => entry.value == 'student')
-          .map((entry) => entry.key)
-          .toList();
-    }
+    debugPrint((json['start'] as Map)['dateTime']);
+    Map<String, dynamic> extendedProperties =
+        (json['extendedProperties'] as Map)['shared'] as Map<String, dynamic>;
+    eventType = EnumToString.fromString(
+            EventType.values, extendedProperties['eventType']) ??
+        EventType.unknown;
+    teacherId = extendedProperties['teacherId'];
+    studentIdList = extendedProperties['studentIdList'] != null
+        ? jsonDecode(extendedProperties['studentIdList']!)
+        : null;
+    numPoints = extendedProperties['numPoints'] as int?;
+    fillColor = _eventColorMap[eventType]!;
   }
 
   String? eventId;
   String? recurrenceId;
   String summary;
   String description;
-  tz.TZDateTime startTime;
-  tz.TZDateTime endTime;
+  DateTime startTime;
+  DateTime endTime;
   String timeZone;
   List<String>? recurrence;
   String? teacherId;
   List<String>? studentIdList;
   int? numPoints;
-  EventType? eventType;
+  EventType eventType = EventType.unknown;
   int fillColor = grey;
-  int bordercolor = grey;
+
   Map<String, Object?> toJson() {
     return {
+      'eventType': EnumToString.convertToString(eventType),
       'summary': summary,
       'description': description,
       'startTime': startTime.toIso8601String(),

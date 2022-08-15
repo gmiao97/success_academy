@@ -520,61 +520,31 @@ class S {
     );
   }
 
-  /// `All free lessons`
+  /// `Free lessons`
   String get freeFilter {
     return Intl.message(
-      'All free lessons',
+      'Free lessons',
       name: 'freeFilter',
       desc: '',
       args: [],
     );
   }
 
-  /// `My free lessons`
-  String get myFreeFilter {
-    return Intl.message(
-      'My free lessons',
-      name: 'myFreeFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `All preschool lessons`
+  /// `Preschool lessons`
   String get preschoolFilter {
     return Intl.message(
-      'All preschool lessons',
+      'Preschool lessons',
       name: 'preschoolFilter',
       desc: '',
       args: [],
     );
   }
 
-  /// `All private lessons`
+  /// `Private lessons`
   String get privateFilter {
     return Intl.message(
-      'All private lessons',
+      'Private lessons',
       name: 'privateFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `My preschool lessons`
-  String get myPreschoolFilter {
-    return Intl.message(
-      'My preschool lessons',
-      name: 'myPreschoolFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `My private lessons`
-  String get myPrivateFilter {
-    return Intl.message(
-      'My private lessons',
-      name: 'myPrivateFilter',
       desc: '',
       args: [],
     );

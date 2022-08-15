@@ -65,7 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "firstNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名前を入力してください"),
         "free": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
-        "freeFilter": MessageLookupByLibrary.simpleMessage("すべてのフリーレッスン"),
+        "freeFilter": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("山田"),
         "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
@@ -78,18 +78,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumPreschoolCourse":
             MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄４０"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
-        "myFreeFilter": MessageLookupByLibrary.simpleMessage("登録済みのフリーレッスン"),
-        "myPreschoolFilter":
-            MessageLookupByLibrary.simpleMessage("登録済みの未就学児レッスン"),
-        "myPrivateFilter": MessageLookupByLibrary.simpleMessage("登録済みの個別レッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択してください"),
         "preschool": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
-        "preschoolFilter": MessageLookupByLibrary.simpleMessage("すべての未就学児レッスン"),
+        "preschoolFilter": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
-        "privateFilter": MessageLookupByLibrary.simpleMessage("すべての個別レッスン"),
+        "privateFilter": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "referralLabel": MessageLookupByLibrary.simpleMessage("紹介コードを入力してください"),
         "referralValidation":
             MessageLookupByLibrary.simpleMessage("入力された紹介コードは無効です"),

@@ -233,6 +233,7 @@ class _TeacherCreateEventDialogState extends State<TeacherCreateEventDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final event = EventModel(
+                  eventType: _eventType,
                   summary: _summary,
                   description: _description,
                   startTime: tz.TZDateTime(
@@ -253,16 +254,7 @@ class _TeacherCreateEventDialogState extends State<TeacherCreateEventDialog> {
                   ),
                   timeZone: _timeZoneName,
                   teacherId: _account.teacherProfile!.profileId);
-
-              if (_eventType == EventType.free) {
-                event_service.addEventToFreeLessonCalendar(event);
-              }
-              if (_eventType == EventType.preschool) {
-                event_service.addEventToPreschoolLessonCalendar(event);
-              }
-              if (_eventType == EventType.private) {
-                event_service.addEventToPrivateLessonCalendar(event);
-              }
+              event_service.insertEvent(event);
               Navigator.of(context).pop();
             }
           },

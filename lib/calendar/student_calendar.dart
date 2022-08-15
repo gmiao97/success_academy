@@ -6,6 +6,7 @@ import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class StudentCalendar extends StatelessWidget {
   const StudentCalendar({
@@ -101,18 +102,14 @@ class StudentCalendar extends StatelessWidget {
                         vertical: 4.0,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(value[index].bordercolor),
-                          width: 3,
-                        ),
-                        borderRadius: BorderRadius.circular(12.0),
                         color: Color(value[index].fillColor),
                       ),
                       child: ListTile(
                         onTap: () {},
                         title: Text(value[index].summary),
                         subtitle: Text(
-                          '${timeFormatter.format(value[index].startTime)} - ${timeFormatter.format(value[index].endTime)}',
+                          '${timeFormatter.format(tz.TZDateTime.from(value[index].startTime, tz.getLocation(account.myUser!.timeZone)))} - '
+                          '${timeFormatter.format(tz.TZDateTime.from(value[index].endTime, tz.getLocation(account.myUser!.timeZone)))}',
                         ),
                       ),
                     );

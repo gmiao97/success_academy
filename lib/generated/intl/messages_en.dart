@@ -71,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "firstNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s first name"),
         "free": MessageLookupByLibrary.simpleMessage("Free lesson"),
-        "freeFilter": MessageLookupByLibrary.simpleMessage("All free lessons"),
+        "freeFilter": MessageLookupByLibrary.simpleMessage("Free lessons"),
         "goBack": MessageLookupByLibrary.simpleMessage("Go back"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("Smith"),
         "lastNameLabel":
@@ -87,21 +87,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
             "Minimum Course + Preschool Class - \$40/month"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
-        "myFreeFilter": MessageLookupByLibrary.simpleMessage("My free lessons"),
-        "myPreschoolFilter":
-            MessageLookupByLibrary.simpleMessage("My preschool lessons"),
-        "myPrivateFilter":
-            MessageLookupByLibrary.simpleMessage("My private lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),
         "preschool": MessageLookupByLibrary.simpleMessage("Preschool lesson"),
         "preschoolFilter":
-            MessageLookupByLibrary.simpleMessage("All preschool lessons"),
+            MessageLookupByLibrary.simpleMessage("Preschool lessons"),
         "private": MessageLookupByLibrary.simpleMessage("Private lesson"),
         "privateFilter":
-            MessageLookupByLibrary.simpleMessage("All private lessons"),
+            MessageLookupByLibrary.simpleMessage("Private lessons"),
         "referralLabel":
             MessageLookupByLibrary.simpleMessage("Enter referral code"),
         "referralValidation":
