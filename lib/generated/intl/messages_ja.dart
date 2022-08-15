@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("アカウント設定を更新しました"),
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
+        "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("プロフィール選択"),
@@ -78,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumPreschoolCourse":
             MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄４０"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
+        "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
         "pickPlan":

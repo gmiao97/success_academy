@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("Account settings updated"),
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
+        "allEvents": MessageLookupByLibrary.simpleMessage("All Lessons"),
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("Select Profile"),
@@ -87,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
             "Minimum Course + Preschool Class - \$40/month"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
+        "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "pickPlan":

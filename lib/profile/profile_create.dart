@@ -226,7 +226,7 @@ class StripeSubscriptionCreate extends StatefulWidget {
 }
 
 class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
-  FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
   String? _referralCode;
   bool _showReferralError = false;
 

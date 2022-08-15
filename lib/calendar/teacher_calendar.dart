@@ -8,7 +8,6 @@ import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 class TeacherCalendar extends StatelessWidget {
   const TeacherCalendar({
@@ -22,12 +21,14 @@ class TeacherCalendar extends StatelessWidget {
     required this.calendarBuilders,
     required this.availableEventFilters,
     required this.eventFilters,
+    required this.eventDisplay,
     required this.onTodayButtonTap,
     required this.onDaySelected,
     required this.onFormatChanged,
     required this.onPageChanged,
     required this.getEventsForDay,
     required this.onEventFilterConfirm,
+    required this.onEventDisplayChanged,
   }) : super(key: key);
 
   final DateTime focusedDay;
@@ -39,12 +40,14 @@ class TeacherCalendar extends StatelessWidget {
   final CalendarBuilders calendarBuilders;
   final List<EventType> availableEventFilters;
   final List<EventType> eventFilters;
+  final EventDisplay eventDisplay;
   final VoidCallback onTodayButtonTap;
   final Function(DateTime, DateTime) onDaySelected;
   final Function(CalendarFormat) onFormatChanged;
   final Function(DateTime) onPageChanged;
   final List<EventModel> Function(DateTime) getEventsForDay;
   final void Function(List<EventType>) onEventFilterConfirm;
+  final void Function(EventDisplay?) onEventDisplayChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +64,8 @@ class TeacherCalendar extends StatelessWidget {
             availableEventFilters: availableEventFilters,
             eventFilters: eventFilters,
             onEventFilterConfirm: onEventFilterConfirm,
+            eventDisplay: eventDisplay,
+            onEventDisplayChanged: onEventDisplayChanged,
           ),
           TableCalendar(
             firstDay: firstDay,
@@ -125,8 +130,8 @@ class TeacherCalendar extends StatelessWidget {
                         onTap: () {},
                         title: Text(value[index].summary),
                         subtitle: Text(
-                          '${timeFormatter.format(tz.TZDateTime.from(value[index].startTime, tz.getLocation(account.myUser!.timeZone)))} - '
-                          '${timeFormatter.format(tz.TZDateTime.from(value[index].endTime, tz.getLocation(account.myUser!.timeZone)))}',
+                          '${timeFormatter.format(value[index].startTime)} - '
+                          '${timeFormatter.format(value[index].endTime)}',
                         ),
                       ),
                     );

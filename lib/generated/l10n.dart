@@ -550,6 +550,26 @@ class S {
     );
   }
 
+  /// `All Lessons`
+  String get allEvents {
+    return Intl.message(
+      'All Lessons',
+      name: 'allEvents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Lessons`
+  String get myEvents {
+    return Intl.message(
+      'My Lessons',
+      name: 'myEvents',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add lesson`
   String get createEvent {
     return Intl.message(

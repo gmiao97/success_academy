@@ -12,6 +12,8 @@ class CalendarHeader extends StatelessWidget {
     required this.availableEventFilters,
     required this.eventFilters,
     required this.onEventFilterConfirm,
+    required this.eventDisplay,
+    required this.onEventDisplayChanged,
   }) : super(key: key);
 
   final String header;
@@ -20,6 +22,8 @@ class CalendarHeader extends StatelessWidget {
   final List<EventType> availableEventFilters;
   final List<EventType> eventFilters;
   final void Function(List<EventType>) onEventFilterConfirm;
+  final EventDisplay eventDisplay;
+  final void Function(EventDisplay?) onEventDisplayChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -28,38 +32,66 @@ class CalendarHeader extends StatelessWidget {
       EventType.preschool: S.of(context).preschoolFilter,
       EventType.private: S.of(context).privateFilter,
     };
+    final Map<EventDisplay, String> _displayNames = {
+      EventDisplay.all: S.of(context).allEvents,
+      EventDisplay.mine: S.of(context).myEvents,
+    };
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            S.of(context).calendarHeader(header),
-            style: Theme.of(context).textTheme.headline6,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  S.of(context).calendarHeader(header),
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+                Text(
+                  S.of(context).timeZone(timeZone.replaceAll('_', ' ')),
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ],
+            ),
           ),
-          Text(
-            S.of(context).timeZone(timeZone.replaceAll('_', ' ')),
-            style: Theme.of(context).textTheme.headline6,
+          Column(
+            children: [
+              MultiSelectDialogField<EventType>(
+                items: availableEventFilters
+                    .map((type) => MultiSelectItem(type, _filterNames[type]!))
+                    .toList(),
+                initialValue: eventFilters,
+                onConfirm: onEventFilterConfirm,
+                dialogHeight: 400,
+                dialogWidth: 500,
+                buttonText: Text(S.of(context).filter),
+                buttonIcon: const Icon(Icons.filter_alt),
+                confirmText: Text(S.of(context).confirm),
+                cancelText: Text(S.of(context).cancel),
+                title: Text(S.of(context).filterTitle),
+              ),
+              DropdownButton<EventDisplay>(
+                  value: eventDisplay,
+                  items: EventDisplay.values
+                      .map((e) => DropdownMenuItem<EventDisplay>(
+                            value: e,
+                            child: Text(_displayNames[e]!),
+                          ))
+                      .toList(),
+                  onChanged: onEventDisplayChanged),
+            ],
           ),
-          MultiSelectDialogField<EventType>(
-            items: availableEventFilters
-                .map((type) => MultiSelectItem(type, _filterNames[type]!))
-                .toList(),
-            initialValue: eventFilters,
-            onConfirm: onEventFilterConfirm,
-            dialogHeight: 400,
-            dialogWidth: 500,
-            buttonText: Text(S.of(context).filter),
-            buttonIcon: const Icon(Icons.filter_alt),
-            confirmText: Text(S.of(context).confirm),
-            cancelText: Text(S.of(context).cancel),
-            title: Text(S.of(context).filterTitle),
-          ),
-          ElevatedButton.icon(
-            onPressed: onTodayButtonTap,
-            label: Text(S.of(context).today),
-            icon: const Icon(Icons.calendar_today),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ElevatedButton.icon(
+              onPressed: onTodayButtonTap,
+              label: Text(S.of(context).today),
+              icon: const Icon(Icons.calendar_today),
+            ),
           ),
         ],
       ),

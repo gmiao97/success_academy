@@ -57,6 +57,8 @@
   "freeFilter": "Free lessons",
   "preschoolFilter": "Preschool lessons",
   "privateFilter": "Private lessons",
+  "allEvents": "All Lessons",
+  "myEvents": "My Lessons",
   "createEvent": "Add lesson",
 
   "eventSummaryLabel": "Title",

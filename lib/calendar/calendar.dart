@@ -65,6 +65,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
   bool _isCalendarInitialized = false;
   late final List<EventType> _availableEventFilters;
   List<EventType> _eventFilters = [];
+  EventDisplay _eventDisplay = EventDisplay.all;
 
   final CalendarBuilders _calendarBuilders = CalendarBuilders(
     markerBuilder: ((context, day, events) {
@@ -147,9 +148,15 @@ class _BaseCalendarState extends State<BaseCalendar> {
   void _onEventFilterConfirm(List<EventType> filters) {
     setState(() {
       _eventFilters = filters;
-    });
-    setState(() {
       _events = buildEventMap(_filterAllEvents());
+    });
+  }
+
+  void _onEventDisplayChanged(EventDisplay? display) {
+    setState(() {
+      _eventDisplay = display!;
+      _events = buildEventMap(_filterAllEvents(
+          showMyEventsOnly: _eventDisplay == EventDisplay.mine));
     });
   }
 
@@ -199,8 +206,19 @@ class _BaseCalendarState extends State<BaseCalendar> {
 
   List<EventModel> _filterAllEvents({showMyEventsOnly = false}) {
     return _allEvents.where((event) {
-      if (showMyEventsOnly) {}
-      return _eventFilters.contains(event.eventType);
+      if (!_eventFilters.contains(event.eventType)) {
+        return false;
+      }
+      if (showMyEventsOnly) {
+        if (_accountContext.userType == UserType.teacher) {
+          return event.teacherId == _accountContext.teacherProfile!.profileId;
+        }
+        if (_accountContext.userType == UserType.student) {
+          return event.studentIdList
+              .contains(_accountContext.studentProfile!.profileId);
+        }
+      }
+      return true;
     }).toList();
   }
 
@@ -214,8 +232,9 @@ class _BaseCalendarState extends State<BaseCalendar> {
           timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
         )
-        .then((eventList) =>
-            eventList.map((event) => EventModel.fromJson(event)).toList())
+        .then((eventList) => eventList
+            .map((event) => EventModel.fromJson(event, timeZone))
+            .toList())
         .catchError(
       (e) {
         debugPrint('$e');
@@ -244,12 +263,14 @@ class _BaseCalendarState extends State<BaseCalendar> {
         calendarBuilders: _calendarBuilders,
         availableEventFilters: _availableEventFilters,
         eventFilters: _eventFilters,
+        eventDisplay: _eventDisplay,
         onTodayButtonTap: _onTodayButtonTap,
         onDaySelected: _onDaySelected,
         onFormatChanged: _onFormatChanged,
         onPageChanged: _onPageChanged,
         getEventsForDay: _getEventsForDay,
         onEventFilterConfirm: _onEventFilterConfirm,
+        onEventDisplayChanged: _onEventDisplayChanged,
       );
     }
     return StudentCalendar(
@@ -262,12 +283,14 @@ class _BaseCalendarState extends State<BaseCalendar> {
       calendarBuilders: _calendarBuilders,
       availableEventFilters: _availableEventFilters,
       eventFilters: _eventFilters,
+      eventDisplay: _eventDisplay,
       onTodayButtonTap: _onTodayButtonTap,
       onDaySelected: _onDaySelected,
       onFormatChanged: _onFormatChanged,
       onPageChanged: _onPageChanged,
       getEventsForDay: _getEventsForDay,
       onEventFilterConfirm: _onEventFilterConfirm,
+      onEventDisplayChanged: _onEventDisplayChanged,
     );
   }
 }

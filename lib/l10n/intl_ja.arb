@@ -57,6 +57,8 @@
   "freeFilter": "フリーレッスン",
   "preschoolFilter": "未就学児レッスン",
   "privateFilter": "個別レッスン",
+  "allEvents": "すべてのレッスン",
+  "myEvents": "マイレッスン",
   "creatEvent": "レッスン作成",
 
   "eventSummaryLabel": "タイトル",
