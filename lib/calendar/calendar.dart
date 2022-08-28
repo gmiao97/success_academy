@@ -149,6 +149,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
     setState(() {
       _eventFilters = filters;
       _events = buildEventMap(_filterAllEvents());
+      _selectedEvents.value =
+          _selectedDay != null ? _getEventsForDay(_selectedDay!) : [];
     });
   }
 
@@ -157,6 +159,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
       _eventDisplay = display!;
       _events = buildEventMap(_filterAllEvents(
           showMyEventsOnly: _eventDisplay == EventDisplay.mine));
+      _selectedEvents.value =
+          _selectedDay != null ? _getEventsForDay(_selectedDay!) : [];
     });
   }
 

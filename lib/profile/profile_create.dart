@@ -11,7 +11,6 @@ import 'package:success_academy/services/user_service.dart' as user_service;
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/utils.dart' as utils;
 
-// TODO: Welcome email
 class ProfileCreate extends StatelessWidget {
   const ProfileCreate({Key? key}) : super(key: key);
 
