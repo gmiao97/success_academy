@@ -580,6 +580,26 @@ class S {
     );
   }
 
+  /// `Edit lesson`
+  String get editEvent {
+    return Intl.message(
+      'Edit lesson',
+      name: 'editEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Title`
   String get eventSummaryLabel {
     return Intl.message(

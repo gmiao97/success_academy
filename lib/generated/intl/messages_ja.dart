@@ -38,10 +38,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
         "copy": MessageLookupByLibrary.simpleMessage("コードをコピー"),
+        "createEvent": MessageLookupByLibrary.simpleMessage("レッスン作成"),
         "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
             MessageLookupByLibrary.simpleMessage("生徒の生年月日を選択してください"),
+        "delete": MessageLookupByLibrary.simpleMessage("削除"),
+        "editEvent": MessageLookupByLibrary.simpleMessage("レッスン編集"),
         "eventDateLabel": MessageLookupByLibrary.simpleMessage("日付"),
         "eventDescriptionLabel": MessageLookupByLibrary.simpleMessage("説明"),
         "eventDescriptionValidation":

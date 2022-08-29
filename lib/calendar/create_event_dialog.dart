@@ -50,14 +50,13 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     tz.initializeTimeZones();
     _timeZoneName = context.read<AccountModel>().myUser!.timeZone;
     setState(() {
-      _day = widget.selectedDay ??
-          tz.TZDateTime.now(tz.getLocation(_timeZoneName));
+      _day = widget.selectedDay ?? DateTime.now();
       _dayController.text = dateFormatter.format(_day);
       _eventType = widget.eventTypes[0];
     });
   }
 
-  void _selectDay(BuildContext context) async {
+  void _selectDay() async {
     final DateTime? day = await showDatePicker(
       context: context,
       initialDate: _day,
@@ -72,7 +71,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     }
   }
 
-  void _selectStartTime(BuildContext context) async {
+  void _selectStartTime() async {
     final TimeOfDay? time = await showTimePicker(
       context: context,
       initialTime: _startTime,
@@ -85,7 +84,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     }
   }
 
-  void _selectEndTime(BuildContext context) async {
+  void _selectEndTime() async {
     final TimeOfDay? time = await showTimePicker(
       context: context,
       initialTime: _endTime,
@@ -185,7 +184,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   labelText: S.of(context).eventDateLabel,
                 ),
                 onTap: () {
-                  _selectDay(context);
+                  _selectDay();
                 },
               ),
               TextFormField(
@@ -197,7 +196,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   labelText: S.of(context).eventStartLabel,
                 ),
                 onTap: () {
-                  _selectStartTime(context);
+                  _selectStartTime();
                 },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
@@ -218,7 +217,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   labelText: S.of(context).eventEndLabel,
                 ),
                 onTap: () {
-                  _selectEndTime(context);
+                  _selectEndTime();
                 },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
@@ -298,9 +297,11 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   recurrence: _recurrence,
                   timeZone: _timeZoneName,
                   teacherId: _account.teacherProfile!.profileId);
-              event_service
-                  .insertEvent(event)
-                  .then((unused) => widget.onRefresh());
+              event_service.insertEvent(event).then(
+                (unused) {
+                  widget.onRefresh();
+                },
+              );
               Navigator.of(context).pop();
             }
           },

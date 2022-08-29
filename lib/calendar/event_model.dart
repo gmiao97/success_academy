@@ -33,6 +33,7 @@ Map<EventType, int> _eventColorMap = {
 
 class EventModel {
   EventModel({
+    this.eventId,
     required this.eventType,
     required this.summary,
     required this.description,
@@ -86,6 +87,7 @@ class EventModel {
 
   Map<String, Object?> toJson() {
     return {
+      'eventId': eventId,
       'eventType': EnumToString.convertToString(eventType),
       'summary': summary,
       'description': description,

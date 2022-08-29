@@ -60,6 +60,8 @@
   "allEvents": "All Lessons",
   "myEvents": "My Lessons",
   "createEvent": "Add lesson",
+  "editEvent": "Edit lesson",
+  "delete": "Delete",
 
   "eventSummaryLabel": "Title",
   "eventSummaryValidation": "Please enter lesson title",

@@ -59,7 +59,9 @@
   "privateFilter": "個別レッスン",
   "allEvents": "すべてのレッスン",
   "myEvents": "マイレッスン",
-  "creatEvent": "レッスン作成",
+  "createEvent": "レッスン作成",
+  "editEvent": "レッスン編集",
+  "delete": "削除",
 
   "eventSummaryLabel": "タイトル",
   "eventSummaryValidation": "レッスンのタイトルを入力してください",

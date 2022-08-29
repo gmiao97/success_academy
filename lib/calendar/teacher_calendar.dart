@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_header.dart';
-import 'package:success_academy/calendar/event_dialog.dart';
+import 'package:success_academy/calendar/create_event_dialog.dart';
+import 'package:success_academy/calendar/edit_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -130,7 +131,16 @@ class TeacherCalendar extends StatelessWidget {
                         color: Color(value[index].fillColor),
                       ),
                       child: ListTile(
-                        onTap: () {},
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => EditEventDialog(
+                            event: value[index],
+                            firstDay: firstDay,
+                            lastDay: lastDay,
+                            eventTypes: const [EventType.private],
+                            onRefresh: onRefresh,
+                          ),
+                        ),
                         title: Text(value[index].summary),
                         subtitle: Text(
                           '${timeFormatter.format(value[index].startTime)} - '

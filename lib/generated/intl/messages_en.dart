@@ -45,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
         "dateOfBirthValidation": MessageLookupByLibrary.simpleMessage(
             "Please select student\'s date of birth"),
+        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "editEvent": MessageLookupByLibrary.simpleMessage("Edit lesson"),
         "eventDateLabel": MessageLookupByLibrary.simpleMessage("Date"),
         "eventDescriptionLabel":
             MessageLookupByLibrary.simpleMessage("Description"),
