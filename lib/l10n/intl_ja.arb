@@ -71,6 +71,10 @@
   "eventEndLabel": "終了",
   "eventEndValidation": "終了時間を選択してください",
   "eventValidTimeValidation": "開始時間は終了時間より前である必要があります",
+  "recurNone": "繰り返さない",
+  "recurDaily": "毎日",
+  "recurWeekly": "毎週",
+  "recurMonthly": "毎月",
 
   "accountUpdated": "アカウント設定を更新しました",
   "failedAccountUpdate": "アカウント設定更新に失敗しました"

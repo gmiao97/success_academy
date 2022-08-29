@@ -17,6 +17,13 @@ enum EventDisplay {
   mine,
 }
 
+enum Recurrence {
+  none,
+  daily,
+  weekly,
+  monthly,
+}
+
 Map<EventType, int> _eventColorMap = {
   EventType.unknown: grey,
   EventType.free: yellow,

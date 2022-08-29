@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rrule/rrule.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
@@ -9,26 +10,27 @@ import 'package:success_academy/utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
-class TeacherCreateEventDialog extends StatefulWidget {
-  const TeacherCreateEventDialog({
+class CreateEventDialog extends StatefulWidget {
+  const CreateEventDialog({
     Key? key,
     required this.firstDay,
     required this.lastDay,
     required this.selectedDay,
     required this.eventTypes,
+    required this.onRefresh,
   }) : super(key: key);
 
   final DateTime firstDay;
   final DateTime lastDay;
   final DateTime? selectedDay;
   final List<EventType> eventTypes;
+  final void Function() onRefresh;
 
   @override
-  State<TeacherCreateEventDialog> createState() =>
-      _TeacherCreateEventDialogState();
+  State<CreateEventDialog> createState() => _CreateEventDialogState();
 }
 
-class _TeacherCreateEventDialogState extends State<TeacherCreateEventDialog> {
+class _CreateEventDialogState extends State<CreateEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _dayController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
@@ -40,6 +42,7 @@ class _TeacherCreateEventDialogState extends State<TeacherCreateEventDialog> {
   TimeOfDay _endTime = TimeOfDay.now();
   late String _timeZoneName;
   late EventType _eventType;
+  List<String> _recurrence = [];
 
   @override
   void initState() {
@@ -103,6 +106,13 @@ class _TeacherCreateEventDialogState extends State<TeacherCreateEventDialog> {
       EventType.free: S.of(context).free,
       EventType.preschool: S.of(context).preschool,
       EventType.private: S.of(context).private,
+    };
+
+    Map<Recurrence, String> _recurrenceNames = {
+      Recurrence.none: S.of(context).recurNone,
+      Recurrence.daily: S.of(context).recurDaily,
+      Recurrence.weekly: S.of(context).recurWeekly,
+      Recurrence.monthly: S.of(context).recurMonthly,
     };
 
     return AlertDialog(
@@ -217,6 +227,39 @@ class _TeacherCreateEventDialogState extends State<TeacherCreateEventDialog> {
                   return null;
                 },
               ),
+              DropdownButtonFormField<Recurrence>(
+                items: Recurrence.values
+                    .map((r) => DropdownMenuItem(
+                          value: r,
+                          child: Text(_recurrenceNames[r]!),
+                        ))
+                    .toList(),
+                value: Recurrence.none,
+                onChanged: (value) {
+                  switch (value) {
+                    case Recurrence.none:
+                      _recurrence = [];
+                      break;
+                    case Recurrence.daily:
+                      _recurrence = [
+                        RecurrenceRule(frequency: Frequency.daily).toString()
+                      ];
+                      break;
+                    case Recurrence.weekly:
+                      _recurrence = [
+                        RecurrenceRule(frequency: Frequency.weekly).toString()
+                      ];
+                      break;
+                    case Recurrence.monthly:
+                      _recurrence = [
+                        RecurrenceRule(frequency: Frequency.monthly).toString()
+                      ];
+                      break;
+                    default:
+                      break;
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -252,9 +295,12 @@ class _TeacherCreateEventDialogState extends State<TeacherCreateEventDialog> {
                     _endTime.hour,
                     _endTime.minute,
                   ),
+                  recurrence: _recurrence,
                   timeZone: _timeZoneName,
                   teacherId: _account.teacherProfile!.profileId);
-              event_service.insertEvent(event);
+              event_service
+                  .insertEvent(event)
+                  .then((unused) => widget.onRefresh());
               Navigator.of(context).pop();
             }
           },

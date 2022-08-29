@@ -40,11 +40,11 @@ class StudentCalendar extends StatelessWidget {
   final List<EventType> eventFilters;
   final EventDisplay eventDisplay;
   final VoidCallback onTodayButtonTap;
-  final Function(DateTime, DateTime) onDaySelected;
-  final Function(CalendarFormat) onFormatChanged;
-  final Function(DateTime) onPageChanged;
+  final void Function(DateTime, DateTime) onDaySelected;
+  final void Function(CalendarFormat) onFormatChanged;
+  final void Function(DateTime) onPageChanged;
   final List<EventModel> Function(DateTime) getEventsForDay;
-  final Function(List<EventType>) onEventFilterConfirm;
+  final void Function(List<EventType>) onEventFilterConfirm;
   final void Function(EventDisplay?) onEventDisplayChanged;
 
   @override

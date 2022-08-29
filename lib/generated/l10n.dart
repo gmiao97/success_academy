@@ -680,6 +680,46 @@ class S {
     );
   }
 
+  /// `No repeat`
+  String get recurNone {
+    return Intl.message(
+      'No repeat',
+      name: 'recurNone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily`
+  String get recurDaily {
+    return Intl.message(
+      'Daily',
+      name: 'recurDaily',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weekly`
+  String get recurWeekly {
+    return Intl.message(
+      'Weekly',
+      name: 'recurWeekly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monthly`
+  String get recurMonthly {
+    return Intl.message(
+      'Monthly',
+      name: 'recurMonthly',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Account settings updated`
   String get accountUpdated {
     return Intl.message(

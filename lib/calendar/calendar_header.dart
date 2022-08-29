@@ -49,7 +49,7 @@ class CalendarHeader extends StatelessWidget {
               children: [
                 Text(
                   S.of(context).calendarHeader(header),
-                  style: Theme.of(context).textTheme.headline2,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
                 Text(
                   S.of(context).timeZone(timeZone.replaceAll('_', ' ')),

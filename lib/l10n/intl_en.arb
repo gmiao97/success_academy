@@ -71,6 +71,10 @@
   "eventEndLabel": "End",
   "eventEndValidation": "Please select an end time",
   "eventValidTimeValidation": "Start time must be before end time",
+  "recurNone": "No repeat",
+  "recurDaily": "Daily",
+  "recurWeekly": "Weekly",
+  "recurMonthly": "Monthly",
 
   "accountUpdated": "Account settings updated",
   "failedAccountUpdate": "Failed to update account settings"

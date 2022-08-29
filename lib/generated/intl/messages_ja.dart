@@ -88,6 +88,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "preschoolFilter": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateFilter": MessageLookupByLibrary.simpleMessage("個別レッスン"),
+        "recurDaily": MessageLookupByLibrary.simpleMessage("毎日"),
+        "recurMonthly": MessageLookupByLibrary.simpleMessage("毎月"),
+        "recurNone": MessageLookupByLibrary.simpleMessage("繰り返さない"),
+        "recurWeekly": MessageLookupByLibrary.simpleMessage("毎週"),
         "referralLabel": MessageLookupByLibrary.simpleMessage("紹介コードを入力してください"),
         "referralValidation":
             MessageLookupByLibrary.simpleMessage("入力された紹介コードは無効です"),

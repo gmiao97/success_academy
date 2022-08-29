@@ -99,6 +99,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "private": MessageLookupByLibrary.simpleMessage("Private lesson"),
         "privateFilter":
             MessageLookupByLibrary.simpleMessage("Private lessons"),
+        "recurDaily": MessageLookupByLibrary.simpleMessage("Daily"),
+        "recurMonthly": MessageLookupByLibrary.simpleMessage("Monthly"),
+        "recurNone": MessageLookupByLibrary.simpleMessage("No repeat"),
+        "recurWeekly": MessageLookupByLibrary.simpleMessage("Weekly"),
         "referralLabel":
             MessageLookupByLibrary.simpleMessage("Enter referral code"),
         "referralValidation":
