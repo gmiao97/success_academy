@@ -40,7 +40,7 @@ class EventModel {
     required this.startTime,
     required this.endTime,
     required this.timeZone,
-    this.recurrence,
+    this.recurrence = const [],
     this.teacherId,
     this.studentIdList = const [],
     this.numPoints,
@@ -56,7 +56,11 @@ class EventModel {
             tz.TZDateTime.parse(location, (json['start'] as Map)['dateTime']),
         endTime =
             tz.TZDateTime.parse(location, (json['end'] as Map)['dateTime']),
-        recurrence = json['recurrence'] as List<String>?,
+        recurrence = json['recurrence'] != null
+            ? (json['recurrence'] as List<dynamic>)
+                .map((e) => e as String)
+                .toList()
+            : [],
         timeZone = (json['start'] as Map)['timeZone'] as String {
     Map<String, dynamic> extendedProperties =
         (json['extendedProperties'] as Map)['shared'] as Map<String, dynamic>;
@@ -78,7 +82,7 @@ class EventModel {
   DateTime startTime;
   DateTime endTime;
   String timeZone;
-  List<String>? recurrence;
+  List<String> recurrence;
   String? teacherId;
   List<String> studentIdList = [];
   int? numPoints;

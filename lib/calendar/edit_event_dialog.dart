@@ -35,15 +35,14 @@ class _EditEventDialogState extends State<EditEventDialog> {
   final TextEditingController _dayController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
-  late DateTime _day = DateTime(widget.event.startTime.year,
-      widget.event.startTime.month, widget.event.startTime.day);
-  late String _summary = widget.event.summary;
-  late String _description = widget.event.description;
-  late TimeOfDay _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
-  late TimeOfDay _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
+  late DateTime _day;
+  late String _summary;
+  late String _description;
+  late TimeOfDay _startTime;
+  late TimeOfDay _endTime;
   late String _timeZoneName;
-  late EventType _eventType = widget.event.eventType;
-  late List<String> _recurrence = widget.event.recurrence ?? [];
+  late EventType _eventType;
+  late List<String> _recurrence;
 
   @override
   void initState() {
@@ -51,6 +50,14 @@ class _EditEventDialogState extends State<EditEventDialog> {
     tz.initializeTimeZones();
     _timeZoneName = context.read<AccountModel>().myUser!.timeZone;
     setState(() {
+      _day = DateTime(widget.event.startTime.year, widget.event.startTime.month,
+          widget.event.startTime.day);
+      _summary = widget.event.summary;
+      _description = widget.event.description;
+      _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
+      _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
+      _eventType = widget.event.eventType;
+      _recurrence = widget.event.recurrence;
       _dayController.text = dateFormatter.format(_day);
     });
   }
@@ -113,6 +120,24 @@ class _EditEventDialogState extends State<EditEventDialog> {
       Recurrence.daily: S.of(context).recurDaily,
       Recurrence.weekly: S.of(context).recurWeekly,
       Recurrence.monthly: S.of(context).recurMonthly,
+    };
+
+    Map<Recurrence, List<String>> _recurrenceRules = {
+      Recurrence.none: [],
+      Recurrence.daily: [RecurrenceRule(frequency: Frequency.daily).toString()],
+      Recurrence.weekly: [
+        RecurrenceRule(frequency: Frequency.weekly).toString()
+      ],
+      Recurrence.monthly: [
+        RecurrenceRule(frequency: Frequency.monthly).toString()
+      ],
+    };
+
+    Map<String, Recurrence> _rRuleMap = {
+      RecurrenceRule(frequency: Frequency.daily).toString(): Recurrence.daily,
+      RecurrenceRule(frequency: Frequency.weekly).toString(): Recurrence.weekly,
+      RecurrenceRule(frequency: Frequency.monthly).toString():
+          Recurrence.monthly,
     };
 
     return AlertDialog(
@@ -236,30 +261,11 @@ class _EditEventDialogState extends State<EditEventDialog> {
                           child: Text(_recurrenceNames[r]!),
                         ))
                     .toList(),
-                value: Recurrence.none,
+                value: _recurrence.isNotEmpty
+                    ? _rRuleMap[_recurrence[0]] ?? Recurrence.none
+                    : Recurrence.none,
                 onChanged: (value) {
-                  switch (value) {
-                    case Recurrence.none:
-                      _recurrence = [];
-                      break;
-                    case Recurrence.daily:
-                      _recurrence = [
-                        RecurrenceRule(frequency: Frequency.daily).toString()
-                      ];
-                      break;
-                    case Recurrence.weekly:
-                      _recurrence = [
-                        RecurrenceRule(frequency: Frequency.weekly).toString()
-                      ];
-                      break;
-                    case Recurrence.monthly:
-                      _recurrence = [
-                        RecurrenceRule(frequency: Frequency.monthly).toString()
-                      ];
-                      break;
-                    default:
-                      break;
-                  }
+                  _recurrence = _recurrenceRules[value]!;
                 },
               ),
             ],

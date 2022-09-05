@@ -9,6 +9,7 @@ Future<List<dynamic>> listEvents({
   required String timeZone,
   required String timeMin,
   required String timeMax,
+  required bool singleEvents,
 }) async {
   HttpsCallable callable =
       functions.httpsCallable('calendar_functions-list_events');
@@ -18,6 +19,7 @@ Future<List<dynamic>> listEvents({
       'timeZone': timeZone,
       'timeMin': timeMin,
       'timeMax': timeMax,
+      'singleEvents': singleEvents,
     });
     return result.data;
   } catch (e) {

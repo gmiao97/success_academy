@@ -235,6 +235,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
           timeZone: timeZoneName,
           timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
           timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+          singleEvents: true,
         )
         .then((eventList) => eventList
             .map((event) => EventModel.fromJson(event, timeZone))
