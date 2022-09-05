@@ -35,7 +35,9 @@ class _EditEventDialogState extends State<EditEventDialog> {
   final TextEditingController _dayController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
+  final TextEditingController _recurUntilController = TextEditingController();
   late DateTime _day;
+  late DateTime? _recurUntil;
   late String _summary;
   late String _description;
   late TimeOfDay _startTime;
@@ -61,7 +63,10 @@ class _EditEventDialogState extends State<EditEventDialog> {
       _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
       _eventType = widget.event.eventType;
       _recurFrequency = rrule?.frequency;
+      _recurUntil = rrule?.until;
       _dayController.text = dateFormatter.format(_day);
+      _recurUntilController.text =
+          _recurUntil != null ? dateFormatter.format(_recurUntil!) : '';
     });
   }
 
@@ -239,6 +244,13 @@ class _EditEventDialogState extends State<EditEventDialog> {
                   return null;
                 },
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  S.of(context).recurTitle,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
               DropdownButtonFormField<Frequency>(
                 items: recurFrequencies
                     .map((f) => DropdownMenuItem(
@@ -249,6 +261,31 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 value: _recurFrequency,
                 onChanged: null,
               ),
+              if (_recurFrequency != null)
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _recurUntil != null,
+                          onChanged: null,
+                        ),
+                        Text(S.of(context).recurEnd),
+                      ],
+                    ),
+                    if (_recurUntil != null)
+                      TextFormField(
+                        keyboardType: TextInputType.datetime,
+                        readOnly: true,
+                        controller: _recurUntilController,
+                        decoration: InputDecoration(
+                          icon: const Icon(Icons.calendar_month),
+                          labelText: S.of(context).eventDateLabel,
+                        ),
+                        onTap: null,
+                      ),
+                  ],
+                ),
             ],
           ),
         ),

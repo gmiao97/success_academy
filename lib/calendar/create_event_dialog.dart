@@ -36,9 +36,10 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   final TextEditingController _recurUntilController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
+  final DateTime _recurUntilInitialValue =
+      DateTime.now().add(const Duration(days: 50));
   late DateTime _day;
-  DateTime _recurUntil = DateTime.now().add(const Duration(days: 50));
-  bool _recurEnd = false;
+  DateTime? _recurUntil;
   late String _summary;
   late String _description;
   TimeOfDay _startTime = TimeOfDay.now();
@@ -55,7 +56,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     setState(() {
       _day = widget.selectedDay ?? DateTime.now();
       _dayController.text = dateFormatter.format(_day);
-      _recurUntilController.text = dateFormatter.format(_recurUntil);
       _eventType = widget.eventTypes[0];
     });
   }
@@ -78,7 +78,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   void _selectRecurUntil() async {
     final DateTime? day = await showDatePicker(
       context: context,
-      initialDate: _recurUntil,
+      initialDate: _recurUntilInitialValue,
       firstDate: widget.firstDay,
       lastDate: widget.lastDay,
     );
@@ -262,7 +262,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 value: _recurFrequency,
                 onChanged: (value) {
                   setState(() {
-                    _recurFrequency = value!;
+                    _recurFrequency = value;
                   });
                 },
               ),
@@ -272,17 +272,23 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     Row(
                       children: [
                         Checkbox(
-                          value: _recurEnd,
+                          value: _recurUntil != null,
                           onChanged: (value) {
                             setState(() {
-                              _recurEnd = value!;
+                              if (value!) {
+                                _recurUntil = _recurUntilInitialValue;
+                                _recurUntilController.text = dateFormatter
+                                    .format(_recurUntilInitialValue);
+                              } else {
+                                _recurUntil = null;
+                              }
                             });
                           },
                         ),
                         Text(S.of(context).recurEnd),
                       ],
                     ),
-                    if (_recurEnd)
+                    if (_recurUntil != null)
                       TextFormField(
                         keyboardType: TextInputType.datetime,
                         readOnly: true,
