@@ -226,26 +226,38 @@ class _BaseCalendarState extends State<BaseCalendar> {
     }).toList();
   }
 
-  Future<List<EventModel>> _listEvents() {
+  Future<List<EventModel>> _listEvents() async {
     final timeZoneName = _accountContext.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
-    return event_service
-        .listEvents(
-          timeZone: timeZoneName,
-          timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
-          timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
-          singleEvents: true,
-        )
-        .then((eventList) => eventList
-            .map((event) => EventModel.fromJson(event, timeZone))
-            .toList())
-        .catchError(
-      (e) {
-        debugPrint('$e');
-        return <EventModel>[];
-      },
-    );
+    List<EventModel> recurringEvents = (await event_service.listEvents(
+            timeZone: timeZoneName,
+            timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
+            timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+            singleEvents: false))
+        .map((event) => EventModel.fromJson(event, timeZone))
+        .where((event) => event.recurrence.isNotEmpty)
+        .toList();
+
+    Map<String, List<String>> recurringEventsMap = {
+      for (EventModel e in recurringEvents) e.eventId!: e.recurrence
+    };
+
+    List<EventModel> singleEvents = (await event_service.listEvents(
+            timeZone: timeZoneName,
+            timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
+            timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+            singleEvents: true))
+        .map((event) => EventModel.fromJson(event, timeZone))
+        .toList();
+
+    for (EventModel event in singleEvents) {
+      if (event.recurrenceId != null) {
+        event.recurrence = recurringEventsMap[event.recurrenceId]!;
+      }
+    }
+
+    return singleEvents;
   }
 
   @override
