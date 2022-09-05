@@ -700,6 +700,16 @@ class S {
     );
   }
 
+  /// `Repeat`
+  String get recurTitle {
+    return Intl.message(
+      'Repeat',
+      name: 'recurTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No repeat`
   String get recurNone {
     return Intl.message(
@@ -735,6 +745,16 @@ class S {
     return Intl.message(
       'Monthly',
       name: 'recurMonthly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End`
+  String get recurEnd {
+    return Intl.message(
+      'End',
+      name: 'recurEnd',
       desc: '',
       args: [],
     );

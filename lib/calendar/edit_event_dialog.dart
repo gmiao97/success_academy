@@ -42,13 +42,16 @@ class _EditEventDialogState extends State<EditEventDialog> {
   late TimeOfDay _endTime;
   late String _timeZoneName;
   late EventType _eventType;
-  late List<String> _recurrence;
+  late Frequency? _recurFrequency;
 
   @override
   void initState() {
     super.initState();
     tz.initializeTimeZones();
     _timeZoneName = context.read<AccountModel>().myUser!.timeZone;
+    final RecurrenceRule? rrule = widget.event.recurrence.isNotEmpty
+        ? RecurrenceRule.fromString(widget.event.recurrence[0])
+        : null;
     setState(() {
       _day = DateTime(widget.event.startTime.year, widget.event.startTime.month,
           widget.event.startTime.day);
@@ -57,7 +60,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
       _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
       _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
       _eventType = widget.event.eventType;
-      _recurrence = widget.event.recurrence;
+      _recurFrequency = rrule?.frequency;
       _dayController.text = dateFormatter.format(_day);
     });
   }
@@ -115,29 +118,11 @@ class _EditEventDialogState extends State<EditEventDialog> {
       EventType.private: S.of(context).private,
     };
 
-    Map<Recurrence, String> _recurrenceNames = {
-      Recurrence.none: S.of(context).recurNone,
-      Recurrence.daily: S.of(context).recurDaily,
-      Recurrence.weekly: S.of(context).recurWeekly,
-      Recurrence.monthly: S.of(context).recurMonthly,
-    };
-
-    Map<Recurrence, List<String>> _recurrenceRules = {
-      Recurrence.none: [],
-      Recurrence.daily: [RecurrenceRule(frequency: Frequency.daily).toString()],
-      Recurrence.weekly: [
-        RecurrenceRule(frequency: Frequency.weekly).toString()
-      ],
-      Recurrence.monthly: [
-        RecurrenceRule(frequency: Frequency.monthly).toString()
-      ],
-    };
-
-    Map<String, Recurrence> _rRuleMap = {
-      RecurrenceRule(frequency: Frequency.daily).toString(): Recurrence.daily,
-      RecurrenceRule(frequency: Frequency.weekly).toString(): Recurrence.weekly,
-      RecurrenceRule(frequency: Frequency.monthly).toString():
-          Recurrence.monthly,
+    Map<Frequency?, String> _frequencyNames = {
+      null: S.of(context).recurNone,
+      Frequency.daily: S.of(context).recurDaily,
+      Frequency.weekly: S.of(context).recurWeekly,
+      Frequency.monthly: S.of(context).recurMonthly,
     };
 
     return AlertDialog(
@@ -254,19 +239,15 @@ class _EditEventDialogState extends State<EditEventDialog> {
                   return null;
                 },
               ),
-              DropdownButtonFormField<Recurrence>(
-                items: Recurrence.values
-                    .map((r) => DropdownMenuItem(
-                          value: r,
-                          child: Text(_recurrenceNames[r]!),
+              DropdownButtonFormField<Frequency>(
+                items: recurFrequencies
+                    .map((f) => DropdownMenuItem(
+                          value: f,
+                          child: Text(_frequencyNames[f]!),
                         ))
                     .toList(),
-                value: _recurrence.isNotEmpty
-                    ? _rRuleMap[_recurrence[0]] ?? Recurrence.none
-                    : Recurrence.none,
-                onChanged: (value) {
-                  _recurrence = _recurrenceRules[value]!;
-                },
+                value: _recurFrequency,
+                onChanged: null,
               ),
             ],
           ),
@@ -318,7 +299,6 @@ class _EditEventDialogState extends State<EditEventDialog> {
                     _endTime.hour,
                     _endTime.minute,
                   ),
-                  recurrence: _recurrence,
                   timeZone: _timeZoneName,
                   teacherId: _account.teacherProfile!.profileId);
               event_service.updateEvent(event).then(

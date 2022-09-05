@@ -33,16 +33,19 @@ class CreateEventDialog extends StatefulWidget {
 class _CreateEventDialogState extends State<CreateEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _dayController = TextEditingController();
+  final TextEditingController _recurUntilController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
   late DateTime _day;
+  DateTime _recurUntil = DateTime.now().add(const Duration(days: 50));
+  bool _recurEnd = false;
   late String _summary;
   late String _description;
   TimeOfDay _startTime = TimeOfDay.now();
   TimeOfDay _endTime = TimeOfDay.now();
   late String _timeZoneName;
   late EventType _eventType;
-  List<String> _recurrence = [];
+  Frequency? _recurFrequency;
 
   @override
   void initState() {
@@ -52,6 +55,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     setState(() {
       _day = widget.selectedDay ?? DateTime.now();
       _dayController.text = dateFormatter.format(_day);
+      _recurUntilController.text = dateFormatter.format(_recurUntil);
       _eventType = widget.eventTypes[0];
     });
   }
@@ -67,6 +71,21 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
       setState(() {
         _day = day;
         _dayController.text = dateFormatter.format(day);
+      });
+    }
+  }
+
+  void _selectRecurUntil() async {
+    final DateTime? day = await showDatePicker(
+      context: context,
+      initialDate: _recurUntil,
+      firstDate: widget.firstDay,
+      lastDate: widget.lastDay,
+    );
+    if (day != null) {
+      setState(() {
+        _recurUntil = day;
+        _recurUntilController.text = dateFormatter.format(day);
       });
     }
   }
@@ -107,11 +126,11 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
       EventType.private: S.of(context).private,
     };
 
-    Map<Recurrence, String> _recurrenceNames = {
-      Recurrence.none: S.of(context).recurNone,
-      Recurrence.daily: S.of(context).recurDaily,
-      Recurrence.weekly: S.of(context).recurWeekly,
-      Recurrence.monthly: S.of(context).recurMonthly,
+    Map<Frequency?, String> _frequencyNames = {
+      null: S.of(context).recurNone,
+      Frequency.daily: S.of(context).recurDaily,
+      Frequency.weekly: S.of(context).recurWeekly,
+      Frequency.monthly: S.of(context).recurMonthly,
     };
 
     return AlertDialog(
@@ -226,39 +245,58 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   return null;
                 },
               ),
-              DropdownButtonFormField<Recurrence>(
-                items: Recurrence.values
-                    .map((r) => DropdownMenuItem(
-                          value: r,
-                          child: Text(_recurrenceNames[r]!),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  S.of(context).recurTitle,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
+              DropdownButtonFormField<Frequency>(
+                items: recurFrequencies
+                    .map((f) => DropdownMenuItem(
+                          value: f,
+                          child: Text(_frequencyNames[f]!),
                         ))
                     .toList(),
-                value: Recurrence.none,
+                value: _recurFrequency,
                 onChanged: (value) {
-                  switch (value) {
-                    case Recurrence.none:
-                      _recurrence = [];
-                      break;
-                    case Recurrence.daily:
-                      _recurrence = [
-                        RecurrenceRule(frequency: Frequency.daily).toString()
-                      ];
-                      break;
-                    case Recurrence.weekly:
-                      _recurrence = [
-                        RecurrenceRule(frequency: Frequency.weekly).toString()
-                      ];
-                      break;
-                    case Recurrence.monthly:
-                      _recurrence = [
-                        RecurrenceRule(frequency: Frequency.monthly).toString()
-                      ];
-                      break;
-                    default:
-                      break;
-                  }
+                  setState(() {
+                    _recurFrequency = value!;
+                  });
                 },
               ),
+              if (_recurFrequency != null)
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _recurEnd,
+                          onChanged: (value) {
+                            setState(() {
+                              _recurEnd = value!;
+                            });
+                          },
+                        ),
+                        Text(S.of(context).recurEnd),
+                      ],
+                    ),
+                    if (_recurEnd)
+                      TextFormField(
+                        keyboardType: TextInputType.datetime,
+                        readOnly: true,
+                        controller: _recurUntilController,
+                        decoration: InputDecoration(
+                          icon: const Icon(Icons.calendar_month),
+                          labelText: S.of(context).eventDateLabel,
+                        ),
+                        onTap: () {
+                          _selectRecurUntil();
+                        },
+                      ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -294,7 +332,8 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     _endTime.hour,
                     _endTime.minute,
                   ),
-                  recurrence: _recurrence,
+                  recurrence: buildRecurrence(
+                      frequency: _recurFrequency, recurUntil: _recurUntil),
                   timeZone: _timeZoneName,
                   teacherId: _account.teacherProfile!.profileId);
               event_service.insertEvent(event).then(

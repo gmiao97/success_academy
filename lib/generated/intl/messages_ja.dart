@@ -92,8 +92,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateFilter": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("毎日"),
+        "recurEnd": MessageLookupByLibrary.simpleMessage("最終日"),
         "recurMonthly": MessageLookupByLibrary.simpleMessage("毎月"),
         "recurNone": MessageLookupByLibrary.simpleMessage("繰り返さない"),
+        "recurTitle": MessageLookupByLibrary.simpleMessage("繰り返し"),
         "recurWeekly": MessageLookupByLibrary.simpleMessage("毎週"),
         "referralLabel": MessageLookupByLibrary.simpleMessage("紹介コードを入力してください"),
         "referralValidation":

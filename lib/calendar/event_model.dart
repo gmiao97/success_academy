@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:rrule/rrule.dart';
 import 'package:success_academy/constants.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -17,11 +18,22 @@ enum EventDisplay {
   mine,
 }
 
-enum Recurrence {
-  none,
-  daily,
-  weekly,
-  monthly,
+List<Frequency?> recurFrequencies = [
+  null,
+  Frequency.daily,
+  Frequency.weekly,
+  Frequency.monthly
+];
+
+List<String> buildRecurrence(
+    {required Frequency? frequency, DateTime? recurUntil}) {
+  if (frequency == null) {
+    return [];
+  }
+  return [
+    RecurrenceRule(frequency: frequency, until: recurUntil?.toUtc())
+        .toString(options: const RecurrenceRuleToStringOptions(isTimeUtc: true))
+  ];
 }
 
 Map<EventType, int> _eventColorMap = {
