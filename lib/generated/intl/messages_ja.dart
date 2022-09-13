@@ -92,6 +92,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateFilter": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("毎日"),
+        "recurEditNotSupported": MessageLookupByLibrary.simpleMessage(
+            "繰り返しレッスンの編集や削除は現在サポートされていません。直接Google Calendarで編集や削除をしてください。"),
         "recurEnd": MessageLookupByLibrary.simpleMessage("最終日"),
         "recurMonthly": MessageLookupByLibrary.simpleMessage("毎月"),
         "recurNone": MessageLookupByLibrary.simpleMessage("繰り返さない"),

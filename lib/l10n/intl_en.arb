@@ -74,6 +74,7 @@
   "eventEndValidation": "Please select an end time",
   "eventValidTimeValidation": "Start time must be before end time",
   "recurTitle": "Repeat",
+  "recurEditNotSupported": "Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar.",
   "recurNone": "No repeat",
   "recurDaily": "Daily",
   "recurWeekly": "Weekly",

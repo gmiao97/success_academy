@@ -710,6 +710,16 @@ class S {
     );
   }
 
+  /// `Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar.`
+  String get recurEditNotSupported {
+    return Intl.message(
+      'Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar.',
+      name: 'recurEditNotSupported',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No repeat`
   String get recurNone {
     return Intl.message(

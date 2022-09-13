@@ -102,6 +102,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "privateFilter":
             MessageLookupByLibrary.simpleMessage("Private lessons"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("Daily"),
+        "recurEditNotSupported": MessageLookupByLibrary.simpleMessage(
+            "Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar."),
         "recurEnd": MessageLookupByLibrary.simpleMessage("End"),
         "recurMonthly": MessageLookupByLibrary.simpleMessage("Monthly"),
         "recurNone": MessageLookupByLibrary.simpleMessage("No repeat"),

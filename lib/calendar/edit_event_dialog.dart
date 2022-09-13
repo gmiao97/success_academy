@@ -251,6 +251,10 @@ class _EditEventDialogState extends State<EditEventDialog> {
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
+              Text(
+                S.of(context).recurEditNotSupported,
+                style: Theme.of(context).textTheme.caption,
+              ),
               DropdownButtonFormField<Frequency>(
                 items: recurFrequencies
                     .map((f) => DropdownMenuItem(
