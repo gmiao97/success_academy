@@ -61,6 +61,7 @@
   "myEvents": "マイレッスン",
   "createEvent": "レッスン作成",
   "editEvent": "レッスン編集",
+  "signupEvent": "レッスン登録",
   "delete": "削除",
 
   "eventSummaryLabel": "タイトル",

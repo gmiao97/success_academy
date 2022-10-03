@@ -590,6 +590,16 @@ class S {
     );
   }
 
+  /// `Sign up for lesson`
+  String get signupEvent {
+    return Intl.message(
+      'Sign up for lesson',
+      name: 'signupEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Delete`
   String get delete {
     return Intl.message(

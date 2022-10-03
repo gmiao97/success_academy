@@ -173,25 +173,28 @@ class _EditEventDialogState extends State<EditEventDialog> {
                   return null;
                 },
               ),
-              TextFormField(
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.text_snippet_outlined),
-                  labelText: S.of(context).eventDescriptionLabel,
+              SizedBox(
+                width: 500,
+                child: TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.text_snippet_outlined),
+                    labelText: S.of(context).eventDescriptionLabel,
+                  ),
+                  initialValue: _description,
+                  onChanged: (value) {
+                    setState(() {
+                      _description = value;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return S.of(context).eventDescriptionValidation;
+                    }
+                    return null;
+                  },
                 ),
-                initialValue: _description,
-                onChanged: (value) {
-                  setState(() {
-                    _description = value;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return S.of(context).eventDescriptionValidation;
-                  }
-                  return null;
-                },
               ),
               TextFormField(
                 keyboardType: TextInputType.datetime,
@@ -251,9 +254,12 @@ class _EditEventDialogState extends State<EditEventDialog> {
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
-              Text(
-                S.of(context).recurEditNotSupported,
-                style: Theme.of(context).textTheme.caption,
+              SizedBox(
+                width: 500,
+                child: Text(
+                  S.of(context).recurEditNotSupported,
+                  style: Theme.of(context).textTheme.caption,
+                ),
               ),
               DropdownButtonFormField<Frequency>(
                 items: recurFrequencies

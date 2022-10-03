@@ -175,24 +175,27 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   return null;
                 },
               ),
-              TextFormField(
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.text_snippet_outlined),
-                  labelText: S.of(context).eventDescriptionLabel,
+              SizedBox(
+                width: 500,
+                child: TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.text_snippet_outlined),
+                    labelText: S.of(context).eventDescriptionLabel,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _description = value;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return S.of(context).eventDescriptionValidation;
+                    }
+                    return null;
+                  },
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    _description = value;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return S.of(context).eventDescriptionValidation;
-                  }
-                  return null;
-                },
               ),
               TextFormField(
                 keyboardType: TextInputType.datetime,

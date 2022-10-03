@@ -61,6 +61,7 @@
   "myEvents": "My Lessons",
   "createEvent": "Add lesson",
   "editEvent": "Edit lesson",
+  "signupEvent": "Sign up for lesson",
   "delete": "Delete",
 
   "eventSummaryLabel": "Title",

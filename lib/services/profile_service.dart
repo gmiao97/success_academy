@@ -56,6 +56,22 @@ Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
           querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null);
 }
 
+/**  
+  * Get all teacher profiles
+  */
+Future<List<TeacherProfileModel>> getAllTeacherProfiles() {
+  return db
+      .collectionGroup('teacher_profile')
+      .withConverter<TeacherProfileModel>(
+        fromFirestore: (snapshot, _) =>
+            TeacherProfileModel.fromJson(snapshot.id, snapshot.data()!),
+        toFirestore: (teacherProfileModel, _) => teacherProfileModel.toJson(),
+      )
+      .get()
+      .then((querySnapshot) =>
+          querySnapshot.docs.map(((e) => e.data())).toList());
+}
+
 /// Check if saved profile in local storage belongs to user
 Future<bool> studentProfileBelongsToUser(
     {required String userId, required String? profileId}) async {

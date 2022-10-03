@@ -108,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("アカウント設定"),
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
+        "signupEvent": MessageLookupByLibrary.simpleMessage("レッスン登録"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
         "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),

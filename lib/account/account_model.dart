@@ -44,6 +44,7 @@ class AccountModel extends ChangeNotifier {
   MyUserModel? _myUser;
   StudentProfileModel? _studentProfile;
   TeacherProfileModel? _teacherProfile;
+  Map<String, TeacherProfileModel>? _teacherProfileMap;
 
   AuthStatus get authStatus => _authStatus;
   // TODO: Add preferred language and customize welcome email and stripe based on it.
@@ -52,6 +53,8 @@ class AccountModel extends ChangeNotifier {
   MyUserModel? get myUser => _myUser;
   StudentProfileModel? get studentProfile => _studentProfile;
   TeacherProfileModel? get teacherProfile => _teacherProfile;
+  Map<String, TeacherProfileModel>? get teacherProfileModelMap =>
+      _teacherProfileMap;
   UserType get userType {
     if (teacherProfile != null) {
       return UserType.teacher;
@@ -93,6 +96,8 @@ class AccountModel extends ChangeNotifier {
     await user_service.createMyUserDocIfNotExist(firebaseUser.uid);
     _myUser = await user_service.getMyUserDoc(firebaseUser.uid);
     await _initProfile(firebaseUser.uid);
+    _teacherProfileMap = TeacherProfileModel.buildTeacherProfileMap(
+        await profile_service.getAllTeacherProfiles());
   }
 
   Future<void> _initProfile(String userId) async {

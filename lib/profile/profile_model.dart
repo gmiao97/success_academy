@@ -69,4 +69,13 @@ class TeacherProfileModel {
       'first_name': firstName,
     };
   }
+
+  static Map<String, TeacherProfileModel> buildTeacherProfileMap(
+      List<TeacherProfileModel> teacherProfileList) {
+    Map<String, TeacherProfileModel> map = {};
+    for (TeacherProfileModel profile in teacherProfileList) {
+      map[profile._profileId] = profile;
+    }
+    return map;
+  }
 }

@@ -309,6 +309,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
       getEventsForDay: _getEventsForDay,
       onEventFilterConfirm: _onEventFilterConfirm,
       onEventDisplayChanged: _onEventDisplayChanged,
+      onRefresh: _setAllEvents,
     );
   }
 }

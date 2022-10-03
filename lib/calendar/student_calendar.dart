@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_header.dart';
 import 'package:success_academy/calendar/event_model.dart';
+import 'package:success_academy/calendar/signup_event_dialog.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
@@ -27,6 +28,7 @@ class StudentCalendar extends StatelessWidget {
     required this.getEventsForDay,
     required this.onEventFilterConfirm,
     required this.onEventDisplayChanged,
+    required this.onRefresh,
   }) : super(key: key);
 
   final DateTime? selectedDay;
@@ -46,6 +48,7 @@ class StudentCalendar extends StatelessWidget {
   final List<EventModel> Function(DateTime) getEventsForDay;
   final void Function(List<EventType>) onEventFilterConfirm;
   final void Function(EventDisplay?) onEventDisplayChanged;
+  final VoidCallback onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -110,11 +113,25 @@ class StudentCalendar extends StatelessWidget {
                         color: Color(value[index].fillColor),
                       ),
                       child: ListTile(
-                        onTap: () {},
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => SignupEventDialog(
+                            event: value[index],
+                            firstDay: firstDay,
+                            lastDay: lastDay,
+                            onRefresh: onRefresh,
+                          ),
+                        ),
                         title: Text(value[index].summary),
-                        subtitle: Text(
-                          '${timeFormatter.format(value[index].startTime)} - '
-                          '${timeFormatter.format(value[index].endTime)}',
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${timeFormatter.format(value[index].startTime)} - '
+                              '${timeFormatter.format(value[index].endTime)}',
+                            ),
+                            Text(value[index].description),
+                          ],
                         ),
                       ),
                     );
