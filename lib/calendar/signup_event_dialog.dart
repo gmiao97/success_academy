@@ -5,6 +5,7 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 class SignupEventDialog extends StatefulWidget {
@@ -116,7 +117,27 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
         ),
         TextButton(
           child: Text(S.of(context).confirm),
-          onPressed: () {},
+          onPressed: () {
+            final event = widget.event;
+            event.recurrence.clear();
+            event.studentIdList.add(_accountContext.studentProfile!.profileId);
+            event_service.updateEvent(event).then((unused) {
+              widget.onRefresh();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(S.of(context).signupSuccess),
+                ),
+              );
+            }).catchError((err) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(S.of(context).signupFailure),
+                ),
+              );
+            }).whenComplete(() {
+              Navigator.of(context).pop();
+            });
+          },
         ),
       ],
     );

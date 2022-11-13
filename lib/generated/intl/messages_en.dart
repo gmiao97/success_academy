@@ -120,6 +120,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
         "signupEvent":
             MessageLookupByLibrary.simpleMessage("Sign up for lesson"),
+        "signupFailure":
+            MessageLookupByLibrary.simpleMessage("Sign up unsuccessful"),
+        "signupSuccess":
+            MessageLookupByLibrary.simpleMessage("Sign up successful"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage(
             "Continue to subscription purchase"),
         "studentProfile":

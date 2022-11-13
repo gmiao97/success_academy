@@ -600,6 +600,26 @@ class S {
     );
   }
 
+  /// `Sign up successful`
+  String get signupSuccess {
+    return Intl.message(
+      'Sign up successful',
+      name: 'signupSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign up unsuccessful`
+  String get signupFailure {
+    return Intl.message(
+      'Sign up unsuccessful',
+      name: 'signupFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Delete`
   String get delete {
     return Intl.message(
