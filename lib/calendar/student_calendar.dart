@@ -117,8 +117,6 @@ class StudentCalendar extends StatelessWidget {
                           context: context,
                           builder: (context) => SignupEventDialog(
                             event: value[index],
-                            firstDay: firstDay,
-                            lastDay: lastDay,
                             onRefresh: onRefresh,
                           ),
                         ),

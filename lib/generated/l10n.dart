@@ -600,6 +600,26 @@ class S {
     );
   }
 
+  /// `Sign up`
+  String get signup {
+    return Intl.message(
+      'Sign up',
+      name: 'signup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel sign up`
+  String get cancelSignup {
+    return Intl.message(
+      'Cancel sign up',
+      name: 'cancelSignup',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sign up successful`
   String get signupSuccess {
     return Intl.message(
@@ -615,6 +635,26 @@ class S {
     return Intl.message(
       'Sign up unsuccessful',
       name: 'signupFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancelled sign up`
+  String get cancelSignupSuccess {
+    return Intl.message(
+      'Cancelled sign up',
+      name: 'cancelSignupSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to cancel sign up`
+  String get cancelSignupFailure {
+    return Intl.message(
+      'Failed to cancel sign up',
+      name: 'cancelSignupFailure',
       desc: '',
       args: [],
     );

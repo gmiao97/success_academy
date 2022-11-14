@@ -62,8 +62,12 @@
   "createEvent": "レッスン作成",
   "editEvent": "レッスン編集",
   "signupEvent": "レッスン登録",
+  "signup": "登録",  
+  "cancelSignup": "登録解除",
   "signupSuccess": "登録できました",
   "signupFailure": "登録できませんでした",
+  "cancelSignupSuccess": "登録を解除しました",
+  "cancelSignupFailure": "登録解除できませんでした",
   "delete": "削除",
 
   "eventSummaryLabel": "タイトル",

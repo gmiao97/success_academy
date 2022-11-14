@@ -12,14 +12,10 @@ class SignupEventDialog extends StatefulWidget {
   const SignupEventDialog({
     Key? key,
     required this.event,
-    required this.firstDay,
-    required this.lastDay,
     required this.onRefresh,
   }) : super(key: key);
 
   final EventModel event;
-  final DateTime firstDay;
-  final DateTime lastDay;
   final void Function() onRefresh;
 
   @override
@@ -37,6 +33,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
   late TimeOfDay _endTime;
   late EventType _eventType;
   late Frequency? _recurFrequency;
+  late bool _isSignedUp;
 
   @override
   void initState() {
@@ -58,6 +55,8 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
       _eventType = widget.event.eventType;
       _recurFrequency = rrule?.frequency;
       _recurUntil = rrule?.until;
+      _isSignedUp = widget.event.studentIdList
+          .contains(_accountContext.studentProfile!.profileId);
     });
   }
 
@@ -115,29 +114,46 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
             Navigator.of(context).pop();
           },
         ),
-        TextButton(
-          child: Text(S.of(context).confirm),
-          onPressed: () {
-            final event = widget.event;
-            event.recurrence.clear();
-            event.studentIdList.add(_accountContext.studentProfile!.profileId);
-            event_service.updateEvent(event).then((unused) {
-              widget.onRefresh();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(S.of(context).signupSuccess),
-                ),
-              );
-            }).catchError((err) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(S.of(context).signupFailure),
-                ),
-              );
-            }).whenComplete(() {
-              Navigator.of(context).pop();
-            });
-          },
+        ElevatedButton(
+          child: _isSignedUp
+              ? Text(S.of(context).cancelSignup)
+              : Text(S.of(context).signup),
+          onPressed: _day.isAfter(DateTime.now())
+              ? () {
+                  final event = widget.event;
+                  event.recurrence.clear();
+                  if (_isSignedUp) {
+                    event.studentIdList
+                        .remove(_accountContext.studentProfile!.profileId);
+                  } else {
+                    if (!event.studentIdList
+                        .contains(_accountContext.studentProfile!.profileId)) {
+                      event.studentIdList
+                          .add(_accountContext.studentProfile!.profileId);
+                    }
+                  }
+                  event_service.updateEvent(event).then((unused) {
+                    widget.onRefresh();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: _isSignedUp
+                            ? Text(S.of(context).cancelSignupSuccess)
+                            : Text(S.of(context).signupSuccess),
+                      ),
+                    );
+                  }).catchError((err) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: _isSignedUp
+                            ? Text(S.of(context).cancelSignupFailure)
+                            : Text(S.of(context).signupFailure),
+                      ),
+                    );
+                  }).whenComplete(() {
+                    Navigator.of(context).pop();
+                  });
+                }
+              : null,
         ),
       ],
     );

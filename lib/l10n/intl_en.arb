@@ -62,8 +62,12 @@
   "createEvent": "Add lesson",
   "editEvent": "Edit lesson",
   "signupEvent": "Sign up for lesson",
+  "signup": "Sign up",  
+  "cancelSignup": "Cancel sign up",
   "signupSuccess": "Sign up successful",
   "signupFailure": "Sign up unsuccessful",
+  "cancelSignupSuccess": "Cancelled sign up",
+  "cancelSignupFailure": "Failed to cancel sign up",
   "delete": "Delete",
 
   "eventSummaryLabel": "Title",

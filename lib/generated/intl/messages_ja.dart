@@ -34,6 +34,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
+        "cancelSignup": MessageLookupByLibrary.simpleMessage("登録解除"),
+        "cancelSignupFailure":
+            MessageLookupByLibrary.simpleMessage("登録解除できませんでした"),
+        "cancelSignupSuccess":
+            MessageLookupByLibrary.simpleMessage("登録を解除しました"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("プロフィール選択"),
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
@@ -108,6 +113,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("アカウント設定"),
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
+        "signup": MessageLookupByLibrary.simpleMessage("登録"),
         "signupEvent": MessageLookupByLibrary.simpleMessage("レッスン登録"),
         "signupFailure": MessageLookupByLibrary.simpleMessage("登録できませんでした"),
         "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),

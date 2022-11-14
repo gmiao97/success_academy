@@ -148,7 +148,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
   void _onEventFilterConfirm(List<EventType> filters) {
     setState(() {
       _eventFilters = filters;
-      _events = buildEventMap(_filterAllEvents());
+      _events = buildEventMap(_filterAllEvents(
+          showMyEventsOnly: _eventDisplay == EventDisplay.mine));
       _selectedEvents.value =
           _selectedDay != null ? _getEventsForDay(_selectedDay!) : [];
     });
@@ -200,7 +201,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
   Future<void> _setAllEvents() async {
     _allEvents = await _listEvents();
     setState(() {
-      _events = buildEventMap(_filterAllEvents());
+      _events = buildEventMap(_filterAllEvents(
+          showMyEventsOnly: _eventDisplay == EventDisplay.mine));
       _isCalendarInitialized = true;
     });
     if (_selectedDay != null) {

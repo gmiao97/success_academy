@@ -35,6 +35,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "allEvents": MessageLookupByLibrary.simpleMessage("All Lessons"),
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "cancelSignup": MessageLookupByLibrary.simpleMessage("Cancel sign up"),
+        "cancelSignupFailure":
+            MessageLookupByLibrary.simpleMessage("Failed to cancel sign up"),
+        "cancelSignupSuccess":
+            MessageLookupByLibrary.simpleMessage("Cancelled sign up"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("Select Profile"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
@@ -118,6 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Account Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
+        "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
         "signupEvent":
             MessageLookupByLibrary.simpleMessage("Sign up for lesson"),
         "signupFailure":
