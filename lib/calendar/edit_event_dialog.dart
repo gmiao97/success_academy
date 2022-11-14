@@ -301,6 +301,12 @@ class _EditEventDialogState extends State<EditEventDialog> {
         ),
       ),
       actions: <Widget>[
+        TextButton(
+          child: Text(S.of(context).cancel),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         ElevatedButton(
           child: Text(S.of(context).delete),
           style: ElevatedButton.styleFrom(
@@ -315,13 +321,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
             Navigator.of(context).pop();
           },
         ),
-        TextButton(
-          child: Text(S.of(context).cancel),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
+        ElevatedButton(
           child: Text(S.of(context).confirm),
           onPressed: () {
             if (_formKey.currentState!.validate()) {

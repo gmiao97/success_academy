@@ -317,7 +317,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
             Navigator.of(context).pop();
           },
         ),
-        TextButton(
+        ElevatedButton(
           child: Text(S.of(context).confirm),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
