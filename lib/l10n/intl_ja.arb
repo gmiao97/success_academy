@@ -63,6 +63,7 @@
   "editEvent": "レッスン編集",
   "signupEvent": "レッスン登録",
   "signup": "登録",  
+  "signedUp": "登録済み",
   "cancelSignup": "登録解除",
   "signupSuccess": "登録できました",
   "signupFailure": "登録できませんでした",

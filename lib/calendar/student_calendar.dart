@@ -5,6 +5,7 @@ import 'package:success_academy/calendar/calendar_header.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/calendar/signup_event_dialog.dart';
 import 'package:success_academy/constants.dart';
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
@@ -129,6 +130,16 @@ class StudentCalendar extends StatelessWidget {
                               '${timeFormatter.format(value[index].endTime)}',
                             ),
                             Text(value[index].description),
+                            value[index]
+                                    .studentIdList
+                                    .contains(account.studentProfile!.profileId)
+                                ? Text(
+                                    S.of(context).signedUp,
+                                    style: TextStyle(
+                                      color: Colors.green[600],
+                                    ),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       ),

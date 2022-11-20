@@ -610,6 +610,16 @@ class S {
     );
   }
 
+  /// `Signed up`
+  String get signedUp {
+    return Intl.message(
+      'Signed up',
+      name: 'signedUp',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel sign up`
   String get cancelSignup {
     return Intl.message(
