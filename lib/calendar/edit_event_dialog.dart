@@ -45,6 +45,8 @@ class _EditEventDialogState extends State<EditEventDialog> {
   late String _timeZoneName;
   late EventType _eventType;
   late Frequency? _recurFrequency;
+  bool _submitClicked = false;
+  bool _deleteClicked = false;
 
   @override
   void initState() {
@@ -307,56 +309,72 @@ class _EditEventDialogState extends State<EditEventDialog> {
             Navigator.of(context).pop();
           },
         ),
-        ElevatedButton(
-          child: Text(S.of(context).delete),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.red.shade400,
-          ),
-          onPressed: () {
-            event_service.deleteEvent(eventId: widget.event.eventId!).then(
-              (unused) {
-                widget.onRefresh();
-              },
-            );
-            Navigator.of(context).pop();
-          },
-        ),
-        ElevatedButton(
-          child: Text(S.of(context).confirm),
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              final event = EventModel(
-                  eventId: widget.event.eventId,
-                  eventType: _eventType,
-                  summary: _summary,
-                  description: _description,
-                  startTime: tz.TZDateTime(
-                    tz.getLocation(_timeZoneName),
-                    _day.year,
-                    _day.month,
-                    _day.day,
-                    _startTime.hour,
-                    _startTime.minute,
-                  ),
-                  endTime: tz.TZDateTime(
-                    tz.getLocation(_timeZoneName),
-                    _day.year,
-                    _day.month,
-                    _day.day,
-                    _endTime.hour,
-                    _endTime.minute,
-                  ),
-                  timeZone: _timeZoneName,
-                  teacherId: _account.teacherProfile!.profileId);
-              event_service.updateEvent(event).then(
-                (unused) {
-                  widget.onRefresh();
+        _submitClicked
+            ? const SizedBox(
+                width: 20,
+              )
+            : ElevatedButton(
+                child: Text(S.of(context).delete),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red.shade400,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _submitClicked = true;
+                  });
+                  event_service
+                      .deleteEvent(eventId: widget.event.eventId!)
+                      .then(
+                    (unused) {
+                      widget.onRefresh();
+                      Navigator.of(context).pop();
+                    },
+                  );
                 },
-              );
-              Navigator.of(context).pop();
-            }
-          },
-        ),
+              ),
+        _submitClicked
+            ? const CircularProgressIndicator(
+                value: null,
+              )
+            : ElevatedButton(
+                child: Text(S.of(context).confirm),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      _submitClicked = true;
+                    });
+                    final event = EventModel(
+                        eventId: widget.event.eventId,
+                        eventType: _eventType,
+                        summary: _summary,
+                        description: _description,
+                        startTime: tz.TZDateTime(
+                          tz.getLocation(_timeZoneName),
+                          _day.year,
+                          _day.month,
+                          _day.day,
+                          _startTime.hour,
+                          _startTime.minute,
+                        ),
+                        endTime: tz.TZDateTime(
+                          tz.getLocation(_timeZoneName),
+                          _day.year,
+                          _day.month,
+                          _day.day,
+                          _endTime.hour,
+                          _endTime.minute,
+                        ),
+                        timeZone: _timeZoneName,
+                        teacherId: _account.teacherProfile!.profileId);
+                    event_service.updateEvent(event).then(
+                      (unused) {
+                        widget.onRefresh();
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  }
+                },
+              ),
       ],
     );
   }

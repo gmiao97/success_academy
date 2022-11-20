@@ -34,6 +34,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
   late EventType _eventType;
   late Frequency? _recurFrequency;
   late bool _isSignedUp;
+  bool _submitClicked = false;
 
   @override
   void initState() {
@@ -114,47 +115,54 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
             Navigator.of(context).pop();
           },
         ),
-        ElevatedButton(
-          child: _isSignedUp
-              ? Text(S.of(context).cancelSignup)
-              : Text(S.of(context).signup),
-          onPressed: _day.isAfter(DateTime.now())
-              ? () {
-                  final event = widget.event;
-                  event.recurrence.clear();
-                  if (_isSignedUp) {
-                    event.studentIdList
-                        .remove(_accountContext.studentProfile!.profileId);
-                  } else {
-                    if (!event.studentIdList
-                        .contains(_accountContext.studentProfile!.profileId)) {
-                      event.studentIdList
-                          .add(_accountContext.studentProfile!.profileId);
-                    }
-                  }
-                  event_service.updateEvent(event).then((unused) {
-                    widget.onRefresh();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: _isSignedUp
-                            ? Text(S.of(context).cancelSignupSuccess)
-                            : Text(S.of(context).signupSuccess),
-                      ),
-                    );
-                  }).catchError((err) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: _isSignedUp
-                            ? Text(S.of(context).cancelSignupFailure)
-                            : Text(S.of(context).signupFailure),
-                      ),
-                    );
-                  }).whenComplete(() {
-                    Navigator.of(context).pop();
-                  });
-                }
-              : null,
-        ),
+        _submitClicked
+            ? const CircularProgressIndicator(
+                value: null,
+              )
+            : ElevatedButton(
+                child: _isSignedUp
+                    ? Text(S.of(context).cancelSignup)
+                    : Text(S.of(context).signup),
+                onPressed: _day.isAfter(DateTime.now())
+                    ? () {
+                        setState(() {
+                          _submitClicked = true;
+                        });
+                        final event = widget.event;
+                        event.recurrence.clear();
+                        if (_isSignedUp) {
+                          event.studentIdList.remove(
+                              _accountContext.studentProfile!.profileId);
+                        } else {
+                          if (!event.studentIdList.contains(
+                              _accountContext.studentProfile!.profileId)) {
+                            event.studentIdList
+                                .add(_accountContext.studentProfile!.profileId);
+                          }
+                        }
+                        event_service.updateEvent(event).then((unused) {
+                          widget.onRefresh();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: _isSignedUp
+                                  ? Text(S.of(context).cancelSignupSuccess)
+                                  : Text(S.of(context).signupSuccess),
+                            ),
+                          );
+                        }).catchError((err) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: _isSignedUp
+                                  ? Text(S.of(context).cancelSignupFailure)
+                                  : Text(S.of(context).signupFailure),
+                            ),
+                          );
+                        }).whenComplete(() {
+                          Navigator.of(context).pop();
+                        });
+                      }
+                    : null,
+              ),
       ],
     );
   }

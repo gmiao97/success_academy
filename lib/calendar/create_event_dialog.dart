@@ -47,6 +47,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   late String _timeZoneName;
   late EventType _eventType;
   Frequency? _recurFrequency;
+  bool _submitClicked = false;
 
   @override
   void initState() {
@@ -317,43 +318,51 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
             Navigator.of(context).pop();
           },
         ),
-        ElevatedButton(
-          child: Text(S.of(context).confirm),
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              final event = EventModel(
-                  eventType: _eventType,
-                  summary: _summary,
-                  description: _description,
-                  startTime: tz.TZDateTime(
-                    tz.getLocation(_timeZoneName),
-                    _day.year,
-                    _day.month,
-                    _day.day,
-                    _startTime.hour,
-                    _startTime.minute,
-                  ),
-                  endTime: tz.TZDateTime(
-                    tz.getLocation(_timeZoneName),
-                    _day.year,
-                    _day.month,
-                    _day.day,
-                    _endTime.hour,
-                    _endTime.minute,
-                  ),
-                  recurrence: buildRecurrence(
-                      frequency: _recurFrequency, recurUntil: _recurUntil),
-                  timeZone: _timeZoneName,
-                  teacherId: _account.teacherProfile!.profileId);
-              event_service.insertEvent(event).then(
-                (unused) {
-                  widget.onRefresh();
+        _submitClicked
+            ? const CircularProgressIndicator(
+                value: null,
+              )
+            : ElevatedButton(
+                child: Text(S.of(context).confirm),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      _submitClicked = true;
+                    });
+                    final event = EventModel(
+                        eventType: _eventType,
+                        summary: _summary,
+                        description: _description,
+                        startTime: tz.TZDateTime(
+                          tz.getLocation(_timeZoneName),
+                          _day.year,
+                          _day.month,
+                          _day.day,
+                          _startTime.hour,
+                          _startTime.minute,
+                        ),
+                        endTime: tz.TZDateTime(
+                          tz.getLocation(_timeZoneName),
+                          _day.year,
+                          _day.month,
+                          _day.day,
+                          _endTime.hour,
+                          _endTime.minute,
+                        ),
+                        recurrence: buildRecurrence(
+                            frequency: _recurFrequency,
+                            recurUntil: _recurUntil),
+                        timeZone: _timeZoneName,
+                        teacherId: _account.teacherProfile!.profileId);
+                    event_service.insertEvent(event).then(
+                      (unused) {
+                        widget.onRefresh();
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  }
                 },
-              );
-              Navigator.of(context).pop();
-            }
-          },
-        ),
+              ),
       ],
     );
   }
