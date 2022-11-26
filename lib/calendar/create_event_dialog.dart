@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
 import 'package:success_academy/account/account_model.dart';
@@ -42,6 +43,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   DateTime? _recurUntil;
   late String _summary;
   late String _description;
+  int? _numPoints;
   TimeOfDay _startTime = TimeOfDay.now();
   TimeOfDay _endTime = TimeOfDay.now();
   late String _timeZoneName;
@@ -198,6 +200,27 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   },
                 ),
               ),
+              _eventType == EventType.private
+                  ? TextFormField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        icon: const Icon(Icons.numbers),
+                        labelText: S.of(context).eventPointsLabel,
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _numPoints = int.parse(value);
+                        });
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return S.of(context).eventPointsValidation;
+                        }
+                        return null;
+                      },
+                    )
+                  : const SizedBox(),
               TextFormField(
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
@@ -333,6 +356,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                         eventType: _eventType,
                         summary: _summary,
                         description: _description,
+                        numPoints: _numPoints,
                         startTime: tz.TZDateTime(
                           tz.getLocation(_timeZoneName),
                           _day.year,

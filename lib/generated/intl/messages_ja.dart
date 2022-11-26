@@ -22,9 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "${name}のカレンダー";
 
-  static String m1(timeZone) => "時間帯： ${timeZone}";
+  static String m1(numPoints) => "${numPoints} ポイント";
 
-  static String m2(address) => "確認リンクがメールアドレス（${address}）に送信されました";
+  static String m2(timeZone) => "時間帯： ${timeZone}";
+
+  static String m3(address) => "確認リンクがメールアドレス（${address}）に送信されました";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -57,6 +59,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventEndLabel": MessageLookupByLibrary.simpleMessage("終了"),
         "eventEndValidation":
             MessageLookupByLibrary.simpleMessage("終了時間を選択してください"),
+        "eventPointsDisplay": m1,
+        "eventPointsLabel": MessageLookupByLibrary.simpleMessage("ポイント数"),
+        "eventPointsValidation":
+            MessageLookupByLibrary.simpleMessage("ポイント数を入力してください"),
         "eventStartLabel": MessageLookupByLibrary.simpleMessage("開始"),
         "eventStartValidation":
             MessageLookupByLibrary.simpleMessage("開始時間を選択してください"),
@@ -121,14 +127,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
         "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),
-        "timeZone": m1,
+        "timeZone": m2,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("時間帯"),
         "timeZoneValidation":
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "today": MessageLookupByLibrary.simpleMessage("今日"),
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
-        "verifyEmailMessage": m2,
+        "verifyEmailMessage": m3,
         "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る")
       };
 }

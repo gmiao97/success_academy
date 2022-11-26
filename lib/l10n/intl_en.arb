@@ -73,6 +73,9 @@
 
   "eventSummaryLabel": "Title",
   "eventSummaryValidation": "Please enter lesson title",
+  "eventPointsLabel": "Number of points",
+  "eventPointsValidation": "Please enter number of points",
+  "eventPointsDisplay": "{numPoints} Points",
   "eventDescriptionLabel": "Description",
   "eventDescriptionValidation": "Please enter lesson description",
   "eventDateLabel": "Date",

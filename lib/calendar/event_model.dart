@@ -83,7 +83,7 @@ class EventModel {
     studentIdList = extendedProperties['studentIdList'] != null
         ? jsonDecode(extendedProperties['studentIdList']).cast<String>()
         : [];
-    numPoints = extendedProperties['numPoints'] as int?;
+    numPoints = int.tryParse(extendedProperties['numPoints'] ?? 'none');
     fillColor = _eventColorMap[eventType]!;
   }
 

@@ -22,9 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "${name}\'s Calendar";
 
-  static String m1(timeZone) => "Timezone: ${timeZone}";
+  static String m1(numPoints) => "${numPoints} Points";
 
-  static String m2(address) =>
+  static String m2(timeZone) => "Timezone: ${timeZone}";
+
+  static String m3(address) =>
       "A verification link has been sent to your email at ${address}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -60,6 +62,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventEndLabel": MessageLookupByLibrary.simpleMessage("End"),
         "eventEndValidation":
             MessageLookupByLibrary.simpleMessage("Please select an end time"),
+        "eventPointsDisplay": m1,
+        "eventPointsLabel":
+            MessageLookupByLibrary.simpleMessage("Number of points"),
+        "eventPointsValidation": MessageLookupByLibrary.simpleMessage(
+            "Please enter number of points"),
         "eventStartLabel": MessageLookupByLibrary.simpleMessage("Start"),
         "eventStartValidation":
             MessageLookupByLibrary.simpleMessage("Please select a start time"),
@@ -137,14 +144,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student Profile Information"),
         "teacherProfile":
             MessageLookupByLibrary.simpleMessage("Teacher Profile Information"),
-        "timeZone": m1,
+        "timeZone": m2,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("Time Zone"),
         "timeZoneValidation": MessageLookupByLibrary.simpleMessage(
             "Please select a valid time zone"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
-        "verifyEmailMessage": m2,
+        "verifyEmailMessage": m3,
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
       };
 }

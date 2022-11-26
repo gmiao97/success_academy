@@ -700,6 +700,36 @@ class S {
     );
   }
 
+  /// `Number of points`
+  String get eventPointsLabel {
+    return Intl.message(
+      'Number of points',
+      name: 'eventPointsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter number of points`
+  String get eventPointsValidation {
+    return Intl.message(
+      'Please enter number of points',
+      name: 'eventPointsValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{numPoints} Points`
+  String eventPointsDisplay(Object numPoints) {
+    return Intl.message(
+      '$numPoints Points',
+      name: 'eventPointsDisplay',
+      desc: '',
+      args: [numPoints],
+    );
+  }
+
   /// `Description`
   String get eventDescriptionLabel {
     return Intl.message(

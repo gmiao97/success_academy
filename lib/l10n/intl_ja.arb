@@ -73,6 +73,9 @@
 
   "eventSummaryLabel": "タイトル",
   "eventSummaryValidation": "レッスンのタイトルを入力してください",
+  "eventPointsLabel": "ポイント数",
+  "eventPointsValidation": "ポイント数を入力してください",
+  "eventPointsDisplay": "{numPoints} ポイント",
   "eventDescriptionLabel": "説明",
   "eventDescriptionValidation": "レッスンの説明を入力してください",
   "eventDateLabel": "日付",

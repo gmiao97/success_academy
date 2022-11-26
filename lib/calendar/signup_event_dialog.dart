@@ -27,8 +27,9 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
   late DateTime _day;
   late DateTime? _recurUntil;
   late String _summary;
-  late String? _teacherName;
+  String? _teacherName;
   late String _description;
+  int? _numPoints;
   late TimeOfDay _startTime;
   late TimeOfDay _endTime;
   late EventType _eventType;
@@ -51,6 +52,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
       _teacherName =
           '${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.lastName} ${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.firstName}';
       _description = widget.event.description;
+      _numPoints = widget.event.numPoints;
       _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
       _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
       _eventType = widget.event.eventType;
@@ -105,6 +107,9 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
               width: 500,
               child: Text(_description),
             ),
+            _eventType == EventType.private
+                ? Text(S.of(context).eventPointsDisplay(_numPoints ?? 0))
+                : const SizedBox(),
           ],
         ),
       ),
