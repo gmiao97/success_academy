@@ -205,7 +205,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
-                        icon: const Icon(Icons.numbers),
+                        icon: const Icon(Icons.add),
                         labelText: S.of(context).eventPointsLabel,
                       ),
                       onChanged: (value) {

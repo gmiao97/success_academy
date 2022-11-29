@@ -27,10 +27,11 @@
   "copied": "Code Copied!",
   "manageSubscription": "Manage Subscriptions",
 
-  "minimumCourse": "Minimum Course - $30/month",
-  "minimumPreschoolCourse": "Minimum Course + Preschool Class - $40/month",
+  "minimumCourse": "Minimum Course - $40/month",
+  "minimumPreschoolCourse": "Minimum Course + Preschool Class - $50/month",
   "pickPlan": "Choose a subscription plan",
   "stripePurchase": "Continue to subscription purchase",
+  "stripePointsPurchase": "Continue to points purchase",
 
   "timeZoneLabel": "Time Zone",
   "timeZoneValidation": "Please select a valid time zone",
@@ -42,6 +43,7 @@
   "changeProfile": "Select Profile",
   "viewProfile": "View Profile",
   "lessonCalendar": "Lesson Calendar",
+  "addPoints": "Add points",
   "settings": "Account Settings",
 
   "calendarHeader": "{name}'s Calendar",

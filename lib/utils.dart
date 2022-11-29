@@ -109,6 +109,13 @@ Scaffold buildStudentProfileScaffold(
             },
           ),
           ListTile(
+            leading: const Icon(Icons.add),
+            title: Text(S.of(context).addPoints),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeAddPoints);
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.settings),
             title: Text(S.of(context).settings),
             onTap: () {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html' as html;
 import 'dart:io';
 
@@ -19,23 +20,9 @@ Future<List<QueryDocumentSnapshot>> getSubscriptionsForUser(
   return subscriptionsQuery.docs;
 }
 
-Future<List<QueryDocumentSnapshot>> _getProducts() async {
-  final productQuery =
-      await db.collection('products').where('active', isEqualTo: true).get();
-  return productQuery.docs;
-}
-
 Future<List<QueryDocumentSnapshot>> _getAllPrices() async {
-  final productDocs = await _getProducts();
-  final priceDocs = <QueryDocumentSnapshot>[];
-  for (final doc in productDocs) {
-    final priceQuery = await doc.reference
-        .collection('prices')
-        .where('active', isEqualTo: true)
-        .get();
-    priceDocs.addAll(priceQuery.docs);
-  }
-  return priceDocs;
+  final pricesQuery = await db.collectionGroup('prices').get();
+  return pricesQuery.docs;
 }
 
 Future<void> startStripeSubscriptionCheckoutSession(
@@ -55,7 +42,7 @@ Future<void> startStripeSubscriptionCheckoutSession(
       debugPrint('No metadata.id field found for price ${doc.id}');
     }
   }
-
+  Completer completer = Completer();
   final checkoutSessionDoc = await db
       .collection('customers')
       .doc(userId)
@@ -75,9 +62,56 @@ Future<void> startStripeSubscriptionCheckoutSession(
     (doc) {
       if (doc.data()!.containsKey('url')) {
         html.window.location.replace(doc.data()!['url']);
+        completer.complete();
+      }
+      if (doc.data()!.containsKey('error')) {
+        completer.completeError(Exception(doc.data()!['error']['message']));
       }
     },
   );
+  return completer.future;
+}
+
+Future<void> startStripePointsCheckoutSession(
+    {required String userId, required int quantity}) async {
+  String? selectedPriceId;
+  final priceDocs = await _getAllPrices();
+  for (final doc in priceDocs) {
+    try {
+      if (doc.get('metadata.id') == 'point') {
+        selectedPriceId = doc.id;
+      }
+    } on StateError {
+      debugPrint('No metadata.id field found for price ${doc.id}');
+    }
+  }
+
+  final checkoutSessionDoc = await db
+      .collection('customers')
+      .doc(userId)
+      .collection('checkout_sessions')
+      .add(
+    {
+      'mode': 'payment',
+      'price': selectedPriceId,
+      'quantity': quantity,
+      'success_url': html.window.location.origin,
+      'cancel_url': html.window.location.origin,
+    },
+  );
+  Completer completer = Completer();
+  checkoutSessionDoc.snapshots().listen(
+    (doc) {
+      if (doc.data()!.containsKey('url')) {
+        html.window.location.replace(doc.data()!['url']);
+        completer.complete();
+      }
+      if (doc.data()!.containsKey('error')) {
+        completer.completeError(Exception(doc.data()!['error']['message']));
+      }
+    },
+  );
+  return completer.future;
 }
 
 Future<void> redirectToStripePortal() async {

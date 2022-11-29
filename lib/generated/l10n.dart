@@ -290,20 +290,20 @@ class S {
     );
   }
 
-  /// `Minimum Course - $30/month`
+  /// `Minimum Course - $40/month`
   String get minimumCourse {
     return Intl.message(
-      'Minimum Course - \$30/month',
+      'Minimum Course - \$40/month',
       name: 'minimumCourse',
       desc: '',
       args: [],
     );
   }
 
-  /// `Minimum Course + Preschool Class - $40/month`
+  /// `Minimum Course + Preschool Class - $50/month`
   String get minimumPreschoolCourse {
     return Intl.message(
-      'Minimum Course + Preschool Class - \$40/month',
+      'Minimum Course + Preschool Class - \$50/month',
       name: 'minimumPreschoolCourse',
       desc: '',
       args: [],
@@ -325,6 +325,16 @@ class S {
     return Intl.message(
       'Continue to subscription purchase',
       name: 'stripePurchase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue to points purchase`
+  String get stripePointsPurchase {
+    return Intl.message(
+      'Continue to points purchase',
+      name: 'stripePointsPurchase',
       desc: '',
       args: [],
     );
@@ -405,6 +415,16 @@ class S {
     return Intl.message(
       'Lesson Calendar',
       name: 'lessonCalendar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add points`
+  String get addPoints {
+    return Intl.message(
+      'Add points',
+      name: 'addPoints',
       desc: '',
       args: [],
     );

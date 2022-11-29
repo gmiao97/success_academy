@@ -12,6 +12,7 @@ import 'package:success_academy/firebase_options.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/l10n/FlutterFireUIJaLocalizationsDelegate.dart';
 import 'package:success_academy/landing/landing.dart';
+import 'package:success_academy/profile/add_points.dart';
 import 'package:success_academy/profile/profile_home.dart';
 import 'package:success_academy/profile/profile_create.dart';
 import 'package:success_academy/utils.dart' as utils;
@@ -59,6 +60,7 @@ class App extends StatelessWidget {
         constants.routeSignIn: (context) => const SignInPage(),
         constants.routeCreateProfile: (context) => const ProfileCreate(),
         constants.routeCalendar: (context) => const Calendar(),
+        constants.routeAddPoints: (context) => const AddPoints(),
         constants.routeSettings: (context) => const AccountSettings(),
       },
     );

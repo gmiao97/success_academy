@@ -108,6 +108,19 @@ class _ProfileHomeState extends State<ProfileHome> {
                 ),
               ),
               const SizedBox(height: 25),
+              RichText(
+                text: TextSpan(
+                  text: '${S.of(context).eventPointsLabel}     ',
+                  style: Theme.of(context).textTheme.titleMedium,
+                  children: [
+                    TextSpan(
+                      text: '${account.studentProfile!.numPoints}',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 25),
               const Divider(),
               const SizedBox(height: 25),
               Text(
@@ -190,13 +203,25 @@ class _ProfileHomeState extends State<ProfileHome> {
                           _stripeRedirectClicked = true;
                         });
                         // TODO: No trial (+reinitiation fee?) for people who already had trial
-                        await stripe_service
-                            .startStripeSubscriptionCheckoutSession(
-                          userId: account.firebaseUser!.uid,
-                          profileId: account.studentProfile!.profileId,
-                          subscriptionPlan: _subscriptionPlan!,
-                          isReferral: _isReferral,
-                        );
+                        try {
+                          await stripe_service
+                              .startStripeSubscriptionCheckoutSession(
+                            userId: account.firebaseUser!.uid,
+                            profileId: account.studentProfile!.profileId,
+                            subscriptionPlan: _subscriptionPlan!,
+                            isReferral: _isReferral,
+                          );
+                        } catch (e) {
+                          setState(() {
+                            _stripeRedirectClicked = false;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          });
+                        }
                       },
                     );
                   }

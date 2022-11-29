@@ -27,10 +27,11 @@
   "copied": "コードをコピーしました",
   "manageSubscription": "サブスクリプション管理",
 
-  "minimumCourse": "ミニマムコース・月＄３０",
-  "minimumPreschoolCourse": "ミニマムコース＋未就学児クラス・月＄４０",
+  "minimumCourse": "ミニマムコース・月＄4０",
+  "minimumPreschoolCourse": "ミニマムコース＋未就学児クラス・月＄5０",
   "pickPlan": "サブスクリプションのコースを選択してください",
   "stripePurchase": "サブスクリプション購入へ",
+  "stripePointsPurchase": "ポイント購入へ",
 
   "timeZoneLabel": "時間帯",
   "timeZoneValidation": "有効の時間帯を選択してください",
@@ -42,6 +43,7 @@
   "changeProfile": "プロフィール選択",
   "viewProfile": "プロフィールを見る",
   "lessonCalendar": "レッスンカレンダー",
+  "addPoints": "ポイントを追加する",
   "settings": "アカウント設定",
 
   "calendarHeader": "{name}のカレンダー",

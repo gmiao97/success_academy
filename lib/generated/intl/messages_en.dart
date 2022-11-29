@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("Account settings updated"),
+        "addPoints": MessageLookupByLibrary.simpleMessage("Add points"),
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
         "allEvents": MessageLookupByLibrary.simpleMessage("All Lessons"),
         "calendarHeader": m0,
@@ -98,9 +99,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("Manage Subscriptions"),
         "minimumCourse":
-            MessageLookupByLibrary.simpleMessage("Minimum Course - \$30/month"),
+            MessageLookupByLibrary.simpleMessage("Minimum Course - \$40/month"),
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
-            "Minimum Course + Preschool Class - \$40/month"),
+            "Minimum Course + Preschool Class - \$50/month"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
@@ -138,6 +139,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sign up unsuccessful"),
         "signupSuccess":
             MessageLookupByLibrary.simpleMessage("Sign up successful"),
+        "stripePointsPurchase":
+            MessageLookupByLibrary.simpleMessage("Continue to points purchase"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage(
             "Continue to subscription purchase"),
         "studentProfile":

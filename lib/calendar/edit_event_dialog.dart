@@ -201,7 +201,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
-                        icon: const Icon(Icons.numbers),
+                        icon: const Icon(Icons.add),
                         labelText: S.of(context).eventPointsLabel,
                       ),
                       initialValue:

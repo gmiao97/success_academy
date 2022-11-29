@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("アカウント設定を更新しました"),
+        "addPoints": MessageLookupByLibrary.simpleMessage("ポイントを追加する"),
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
         "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
         "calendarHeader": m0,
@@ -89,9 +90,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "lessonCalendar": MessageLookupByLibrary.simpleMessage("レッスンカレンダー"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),
-        "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース・月＄３０"),
+        "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース・月＄4０"),
         "minimumPreschoolCourse":
-            MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄４０"),
+            MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄5０"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
@@ -124,6 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupEvent": MessageLookupByLibrary.simpleMessage("レッスン登録"),
         "signupFailure": MessageLookupByLibrary.simpleMessage("登録できませんでした"),
         "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),
+        "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
         "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),

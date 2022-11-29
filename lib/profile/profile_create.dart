@@ -186,12 +186,24 @@ class _SignupFormState extends State<_SignupForm> {
                 });
                 final profileDoc = await profile_service.addStudentProfile(
                     account.firebaseUser!.uid, _profileModel);
-                await stripe_service.startStripeSubscriptionCheckoutSession(
-                  userId: account.firebaseUser!.uid,
-                  profileId: profileDoc.id,
-                  subscriptionPlan: _subscriptionPlan!,
-                  isReferral: _isReferral,
-                );
+                try {
+                  await stripe_service.startStripeSubscriptionCheckoutSession(
+                    userId: account.firebaseUser!.uid,
+                    profileId: profileDoc.id,
+                    subscriptionPlan: _subscriptionPlan!,
+                    isReferral: _isReferral,
+                  );
+                } catch (e) {
+                  setState(() {
+                    _stripeRedirectClicked = false;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.toString()),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  });
+                }
               }
             },
           ),
