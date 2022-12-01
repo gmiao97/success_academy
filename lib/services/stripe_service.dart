@@ -73,7 +73,9 @@ Future<void> startStripeSubscriptionCheckoutSession(
 }
 
 Future<void> startStripePointsCheckoutSession(
-    {required String userId, required int quantity}) async {
+    {required String userId,
+    required String profileId,
+    required int quantity}) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
   for (final doc in priceDocs) {
@@ -97,6 +99,11 @@ Future<void> startStripePointsCheckoutSession(
       'quantity': quantity,
       'success_url': html.window.location.origin,
       'cancel_url': html.window.location.origin,
+      'metadata': {
+        'userId': userId,
+        'profileId': profileId,
+        'priceId': selectedPriceId,
+      },
     },
   );
   Completer completer = Completer();

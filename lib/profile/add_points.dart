@@ -104,6 +104,8 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                                 await stripe_service
                                     .startStripePointsCheckoutSession(
                                         userId: account.firebaseUser!.uid,
+                                        profileId:
+                                            account.studentProfile!.profileId,
                                         quantity: _numPoints);
                               } catch (e) {
                                 setState(() {
