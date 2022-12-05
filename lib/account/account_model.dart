@@ -109,7 +109,7 @@ class AccountModel extends ChangeNotifier {
     } else {
       // Student profile
       final studentProfile =
-          await shared_preferences_service.loadStudentProfile();
+          await shared_preferences_service.loadStudentProfile(userId: userId);
       final studentProfileBelongsToUser =
           await profile_service.studentProfileBelongsToUser(
               userId: userId, profileId: studentProfile?.profileId);

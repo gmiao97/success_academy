@@ -82,6 +82,15 @@ Future<bool> studentProfileBelongsToUser(
       .then((documentRefs) => documentRefs.any((doc) => doc.id == profileId));
 }
 
+/// Get number of points for student profile
+Future<int> getNumberPoints(
+    {required String userId, required String profileId}) async {
+  return _studentProfileModelRefForUser(userId)
+      .doc(profileId)
+      .get()
+      .then((profile) => profile.data()!.numPoints);
+}
+
 /// Add student profile for specified user
 Future<DocumentReference<StudentProfileModel>> addStudentProfile(
     String userId, StudentProfileModel profileModel) async {

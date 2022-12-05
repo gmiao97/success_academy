@@ -1,4 +1,6 @@
 import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/services/profile_service.dart'
+    as profile_service;
 
 // Corresponds to metadata field 'id' in price in Stripe dashboard
 enum SubscriptionPlan { minimum, minimumPreschool, monthly }
@@ -15,12 +17,22 @@ class StudentProfileModel {
         numPoints = json['num_points'] as int;
 
   /// Used to read profile from shared preferences.
-  StudentProfileModel.fromJson(Map<String, Object?> json)
+  StudentProfileModel._fromJson(Map<String, Object?> json,
+      {required String userId})
       : _profileId = json['id'] as String,
         lastName = json['last_name'] as String,
         firstName = json['first_name'] as String,
         dateOfBirth = DateTime.parse(json['date_of_birth'] as String),
         numPoints = json['num_points'] as int;
+
+  static Future<StudentProfileModel> create(Map<String, Object?> json,
+      {required String userId}) async {
+    StudentProfileModel profile =
+        StudentProfileModel._fromJson(json, userId: userId);
+    profile.numPoints = await profile_service.getNumberPoints(
+        userId: userId, profileId: json['id'] as String);
+    return profile;
+  }
 
   // TODO: Add field to indicate whether student has already had a subscription.
 
