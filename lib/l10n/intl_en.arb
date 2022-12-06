@@ -80,6 +80,7 @@
   "eventPointsDisplay": "{numPoints} Points",
   "notEnoughPoints": "Please add more points",
   "usePoints": "{cost} of {balance} points will be used",
+  "refundPoints": "{cost} points will be refunded",
   "eventDescriptionLabel": "Description",
   "eventDescriptionValidation": "Please enter lesson description",
   "eventDateLabel": "Date",

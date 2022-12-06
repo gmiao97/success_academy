@@ -5,7 +5,10 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
+import 'package:success_academy/services/profile_service.dart'
+    as profile_service;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 class SignupEventDialog extends StatefulWidget {
@@ -125,11 +128,13 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                 value: null,
               )
             : Tooltip(
-                message: _accountContext.studentProfile!.numPoints <
-                        (_numPoints ?? 0)
-                    ? S.of(context).notEnoughPoints
-                    : S.of(context).usePoints(_numPoints ?? 0,
-                        _accountContext.studentProfile!.numPoints),
+                message: _isSignedUp
+                    ? S.of(context).refundPoints(_numPoints ?? 0)
+                    : _accountContext.studentProfile!.numPoints <
+                            (_numPoints ?? 0)
+                        ? S.of(context).notEnoughPoints
+                        : S.of(context).usePoints(_numPoints ?? 0,
+                            _accountContext.studentProfile!.numPoints),
                 child: ElevatedButton(
                   child: _isSignedUp
                       ? Text(S.of(context).cancelSignup)
@@ -141,16 +146,21 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                           setState(() {
                             _submitClicked = true;
                           });
+
+                          StudentProfileModel updatedProfile =
+                              _accountContext.studentProfile!;
                           final event = widget.event;
                           event.recurrence.clear();
                           if (_isSignedUp) {
                             event.studentIdList.remove(
                                 _accountContext.studentProfile!.profileId);
+                            updatedProfile.numPoints += _numPoints ?? 0;
                           } else {
                             if (!event.studentIdList.contains(
                                 _accountContext.studentProfile!.profileId)) {
                               event.studentIdList.add(
                                   _accountContext.studentProfile!.profileId);
+                              updatedProfile.numPoints -= _numPoints ?? 0;
                             }
                           }
                           event_service.updateEvent(event).then((unused) {
@@ -162,6 +172,10 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                                     : Text(S.of(context).signupSuccess),
                               ),
                             );
+                          }).then((unused) {
+                            return profile_service.updateStudentProfile(
+                                _accountContext.firebaseUser!.uid,
+                                updatedProfile);
                           }).catchError((err) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

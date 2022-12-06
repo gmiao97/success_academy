@@ -99,6 +99,15 @@ Future<DocumentReference<StudentProfileModel>> addStudentProfile(
   return profileDoc;
 }
 
+/// Add student profile for specified user
+Future<void> updateStudentProfile(
+    String userId, StudentProfileModel profileModel) async {
+  final profileDoc = await _studentProfileModelRefForUser(userId)
+      .doc(profileModel.profileId)
+      .update(profileModel.toFirestoreJson());
+  return profileDoc;
+}
+
 Future<bool> profileHasSubscription(
     {required String userId, required String profileId}) async {
   final subscriptionDocs = await stripe_service.getSubscriptionsForUser(userId);

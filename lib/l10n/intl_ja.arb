@@ -80,6 +80,7 @@
   "eventPointsDisplay": "{numPoints} ポイント",
   "notEnoughPoints": "ポイントを追加してください",
   "usePoints": "{balance}ポイントから{cost}ポイントを使う",
+  "refundPoints": "{cost}ポイントが還元されます",
   "eventDescriptionLabel": "説明",
   "eventDescriptionValidation": "レッスンの説明を入力してください",
   "eventDateLabel": "日付",

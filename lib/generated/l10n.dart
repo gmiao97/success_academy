@@ -770,6 +770,16 @@ class S {
     );
   }
 
+  /// `{cost} points will be refunded`
+  String refundPoints(Object cost) {
+    return Intl.message(
+      '$cost points will be refunded',
+      name: 'refundPoints',
+      desc: '',
+      args: [cost],
+    );
+  }
+
   /// `Description`
   String get eventDescriptionLabel {
     return Intl.message(
