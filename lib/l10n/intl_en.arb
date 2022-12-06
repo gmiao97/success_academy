@@ -78,6 +78,8 @@
   "eventPointsLabel": "Number of points",
   "eventPointsValidation": "Please enter number of points",
   "eventPointsDisplay": "{numPoints} Points",
+  "notEnoughPoints": "Please add more points",
+  "usePoints": "{cost} of {balance} points will be used",
   "eventDescriptionLabel": "Description",
   "eventDescriptionValidation": "Please enter lesson description",
   "eventDateLabel": "Date",

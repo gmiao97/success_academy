@@ -26,7 +26,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(timeZone) => "Timezone: ${timeZone}";
 
-  static String m3(address) =>
+  static String m3(cost, balance) =>
+      "${cost} of ${balance} points will be used";
+
+  static String m4(address) =>
       "A verification link has been sent to your email at ${address}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -106,6 +109,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
+        "notEnoughPoints":
+            MessageLookupByLibrary.simpleMessage("Please add more points"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),
         "preschool": MessageLookupByLibrary.simpleMessage("Preschool lesson"),
@@ -152,9 +157,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeZoneValidation": MessageLookupByLibrary.simpleMessage(
             "Please select a valid time zone"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
+        "usePoints": m3,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
-        "verifyEmailMessage": m3,
+        "verifyEmailMessage": m4,
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
       };
 }

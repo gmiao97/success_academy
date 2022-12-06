@@ -124,49 +124,58 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
             ? const CircularProgressIndicator(
                 value: null,
               )
-            : ElevatedButton(
-                child: _isSignedUp
-                    ? Text(S.of(context).cancelSignup)
-                    : Text(S.of(context).signup),
-                onPressed: _day.isAfter(DateTime.now())
-                    ? () {
-                        setState(() {
-                          _submitClicked = true;
-                        });
-                        final event = widget.event;
-                        event.recurrence.clear();
-                        if (_isSignedUp) {
-                          event.studentIdList.remove(
-                              _accountContext.studentProfile!.profileId);
-                        } else {
-                          if (!event.studentIdList.contains(
-                              _accountContext.studentProfile!.profileId)) {
-                            event.studentIdList
-                                .add(_accountContext.studentProfile!.profileId);
+            : Tooltip(
+                message: _accountContext.studentProfile!.numPoints <
+                        (_numPoints ?? 0)
+                    ? S.of(context).notEnoughPoints
+                    : S.of(context).usePoints(_numPoints ?? 0,
+                        _accountContext.studentProfile!.numPoints),
+                child: ElevatedButton(
+                  child: _isSignedUp
+                      ? Text(S.of(context).cancelSignup)
+                      : Text(S.of(context).signup),
+                  onPressed: _day.isAfter(DateTime.now()) &&
+                          _accountContext.studentProfile!.numPoints >=
+                              (_numPoints ?? 0)
+                      ? () {
+                          setState(() {
+                            _submitClicked = true;
+                          });
+                          final event = widget.event;
+                          event.recurrence.clear();
+                          if (_isSignedUp) {
+                            event.studentIdList.remove(
+                                _accountContext.studentProfile!.profileId);
+                          } else {
+                            if (!event.studentIdList.contains(
+                                _accountContext.studentProfile!.profileId)) {
+                              event.studentIdList.add(
+                                  _accountContext.studentProfile!.profileId);
+                            }
                           }
+                          event_service.updateEvent(event).then((unused) {
+                            widget.onRefresh();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: _isSignedUp
+                                    ? Text(S.of(context).cancelSignupSuccess)
+                                    : Text(S.of(context).signupSuccess),
+                              ),
+                            );
+                          }).catchError((err) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: _isSignedUp
+                                    ? Text(S.of(context).cancelSignupFailure)
+                                    : Text(S.of(context).signupFailure),
+                              ),
+                            );
+                          }).whenComplete(() {
+                            Navigator.of(context).pop();
+                          });
                         }
-                        event_service.updateEvent(event).then((unused) {
-                          widget.onRefresh();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: _isSignedUp
-                                  ? Text(S.of(context).cancelSignupSuccess)
-                                  : Text(S.of(context).signupSuccess),
-                            ),
-                          );
-                        }).catchError((err) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: _isSignedUp
-                                  ? Text(S.of(context).cancelSignupFailure)
-                                  : Text(S.of(context).signupFailure),
-                            ),
-                          );
-                        }).whenComplete(() {
-                          Navigator.of(context).pop();
-                        });
-                      }
-                    : null,
+                      : null,
+                ),
               ),
       ],
     );

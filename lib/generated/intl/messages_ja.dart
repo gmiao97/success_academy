@@ -26,7 +26,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(timeZone) => "時間帯： ${timeZone}";
 
-  static String m3(address) => "確認リンクがメールアドレス（${address}）に送信されました";
+  static String m3(cost, balance) => "${balance}ポイントから${cost}ポイントを使う";
+
+  static String m4(address) => "確認リンクがメールアドレス（${address}）に送信されました";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -97,6 +99,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
+        "notEnoughPoints":
+            MessageLookupByLibrary.simpleMessage("ポイントを追加してください"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択してください"),
         "preschool": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
@@ -134,9 +138,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeZoneValidation":
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "today": MessageLookupByLibrary.simpleMessage("今日"),
+        "usePoints": m3,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
-        "verifyEmailMessage": m3,
+        "verifyEmailMessage": m4,
         "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る")
       };
 }

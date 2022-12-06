@@ -750,6 +750,26 @@ class S {
     );
   }
 
+  /// `Please add more points`
+  String get notEnoughPoints {
+    return Intl.message(
+      'Please add more points',
+      name: 'notEnoughPoints',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{cost} of {balance} points will be used`
+  String usePoints(Object cost, Object balance) {
+    return Intl.message(
+      '$cost of $balance points will be used',
+      name: 'usePoints',
+      desc: '',
+      args: [cost, balance],
+    );
+  }
+
   /// `Description`
   String get eventDescriptionLabel {
     return Intl.message(
