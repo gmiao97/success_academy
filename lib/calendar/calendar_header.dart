@@ -12,8 +12,9 @@ class CalendarHeader extends StatelessWidget {
     required this.availableEventFilters,
     required this.eventFilters,
     required this.onEventFilterConfirm,
-    required this.eventDisplay,
-    required this.onEventDisplayChanged,
+    required this.shouldShowEventDisplay,
+    this.eventDisplay,
+    this.onEventDisplayChanged,
   }) : super(key: key);
 
   final String header;
@@ -22,8 +23,9 @@ class CalendarHeader extends StatelessWidget {
   final List<EventType> availableEventFilters;
   final List<EventType> eventFilters;
   final void Function(List<EventType>) onEventFilterConfirm;
-  final EventDisplay eventDisplay;
-  final void Function(EventDisplay?) onEventDisplayChanged;
+  final bool shouldShowEventDisplay;
+  final EventDisplay? eventDisplay;
+  final void Function(EventDisplay?)? onEventDisplayChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +76,17 @@ class CalendarHeader extends StatelessWidget {
                 cancelText: Text(S.of(context).cancel),
                 title: Text(S.of(context).filterTitle),
               ),
-              DropdownButton<EventDisplay>(
-                  value: eventDisplay,
-                  items: EventDisplay.values
-                      .map((e) => DropdownMenuItem<EventDisplay>(
-                            value: e,
-                            child: Text(_displayNames[e]!),
-                          ))
-                      .toList(),
-                  onChanged: onEventDisplayChanged),
+              shouldShowEventDisplay
+                  ? DropdownButton<EventDisplay>(
+                      value: eventDisplay,
+                      items: EventDisplay.values
+                          .map((e) => DropdownMenuItem<EventDisplay>(
+                                value: e,
+                                child: Text(_displayNames[e]!),
+                              ))
+                          .toList(),
+                      onChanged: onEventDisplayChanged)
+                  : const SizedBox(),
             ],
           ),
           Padding(

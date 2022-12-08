@@ -45,14 +45,18 @@ class _AccountSettingsState extends State<AccountSettings> {
     if (account.userType == UserType.studentNoProfile) {
       return const ProfileBrowse();
     }
-
+    if (account.userType == UserType.admin) {
+      return buildAdminProfileScaffold(
+        context: context,
+        body: const Settings(),
+      );
+    }
     if (account.userType == UserType.teacher) {
       return buildTeacherProfileScaffold(
         context: context,
         body: const Settings(),
       );
     }
-
     return buildStudentProfileScaffold(
       context: context,
       body: const Settings(),

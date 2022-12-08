@@ -96,3 +96,13 @@ class TeacherProfileModel {
     return map;
   }
 }
+
+class AdminProfileModel {
+  AdminProfileModel();
+
+  AdminProfileModel.fromJson(String profileId, Map<String, Object?> json);
+
+  Map<String, Object?> toJson() {
+    return {};
+  }
+}

@@ -29,6 +29,18 @@ class _ProfileHomeState extends State<ProfileHome> {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
+    if (account.userType == UserType.admin) {
+      return utils.buildAdminProfileScaffold(
+        context: context,
+        body: Center(
+          child: Text(
+            'ADMIN',
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+        ),
+      );
+    }
+
     if (account.userType == UserType.teacher) {
       return utils.buildTeacherProfileScaffold(
         context: context,

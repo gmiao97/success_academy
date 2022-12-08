@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/admin_calendar.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/calendar/student_calendar.dart';
 import 'package:success_academy/calendar/teacher_calendar.dart';
@@ -269,6 +270,28 @@ class _BaseCalendarState extends State<BaseCalendar> {
         child: CircularProgressIndicator(
           value: null,
         ),
+      );
+    }
+    if (_accountContext.userType == UserType.admin) {
+      return AdminCalendar(
+        selectedDay: _selectedDay,
+        selectedEvents: _selectedEvents,
+        firstDay: _firstDay,
+        lastDay: _lastDay,
+        focusedDay: _focusedDay,
+        calendarFormat: _calendarFormat,
+        calendarBuilders: _calendarBuilders,
+        availableEventFilters: _availableEventFilters,
+        eventFilters: _eventFilters,
+        eventDisplay: _eventDisplay,
+        onTodayButtonTap: _onTodayButtonTap,
+        onDaySelected: _onDaySelected,
+        onFormatChanged: _onFormatChanged,
+        onPageChanged: _onPageChanged,
+        getEventsForDay: _getEventsForDay,
+        onEventFilterConfirm: _onEventFilterConfirm,
+        onEventDisplayChanged: _onEventDisplayChanged,
+        onRefresh: _setAllEvents,
       );
     }
     if (_accountContext.userType == UserType.teacher) {

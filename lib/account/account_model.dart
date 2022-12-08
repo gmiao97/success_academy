@@ -44,6 +44,7 @@ class AccountModel extends ChangeNotifier {
   MyUserModel? _myUser;
   StudentProfileModel? _studentProfile;
   TeacherProfileModel? _teacherProfile;
+  AdminProfileModel? _adminProfile;
   Map<String, TeacherProfileModel>? _teacherProfileMap;
 
   AuthStatus get authStatus => _authStatus;
@@ -53,13 +54,17 @@ class AccountModel extends ChangeNotifier {
   MyUserModel? get myUser => _myUser;
   StudentProfileModel? get studentProfile => _studentProfile;
   TeacherProfileModel? get teacherProfile => _teacherProfile;
+  AdminProfileModel? get adminProfile => _adminProfile;
   Map<String, TeacherProfileModel>? get teacherProfileModelMap =>
       _teacherProfileMap;
   UserType get userType {
-    if (teacherProfile != null) {
+    if (_adminProfile != null) {
+      return UserType.admin;
+    }
+    if (_teacherProfile != null) {
       return UserType.teacher;
     }
-    if (studentProfile == null) {
+    if (_studentProfile == null) {
       return UserType.studentNoProfile;
     }
     return UserType.student;
@@ -101,10 +106,15 @@ class AccountModel extends ChangeNotifier {
   }
 
   Future<void> _initProfile(String userId) async {
+    final adminProfile = await profile_service.getAdminProfileForUser(userId);
+    if (adminProfile != null) {
+      // Admin profile
+      _adminProfile = adminProfile;
+    }
     final teacherProfile =
         await profile_service.getTeacherProfileForUser(userId);
     if (teacherProfile != null) {
-      //Teacher profile
+      // Teacher profile
       _teacherProfile = teacherProfile;
     } else {
       // Student profile
@@ -124,6 +134,7 @@ class AccountModel extends ChangeNotifier {
     _firebaseUser = null;
     _studentProfile = null;
     _teacherProfile = null;
+    _adminProfile = null;
   }
 }
 

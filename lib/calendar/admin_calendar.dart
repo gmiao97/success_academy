@@ -10,8 +10,8 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
-class TeacherCalendar extends StatelessWidget {
-  const TeacherCalendar({
+class AdminCalendar extends StatelessWidget {
+  const AdminCalendar({
     Key? key,
     required this.focusedDay,
     required this.selectedDay,
@@ -56,20 +56,18 @@ class TeacherCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
-    return utils.buildTeacherProfileScaffold(
+    return utils.buildAdminProfileScaffold(
       context: context,
       body: Column(
         children: [
           CalendarHeader(
-            header: account.teacherProfile!.firstName,
+            header: "ADMIN",
             timeZone: account.myUser!.timeZone,
             onTodayButtonTap: onTodayButtonTap,
             availableEventFilters: availableEventFilters,
             eventFilters: eventFilters,
             onEventFilterConfirm: onEventFilterConfirm,
-            shouldShowEventDisplay: true,
-            eventDisplay: eventDisplay,
-            onEventDisplayChanged: onEventDisplayChanged,
+            shouldShowEventDisplay: false,
           ),
           TableCalendar(
             firstDay: firstDay,

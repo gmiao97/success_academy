@@ -32,6 +32,18 @@ CollectionReference<TeacherProfileModel> _teacherProfileModelRefForUser(
       );
 }
 
+CollectionReference<AdminProfileModel> _adminProfileModelRefForUser(userId) {
+  return db
+      .collection('myUsers')
+      .doc(userId)
+      .collection('admin_profile')
+      .withConverter<AdminProfileModel>(
+        fromFirestore: (snapshot, _) =>
+            AdminProfileModel.fromJson(snapshot.id, snapshot.data()!),
+        toFirestore: (adminProfileModel, _) => adminProfileModel.toJson(),
+      );
+}
+
 /**  
   * Get list of query snapshots for all profiles under the user
   * 
@@ -52,6 +64,17 @@ Future<List<QueryDocumentSnapshot<StudentProfileModel>>>
   */
 Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
   return _teacherProfileModelRefForUser(userId).limit(1).get().then(
+      (querySnapshot) =>
+          querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null);
+}
+
+/**  
+  * Get admin profile under the user
+  * 
+  * There should only be a single admin profile under a user. 
+  */
+Future<AdminProfileModel?> getAdminProfileForUser(String userId) {
+  return _adminProfileModelRefForUser(userId).limit(1).get().then(
       (querySnapshot) =>
           querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null);
 }

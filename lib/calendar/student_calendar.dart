@@ -66,6 +66,7 @@ class StudentCalendar extends StatelessWidget {
             availableEventFilters: availableEventFilters,
             eventFilters: eventFilters,
             onEventFilterConfirm: onEventFilterConfirm,
+            shouldShowEventDisplay: true,
             eventDisplay: eventDisplay,
             onEventDisplayChanged: onEventDisplayChanged,
           ),
