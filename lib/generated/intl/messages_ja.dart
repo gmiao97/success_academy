@@ -127,7 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("アカウント設定"),
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
-        "signedUp": MessageLookupByLibrary.simpleMessage("登録済み"),
+        "signedUp": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "signup": MessageLookupByLibrary.simpleMessage("登録"),
         "signupEvent": MessageLookupByLibrary.simpleMessage("レッスン登録"),
         "signupFailure": MessageLookupByLibrary.simpleMessage("登録できませんでした"),

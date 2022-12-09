@@ -139,7 +139,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Account Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
-        "signedUp": MessageLookupByLibrary.simpleMessage("Signed up"),
+        "signedUp": MessageLookupByLibrary.simpleMessage("My lesson"),
         "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
         "signupEvent":
             MessageLookupByLibrary.simpleMessage("Sign up for lesson"),

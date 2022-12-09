@@ -107,13 +107,12 @@ class AccountModel extends ChangeNotifier {
 
   Future<void> _initProfile(String userId) async {
     final adminProfile = await profile_service.getAdminProfileForUser(userId);
+    final teacherProfile =
+        await profile_service.getTeacherProfileForUser(userId);
     if (adminProfile != null) {
       // Admin profile
       _adminProfile = adminProfile;
-    }
-    final teacherProfile =
-        await profile_service.getTeacherProfileForUser(userId);
-    if (teacherProfile != null) {
+    } else if (teacherProfile != null) {
       // Teacher profile
       _teacherProfile = teacherProfile;
     } else {

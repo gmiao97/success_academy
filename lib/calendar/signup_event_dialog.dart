@@ -52,8 +52,9 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
       _day = DateTime(widget.event.startTime.year, widget.event.startTime.month,
           widget.event.startTime.day);
       _summary = widget.event.summary;
-      _teacherName =
-          '${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.lastName} ${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.firstName}';
+      _teacherName = widget.event.teacherId != null
+          ? '${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.lastName} ${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.firstName}'
+          : null;
       _description = widget.event.description;
       _numPoints = widget.event.numPoints;
       _startTime = TimeOfDay.fromDateTime(widget.event.startTime);

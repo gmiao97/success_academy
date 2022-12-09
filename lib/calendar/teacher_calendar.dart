@@ -99,6 +99,7 @@ class TeacherCalendar extends StatelessWidget {
             onPressed: () => showDialog(
               context: context,
               builder: (context) => CreateEventDialog(
+                teacherId: account.teacherProfile!.profileId,
                 firstDay: firstDay,
                 lastDay: lastDay,
                 selectedDay: selectedDay,
@@ -132,20 +133,37 @@ class TeacherCalendar extends StatelessWidget {
                         color: Color(value[index].fillColor),
                       ),
                       child: ListTile(
-                        onTap: () => showDialog(
-                          context: context,
-                          builder: (context) => EditEventDialog(
-                            event: value[index],
-                            firstDay: firstDay,
-                            lastDay: lastDay,
-                            eventTypes: const [EventType.private],
-                            onRefresh: onRefresh,
-                          ),
-                        ),
+                        onTap: () => value[index].teacherId ==
+                                account.teacherProfile!.profileId
+                            ? showDialog(
+                                context: context,
+                                builder: (context) => EditEventDialog(
+                                  event: value[index],
+                                  firstDay: firstDay,
+                                  lastDay: lastDay,
+                                  eventTypes: const [EventType.private],
+                                  onRefresh: onRefresh,
+                                ),
+                              )
+                            : null,
                         title: Text(value[index].summary),
-                        subtitle: Text(
-                          '${timeFormatter.format(value[index].startTime)} - '
-                          '${timeFormatter.format(value[index].endTime)}',
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${timeFormatter.format(value[index].startTime)} - '
+                              '${timeFormatter.format(value[index].endTime)}',
+                            ),
+                            value[index].teacherId ==
+                                    account.teacherProfile!.profileId
+                                ? Text(
+                                    S.of(context).signedUp,
+                                    style: TextStyle(
+                                      color: Colors.green[600],
+                                    ),
+                                  )
+                                : const SizedBox()
+                          ],
                         ),
                       ),
                     );

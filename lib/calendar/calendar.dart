@@ -111,7 +111,12 @@ class _BaseCalendarState extends State<BaseCalendar> {
   }
 
   List<EventModel> _getEventsForDay(DateTime day) {
-    return _events[day] ?? [];
+    if (_events[day] == null) {
+      return [];
+    }
+    _events[day]!.sort((a, b) => a.startTime.millisecondsSinceEpoch
+        .compareTo(b.startTime.millisecondsSinceEpoch));
+    return _events[day]!;
   }
 
   void _onTodayButtonTap() {

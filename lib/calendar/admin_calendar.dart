@@ -100,7 +100,11 @@ class AdminCalendar extends StatelessWidget {
                 firstDay: firstDay,
                 lastDay: lastDay,
                 selectedDay: selectedDay,
-                eventTypes: const [EventType.private],
+                eventTypes: const [
+                  EventType.private,
+                  EventType.free,
+                  EventType.preschool
+                ],
                 onRefresh: onRefresh,
               ),
             ),
@@ -136,7 +140,11 @@ class AdminCalendar extends StatelessWidget {
                             event: value[index],
                             firstDay: firstDay,
                             lastDay: lastDay,
-                            eventTypes: const [EventType.private],
+                            eventTypes: const [
+                              EventType.private,
+                              EventType.free,
+                              EventType.preschool
+                            ],
                             onRefresh: onRefresh,
                           ),
                         ),

@@ -65,7 +65,7 @@
   "editEvent": "Edit lesson",
   "signupEvent": "Sign up for lesson",
   "signup": "Sign up",  
-  "signedUp": "Signed up",
+  "signedUp": "My lesson",
   "cancelSignup": "Cancel sign up",
   "signupSuccess": "Sign up successful",
   "signupFailure": "Sign up unsuccessful",

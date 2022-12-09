@@ -14,6 +14,7 @@ import 'package:timezone/data/latest_10y.dart' as tz;
 class CreateEventDialog extends StatefulWidget {
   const CreateEventDialog({
     Key? key,
+    this.teacherId,
     required this.firstDay,
     required this.lastDay,
     required this.selectedDay,
@@ -21,6 +22,7 @@ class CreateEventDialog extends StatefulWidget {
     required this.onRefresh,
   }) : super(key: key);
 
+  final String? teacherId;
   final DateTime firstDay;
   final DateTime lastDay;
   final DateTime? selectedDay;
@@ -50,6 +52,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   late EventType _eventType;
   Frequency? _recurFrequency;
   bool _submitClicked = false;
+  String? _teacherId;
 
   @override
   void initState() {
@@ -60,6 +63,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
       _day = widget.selectedDay ?? DateTime.now();
       _dayController.text = dateFormatter.format(_day);
       _eventType = widget.eventTypes[0];
+      _teacherId = widget.teacherId;
     });
   }
 
@@ -377,7 +381,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                             frequency: _recurFrequency,
                             recurUntil: _recurUntil),
                         timeZone: _timeZoneName,
-                        teacherId: _account.teacherProfile!.profileId);
+                        teacherId: _teacherId);
                     event_service.insertEvent(event).then(
                       (unused) {
                         widget.onRefresh();
