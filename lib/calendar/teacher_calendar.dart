@@ -141,7 +141,11 @@ class TeacherCalendar extends StatelessWidget {
                                   event: value[index],
                                   firstDay: firstDay,
                                   lastDay: lastDay,
-                                  eventTypes: const [EventType.private],
+                                  eventTypes: const [
+                                    EventType.private,
+                                    EventType.free,
+                                    EventType.preschool
+                                  ],
                                   onRefresh: onRefresh,
                                 ),
                               )

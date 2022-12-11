@@ -165,6 +165,34 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 },
                 value: _eventType,
               ),
+              _account.userType == UserType.admin
+                  ? DropdownButtonFormField<String>(
+                      items: _account.teacherProfileList!
+                          .map((profile) => DropdownMenuItem(
+                                value: profile.profileId,
+                                child: Text(
+                                    '${profile.lastName}, ${profile.firstName}'),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _teacherId = value;
+                        });
+                      },
+                      value: _teacherId,
+                      decoration: InputDecoration(
+                          hintText: 'Teacher',
+                          icon: const Icon(Icons.person_outline),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              setState(() {
+                                _teacherId = null;
+                              });
+                            },
+                          )),
+                    )
+                  : const SizedBox(),
               TextFormField(
                 decoration: InputDecoration(
                   icon: const Icon(Icons.text_snippet_outlined),
@@ -360,7 +388,8 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                         eventType: _eventType,
                         summary: _summary,
                         description: _description,
-                        numPoints: _numPoints,
+                        numPoints:
+                            _eventType == EventType.private ? _numPoints : 0,
                         startTime: tz.TZDateTime(
                           tz.getLocation(_timeZoneName),
                           _day.year,

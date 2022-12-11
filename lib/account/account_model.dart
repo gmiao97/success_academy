@@ -45,6 +45,7 @@ class AccountModel extends ChangeNotifier {
   StudentProfileModel? _studentProfile;
   TeacherProfileModel? _teacherProfile;
   AdminProfileModel? _adminProfile;
+  List<TeacherProfileModel>? _teacherProfileList;
   Map<String, TeacherProfileModel>? _teacherProfileMap;
 
   AuthStatus get authStatus => _authStatus;
@@ -55,6 +56,7 @@ class AccountModel extends ChangeNotifier {
   StudentProfileModel? get studentProfile => _studentProfile;
   TeacherProfileModel? get teacherProfile => _teacherProfile;
   AdminProfileModel? get adminProfile => _adminProfile;
+  List<TeacherProfileModel>? get teacherProfileList => _teacherProfileList;
   Map<String, TeacherProfileModel>? get teacherProfileModelMap =>
       _teacherProfileMap;
   UserType get userType {
@@ -101,8 +103,9 @@ class AccountModel extends ChangeNotifier {
     await user_service.createMyUserDocIfNotExist(firebaseUser.uid);
     _myUser = await user_service.getMyUserDoc(firebaseUser.uid);
     await _initProfile(firebaseUser.uid);
-    _teacherProfileMap = TeacherProfileModel.buildTeacherProfileMap(
-        await profile_service.getAllTeacherProfiles());
+    _teacherProfileList = await profile_service.getAllTeacherProfiles();
+    _teacherProfileMap =
+        TeacherProfileModel.buildTeacherProfileMap(_teacherProfileList!);
   }
 
   Future<void> _initProfile(String userId) async {

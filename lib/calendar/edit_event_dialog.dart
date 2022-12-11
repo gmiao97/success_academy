@@ -42,6 +42,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
   late String _summary;
   late String _description;
   int? _numPoints;
+  String? _teacherId;
   late TimeOfDay _startTime;
   late TimeOfDay _endTime;
   late String _timeZoneName;
@@ -63,6 +64,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
       _summary = widget.event.summary;
       _description = widget.event.description;
       _numPoints = widget.event.numPoints;
+      _teacherId = widget.event.teacherId;
       _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
       _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
       _eventType = widget.event.eventType;
@@ -155,6 +157,34 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 onChanged: null,
                 value: _eventType,
               ),
+              _account.userType == UserType.admin
+                  ? DropdownButtonFormField<String>(
+                      items: _account.teacherProfileList!
+                          .map((profile) => DropdownMenuItem(
+                                value: profile.profileId,
+                                child: Text(
+                                    '${profile.lastName}, ${profile.firstName}'),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _teacherId = value;
+                        });
+                      },
+                      value: _teacherId,
+                      decoration: InputDecoration(
+                          hintText: 'Teacher',
+                          icon: const Icon(Icons.person_outline),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              setState(() {
+                                _teacherId = null;
+                              });
+                            },
+                          )),
+                    )
+                  : const SizedBox(),
               TextFormField(
                 decoration: InputDecoration(
                   icon: const Icon(Icons.text_snippet_outlined),
@@ -369,7 +399,8 @@ class _EditEventDialogState extends State<EditEventDialog> {
                         eventType: _eventType,
                         summary: _summary,
                         description: _description,
-                        numPoints: _numPoints,
+                        numPoints:
+                            _eventType == EventType.private ? _numPoints : 0,
                         startTime: tz.TZDateTime(
                           tz.getLocation(_timeZoneName),
                           _day.year,
@@ -387,7 +418,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                           _endTime.minute,
                         ),
                         timeZone: _timeZoneName,
-                        teacherId: _account.teacherProfile!.profileId);
+                        teacherId: _teacherId);
                     event_service.updateEvent(event).then(
                       (unused) {
                         widget.onRefresh();
