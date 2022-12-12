@@ -111,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
+        "noPlan": MessageLookupByLibrary.simpleMessage("No subscription plan"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("Please add more points"),
         "pickPlan":

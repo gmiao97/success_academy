@@ -6,10 +6,11 @@ import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/calendar/signup_event_dialog.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
-class StudentCalendar extends StatelessWidget {
+class StudentCalendar extends StatefulWidget {
   const StudentCalendar({
     Key? key,
     required this.selectedDay,
@@ -22,6 +23,7 @@ class StudentCalendar extends StatelessWidget {
     required this.availableEventFilters,
     required this.eventFilters,
     required this.eventDisplay,
+    required this.subscriptionType,
     required this.onTodayButtonTap,
     required this.onDaySelected,
     required this.onFormatChanged,
@@ -42,6 +44,7 @@ class StudentCalendar extends StatelessWidget {
   final List<EventType> availableEventFilters;
   final List<EventType> eventFilters;
   final EventDisplay eventDisplay;
+  final SubscriptionPlan? subscriptionType;
   final VoidCallback onTodayButtonTap;
   final void Function(DateTime, DateTime) onDaySelected;
   final void Function(CalendarFormat) onFormatChanged;
@@ -52,6 +55,20 @@ class StudentCalendar extends StatelessWidget {
   final VoidCallback onRefresh;
 
   @override
+  State<StudentCalendar> createState() => _StudentCalendarState();
+}
+
+class _StudentCalendarState extends State<StudentCalendar> {
+  late bool _showHeader;
+
+  @override
+  void initState() {
+    super.initState();
+    _showHeader = widget.subscriptionType == null ||
+        widget.subscriptionType == SubscriptionPlan.monthly;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
@@ -59,22 +76,38 @@ class StudentCalendar extends StatelessWidget {
       context: context,
       body: Column(
         children: [
+          _showHeader
+              ? MaterialBanner(
+                  content: Text(S.of(context).noPlan),
+                  actions: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _showHeader = false;
+                        });
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ],
+                  backgroundColor: Theme.of(context).secondaryHeaderColor,
+                )
+              : const SizedBox(),
           CalendarHeader(
             header: account.studentProfile!.firstName,
             timeZone: account.myUser!.timeZone,
-            onTodayButtonTap: onTodayButtonTap,
-            availableEventFilters: availableEventFilters,
-            eventFilters: eventFilters,
-            onEventFilterConfirm: onEventFilterConfirm,
+            onTodayButtonTap: widget.onTodayButtonTap,
+            availableEventFilters: widget.availableEventFilters,
+            eventFilters: widget.eventFilters,
+            onEventFilterConfirm: widget.onEventFilterConfirm,
             shouldShowEventDisplay: true,
-            eventDisplay: eventDisplay,
-            onEventDisplayChanged: onEventDisplayChanged,
+            eventDisplay: widget.eventDisplay,
+            onEventDisplayChanged: widget.onEventDisplayChanged,
           ),
           TableCalendar(
-            firstDay: firstDay,
-            lastDay: lastDay,
-            focusedDay: focusedDay,
-            calendarFormat: calendarFormat,
+            firstDay: widget.firstDay,
+            lastDay: widget.lastDay,
+            focusedDay: widget.focusedDay,
+            calendarFormat: widget.calendarFormat,
             locale: account.locale,
             daysOfWeekHeight: 25,
             availableCalendarFormats: {
@@ -86,22 +119,24 @@ class StudentCalendar extends StatelessWidget {
                   account.locale == 'en' ? 'Display Weekly' : '一週間表示',
             },
             selectedDayPredicate: (day) {
-              return isSameDay(selectedDay, day);
+              return isSameDay(widget.selectedDay, day);
             },
-            onDaySelected: onDaySelected,
-            onFormatChanged: onFormatChanged,
-            onPageChanged: onPageChanged,
-            eventLoader: getEventsForDay,
-            calendarBuilders: calendarBuilders,
+            onDaySelected: widget.onDaySelected,
+            onFormatChanged: widget.onFormatChanged,
+            onPageChanged: widget.onPageChanged,
+            eventLoader: widget.getEventsForDay,
+            calendarBuilders: widget.calendarBuilders,
           ),
           const SizedBox(height: 10),
           Text(
-            selectedDay != null ? dateFormatter.format(selectedDay!) : '',
+            widget.selectedDay != null
+                ? dateFormatter.format(widget.selectedDay!)
+                : '',
             style: Theme.of(context).textTheme.headline6,
           ),
           Expanded(
             child: ValueListenableBuilder<List<EventModel>>(
-              valueListenable: selectedEvents,
+              valueListenable: widget.selectedEvents,
               builder: (context, value, _) {
                 return ListView.builder(
                   itemCount: value.length,
@@ -119,7 +154,7 @@ class StudentCalendar extends StatelessWidget {
                           context: context,
                           builder: (context) => SignupEventDialog(
                             event: value[index],
-                            onRefresh: onRefresh,
+                            onRefresh: widget.onRefresh,
                           ),
                         ),
                         title: Text(value[index].summary),

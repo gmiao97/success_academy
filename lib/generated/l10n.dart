@@ -320,6 +320,16 @@ class S {
     );
   }
 
+  /// `No subscription plan`
+  String get noPlan {
+    return Intl.message(
+      'No subscription plan',
+      name: 'noPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Continue to subscription purchase`
   String get stripePurchase {
     return Intl.message(

@@ -101,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
         "next": MessageLookupByLibrary.simpleMessage("次へ"),
+        "noPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションがありません"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("ポイントを追加してください"),
         "pickPlan":

@@ -30,6 +30,7 @@
   "minimumCourse": "Minimum Course - $40/month",
   "minimumPreschoolCourse": "Minimum Course + Preschool Class - $50/month",
   "pickPlan": "Choose a subscription plan",
+  "noPlan": "No subscription plan",
   "stripePurchase": "Continue to subscription purchase",
   "stripePointsPurchase": "Continue to points purchase",
 

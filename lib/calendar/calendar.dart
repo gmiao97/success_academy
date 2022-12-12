@@ -332,6 +332,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
       availableEventFilters: _availableEventFilters,
       eventFilters: _eventFilters,
       eventDisplay: _eventDisplay,
+      subscriptionType: _subscriptionType,
       onTodayButtonTap: _onTodayButtonTap,
       onDaySelected: _onDaySelected,
       onFormatChanged: _onFormatChanged,

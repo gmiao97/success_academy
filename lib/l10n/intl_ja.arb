@@ -30,6 +30,7 @@
   "minimumCourse": "ミニマムコース・月＄4０",
   "minimumPreschoolCourse": "ミニマムコース＋未就学児クラス・月＄5０",
   "pickPlan": "サブスクリプションのコースを選択してください",
+  "noPlan": "サブスクリプションがありません",
   "stripePurchase": "サブスクリプション購入へ",
   "stripePointsPurchase": "ポイント購入へ",
 
