@@ -23,7 +23,18 @@ class ProfileHome extends StatefulWidget {
 class _ProfileHomeState extends State<ProfileHome> {
   bool _stripeRedirectClicked = false;
   SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
+  late final List<String> _referralCodes;
   bool _isReferral = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  void _init() async {
+    _referralCodes = await user_service.getMyUserReferralCodes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,10 +212,8 @@ class _ProfileHomeState extends State<ProfileHome> {
                           _subscriptionPlan = selectedSubscription;
                         });
                       },
-                      setReferral: (code) async {
-                        List<String> referralCodes =
-                            await user_service.getMyUserReferralCodes();
-                        if (referralCodes.contains(code)) {
+                      setReferral: (code) {
+                        if (_referralCodes.contains(code)) {
                           _isReferral = true;
                           return true;
                         }

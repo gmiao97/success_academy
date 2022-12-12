@@ -69,6 +69,7 @@ class _SignupForm extends StatefulWidget {
 class _SignupFormState extends State<_SignupForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _dateOfBirthController = TextEditingController();
+  late final List<String> _referralCodes;
   final StudentProfileModel _profileModel = StudentProfileModel();
   SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
   bool _isReferral = false;
@@ -77,6 +78,7 @@ class _SignupFormState extends State<_SignupForm> {
   @override
   void initState() {
     super.initState();
+    _init();
     _profileModel.dateOfBirth = DateTime.now();
   }
 
@@ -92,6 +94,10 @@ class _SignupFormState extends State<_SignupForm> {
         _profileModel.dateOfBirth = dateOfBirth;
       });
     }
+  }
+
+  void _init() async {
+    _referralCodes = await user_service.getMyUserReferralCodes();
   }
 
   @override
@@ -170,10 +176,8 @@ class _SignupFormState extends State<_SignupForm> {
                 _subscriptionPlan = selectedSubscription;
               });
             },
-            setReferral: (code) async {
-              List<String> referralCodes =
-                  await user_service.getMyUserReferralCodes();
-              if (referralCodes.contains(code)) {
+            setReferral: (code) {
+              if (_referralCodes.contains(code)) {
                 _isReferral = true;
                 return true;
               }
@@ -240,13 +244,14 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
   final FocusNode _focusNode = FocusNode();
   String? _referralCode;
   bool _showReferralError = false;
+  bool _showReferralSucess = false;
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() async {
+    _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-        final isReferral = await widget.setReferral(_referralCode);
+        final isReferral = widget.setReferral(_referralCode);
         setState(() {
           _showReferralError =
               _referralCode != null && _referralCode!.isNotEmpty && !isReferral;
@@ -290,9 +295,16 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
             labelText: S.of(context).referralLabel,
             errorText:
                 _showReferralError ? S.of(context).referralValidation : null,
+            suffixIcon: _showReferralSucess
+                ? const Icon(Icons.check)
+                : const SizedBox(),
           ),
-          onChanged: (value) {
+          onChanged: (value) async {
             _referralCode = value;
+            final isReferral = await widget.setReferral(_referralCode);
+            setState(() {
+              _showReferralSucess = isReferral;
+            });
           },
         ),
         Padding(
@@ -302,7 +314,12 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
               : ElevatedButton.icon(
                   label: Text(S.of(context).stripePurchase),
                   icon: const Icon(Icons.exit_to_app),
-                  onPressed: widget.onStripeSubmitClicked,
+                  onPressed: (_referralCode != null &&
+                              _referralCode!.isNotEmpty &&
+                              _showReferralSucess) ||
+                          (_referralCode == null || _referralCode!.isEmpty)
+                      ? widget.onStripeSubmitClicked
+                      : null,
                 ),
         ),
       ],
