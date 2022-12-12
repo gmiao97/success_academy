@@ -85,7 +85,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
     return AlertDialog(
       title: Text(
         S.of(context).signupEvent,
-        style: Theme.of(context).textTheme.headlineSmall,
+        style: Theme.of(context).textTheme.headline6,
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -93,13 +93,20 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
           children: [
             Text(
               _summary,
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            Text(
-              _teacherName ?? '',
-              style: Theme.of(context).textTheme.headline6,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+              ),
             ),
             Text(_eventTypeNames[_eventType]!),
+            Text(S.of(context).eventPointsDisplay(_numPoints ?? 0)),
+            Text(
+              _teacherName ?? '',
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Text(
                 '${dateFormatter.format(_day)} | ${_startTime.format(context)} - ${_endTime.format(context)}'),
             Text(
@@ -107,13 +114,19 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
             const SizedBox(
               height: 20,
             ),
-            SizedBox(
-              width: 500,
-              child: Text(_description),
+            Card(
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 400,
+                  height: 200,
+                  child: SingleChildScrollView(
+                    child: Text(_description),
+                  ),
+                ),
+              ),
             ),
-            _eventType == EventType.private
-                ? Text(S.of(context).eventPointsDisplay(_numPoints ?? 0))
-                : const SizedBox(),
           ],
         ),
       ),

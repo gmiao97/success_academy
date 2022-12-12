@@ -165,7 +165,6 @@ class _StudentCalendarState extends State<StudentCalendar> {
                               '${timeFormatter.format(value[index].startTime)} - '
                               '${timeFormatter.format(value[index].endTime)}',
                             ),
-                            Text(value[index].description),
                             value[index]
                                     .studentIdList
                                     .contains(account.studentProfile!.profileId)
