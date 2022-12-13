@@ -101,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter student\'s last name"),
         "lessonCalendar":
             MessageLookupByLibrary.simpleMessage("Lesson Calendar"),
+        "manageProfile": MessageLookupByLibrary.simpleMessage("Manage Users"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("Manage Subscriptions"),
         "minimumCourse":

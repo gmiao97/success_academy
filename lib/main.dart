@@ -15,6 +15,7 @@ import 'package:success_academy/landing/landing.dart';
 import 'package:success_academy/profile/add_points.dart';
 import 'package:success_academy/profile/profile_home.dart';
 import 'package:success_academy/profile/profile_create.dart';
+import 'package:success_academy/profile/profile_manage.dart';
 import 'package:success_academy/utils.dart' as utils;
 
 void main() async {
@@ -62,6 +63,7 @@ class App extends StatelessWidget {
         constants.routeCalendar: (context) => const Calendar(),
         constants.routeAddPoints: (context) => const AddPoints(),
         constants.routeSettings: (context) => const AccountSettings(),
+        constants.routeManageUsers: (context) => const ManageUsers(),
       },
     );
   }

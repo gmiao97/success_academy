@@ -110,6 +110,16 @@ class S {
     );
   }
 
+  /// `Manage Users`
+  String get manageProfile {
+    return Intl.message(
+      'Manage Users',
+      name: 'manageProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Create Profile`
   String get createProfile {
     return Intl.message(

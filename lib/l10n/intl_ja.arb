@@ -6,6 +6,7 @@
 
   "selectProfile": "プロフィールを選択してください",
   "addProfile": "プロフィール追加",
+  "manageProfile": "ユーザー管理",
 
   "createProfile": "プロフィール作成",
   "lastNameLabel": "生徒性",

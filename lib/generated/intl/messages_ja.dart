@@ -92,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
         "lessonCalendar": MessageLookupByLibrary.simpleMessage("レッスンカレンダー"),
+        "manageProfile": MessageLookupByLibrary.simpleMessage("ユーザー管理"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),
         "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース・月＄4０"),

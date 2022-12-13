@@ -10,6 +10,7 @@ const routeCreateProfile = '/create-profile';
 const routeCalendar = '/calendar';
 const routeAddPoints = '/add-points';
 const routeSettings = '/settings';
+const routeManageUsers = '/manage-users';
 
 const maxProfileCount = 5;
 

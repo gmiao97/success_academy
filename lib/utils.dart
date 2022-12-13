@@ -262,6 +262,13 @@ Scaffold buildAdminProfileScaffold(
             },
           ),
           ListTile(
+            leading: const Icon(Icons.people),
+            title: Text(S.of(context).manageProfile),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeManageUsers);
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.settings),
             title: Text(S.of(context).settings),
             onTap: () {

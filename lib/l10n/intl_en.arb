@@ -6,6 +6,7 @@
 
   "selectProfile": "Select profile",
   "addProfile": "Add profile",
+  "manageProfile": "Manage Users",
 
   "createProfile": "Create Profile",
   "lastNameLabel": "Student Last Name",
