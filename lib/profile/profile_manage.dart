@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
+import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/services/event_service.dart' as event_service;
+import 'package:success_academy/services/profile_service.dart'
+    as profile_service;
 import 'package:success_academy/utils.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_10y.dart' as tz;
 
 class ManageUsers extends StatefulWidget {
   const ManageUsers({Key? key}) : super(key: key);
@@ -13,11 +20,6 @@ class ManageUsers extends StatefulWidget {
 }
 
 class _ManageUsersState extends State<ManageUsers> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
@@ -50,11 +52,147 @@ class _ManageUsersState extends State<ManageUsers> {
   }
 }
 
-class _Manage extends StatelessWidget {
+class _Manage extends StatefulWidget {
   const _Manage({Key? key}) : super(key: key);
 
   @override
+  State<_Manage> createState() => _ManageState();
+}
+
+class _ManageState extends State<_Manage> {
+  late AccountModel _accountContext;
+  bool _isInitialized = false;
+  List<TeacherProfileModel> teachers = [];
+  List<EventModel> events = [];
+
+  @override
+  void initState() {
+    super.initState();
+    tz.initializeTimeZones();
+    _init();
+  }
+
+  void _init() async {
+    _accountContext = context.read<AccountModel>();
+    teachers = await profile_service.getAllTeacherProfiles();
+
+    final timeZoneName = _accountContext.myUser!.timeZone;
+    final timeZone = tz.getLocation(timeZoneName);
+    events = (await event_service.listEvents(
+            timeZone: timeZoneName,
+            timeMin: tz.TZDateTime.now(timeZone)
+                .subtract(const Duration(days: 30))
+                .toIso8601String(),
+            timeMax: tz.TZDateTime.now(timeZone).toIso8601String(),
+            singleEvents: true))
+        .map((event) => EventModel.fromJson(event, timeZone))
+        .toList();
+    setState(() {
+      _isInitialized = true;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Text("Manage Users");
+    return !_isInitialized
+        ? const Center(
+            child: CircularProgressIndicator(
+              value: null,
+            ),
+          )
+        : Padding(
+            padding: const EdgeInsets.all(50),
+            child: PaginatedDataTable(
+              columns: <DataColumn>[
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).id,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).lastName,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).firstName,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).freeNum,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).preschoolNum,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).privateNum,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
+              ],
+              source: _TeacherData(
+                teachers: teachers,
+                events: events,
+              ),
+            ),
+          );
+  }
+}
+
+class _TeacherData extends DataTableSource {
+  _TeacherData(
+      {required List<TeacherProfileModel> teachers,
+      required List<EventModel> events})
+      : _teachers = teachers,
+        _events = events;
+
+  final List<TeacherProfileModel> _teachers;
+  final List<EventModel> _events;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _teachers.length;
+
+  @override
+  int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(cells: [
+      DataCell(Text(_teachers[index].profileId)),
+      DataCell(Text(_teachers[index].lastName)),
+      DataCell(Text(_teachers[index].firstName)),
+      DataCell(Text(
+          '${_events.where((e) => e.eventType == EventType.free && e.teacherId == _teachers[index].profileId).toList().length}')),
+      DataCell(Text(
+          '${_events.where((e) => e.eventType == EventType.preschool && e.teacherId == _teachers[index].profileId).toList().length}')),
+      DataCell(Text(
+          '${_events.where((e) => e.eventType == EventType.private && e.teacherId == _teachers[index].profileId).toList().length}')),
+    ]);
   }
 }

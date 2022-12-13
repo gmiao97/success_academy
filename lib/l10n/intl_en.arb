@@ -100,5 +100,12 @@
   "recurEnd": "End",
 
   "accountUpdated": "Account settings updated",
-  "failedAccountUpdate": "Failed to update account settings"
+  "failedAccountUpdate": "Failed to update account settings",
+
+  "id": "ID",
+  "lastName": "Last name",
+  "firstName": "First name",
+  "privateNum": "Number of private lessons completed",
+  "preschoolNum": "Number of preschool lessons completed",
+  "freeNum": "Number of free lessons completed"
 }

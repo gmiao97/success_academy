@@ -86,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filter": MessageLookupByLibrary.simpleMessage("Lesson Filter"),
         "filterTitle":
             MessageLookupByLibrary.simpleMessage("Display by lesson type"),
+        "firstName": MessageLookupByLibrary.simpleMessage("First name"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("John"),
         "firstNameLabel":
             MessageLookupByLibrary.simpleMessage("Student First Name"),
@@ -93,7 +94,11 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter student\'s first name"),
         "free": MessageLookupByLibrary.simpleMessage("Free lesson"),
         "freeFilter": MessageLookupByLibrary.simpleMessage("Free lessons"),
+        "freeNum": MessageLookupByLibrary.simpleMessage(
+            "Number of free lessons completed"),
         "goBack": MessageLookupByLibrary.simpleMessage("Go back"),
+        "id": MessageLookupByLibrary.simpleMessage("ID"),
+        "lastName": MessageLookupByLibrary.simpleMessage("Last name"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("Smith"),
         "lastNameLabel":
             MessageLookupByLibrary.simpleMessage("Student Last Name"),
@@ -120,9 +125,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "preschool": MessageLookupByLibrary.simpleMessage("Preschool lesson"),
         "preschoolFilter":
             MessageLookupByLibrary.simpleMessage("Preschool lessons"),
+        "preschoolNum": MessageLookupByLibrary.simpleMessage(
+            "Number of preschool lessons completed"),
         "private": MessageLookupByLibrary.simpleMessage("Private lesson"),
         "privateFilter":
             MessageLookupByLibrary.simpleMessage("Private lessons"),
+        "privateNum": MessageLookupByLibrary.simpleMessage(
+            "Number of private lessons completed"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("Daily"),
         "recurEditNotSupported": MessageLookupByLibrary.simpleMessage(
             "Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar."),

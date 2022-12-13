@@ -80,13 +80,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("アカウント設定更新に失敗しました"),
         "filter": MessageLookupByLibrary.simpleMessage("レッスンのフィルター"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("レッスンの種類で表示する"),
+        "firstName": MessageLookupByLibrary.simpleMessage("名"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("太郎"),
         "firstNameLabel": MessageLookupByLibrary.simpleMessage("生徒名"),
         "firstNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名前を入力してください"),
         "free": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
         "freeFilter": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
+        "freeNum": MessageLookupByLibrary.simpleMessage("フリーレッスン完了数"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
+        "id": MessageLookupByLibrary.simpleMessage("ID"),
+        "lastName": MessageLookupByLibrary.simpleMessage("姓名"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("山田"),
         "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
         "lastNameValidation":
@@ -109,8 +113,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択してください"),
         "preschool": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
         "preschoolFilter": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
+        "preschoolNum": MessageLookupByLibrary.simpleMessage("未就学児レッスン完了数"),
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateFilter": MessageLookupByLibrary.simpleMessage("個別レッスン"),
+        "privateNum": MessageLookupByLibrary.simpleMessage("個人レッスン完了数"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("毎日"),
         "recurEditNotSupported": MessageLookupByLibrary.simpleMessage(
             "繰り返しレッスンの編集や削除は現在サポートされていません。直接Google Calendarで編集や削除をしてください。"),

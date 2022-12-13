@@ -969,6 +969,66 @@ class S {
       args: [],
     );
   }
+
+  /// `ID`
+  String get id {
+    return Intl.message(
+      'ID',
+      name: 'id',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last name`
+  String get lastName {
+    return Intl.message(
+      'Last name',
+      name: 'lastName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First name`
+  String get firstName {
+    return Intl.message(
+      'First name',
+      name: 'firstName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of private lessons completed`
+  String get privateNum {
+    return Intl.message(
+      'Number of private lessons completed',
+      name: 'privateNum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of preschool lessons completed`
+  String get preschoolNum {
+    return Intl.message(
+      'Number of preschool lessons completed',
+      name: 'preschoolNum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of free lessons completed`
+  String get freeNum {
+    return Intl.message(
+      'Number of free lessons completed',
+      name: 'freeNum',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

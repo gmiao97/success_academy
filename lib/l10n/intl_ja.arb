@@ -100,5 +100,12 @@
   "recurEnd": "最終日",
 
   "accountUpdated": "アカウント設定を更新しました",
-  "failedAccountUpdate": "アカウント設定更新に失敗しました"
+  "failedAccountUpdate": "アカウント設定更新に失敗しました",
+
+  "id": "ID",
+  "lastName": "姓名",
+  "firstName": "名",
+  "privateNum": "個人レッスン完了数",
+  "preschoolNum": "未就学児レッスン完了数",
+  "freeNum": "フリーレッスン完了数"
 }
