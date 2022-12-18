@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
+import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_model.dart';
@@ -63,7 +64,9 @@ class _ManageState extends State<_Manage> {
   late AccountModel _accountContext;
   bool _isInitialized = false;
   List<TeacherProfileModel> teachers = [];
-  List<EventModel> events = [];
+  List<EventModel> _allEvents = [];
+  List<EventModel> _events = [];
+  late DateTimeRange _dateRange;
 
   @override
   void initState() {
@@ -78,18 +81,51 @@ class _ManageState extends State<_Manage> {
 
     final timeZoneName = _accountContext.myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
-    events = (await event_service.listEvents(
+    _dateRange = DateTimeRange(
+        start: _getDateFromDateTime(tz.TZDateTime.now(timeZone), timeZone)
+            .subtract(const Duration(days: 30)),
+        end: _getDateFromDateTime(tz.TZDateTime.now(timeZone), timeZone));
+    _allEvents = (await event_service.listEvents(
             timeZone: timeZoneName,
-            timeMin: tz.TZDateTime.now(timeZone)
-                .subtract(const Duration(days: 30))
-                .toIso8601String(),
-            timeMax: tz.TZDateTime.now(timeZone).toIso8601String(),
+            timeMin: _dateRange.start.toIso8601String(),
+            timeMax: _dateRange.end.toIso8601String(),
             singleEvents: true))
         .map((event) => EventModel.fromJson(event, timeZone))
+        .toList();
+    _events = _allEvents
+        .where((event) =>
+            event.startTime.isAfter(_dateRange.start) &&
+            event.startTime.isBefore(_dateRange.end))
         .toList();
     setState(() {
       _isInitialized = true;
     });
+  }
+
+  DateTime _getDateFromDateTime(DateTime dateTime, tz.Location timeZone) {
+    return tz.TZDateTime(timeZone, dateTime.year, dateTime.month, dateTime.day);
+  }
+
+  void _selectDateRange() async {
+    final timeZoneName = _accountContext.myUser!.timeZone;
+    final timeZone = tz.getLocation(timeZoneName);
+
+    final dateRange = await showDateRangePicker(
+        context: context,
+        firstDate: DateTime(2020, 1, 1),
+        lastDate: tz.TZDateTime.now(timeZone));
+    if (dateRange != null) {
+      setState(() {
+        _dateRange = DateTimeRange(
+            start: _getDateFromDateTime(dateRange.start, timeZone),
+            end: _getDateFromDateTime(dateRange.end, timeZone));
+        _events = _allEvents
+            .where((event) =>
+                event.startTime.isAfter(_dateRange.start) &&
+                event.startTime.isBefore(_dateRange.end))
+            .toList();
+      });
+    }
   }
 
   @override
@@ -102,61 +138,72 @@ class _ManageState extends State<_Manage> {
           )
         : Padding(
             padding: const EdgeInsets.all(50),
-            child: PaginatedDataTable(
-              columns: <DataColumn>[
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).id,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
+            child: Column(
+              children: [
+                Text(
+                  '${dateFormatter.format(_dateRange.start)} - ${dateFormatter.format(_dateRange.end)}',
                 ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).lastName,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
+                ElevatedButton(
+                  onPressed: _selectDateRange,
+                  child: const Text('Select date range'),
                 ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).firstName,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                PaginatedDataTable(
+                  columns: <DataColumn>[
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).id,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).freeNum,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).lastName,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).preschoolNum,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).firstName,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).privateNum,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).freeNum,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).preschoolNum,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).privateNum,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                  ],
+                  source: _TeacherData(
+                    teachers: teachers,
+                    events: _events,
                   ),
                 ),
               ],
-              source: _TeacherData(
-                teachers: teachers,
-                events: events,
-              ),
             ),
           );
   }
