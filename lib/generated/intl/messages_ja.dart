@@ -116,7 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "preschoolNum": MessageLookupByLibrary.simpleMessage("未就学児レッスン完了数"),
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateFilter": MessageLookupByLibrary.simpleMessage("個別レッスン"),
-        "privateNum": MessageLookupByLibrary.simpleMessage("個人レッスン完了数"),
+        "privateNum": MessageLookupByLibrary.simpleMessage("完了個別レッスンポイント数"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("毎日"),
         "recurEditNotSupported": MessageLookupByLibrary.simpleMessage(
             "繰り返しレッスンの編集や削除は現在サポートされていません。直接Google Calendarで編集や削除をしてください。"),

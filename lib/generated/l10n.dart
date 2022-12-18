@@ -1000,10 +1000,10 @@ class S {
     );
   }
 
-  /// `Number of private lessons completed`
+  /// `Number of points completed from private lessons`
   String get privateNum {
     return Intl.message(
-      'Number of private lessons completed',
+      'Number of points completed from private lessons',
       name: 'privateNum',
       desc: '',
       args: [],

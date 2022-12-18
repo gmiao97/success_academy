@@ -105,7 +105,7 @@
   "id": "ID",
   "lastName": "Last name",
   "firstName": "First name",
-  "privateNum": "Number of private lessons completed",
+  "privateNum": "Number of points completed from private lessons",
   "preschoolNum": "Number of preschool lessons completed",
   "freeNum": "Number of free lessons completed"
 }

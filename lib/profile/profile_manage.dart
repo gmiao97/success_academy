@@ -234,12 +234,21 @@ class _TeacherData extends DataTableSource {
       DataCell(Text(_teachers[index].profileId)),
       DataCell(Text(_teachers[index].lastName)),
       DataCell(Text(_teachers[index].firstName)),
-      DataCell(Text(
-          '${_events.where((e) => e.eventType == EventType.free && e.teacherId == _teachers[index].profileId).toList().length}')),
-      DataCell(Text(
-          '${_events.where((e) => e.eventType == EventType.preschool && e.teacherId == _teachers[index].profileId).toList().length}')),
-      DataCell(Text(
-          '${_events.where((e) => e.eventType == EventType.private && e.teacherId == _teachers[index].profileId).toList().length}')),
+      DataCell(
+        Text(
+          '${_events.where((e) => e.eventType == EventType.free && e.teacherId == _teachers[index].profileId).toList().length}',
+        ),
+      ),
+      DataCell(
+        Text(
+          '${_events.where((e) => e.eventType == EventType.preschool && e.teacherId == _teachers[index].profileId).toList().length}',
+        ),
+      ),
+      DataCell(
+        Text(
+          '${_events.where((e) => e.eventType == EventType.private && e.teacherId == _teachers[index].profileId).toList().map((event) => event.numPoints).reduce((a, b) => (a ?? 0) + (b ?? 0))}',
+        ),
+      ),
     ]);
   }
 }
