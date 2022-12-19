@@ -32,6 +32,11 @@ void updateStudentProfile(StudentProfileModel? studentProfile) async {
   prefs?.setString('profile', jsonEncode(studentProfile?.toJson()));
 }
 
+void removeStudentProfile() async {
+  final prefs = await _getSharedPreferencesInstance();
+  prefs?.remove('profile');
+}
+
 Future<SharedPreferences?> _getSharedPreferencesInstance() async {
   try {
     return await SharedPreferences.getInstance();

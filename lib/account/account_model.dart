@@ -137,6 +137,7 @@ class AccountModel extends ChangeNotifier {
     _studentProfile = null;
     _teacherProfile = null;
     _adminProfile = null;
+    shared_preferences_service.removeStudentProfile();
   }
 }
 
