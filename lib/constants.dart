@@ -11,6 +11,7 @@ const routeCalendar = '/calendar';
 const routeAddPoints = '/add-points';
 const routeSettings = '/settings';
 const routeManageUsers = '/manage-users';
+const routeInfo = '/info';
 
 const maxProfileCount = 5;
 

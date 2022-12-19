@@ -1,11 +1,104 @@
+import 'dart:html' as html;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 
 int timeOfDayToInt(TimeOfDay time) => time.hour * 60 + time.minute;
+
+Scaffold buildLoggedOutScaffold(
+    {required BuildContext context, required Widget body}) {
+  final account = context.watch<AccountModel>();
+  final style =
+      TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+
+  return Scaffold(
+    appBar: AppBar(
+      title: InkWell(
+        child: const Text(constants.homePageAppBarName),
+        onTap: () {
+          Navigator.pushNamed(context, constants.routeHome);
+        },
+      ),
+      centerTitle: false,
+      automaticallyImplyLeading: false,
+      actions: [
+        TextButton(
+          style: style,
+          onPressed: () {
+            account.locale = account.locale == 'en' ? 'ja' : 'en';
+          },
+          child: Text(
+            account.locale == 'en' ? '🇺🇸' : '🇯🇵',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        TextButton(
+          style: style,
+          onPressed: () {
+            Navigator.pushNamed(context, constants.routeSignIn);
+          },
+          child: Text(
+            S.of(context).signIn,
+          ),
+        ),
+      ],
+    ),
+    body: body,
+    bottomSheet: BottomSheet(
+      onClosing: () {},
+      builder: (context) => SizedBox(
+        width: double.infinity,
+        height: 60,
+        child: Column(
+          children: [
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      S.of(context).businessName,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    const SizedBox(width: 10),
+                    InkWell(
+                      child: Text(
+                        S.of(context).termsOfUse,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, constants.routeInfo);
+                      },
+                    ),
+                    const SizedBox(width: 100),
+                    InkWell(
+                      child: const Icon(
+                        FontAwesomeIcons.instagram,
+                        size: 20,
+                      ),
+                      onTap: () {
+                        html.window.open(
+                            'https://www.instagram.com/successacademy_7/',
+                            'Success Academy');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
 Scaffold buildLoggedInScaffold(
     {required BuildContext context, required Widget body}) {
@@ -15,7 +108,12 @@ Scaffold buildLoggedInScaffold(
 
   return Scaffold(
     appBar: AppBar(
-      title: const Text(constants.homePageAppBarName),
+      title: InkWell(
+        child: const Text(constants.homePageAppBarName),
+        onTap: () {
+          Navigator.pushNamed(context, constants.routeHome);
+        },
+      ),
       centerTitle: false,
       automaticallyImplyLeading: false,
       actions: [
@@ -39,6 +137,54 @@ Scaffold buildLoggedInScaffold(
       ],
     ),
     body: body,
+    bottomSheet: BottomSheet(
+      onClosing: () {},
+      builder: (context) => SizedBox(
+        width: double.infinity,
+        height: 60,
+        child: Column(
+          children: [
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      S.of(context).businessName,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    const SizedBox(width: 10),
+                    InkWell(
+                      child: Text(
+                        S.of(context).termsOfUse,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, constants.routeInfo);
+                      },
+                    ),
+                    const SizedBox(width: 100),
+                    InkWell(
+                      child: const Icon(
+                        FontAwesomeIcons.instagram,
+                        size: 20,
+                      ),
+                      onTap: () {
+                        html.window.open(
+                            'https://www.instagram.com/successacademy_7/',
+                            'Success Academy');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }
 
@@ -50,7 +196,12 @@ Scaffold buildStudentProfileScaffold(
 
   return Scaffold(
     appBar: AppBar(
-      title: const Text(constants.homePageAppBarName),
+      title: InkWell(
+        child: const Text(constants.homePageAppBarName),
+        onTap: () {
+          Navigator.pushNamed(context, constants.routeHome);
+        },
+      ),
       centerTitle: false,
       actions: [
         TextButton(
@@ -126,6 +277,54 @@ Scaffold buildStudentProfileScaffold(
       ),
     ),
     body: body,
+    bottomSheet: BottomSheet(
+      onClosing: () {},
+      builder: (context) => SizedBox(
+        width: double.infinity,
+        height: 60,
+        child: Column(
+          children: [
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      S.of(context).businessName,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    const SizedBox(width: 10),
+                    InkWell(
+                      child: Text(
+                        S.of(context).termsOfUse,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, constants.routeInfo);
+                      },
+                    ),
+                    const SizedBox(width: 100),
+                    InkWell(
+                      child: const Icon(
+                        FontAwesomeIcons.instagram,
+                        size: 20,
+                      ),
+                      onTap: () {
+                        html.window.open(
+                            'https://www.instagram.com/successacademy_7/',
+                            'Success Academy');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }
 
@@ -137,7 +336,12 @@ Scaffold buildTeacherProfileScaffold(
 
   return Scaffold(
     appBar: AppBar(
-      title: const Text(constants.homePageAppBarName),
+      title: InkWell(
+        child: const Text(constants.homePageAppBarName),
+        onTap: () {
+          Navigator.pushNamed(context, constants.routeHome);
+        },
+      ),
       centerTitle: false,
       actions: [
         TextButton(
@@ -210,7 +414,12 @@ Scaffold buildAdminProfileScaffold(
 
   return Scaffold(
     appBar: AppBar(
-      title: const Text(constants.homePageAppBarName),
+      title: InkWell(
+        child: const Text(constants.homePageAppBarName),
+        onTap: () {
+          Navigator.pushNamed(context, constants.routeHome);
+        },
+      ),
       centerTitle: false,
       actions: [
         TextButton(
@@ -279,5 +488,53 @@ Scaffold buildAdminProfileScaffold(
       ),
     ),
     body: body,
+    bottomSheet: BottomSheet(
+      onClosing: () {},
+      builder: (context) => SizedBox(
+        width: double.infinity,
+        height: 60,
+        child: Column(
+          children: [
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      S.of(context).businessName,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    const SizedBox(width: 10),
+                    InkWell(
+                      child: Text(
+                        S.of(context).termsOfUse,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, constants.routeInfo);
+                      },
+                    ),
+                    const SizedBox(width: 100),
+                    InkWell(
+                      child: const Icon(
+                        FontAwesomeIcons.instagram,
+                        size: 20,
+                      ),
+                      onTap: () {
+                        html.window.open(
+                            'https://www.instagram.com/successacademy_7/',
+                            'Success Academy');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }

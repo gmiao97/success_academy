@@ -10,6 +10,7 @@ import 'package:success_academy/calendar/calendar.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/firebase_options.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/info.dart';
 import 'package:success_academy/l10n/FlutterFireUIJaLocalizationsDelegate.dart';
 import 'package:success_academy/landing/landing.dart';
 import 'package:success_academy/profile/add_points.dart';
@@ -64,6 +65,7 @@ class App extends StatelessWidget {
         constants.routeAddPoints: (context) => const AddPoints(),
         constants.routeSettings: (context) => const AccountSettings(),
         constants.routeManageUsers: (context) => const ManageUsers(),
+        constants.routeInfo: (context) => const Info(),
       },
     );
   }
@@ -74,8 +76,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style =
-        TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     final account = context.watch<AccountModel>();
 
     if (account.authStatus == AuthStatus.loading) {
@@ -91,34 +91,10 @@ class HomePage extends StatelessWidget {
     if (account.authStatus == AuthStatus.signedIn) {
       return const ProfileHome();
     }
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text(constants.homePageAppBarName),
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          actions: [
-            TextButton(
-              style: style,
-              onPressed: () {
-                account.locale = account.locale == 'en' ? 'ja' : 'en';
-              },
-              child: Text(
-                account.locale == 'en' ? '🇺🇸' : '🇯🇵',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            ),
-            TextButton(
-              style: style,
-              onPressed: () {
-                Navigator.pushNamed(context, constants.routeSignIn);
-              },
-              child: Text(
-                S.of(context).signIn,
-              ),
-            ),
-          ],
-        ),
-        body: const LandingPage());
+    return utils.buildLoggedOutScaffold(
+      context: context,
+      body: const LandingPage(),
+    );
   }
 }
 

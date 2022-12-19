@@ -1029,6 +1029,26 @@ class S {
       args: [],
     );
   }
+
+  /// `MERCY EDUCATION`
+  String get businessName {
+    return Intl.message(
+      'MERCY EDUCATION',
+      name: 'businessName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms of use`
+  String get termsOfUse {
+    return Intl.message(
+      'Terms of use',
+      name: 'termsOfUse',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

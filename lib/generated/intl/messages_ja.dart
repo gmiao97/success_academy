@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addPoints": MessageLookupByLibrary.simpleMessage("ポイントを追加する"),
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
         "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
+        "businessName": MessageLookupByLibrary.simpleMessage("MERCY EDUCATION"),
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "cancelSignup": MessageLookupByLibrary.simpleMessage("登録解除"),
@@ -144,6 +145,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
         "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),
+        "termsOfUse": MessageLookupByLibrary.simpleMessage("利用規約"),
         "timeZone": m3,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("時間帯"),
         "timeZoneValidation":

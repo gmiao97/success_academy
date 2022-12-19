@@ -107,5 +107,8 @@
   "firstName": "First name",
   "privateNum": "Number of points completed from private lessons",
   "preschoolNum": "Number of preschool lessons completed",
-  "freeNum": "Number of free lessons completed"
+  "freeNum": "Number of free lessons completed",
+
+  "businessName": "MERCY EDUCATION",
+  "termsOfUse": "Terms of use"
 }

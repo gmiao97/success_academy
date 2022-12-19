@@ -41,6 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addPoints": MessageLookupByLibrary.simpleMessage("Add points"),
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
         "allEvents": MessageLookupByLibrary.simpleMessage("All Lessons"),
+        "businessName": MessageLookupByLibrary.simpleMessage("MERCY EDUCATION"),
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelSignup": MessageLookupByLibrary.simpleMessage("Cancel sign up"),
@@ -166,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student Profile Information"),
         "teacherProfile":
             MessageLookupByLibrary.simpleMessage("Teacher Profile Information"),
+        "termsOfUse": MessageLookupByLibrary.simpleMessage("Terms of use"),
         "timeZone": m3,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("Time Zone"),
         "timeZoneValidation": MessageLookupByLibrary.simpleMessage(
