@@ -1,9 +1,24 @@
+import 'package:flutter/material.dart';
 import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 
 // Corresponds to metadata field 'id' in price in Stripe dashboard
 enum SubscriptionPlan { minimum, minimumPreschool, monthly }
+
+String getSubscriptionPlanName(BuildContext context, SubscriptionPlan plan) {
+  switch (plan) {
+    case SubscriptionPlan.minimum:
+      return S.of(context).minimumCourse;
+    case SubscriptionPlan.minimumPreschool:
+      return S.of(context).minimumPreschoolCourse;
+    case SubscriptionPlan.monthly:
+      return S.of(context).monthlyCourse;
+    default:
+      return S.of(context).noPlan;
+  }
+}
 
 class StudentProfileModel {
   StudentProfileModel() : numPoints = 0;

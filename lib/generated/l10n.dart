@@ -320,6 +320,16 @@ class S {
     );
   }
 
+  /// `Monthly Payment - $10/month`
+  String get monthlyCourse {
+    return Intl.message(
+      'Monthly Payment - \$10/month',
+      name: 'monthlyCourse',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Choose a subscription plan`
   String get pickPlan {
     return Intl.message(

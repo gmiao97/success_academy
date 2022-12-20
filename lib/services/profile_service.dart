@@ -131,14 +131,6 @@ Future<void> updateStudentProfile(
   return profileDoc;
 }
 
-Future<bool> profileHasSubscription(
-    {required String userId, required String profileId}) async {
-  final subscriptionDocs = await stripe_service.getSubscriptionsForUser(userId);
-  // Subscription metadata is written in startStripeSubscriptionCheckoutSession.
-  return subscriptionDocs
-      .any((doc) => doc.get('metadata.profile_id') as String == profileId);
-}
-
 Future<SubscriptionPlan?> getSubscriptionTypeForProfile(
     {required String userId, required String profileId}) async {
   final subscriptionDocs = await stripe_service.getSubscriptionsForUser(userId);

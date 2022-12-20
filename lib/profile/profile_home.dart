@@ -152,14 +152,14 @@ class _ProfileHomeState extends State<ProfileHome> {
               ),
               const SizedBox(height: 25),
               // BUG: Can't differentiate between multiple profile subscriptions.
-              FutureBuilder<bool>(
-                future: profile_service.profileHasSubscription(
+              FutureBuilder<SubscriptionPlan?>(
+                future: profile_service.getSubscriptionTypeForProfile(
                     profileId: account.studentProfile!.profileId,
                     userId: account.firebaseUser!.uid),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     // Profile has subscription
-                    if (snapshot.data == true) {
+                    if (snapshot.data != null) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,6 +188,11 @@ class _ProfileHomeState extends State<ProfileHome> {
                               );
                             },
                             child: Text(S.of(context).copy),
+                          ),
+                          const SizedBox(height: 25),
+                          Text(
+                            getSubscriptionPlanName(context, snapshot.data!),
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                           const SizedBox(height: 25),
                           _stripeRedirectClicked

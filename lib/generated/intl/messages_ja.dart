@@ -103,6 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース・月＄4０"),
         "minimumPreschoolCourse":
             MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄5０"),
+        "monthlyCourse": MessageLookupByLibrary.simpleMessage("月会費 - 月＄1０"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
