@@ -48,7 +48,7 @@ class ProfileCreate extends StatelessWidget {
               Card(
                 child: Container(
                   width: 700,
-                  height: 600,
+                  height: 700,
                   padding: const EdgeInsets.all(20),
                   child: const _SignupForm(),
                 ),
@@ -245,6 +245,7 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
   String? _referralCode;
   bool _showReferralError = false;
   bool _showReferralSucess = false;
+  bool _termsOfUseChecked = false;
 
   @override
   void initState() {
@@ -310,6 +311,29 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
         const SizedBox(
           height: 25,
         ),
+        Row(
+          children: [
+            Checkbox(
+              value: _termsOfUseChecked,
+              onChanged: (value) {
+                setState(() {
+                  _termsOfUseChecked = value ?? false;
+                });
+              },
+            ),
+            InkWell(
+              child: Text(
+                S.of(context).agreeToTerms,
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, routeInfo);
+              },
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 25,
+        ),
         Text(
           S.of(context).freeTrial,
         ),
@@ -326,10 +350,11 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
               : ElevatedButton.icon(
                   label: Text(S.of(context).stripePurchase),
                   icon: const Icon(Icons.exit_to_app),
-                  onPressed: (_referralCode != null &&
-                              _referralCode!.isNotEmpty &&
-                              _showReferralSucess) ||
-                          (_referralCode == null || _referralCode!.isEmpty)
+                  onPressed: _termsOfUseChecked &&
+                          ((_referralCode != null &&
+                                  _referralCode!.isNotEmpty &&
+                                  _showReferralSucess) ||
+                              (_referralCode == null || _referralCode!.isEmpty))
                       ? widget.onStripeSubmitClicked
                       : null,
                 ),

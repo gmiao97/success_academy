@@ -38,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("アカウント設定を更新しました"),
         "addPoints": MessageLookupByLibrary.simpleMessage("ポイントを追加する"),
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
+        "agreeToTerms": MessageLookupByLibrary.simpleMessage("利用規約に同意"),
         "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
         "businessName": MessageLookupByLibrary.simpleMessage("MERCY EDUCATION"),
         "calendarHeader": m0,

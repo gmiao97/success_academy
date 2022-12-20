@@ -164,6 +164,11 @@ class _ProfileHomeState extends State<ProfileHome> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(
+                            getSubscriptionPlanName(context, snapshot.data),
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          const SizedBox(height: 25),
                           RichText(
                             text: TextSpan(
                               text: '${S.of(context).myCode}     ',
@@ -190,11 +195,6 @@ class _ProfileHomeState extends State<ProfileHome> {
                             child: Text(S.of(context).copy),
                           ),
                           const SizedBox(height: 25),
-                          Text(
-                            getSubscriptionPlanName(context, snapshot.data!),
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          const SizedBox(height: 25),
                           _stripeRedirectClicked
                               ? const CircularProgressIndicator(value: null)
                               : ElevatedButton(
@@ -209,46 +209,56 @@ class _ProfileHomeState extends State<ProfileHome> {
                         ],
                       );
                     }
-                    return StripeSubscriptionCreate(
-                      subscriptionPlan: _subscriptionPlan,
-                      stripeRedirectClicked: _stripeRedirectClicked,
-                      onSubscriptionChange: (selectedSubscription) {
-                        setState(() {
-                          _subscriptionPlan = selectedSubscription;
-                        });
-                      },
-                      setReferral: (code) {
-                        if (_referralCodes.contains(code)) {
-                          _isReferral = true;
-                          return true;
-                        }
-                        return false;
-                      },
-                      onStripeSubmitClicked: () async {
-                        setState(() {
-                          _stripeRedirectClicked = true;
-                        });
-                        // TODO: No trial (+reinitiation fee?) for people who already had trial
-                        try {
-                          await stripe_service
-                              .startStripeSubscriptionCheckoutSession(
-                            userId: account.firebaseUser!.uid,
-                            profileId: account.studentProfile!.profileId,
-                            subscriptionPlan: _subscriptionPlan!,
-                            isReferral: _isReferral,
-                          );
-                        } catch (e) {
-                          setState(() {
-                            _stripeRedirectClicked = false;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          });
-                        }
-                      },
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getSubscriptionPlanName(context, snapshot.data),
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        const SizedBox(height: 25),
+                        StripeSubscriptionCreate(
+                          subscriptionPlan: _subscriptionPlan,
+                          stripeRedirectClicked: _stripeRedirectClicked,
+                          onSubscriptionChange: (selectedSubscription) {
+                            setState(() {
+                              _subscriptionPlan = selectedSubscription;
+                            });
+                          },
+                          setReferral: (code) {
+                            if (_referralCodes.contains(code)) {
+                              _isReferral = true;
+                              return true;
+                            }
+                            return false;
+                          },
+                          onStripeSubmitClicked: () async {
+                            setState(() {
+                              _stripeRedirectClicked = true;
+                            });
+                            // TODO: No trial (+reinitiation fee?) for people who already had trial
+                            try {
+                              await stripe_service
+                                  .startStripeSubscriptionCheckoutSession(
+                                userId: account.firebaseUser!.uid,
+                                profileId: account.studentProfile!.profileId,
+                                subscriptionPlan: _subscriptionPlan!,
+                                isReferral: _isReferral,
+                              );
+                            } catch (e) {
+                              setState(() {
+                                _stripeRedirectClicked = false;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(e.toString()),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              });
+                            }
+                          },
+                        ),
+                      ],
                     );
                   }
                   return const CircularProgressIndicator(value: null);

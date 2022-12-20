@@ -1079,6 +1079,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Agree to terms of use`
+  String get agreeToTerms {
+    return Intl.message(
+      'Agree to terms of use',
+      name: 'agreeToTerms',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

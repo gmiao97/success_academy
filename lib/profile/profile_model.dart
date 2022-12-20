@@ -7,7 +7,7 @@ import 'package:success_academy/services/profile_service.dart'
 // Corresponds to metadata field 'id' in price in Stripe dashboard
 enum SubscriptionPlan { minimum, minimumPreschool, monthly }
 
-String getSubscriptionPlanName(BuildContext context, SubscriptionPlan plan) {
+String getSubscriptionPlanName(BuildContext context, SubscriptionPlan? plan) {
   switch (plan) {
     case SubscriptionPlan.minimum:
       return S.of(context).minimumCourse;

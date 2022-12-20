@@ -40,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Account settings updated"),
         "addPoints": MessageLookupByLibrary.simpleMessage("Add points"),
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
+        "agreeToTerms":
+            MessageLookupByLibrary.simpleMessage("Agree to terms of use"),
         "allEvents": MessageLookupByLibrary.simpleMessage("All Lessons"),
         "businessName": MessageLookupByLibrary.simpleMessage("MERCY EDUCATION"),
         "calendarHeader": m0,
