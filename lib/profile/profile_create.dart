@@ -307,6 +307,18 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
             });
           },
         ),
+        const SizedBox(
+          height: 25,
+        ),
+        Text(
+          S.of(context).freeTrial,
+        ),
+        Text(
+          S.of(context).signUpFee,
+          style: _showReferralSucess
+              ? const TextStyle(decoration: TextDecoration.lineThrough)
+              : null,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: widget.stripeRedirectClicked

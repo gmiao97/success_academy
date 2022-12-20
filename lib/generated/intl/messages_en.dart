@@ -97,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "freeFilter": MessageLookupByLibrary.simpleMessage("Free lessons"),
         "freeNum": MessageLookupByLibrary.simpleMessage(
             "Number of free lessons completed"),
+        "freeTrial": MessageLookupByLibrary.simpleMessage("14 days free trial"),
         "goBack": MessageLookupByLibrary.simpleMessage("Go back"),
         "id": MessageLookupByLibrary.simpleMessage("ID"),
         "lastName": MessageLookupByLibrary.simpleMessage("Last name"),
@@ -153,6 +154,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Account Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
+        "signUpFee": MessageLookupByLibrary.simpleMessage(
+            "\$50 sign up fee due after trial"),
         "signedUp": MessageLookupByLibrary.simpleMessage("My lesson"),
         "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
         "signupEvent":

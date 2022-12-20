@@ -31,6 +31,8 @@
   "minimumCourse": "フリーレッスン・月＄4０",
   "minimumPreschoolCourse": "フリーレッスn＋未就学児クラス・月＄5０",
   "monthlyCourse": "月会費のみ - 月＄1０",
+  "freeTrial": "１４日間無料トライル",
+  "signUpFee": "トリアル後＄５０入会費が請求されます",
   "pickPlan": "サブスクリプションのコースを選択してください",
   "noPlan": "サブスクリプションがありません",
   "stripePurchase": "サブスクリプション購入へ",

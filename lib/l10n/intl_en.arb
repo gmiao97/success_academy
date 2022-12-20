@@ -31,6 +31,8 @@
   "minimumCourse": "Free Lesson- $40/month",
   "minimumPreschoolCourse": "Free Lesson + Preschool Class - $50/month",
   "monthlyCourse": "Monthly Payment Only - $10/month",
+  "freeTrial": "14 days free trial",
+  "signUpFee": "$50 sign up fee due after trial",
   "pickPlan": "Choose a subscription plan",
   "noPlan": "No subscription plan",
   "stripePurchase": "Continue to subscription purchase",

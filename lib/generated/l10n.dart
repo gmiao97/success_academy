@@ -330,6 +330,26 @@ class S {
     );
   }
 
+  /// `14 days free trial`
+  String get freeTrial {
+    return Intl.message(
+      '14 days free trial',
+      name: 'freeTrial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `$50 sign up fee due after trial`
+  String get signUpFee {
+    return Intl.message(
+      '\$50 sign up fee due after trial',
+      name: 'signUpFee',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Choose a subscription plan`
   String get pickPlan {
     return Intl.message(
