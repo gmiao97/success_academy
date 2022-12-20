@@ -49,54 +49,7 @@ Scaffold buildLoggedOutScaffold(
       ],
     ),
     body: body,
-    bottomSheet: BottomSheet(
-      onClosing: () {},
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: Column(
-          children: [
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      S.of(context).businessName,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                    const SizedBox(width: 10),
-                    InkWell(
-                      child: Text(
-                        S.of(context).termsOfUse,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, constants.routeInfo);
-                      },
-                    ),
-                    const SizedBox(width: 100),
-                    InkWell(
-                      child: const Icon(
-                        FontAwesomeIcons.instagram,
-                        size: 20,
-                      ),
-                      onTap: () {
-                        html.window.open(
-                            'https://www.instagram.com/successacademy_7/',
-                            'Success Academy');
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
+    bottomSheet: _bottomSheet,
   );
 }
 
@@ -137,54 +90,7 @@ Scaffold buildLoggedInScaffold(
       ],
     ),
     body: body,
-    bottomSheet: BottomSheet(
-      onClosing: () {},
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: Column(
-          children: [
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      S.of(context).businessName,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                    const SizedBox(width: 10),
-                    InkWell(
-                      child: Text(
-                        S.of(context).termsOfUse,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, constants.routeInfo);
-                      },
-                    ),
-                    const SizedBox(width: 100),
-                    InkWell(
-                      child: const Icon(
-                        FontAwesomeIcons.instagram,
-                        size: 20,
-                      ),
-                      onTap: () {
-                        html.window.open(
-                            'https://www.instagram.com/successacademy_7/',
-                            'Success Academy');
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
+    bottomSheet: _bottomSheet,
   );
 }
 
@@ -277,54 +183,7 @@ Scaffold buildStudentProfileScaffold(
       ),
     ),
     body: body,
-    bottomSheet: BottomSheet(
-      onClosing: () {},
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: Column(
-          children: [
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      S.of(context).businessName,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                    const SizedBox(width: 10),
-                    InkWell(
-                      child: Text(
-                        S.of(context).termsOfUse,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, constants.routeInfo);
-                      },
-                    ),
-                    const SizedBox(width: 100),
-                    InkWell(
-                      child: const Icon(
-                        FontAwesomeIcons.instagram,
-                        size: 20,
-                      ),
-                      onTap: () {
-                        html.window.open(
-                            'https://www.instagram.com/successacademy_7/',
-                            'Success Academy');
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
+    bottomSheet: _bottomSheet,
   );
 }
 
@@ -403,6 +262,7 @@ Scaffold buildTeacherProfileScaffold(
       ),
     ),
     body: body,
+    bottomSheet: _bottomSheet,
   );
 }
 
@@ -488,53 +348,55 @@ Scaffold buildAdminProfileScaffold(
       ),
     ),
     body: body,
-    bottomSheet: BottomSheet(
-      onClosing: () {},
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: Column(
-          children: [
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      S.of(context).businessName,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                    const SizedBox(width: 10),
-                    InkWell(
-                      child: Text(
-                        S.of(context).termsOfUse,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, constants.routeInfo);
-                      },
-                    ),
-                    const SizedBox(width: 100),
-                    InkWell(
-                      child: const Icon(
-                        FontAwesomeIcons.instagram,
-                        size: 20,
-                      ),
-                      onTap: () {
-                        html.window.open(
-                            'https://www.instagram.com/successacademy_7/',
-                            'Success Academy');
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
+    bottomSheet: _bottomSheet,
   );
 }
+
+BottomSheet _bottomSheet = BottomSheet(
+  onClosing: () {},
+  builder: (context) => SizedBox(
+    width: double.infinity,
+    height: 60,
+    child: Column(
+      children: [
+        const Divider(),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  S.of(context).businessName,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+                const SizedBox(width: 10),
+                InkWell(
+                  child: Text(
+                    S.of(context).termsOfUse,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, constants.routeInfo);
+                  },
+                ),
+                const SizedBox(width: 100),
+                InkWell(
+                  child: const Icon(
+                    FontAwesomeIcons.instagram,
+                    size: 20,
+                  ),
+                  onTap: () {
+                    html.window.open(
+                        'https://www.instagram.com/successacademy_7/',
+                        'Success Academy');
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+);

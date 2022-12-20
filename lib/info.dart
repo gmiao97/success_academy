@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
-import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/utils.dart' as utils;
 
 class Info extends StatelessWidget {
@@ -29,22 +28,7 @@ class Info extends StatelessWidget {
         body: const _Info(),
       );
     }
-    if (account.userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
-    }
-    if (account.userType == UserType.admin) {
-      return utils.buildAdminProfileScaffold(
-        context: context,
-        body: const _Info(),
-      );
-    }
-    if (account.userType == UserType.teacher) {
-      return utils.buildTeacherProfileScaffold(
-        context: context,
-        body: const _Info(),
-      );
-    }
-    return utils.buildStudentProfileScaffold(
+    return utils.buildLoggedInScaffold(
       context: context,
       body: const _Info(),
     );
@@ -56,6 +40,27 @@ class _Info extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Hello World');
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.maybePop(context);
+            },
+            child: Text(S.of(context).goBack),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                S.of(context).termsOfUse,
+                style: Theme.of(context).textTheme.headline1,
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
