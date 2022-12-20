@@ -300,30 +300,30 @@ class S {
     );
   }
 
-  /// `Minimum Course - $40/month`
+  /// `Free Lesson- $40/month`
   String get minimumCourse {
     return Intl.message(
-      'Minimum Course - \$40/month',
+      'Free Lesson- \$40/month',
       name: 'minimumCourse',
       desc: '',
       args: [],
     );
   }
 
-  /// `Minimum Course + Preschool Class - $50/month`
+  /// `Free Lesson + Preschool Class - $50/month`
   String get minimumPreschoolCourse {
     return Intl.message(
-      'Minimum Course + Preschool Class - \$50/month',
+      'Free Lesson + Preschool Class - \$50/month',
       name: 'minimumPreschoolCourse',
       desc: '',
       args: [],
     );
   }
 
-  /// `Monthly Payment - $10/month`
+  /// `Monthly Payment Only - $10/month`
   String get monthlyCourse {
     return Intl.message(
-      'Monthly Payment - \$10/month',
+      'Monthly Payment Only - \$10/month',
       name: 'monthlyCourse',
       desc: '',
       args: [],

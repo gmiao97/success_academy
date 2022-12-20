@@ -100,10 +100,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "manageProfile": MessageLookupByLibrary.simpleMessage("ユーザー管理"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),
-        "minimumCourse": MessageLookupByLibrary.simpleMessage("ミニマムコース・月＄4０"),
+        "minimumCourse": MessageLookupByLibrary.simpleMessage("フリーレッスン・月＄4０"),
         "minimumPreschoolCourse":
-            MessageLookupByLibrary.simpleMessage("ミニマムコース＋未就学児クラス・月＄5０"),
-        "monthlyCourse": MessageLookupByLibrary.simpleMessage("月会費 - 月＄1０"),
+            MessageLookupByLibrary.simpleMessage("フリーレッスn＋未就学児クラス・月＄5０"),
+        "monthlyCourse": MessageLookupByLibrary.simpleMessage("月会費のみ - 月＄1０"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),

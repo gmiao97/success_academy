@@ -28,9 +28,9 @@
   "copied": "Code Copied!",
   "manageSubscription": "Manage Subscriptions",
 
-  "minimumCourse": "Minimum Course - $40/month",
-  "minimumPreschoolCourse": "Minimum Course + Preschool Class - $50/month",
-  "monthlyCourse": "Monthly Payment - $10/month",
+  "minimumCourse": "Free Lesson- $40/month",
+  "minimumPreschoolCourse": "Free Lesson + Preschool Class - $50/month",
+  "monthlyCourse": "Monthly Payment Only - $10/month",
   "pickPlan": "Choose a subscription plan",
   "noPlan": "No subscription plan",
   "stripePurchase": "Continue to subscription purchase",

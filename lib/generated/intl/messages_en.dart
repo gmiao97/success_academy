@@ -111,11 +111,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("Manage Subscriptions"),
         "minimumCourse":
-            MessageLookupByLibrary.simpleMessage("Minimum Course - \$40/month"),
+            MessageLookupByLibrary.simpleMessage("Free Lesson- \$40/month"),
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
-            "Minimum Course + Preschool Class - \$50/month"),
+            "Free Lesson + Preschool Class - \$50/month"),
         "monthlyCourse": MessageLookupByLibrary.simpleMessage(
-            "Monthly Payment - \$10/month"),
+            "Monthly Payment Only - \$10/month"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
