@@ -89,6 +89,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("生徒の名前を入力してください"),
         "free": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
         "freeFilter": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
+        "freeLessonInfo": MessageLookupByLibrary.simpleMessage("フリーレッスン情報"),
+        "freeLessonMaterials": MessageLookupByLibrary.simpleMessage("教材"),
+        "freeLessonTimeTable":
+            MessageLookupByLibrary.simpleMessage("フリーレッスン時間割"),
+        "freeLessonZoomInfo":
+            MessageLookupByLibrary.simpleMessage("フリーレッスンZOOM情報"),
         "freeNum": MessageLookupByLibrary.simpleMessage("フリーレッスン完了数"),
         "freeTrial": MessageLookupByLibrary.simpleMessage("１４日間無料トライル"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),

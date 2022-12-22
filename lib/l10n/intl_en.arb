@@ -48,8 +48,13 @@
   "changeProfile": "Select Profile",
   "viewProfile": "View Profile",
   "lessonCalendar": "Lesson Calendar",
+  "freeLessonInfo": "Free Lesson Info",
   "addPoints": "Add points",
   "settings": "Account Settings",
+  
+  "freeLessonTimeTable": "Free Lesson Time Table",
+  "freeLessonMaterials": "Course Materials",
+  "freeLessonZoomInfo" : "Free Lesson Zoom Info",
 
   "calendarHeader": "{name}'s Calendar",
   "timeZone": "Timezone: {timeZone}",

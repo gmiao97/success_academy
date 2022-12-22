@@ -48,8 +48,13 @@
   "changeProfile": "プロフィール選択",
   "viewProfile": "プロフィールを見る",
   "lessonCalendar": "レッスンカレンダー",
+  "freeLessonInfo": "フリーレッスン情報",
   "addPoints": "ポイントを追加する",
   "settings": "アカウント設定",
+
+  "freeLessonTimeTable": "フリーレッスン時間割",
+  "freeLessonMaterials": "教材",
+  "freeLessonZoomInfo" : "フリーレッスンZOOM情報",
 
   "calendarHeader": "{name}のカレンダー",
   "timeZone": "時間帯： {timeZone}",

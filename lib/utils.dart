@@ -166,6 +166,13 @@ Scaffold buildStudentProfileScaffold(
             },
           ),
           ListTile(
+            leading: const Icon(Icons.abc),
+            title: Text(S.of(context).freeLessonInfo),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeFreeLesson);
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.add),
             title: Text(S.of(context).addPoints),
             onTap: () {
@@ -252,6 +259,13 @@ Scaffold buildTeacherProfileScaffold(
             },
           ),
           ListTile(
+            leading: const Icon(Icons.abc),
+            title: Text(S.of(context).freeLessonInfo),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeFreeLesson);
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.settings),
             title: Text(S.of(context).settings),
             onTap: () {
@@ -328,6 +342,13 @@ Scaffold buildAdminProfileScaffold(
             title: Text(S.of(context).lessonCalendar),
             onTap: () {
               Navigator.pushNamed(context, constants.routeCalendar);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.abc),
+            title: Text(S.of(context).freeLessonInfo),
+            onTap: () {
+              Navigator.pushNamed(context, constants.routeFreeLesson);
             },
           ),
           ListTile(

@@ -470,6 +470,16 @@ class S {
     );
   }
 
+  /// `Free Lesson Info`
+  String get freeLessonInfo {
+    return Intl.message(
+      'Free Lesson Info',
+      name: 'freeLessonInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add points`
   String get addPoints {
     return Intl.message(
@@ -485,6 +495,36 @@ class S {
     return Intl.message(
       'Account Settings',
       name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free Lesson Time Table`
+  String get freeLessonTimeTable {
+    return Intl.message(
+      'Free Lesson Time Table',
+      name: 'freeLessonTimeTable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Course Materials`
+  String get freeLessonMaterials {
+    return Intl.message(
+      'Course Materials',
+      name: 'freeLessonMaterials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free Lesson Zoom Info`
+  String get freeLessonZoomInfo {
+    return Intl.message(
+      'Free Lesson Zoom Info',
+      name: 'freeLessonZoomInfo',
       desc: '',
       args: [],
     );

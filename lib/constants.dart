@@ -12,6 +12,7 @@ const routeAddPoints = '/add-points';
 const routeSettings = '/settings';
 const routeManageUsers = '/manage-users';
 const routeInfo = '/info';
+const routeFreeLesson = 'free-lesson';
 
 const maxProfileCount = 5;
 

@@ -9,6 +9,7 @@ import 'package:success_academy/account/account_settings.dart';
 import 'package:success_academy/calendar/calendar.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/firebase_options.dart';
+import 'package:success_academy/free_lesson.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/info.dart';
 import 'package:success_academy/l10n/FlutterFireUIJaLocalizationsDelegate.dart';
@@ -66,6 +67,7 @@ class App extends StatelessWidget {
         constants.routeSettings: (context) => const AccountSettings(),
         constants.routeManageUsers: (context) => const ManageUsers(),
         constants.routeInfo: (context) => const Info(),
+        constants.routeFreeLesson: (context) => const FreeLesson(),
       },
     );
   }

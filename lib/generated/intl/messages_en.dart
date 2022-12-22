@@ -97,6 +97,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter student\'s first name"),
         "free": MessageLookupByLibrary.simpleMessage("Free lesson"),
         "freeFilter": MessageLookupByLibrary.simpleMessage("Free lessons"),
+        "freeLessonInfo":
+            MessageLookupByLibrary.simpleMessage("Free Lesson Info"),
+        "freeLessonMaterials":
+            MessageLookupByLibrary.simpleMessage("Course Materials"),
+        "freeLessonTimeTable":
+            MessageLookupByLibrary.simpleMessage("Free Lesson Time Table"),
+        "freeLessonZoomInfo":
+            MessageLookupByLibrary.simpleMessage("Free Lesson Zoom Info"),
         "freeNum": MessageLookupByLibrary.simpleMessage(
             "Number of free lessons completed"),
         "freeTrial": MessageLookupByLibrary.simpleMessage("14 days free trial"),
