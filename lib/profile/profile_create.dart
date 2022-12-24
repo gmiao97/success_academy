@@ -34,26 +34,28 @@ class ProfileCreate extends StatelessWidget {
     return utils.buildLoggedInScaffold(
         context: context,
         body: Center(
-          child: Column(
-            children: [
-              Container(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.maybePop(context);
-                  },
-                  child: Text(S.of(context).goBack),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.maybePop(context);
+                    },
+                    child: Text(S.of(context).goBack),
+                  ),
+                  margin: const EdgeInsets.all(10),
                 ),
-                margin: const EdgeInsets.all(10),
-              ),
-              Card(
-                child: Container(
-                  width: 700,
-                  height: 700,
-                  padding: const EdgeInsets.all(20),
-                  child: const _SignupForm(),
+                Card(
+                  child: Container(
+                    width: 700,
+                    height: 700,
+                    padding: const EdgeInsets.all(20),
+                    child: const _SignupForm(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

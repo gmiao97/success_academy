@@ -42,24 +42,26 @@ class _Info extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.maybePop(context);
-            },
-            child: Text(S.of(context).goBack),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                S.of(context).termsOfUse,
-                style: Theme.of(context).textTheme.headline1,
-              )
-            ],
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.maybePop(context);
+              },
+              child: Text(S.of(context).goBack),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  S.of(context).termsOfUse,
+                  style: Theme.of(context).textTheme.headline1,
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
