@@ -1,4 +1,7 @@
+import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -74,14 +77,27 @@ class _FreeLessonState extends State<_FreeLesson> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const SizedBox(height: 20),
           Text(
             S.of(context).freeLessonTimeTable,
             style: Theme.of(context).textTheme.headline3,
           ),
+          const SizedBox(height: 20),
           Text(
             S.of(context).freeLessonMaterials,
             style: Theme.of(context).textTheme.headline3,
           ),
+          const SizedBox(height: 8),
+          ElevatedButton.icon(
+            label: const Text("Google Drive"),
+            onPressed: () {
+              html.window.open(
+                  'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list',
+                  'Lesson Materials');
+            },
+            icon: const Icon(FontAwesomeIcons.googleDrive),
+          ),
+          const SizedBox(height: 20),
           FutureBuilder<SubscriptionPlan?>(
             future: profile_service.getSubscriptionTypeForProfile(
                 profileId: account.studentProfile!.profileId,

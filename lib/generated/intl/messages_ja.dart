@@ -96,7 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "freeLessonZoomInfo":
             MessageLookupByLibrary.simpleMessage("フリーレッスンZOOM情報"),
         "freeNum": MessageLookupByLibrary.simpleMessage("フリーレッスン完了数"),
-        "freeTrial": MessageLookupByLibrary.simpleMessage("１４日間無料トライル"),
+        "freeTrial": MessageLookupByLibrary.simpleMessage("１４日間無料トライアル"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
         "id": MessageLookupByLibrary.simpleMessage("ID"),
         "lastName": MessageLookupByLibrary.simpleMessage("姓名"),
@@ -110,7 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),
         "minimumCourse": MessageLookupByLibrary.simpleMessage("フリーレッスン・月＄4０"),
         "minimumPreschoolCourse":
-            MessageLookupByLibrary.simpleMessage("フリーレッスn＋未就学児クラス・月＄5０"),
+            MessageLookupByLibrary.simpleMessage("フリーレッスン＋未就学児クラス・月＄5０"),
         "monthlyCourse": MessageLookupByLibrary.simpleMessage("月会費のみ - 月＄1０"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
@@ -145,7 +145,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("アカウント設定"),
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
-        "signUpFee": MessageLookupByLibrary.simpleMessage("トリアル後＄５０入会費が請求されます"),
+        "signUpFee":
+            MessageLookupByLibrary.simpleMessage("トライアル後＄５０入会費が請求されます"),
         "signedUp": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "signup": MessageLookupByLibrary.simpleMessage("登録"),
         "signupEvent": MessageLookupByLibrary.simpleMessage("レッスン登録"),

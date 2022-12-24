@@ -300,10 +300,10 @@ class S {
     );
   }
 
-  /// `Free Lesson- $40/month`
+  /// `Free Lesson - $40/month`
   String get minimumCourse {
     return Intl.message(
-      'Free Lesson- \$40/month',
+      'Free Lesson - \$40/month',
       name: 'minimumCourse',
       desc: '',
       args: [],
