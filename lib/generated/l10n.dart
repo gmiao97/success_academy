@@ -300,30 +300,30 @@ class S {
     );
   }
 
-  /// `Free Lesson - $40/month`
+  /// `Free Lesson - $40 USD/month`
   String get minimumCourse {
     return Intl.message(
-      'Free Lesson - \$40/month',
+      'Free Lesson - \$40 USD/month',
       name: 'minimumCourse',
       desc: '',
       args: [],
     );
   }
 
-  /// `Free Lesson + Preschool Class - $50/month`
+  /// `Free Lesson + Preschool Class - $50 USD/month`
   String get minimumPreschoolCourse {
     return Intl.message(
-      'Free Lesson + Preschool Class - \$50/month',
+      'Free Lesson + Preschool Class - \$50 USD/month',
       name: 'minimumPreschoolCourse',
       desc: '',
       args: [],
     );
   }
 
-  /// `Monthly Payment Only - $10/month`
+  /// `Monthly Payment Only - $10 USD/month`
   String get monthlyCourse {
     return Intl.message(
-      'Monthly Payment Only - \$10/month',
+      'Monthly Payment Only - \$10 USD/month',
       name: 'monthlyCourse',
       desc: '',
       args: [],
@@ -340,11 +340,21 @@ class S {
     );
   }
 
-  /// `$50 sign up fee due after trial`
+  /// `$50 USD sign up fee due after trial`
   String get signUpFee {
     return Intl.message(
-      '\$50 sign up fee due after trial',
+      '\$50 USD sign up fee due after trial',
       name: 'signUpFee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `20% off - $40 USD`
+  String get signUpFeeDiscount {
+    return Intl.message(
+      '20% off - \$40 USD',
+      name: 'signUpFeeDiscount',
       desc: '',
       args: [],
     );

@@ -229,7 +229,8 @@ class _ProfileHomeState extends State<ProfileHome> {
                               });
                             },
                             setReferral: (code) {
-                              if (_referralCodes.contains(code)) {
+                              if (_referralCodes.contains(code) &&
+                                  account.myUser!.referralCode != code) {
                                 _isReferral = true;
                                 return true;
                               }

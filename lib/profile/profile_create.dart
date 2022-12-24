@@ -179,7 +179,8 @@ class _SignupFormState extends State<_SignupForm> {
               });
             },
             setReferral: (code) {
-              if (_referralCodes.contains(code)) {
+              if (_referralCodes.contains(code) &&
+                  account.myUser!.referralCode != code) {
                 _isReferral = true;
                 return true;
               }
@@ -326,6 +327,10 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
             InkWell(
               child: Text(
                 S.of(context).agreeToTerms,
+                style: const TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: Colors.blue,
+                ),
               ),
               onTap: () {
                 Navigator.pushNamed(context, routeInfo);
@@ -345,6 +350,9 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
               ? const TextStyle(decoration: TextDecoration.lineThrough)
               : null,
         ),
+        _showReferralSucess
+            ? Text(S.of(context).signUpFeeDiscount)
+            : const SizedBox(),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: widget.stripeRedirectClicked

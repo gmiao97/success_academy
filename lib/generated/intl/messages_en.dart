@@ -121,12 +121,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "manageProfile": MessageLookupByLibrary.simpleMessage("Manage Users"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("Manage Subscriptions"),
-        "minimumCourse":
-            MessageLookupByLibrary.simpleMessage("Free Lesson - \$40/month"),
+        "minimumCourse": MessageLookupByLibrary.simpleMessage(
+            "Free Lesson - \$40 USD/month"),
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
-            "Free Lesson + Preschool Class - \$50/month"),
+            "Free Lesson + Preschool Class - \$50 USD/month"),
         "monthlyCourse": MessageLookupByLibrary.simpleMessage(
-            "Monthly Payment Only - \$10/month"),
+            "Monthly Payment Only - \$10 USD/month"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
@@ -165,7 +165,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
         "signUpFee": MessageLookupByLibrary.simpleMessage(
-            "\$50 sign up fee due after trial"),
+            "\$50 USD sign up fee due after trial"),
+        "signUpFeeDiscount":
+            MessageLookupByLibrary.simpleMessage("20% off - \$40 USD"),
         "signedUp": MessageLookupByLibrary.simpleMessage("My lesson"),
         "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
         "signupEvent":
