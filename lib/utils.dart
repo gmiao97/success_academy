@@ -9,6 +9,7 @@ import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 
 int timeOfDayToInt(TimeOfDay time) => time.hour * 60 + time.minute;
+const double _bottomSheetHeight = 60;
 
 Scaffold buildLoggedOutScaffold(
     {required BuildContext context, required Widget body}) {
@@ -48,7 +49,10 @@ Scaffold buildLoggedOutScaffold(
         ),
       ],
     ),
-    body: body,
+    body: Padding(
+      padding: const EdgeInsets.only(bottom: _bottomSheetHeight),
+      child: body,
+    ),
     bottomSheet: _bottomSheet,
   );
 }
@@ -89,7 +93,10 @@ Scaffold buildLoggedInScaffold(
         )
       ],
     ),
-    body: body,
+    body: Padding(
+      padding: const EdgeInsets.only(bottom: _bottomSheetHeight),
+      child: body,
+    ),
     bottomSheet: _bottomSheet,
   );
 }
@@ -189,7 +196,10 @@ Scaffold buildStudentProfileScaffold(
         ],
       ),
     ),
-    body: body,
+    body: Padding(
+      padding: const EdgeInsets.only(bottom: _bottomSheetHeight),
+      child: body,
+    ),
     bottomSheet: _bottomSheet,
   );
 }
@@ -275,7 +285,10 @@ Scaffold buildTeacherProfileScaffold(
         ],
       ),
     ),
-    body: body,
+    body: Padding(
+      padding: const EdgeInsets.only(bottom: _bottomSheetHeight),
+      child: body,
+    ),
     bottomSheet: _bottomSheet,
   );
 }
@@ -368,7 +381,10 @@ Scaffold buildAdminProfileScaffold(
         ],
       ),
     ),
-    body: body,
+    body: Padding(
+      padding: const EdgeInsets.only(bottom: _bottomSheetHeight),
+      child: body,
+    ),
     bottomSheet: _bottomSheet,
   );
 }
@@ -377,7 +393,7 @@ BottomSheet _bottomSheet = BottomSheet(
   onClosing: () {},
   builder: (context) => SizedBox(
     width: double.infinity,
-    height: 60,
+    height: _bottomSheetHeight,
     child: Column(
       children: [
         const Divider(),

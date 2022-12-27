@@ -39,8 +39,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   final TextEditingController _recurUntilController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
-  final DateTime _recurUntilInitialValue =
-      DateTime.now().add(const Duration(days: 50));
+  late DateTime _recurUntilInitialValue;
   late DateTime _day;
   DateTime? _recurUntil;
   late String _summary;
@@ -61,6 +60,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     _timeZoneName = context.read<AccountModel>().myUser!.timeZone;
     setState(() {
       _day = widget.selectedDay ?? DateTime.now();
+      _recurUntilInitialValue = _day.add(const Duration(days: 30));
       _dayController.text = dateFormatter.format(_day);
       _eventType = widget.eventTypes[0];
       _teacherId = widget.teacherId;
@@ -408,7 +408,14 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                         ),
                         recurrence: buildRecurrence(
                             frequency: _recurFrequency,
-                            recurUntil: _recurUntil),
+                            recurUntil: _recurUntil != null
+                                ? tz.TZDateTime(
+                                        tz.getLocation(_timeZoneName),
+                                        _recurUntil!.year,
+                                        _recurUntil!.month,
+                                        _recurUntil!.day)
+                                    .add(const Duration(days: 1))
+                                : null),
                         timeZone: _timeZoneName,
                         teacherId: _teacherId);
                     event_service.insertEvent(event).then(
