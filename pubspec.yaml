@@ -53,6 +53,7 @@ dependencies:
   multi_select_flutter: ^4.1.2
   rrule: ^0.2.10
   font_awesome_flutter: ^10.3.0
+  webviewx: ^0.2.1
 
 dev_dependencies:
   flutter_test:

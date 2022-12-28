@@ -132,7 +132,10 @@ Future<void> updateStudentProfile(
 }
 
 Future<SubscriptionPlan?> getSubscriptionTypeForProfile(
-    {required String userId, required String profileId}) async {
+    {required String userId, required String? profileId}) async {
+  if (profileId == null) {
+    return null;
+  }
   final subscriptionDocs = await stripe_service.getSubscriptionsForUser(userId);
   try {
     return EnumToString.fromString(

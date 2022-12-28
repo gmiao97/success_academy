@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/material.dart';
 import 'package:rrule/rrule.dart';
 import 'package:success_academy/constants.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -74,6 +75,9 @@ class EventModel {
                 .toList()
             : [],
         timeZone = (json['start'] as Map)['timeZone'] as String {
+    if (!json.containsKey('extendedProperties')) {
+      debugPrint(json.toString());
+    }
     Map<String, dynamic> extendedProperties =
         (json['extendedProperties'] as Map)['shared'] as Map<String, dynamic>;
     eventType = EnumToString.fromString(

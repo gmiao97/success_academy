@@ -11,6 +11,7 @@ import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 import 'package:success_academy/utils.dart' as utils;
+import 'package:webviewx/webviewx.dart';
 
 class FreeLesson extends StatelessWidget {
   const FreeLesson({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class _FreeLesson extends StatefulWidget {
 }
 
 class _FreeLessonState extends State<_FreeLesson> {
-  SubscriptionPlan? _subscriptionPlan;
+  late WebViewXController webviewController;
 
   @override
   void initState() {
@@ -74,56 +75,78 @@ class _FreeLessonState extends State<_FreeLesson> {
     final account = context.watch<AccountModel>();
 
     return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 20),
-          Text(
-            S.of(context).freeLessonTimeTable,
-            style: Theme.of(context).textTheme.headline3,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 100),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              Text(
+                S.of(context).freeLessonTimeTable,
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              const SizedBox(height: 8),
+              WebViewX(
+                width: 700,
+                height: 300,
+                onWebViewCreated: (controller) => controller.loadContent(
+                    'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list',
+                    SourceType.url),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                S.of(context).freeLessonMaterials,
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              const SizedBox(height: 8),
+              WebViewX(
+                width: 700,
+                height: 300,
+                onWebViewCreated: (controller) => controller.loadContent(
+                    'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list',
+                    SourceType.url),
+              ),
+              const SizedBox(height: 20),
+              account.userType == UserType.student
+                  ? FutureBuilder<SubscriptionPlan?>(
+                      future: profile_service.getSubscriptionTypeForProfile(
+                          profileId: account.studentProfile?.profileId,
+                          userId: account.firebaseUser!.uid),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          // Profile has subscription
+                          if (snapshot.data != null &&
+                              snapshot.data != SubscriptionPlan.monthly) {
+                            return const ZoomInfo();
+                          }
+                        }
+                        return const SizedBox();
+                      },
+                    )
+                  : const ZoomInfo(),
+            ],
           ),
-          const SizedBox(height: 20),
-          Text(
-            S.of(context).freeLessonMaterials,
-            style: Theme.of(context).textTheme.headline3,
-          ),
-          const SizedBox(height: 8),
-          ElevatedButton.icon(
-            label: const Text("Google Drive"),
-            onPressed: () {
-              html.window.open(
-                  'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list',
-                  'Lesson Materials');
-            },
-            icon: const Icon(FontAwesomeIcons.googleDrive),
-          ),
-          const SizedBox(height: 20),
-          FutureBuilder<SubscriptionPlan?>(
-            future: profile_service.getSubscriptionTypeForProfile(
-                profileId: account.studentProfile!.profileId,
-                userId: account.firebaseUser!.uid),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                // Profile has subscription
-                if (snapshot.data != null &&
-                    snapshot.data != SubscriptionPlan.monthly) {
-                  return SizedBox(
-                    child: Column(
-                      children: [
-                        Text(
-                          S.of(context).freeLessonZoomInfo,
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              }
-              return const SizedBox();
-            },
-          ),
-        ],
+        ),
       ),
+    );
+  }
+}
+
+class ZoomInfo extends StatelessWidget {
+  const ZoomInfo({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          S.of(context).freeLessonZoomInfo,
+          style: Theme.of(context).textTheme.headline3,
+        ),
+      ],
     );
   }
 }
