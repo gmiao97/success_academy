@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/constants.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/utils.dart' as utils;
 
@@ -51,14 +52,21 @@ class _Info extends StatelessWidget {
               },
               child: Text(S.of(context).goBack),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  S.of(context).termsOfUse,
-                  style: Theme.of(context).textTheme.headline1,
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 100),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.of(context).termsOfUse,
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                    const Divider(),
+                    ...termsOfUse.map((line) => Text(line)).toList(),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
