@@ -126,7 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
             "Free Lesson + Preschool Class - \$50 USD/month"),
         "monthlyCourse": MessageLookupByLibrary.simpleMessage(
-            "Monthly Payment Only - \$10 USD/month"),
+            "Monthly Payment - \$10 USD/month (Private Lesson Only)"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),

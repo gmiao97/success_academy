@@ -320,10 +320,10 @@ class S {
     );
   }
 
-  /// `Monthly Payment Only - $10 USD/month`
+  /// `Monthly Payment - $10 USD/month (Private Lesson Only)`
   String get monthlyCourse {
     return Intl.message(
-      'Monthly Payment Only - \$10 USD/month',
+      'Monthly Payment - \$10 USD/month (Private Lesson Only)',
       name: 'monthlyCourse',
       desc: '',
       args: [],

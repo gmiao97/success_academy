@@ -111,7 +111,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumCourse": MessageLookupByLibrary.simpleMessage("フリーレッスン・月40米ドル"),
         "minimumPreschoolCourse":
             MessageLookupByLibrary.simpleMessage("フリーレッスン+未就学児クラス・月50米ドル"),
-        "monthlyCourse": MessageLookupByLibrary.simpleMessage("月会費のみ - 月10米ドル"),
+        "monthlyCourse":
+            MessageLookupByLibrary.simpleMessage("月会費のみ・月10米ドル (個別レッスンのみ)"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "name": MessageLookupByLibrary.simpleMessage("名前"),
@@ -146,7 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("サインイン"),
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
         "signUpFee":
-            MessageLookupByLibrary.simpleMessage("トライアル後50米ドル入会費が請求されます"),
+            MessageLookupByLibrary.simpleMessage("トライアル後に入会費50米ドルが請求されます"),
         "signUpFeeDiscount":
             MessageLookupByLibrary.simpleMessage("20%割引ー40米ドル"),
         "signedUp": MessageLookupByLibrary.simpleMessage("マイレッスン"),

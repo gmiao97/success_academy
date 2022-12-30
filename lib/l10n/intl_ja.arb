@@ -30,9 +30,9 @@
 
   "minimumCourse": "フリーレッスン・月40米ドル",
   "minimumPreschoolCourse": "フリーレッスン+未就学児クラス・月50米ドル",
-  "monthlyCourse": "月会費のみ - 月10米ドル",
+  "monthlyCourse": "月会費のみ・月10米ドル (個別レッスンのみ)",
   "freeTrial": "14日間無料トライアル",
-  "signUpFee": "トライアル後50米ドル入会費が請求されます",
+  "signUpFee": "トライアル後に入会費50米ドルが請求されます",
   "signUpFeeDiscount": "20%割引ー40米ドル",
   "pickPlan": "サブスクリプションのコースを選択してください",
   "noPlan": "サブスクリプションがありません",

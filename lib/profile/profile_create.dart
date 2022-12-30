@@ -289,7 +289,13 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
               value: SubscriptionPlan.minimumPreschool,
               groupValue: widget.subscriptionPlan,
               onChanged: widget.onSubscriptionChange,
-            )
+            ),
+            RadioListTile<SubscriptionPlan>(
+              title: Text(S.of(context).monthlyCourse),
+              value: SubscriptionPlan.monthly,
+              groupValue: widget.subscriptionPlan,
+              onChanged: widget.onSubscriptionChange,
+            ),
           ],
         ),
         TextFormField(
