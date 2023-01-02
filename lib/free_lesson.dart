@@ -64,6 +64,26 @@ class _FreeLesson extends StatefulWidget {
 
 class _FreeLessonState extends State<_FreeLesson> {
   late WebViewXController webviewController;
+  final _zoomInfo = [
+    [
+      'フリーレッスン小学生',
+      'https://us05web.zoom.us/j/84108519608?pwd=aG5DcVY5T2hBQ1V1UmE2WEZHMkhZdz09',
+      '841 0851 9608',
+      '2022（覚え方：2022年）',
+    ],
+    [
+      'フリーレッスン中学生',
+      'https://us04web.zoom.us/j/79192702926?pwd=8YmNrnJbEdmRFdnqQBUJlbEQ3HEfij.1',
+      '791 9270 2926',
+      '2022',
+    ],
+    [
+      '未就学児クラス',
+      'https://us04web.zoom.us/j/76992941228?pwd=dy5LFPZt9sHn0fsvG7cqcx9YkLwxG3.1',
+      '769 9294 1228',
+      '2022',
+    ],
+  ];
 
   @override
   void initState() {
@@ -118,13 +138,17 @@ class _FreeLessonState extends State<_FreeLesson> {
                           // Profile has subscription
                           if (snapshot.data != null &&
                               snapshot.data != SubscriptionPlan.monthly) {
-                            return const ZoomInfo();
+                            if (snapshot.data !=
+                                SubscriptionPlan.minimumPreschool) {
+                              _zoomInfo.removeAt(2);
+                            }
+                            return ZoomInfo(data: _zoomInfo);
                           }
                         }
                         return const SizedBox();
                       },
                     )
-                  : const ZoomInfo(),
+                  : ZoomInfo(data: _zoomInfo),
             ],
           ),
         ),
@@ -136,7 +160,11 @@ class _FreeLessonState extends State<_FreeLesson> {
 class ZoomInfo extends StatelessWidget {
   const ZoomInfo({
     Key? key,
-  }) : super(key: key);
+    required List data,
+  })  : _data = data,
+        super(key: key);
+
+  final List _data;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +174,80 @@ class ZoomInfo extends StatelessWidget {
           S.of(context).freeLessonZoomInfo,
           style: Theme.of(context).textTheme.headline3,
         ),
+        PaginatedDataTable(
+            rowsPerPage: 5,
+            columns: <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).lesson,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).link,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).meetingId,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).password,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+            ],
+            source: _ZoomInfoDataSource(data: _data))
       ],
     );
+  }
+}
+
+class _ZoomInfoDataSource extends DataTableSource {
+  _ZoomInfoDataSource({required List data}) : _data = data;
+
+  final List _data;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _data.length;
+
+  @override
+  int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(cells: [
+      DataCell(Text(_data[index][0])),
+      DataCell(InkWell(
+        child: const Text(
+          'Zoom',
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+            color: Colors.blue,
+          ),
+        ),
+        onTap: () {
+          html.window.open(_data[index][1], 'Zoom');
+        },
+      )),
+      DataCell(Text(_data[index][2])),
+      DataCell(Text(_data[index][3])),
+    ]);
   }
 }

@@ -104,10 +104,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
         "lastNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
+        "lesson": MessageLookupByLibrary.simpleMessage("レッスン"),
         "lessonCalendar": MessageLookupByLibrary.simpleMessage("レッスンカレンダー"),
+        "link": MessageLookupByLibrary.simpleMessage("リンク"),
         "manageProfile": MessageLookupByLibrary.simpleMessage("ユーザー管理"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),
+        "meetingId": MessageLookupByLibrary.simpleMessage("ミーテイングID"),
         "minimumCourse": MessageLookupByLibrary.simpleMessage("フリーレッスン・月40米ドル"),
         "minimumPreschoolCourse":
             MessageLookupByLibrary.simpleMessage("フリーレッスン+未就学児クラス・月50米ドル"),
@@ -120,6 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションがありません"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("ポイントを追加してください"),
+        "password": MessageLookupByLibrary.simpleMessage("パスワード"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択してください"),
         "preschool": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),

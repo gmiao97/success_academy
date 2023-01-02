@@ -122,5 +122,10 @@
 
   "businessName": "MERCY EDUCATION",
   "termsOfUse": "利用規約",
-  "agreeToTerms": "利用規約に同意"
+  "agreeToTerms": "利用規約に同意",
+
+  "lesson": "レッスン",
+  "link": "リンク",
+  "meetingId": "ミーテイングID",
+  "password": "パスワード"
 }

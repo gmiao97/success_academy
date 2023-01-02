@@ -116,11 +116,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Student Last Name"),
         "lastNameValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter student\'s last name"),
+        "lesson": MessageLookupByLibrary.simpleMessage("Lesson"),
         "lessonCalendar":
             MessageLookupByLibrary.simpleMessage("Lesson Calendar"),
+        "link": MessageLookupByLibrary.simpleMessage("Link"),
         "manageProfile": MessageLookupByLibrary.simpleMessage("Manage Users"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("Manage Subscriptions"),
+        "meetingId": MessageLookupByLibrary.simpleMessage("Meeting ID"),
         "minimumCourse": MessageLookupByLibrary.simpleMessage(
             "Free Lesson - \$40 USD/month"),
         "minimumPreschoolCourse": MessageLookupByLibrary.simpleMessage(
@@ -134,6 +137,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noPlan": MessageLookupByLibrary.simpleMessage("No subscription plan"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("Please add more points"),
+        "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),
         "preschool": MessageLookupByLibrary.simpleMessage("Preschool lesson"),

@@ -122,5 +122,10 @@
 
   "businessName": "MERCY EDUCATION",
   "termsOfUse": "Terms of use",
-  "agreeToTerms": "Agree to terms of use"
+  "agreeToTerms": "Agree to terms of use",
+
+  "lesson": "Lesson",
+  "link": "Link",
+  "meetingId": "Meeting ID",
+  "password": "Password"
 }
