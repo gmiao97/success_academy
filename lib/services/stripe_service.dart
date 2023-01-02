@@ -29,7 +29,7 @@ Future<void> startStripeSubscriptionCheckoutSession(
     {required String userId,
     required String profileId,
     required SubscriptionPlan subscriptionPlan,
-    required isReferral}) async {
+    required bool isReferral}) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
   for (final doc in priceDocs) {

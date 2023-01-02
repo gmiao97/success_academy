@@ -230,6 +230,26 @@ class S {
     );
   }
 
+  /// `Name of referrer`
+  String get referrerLabel {
+    return Intl.message(
+      'Name of referrer',
+      name: 'referrerLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `John Smith`
+  String get referrerHint {
+    return Intl.message(
+      'John Smith',
+      name: 'referrerHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Student Profile Information`
   String get studentProfile {
     return Intl.message(

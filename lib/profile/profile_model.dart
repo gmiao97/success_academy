@@ -29,7 +29,8 @@ class StudentProfileModel {
         lastName = json['last_name'] as String,
         firstName = json['first_name'] as String,
         dateOfBirth = DateTime.parse(json['date_of_birth'] as String),
-        numPoints = json['num_points'] as int;
+        numPoints = json['num_points'] as int,
+        referrer = json['referrer'] as String?;
 
   /// Used to read profile from shared preferences.
   StudentProfileModel._fromJson(Map<String, Object?> json,
@@ -38,7 +39,8 @@ class StudentProfileModel {
         lastName = json['last_name'] as String,
         firstName = json['first_name'] as String,
         dateOfBirth = DateTime.parse(json['date_of_birth'] as String),
-        numPoints = json['num_points'] as int;
+        numPoints = json['num_points'] as int,
+        referrer = json['referrer'] as String?;
 
   static Future<StudentProfileModel> create(Map<String, Object?> json,
       {required String userId}) async {
@@ -57,6 +59,7 @@ class StudentProfileModel {
   late String firstName;
   late DateTime dateOfBirth;
   int numPoints;
+  String? referrer;
 
   String get profileId => _profileId;
 
@@ -66,6 +69,7 @@ class StudentProfileModel {
       'first_name': firstName,
       'date_of_birth': constants.dateFormatter.format(dateOfBirth),
       'num_points': numPoints,
+      'referrer': referrer,
     };
   }
 
@@ -77,6 +81,7 @@ class StudentProfileModel {
       'first_name': firstName,
       'date_of_birth': constants.dateFormatter.format(dateOfBirth),
       'num_points': numPoints,
+      'referrer': referrer,
     };
   }
 }

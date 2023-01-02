@@ -19,6 +19,8 @@
   "dateOfBirthValidation": "Please select student's date of birth",
   "referralLabel": "Enter referral code",
   "referralValidation": "Invalid referral code",
+  "referrerLabel": "Name of referrer",
+  "referrerHint": "John Smith",
 
   "studentProfile": "Student Profile Information",
   "teacherProfile": "Teacher Profile Information",

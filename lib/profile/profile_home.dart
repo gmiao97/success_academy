@@ -25,6 +25,7 @@ class _ProfileHomeState extends State<ProfileHome> {
   SubscriptionPlan? _subscriptionPlan = SubscriptionPlan.minimum;
   late final List<String> _referralCodes;
   bool _isReferral = false;
+  String? _referrer;
 
   @override
   void initState() {
@@ -236,9 +237,22 @@ class _ProfileHomeState extends State<ProfileHome> {
                               }
                               return false;
                             },
+                            setReferrer: (name) {
+                              _referrer = name;
+                            },
                             onStripeSubmitClicked: () async {
                               setState(() {
                                 _stripeRedirectClicked = true;
+                              });
+                              final updatedStudentProfile =
+                                  account.studentProfile!;
+                              updatedStudentProfile.referrer = _referrer;
+                              profile_service
+                                  .updateStudentProfile(
+                                      account.firebaseUser!.uid,
+                                      updatedStudentProfile)
+                                  .then((unused) {
+                                account.studentProfile = updatedStudentProfile;
                               });
                               // TODO: No trial (+reinitiation fee?) for people who already had trial
                               try {

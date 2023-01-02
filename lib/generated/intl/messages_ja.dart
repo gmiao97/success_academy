@@ -139,6 +139,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "referralLabel": MessageLookupByLibrary.simpleMessage("紹介コードを入力してください"),
         "referralValidation":
             MessageLookupByLibrary.simpleMessage("入力された紹介コードは無効です"),
+        "referrerHint": MessageLookupByLibrary.simpleMessage("山田太郎"),
+        "referrerLabel": MessageLookupByLibrary.simpleMessage("紹介者"),
         "refundPoints": m2,
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":

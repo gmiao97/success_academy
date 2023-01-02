@@ -122,7 +122,7 @@ Future<DocumentReference<StudentProfileModel>> addStudentProfile(
   return profileDoc;
 }
 
-/// Add student profile for specified user
+/// Update student profile for specified user
 Future<void> updateStudentProfile(
     String userId, StudentProfileModel profileModel) async {
   final profileDoc = await _studentProfileModelRefForUser(userId)

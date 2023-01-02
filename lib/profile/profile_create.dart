@@ -49,7 +49,7 @@ class ProfileCreate extends StatelessWidget {
                 Card(
                   child: Container(
                     width: 700,
-                    height: 700,
+                    height: 800,
                     padding: const EdgeInsets.all(20),
                     child: const _SignupForm(),
                   ),
@@ -186,6 +186,11 @@ class _SignupFormState extends State<_SignupForm> {
               }
               return false;
             },
+            setReferrer: (name) {
+              setState(() {
+                _profileModel.referrer = name;
+              });
+            },
             onStripeSubmitClicked: () async {
               if (_formKey.currentState!.validate()) {
                 setState(() {
@@ -228,6 +233,7 @@ class StripeSubscriptionCreate extends StatefulWidget {
     required this.subscriptionPlan,
     required this.stripeRedirectClicked,
     required this.setReferral,
+    required this.setReferrer,
     required this.onSubscriptionChange,
     required this.onStripeSubmitClicked,
   }) : super(key: key);
@@ -235,6 +241,7 @@ class StripeSubscriptionCreate extends StatefulWidget {
   final SubscriptionPlan? subscriptionPlan;
   final bool stripeRedirectClicked;
   final Function(String?) setReferral;
+  final Function(String?) setReferrer;
   final _SubscriptionChangedCallback onSubscriptionChange;
   final VoidCallback onStripeSubmitClicked;
 
@@ -316,6 +323,14 @@ class _StripeSubscriptionCreateState extends State<StripeSubscriptionCreate> {
               _showReferralSucess = isReferral;
             });
           },
+        ),
+        TextFormField(
+          decoration: InputDecoration(
+            icon: const Icon(Icons.person_add),
+            labelText: S.of(context).referrerLabel,
+            hintText: S.of(context).referrerHint,
+          ),
+          onChanged: (value) => widget.setReferrer(value),
         ),
         const SizedBox(
           height: 25,

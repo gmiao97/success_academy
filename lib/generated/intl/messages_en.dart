@@ -158,6 +158,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter referral code"),
         "referralValidation":
             MessageLookupByLibrary.simpleMessage("Invalid referral code"),
+        "referrerHint": MessageLookupByLibrary.simpleMessage("John Smith"),
+        "referrerLabel":
+            MessageLookupByLibrary.simpleMessage("Name of referrer"),
         "refundPoints": m2,
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),

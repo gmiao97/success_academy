@@ -19,6 +19,8 @@
   "dateOfBirthValidation": "生徒の生年月日を選択してください",
   "referralLabel": "紹介コードを入力してください",
   "referralValidation": "入力された紹介コードは無効です",
+  "referrerLabel": "紹介者",
+  "referrerHint": "山田太郎",
 
   "studentProfile": "生徒プロフィール",
   "teacherProfile": "講師プロフィール",
