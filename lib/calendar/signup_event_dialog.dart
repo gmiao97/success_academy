@@ -153,7 +153,8 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                   child: _isSignedUp
                       ? Text(S.of(context).cancelSignup)
                       : Text(S.of(context).signup),
-                  onPressed: _day.isAfter(DateTime.now()) &&
+                  onPressed: _day.isAfter(DateTime.now()
+                              .subtract(const Duration(days: 1))) &&
                           _accountContext.studentProfile!.numPoints >=
                               (_numPoints ?? 0)
                       ? () {
