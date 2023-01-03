@@ -67,21 +67,21 @@ class _FreeLessonState extends State<_FreeLesson> {
   final _zoomInfo = [
     [
       'フリーレッスン小学生',
-      'https://us05web.zoom.us/j/84108519608?pwd=aG5DcVY5T2hBQ1V1UmE2WEZHMkhZdz09',
+      'https://us05web.zoom.us/j/84108519608?pwd=REdFSlNFRHJZb2NIbDB3UnhpaEovUT09',
       '841 0851 9608',
-      '2022（覚え方：2022年）',
+      '2023（覚え方：2023年）',
     ],
     [
       'フリーレッスン中学生',
-      'https://us04web.zoom.us/j/79192702926?pwd=8YmNrnJbEdmRFdnqQBUJlbEQ3HEfij.1',
+      'https://us04web.zoom.us/j/79192702926?pwd=Y098ZP8fMa7EX2UwRhrGGj2J31gTab.1',
       '791 9270 2926',
-      '2022',
+      '2023',
     ],
     [
       '未就学児クラス',
-      'https://us04web.zoom.us/j/76992941228?pwd=dy5LFPZt9sHn0fsvG7cqcx9YkLwxG3.1',
+      'https://us04web.zoom.us/j/76992941228?pwd=PMwE3EscTIliRLpXfxrcfpFlVc1DbJ.1',
       '769 9294 1228',
-      '2022',
+      '2023',
     ],
   ];
 
