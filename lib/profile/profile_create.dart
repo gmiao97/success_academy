@@ -49,7 +49,6 @@ class ProfileCreate extends StatelessWidget {
                 Card(
                   child: Container(
                     width: 700,
-                    height: 800,
                     padding: const EdgeInsets.all(20),
                     child: const _SignupForm(),
                   ),
