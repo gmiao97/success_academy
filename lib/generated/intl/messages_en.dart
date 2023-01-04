@@ -187,6 +187,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Continue to points purchase"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage(
             "Continue to subscription purchase"),
+        "studentListTitle":
+            MessageLookupByLibrary.simpleMessage("Registered students"),
         "studentProfile":
             MessageLookupByLibrary.simpleMessage("Student Profile Information"),
         "teacherProfile":
@@ -201,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
         "verifyEmailMessage": m5,
+        "viewEvent": MessageLookupByLibrary.simpleMessage("View lesson"),
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
       };
 }

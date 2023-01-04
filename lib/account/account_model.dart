@@ -45,6 +45,8 @@ class AccountModel extends ChangeNotifier {
   StudentProfileModel? _studentProfile;
   TeacherProfileModel? _teacherProfile;
   AdminProfileModel? _adminProfile;
+  List<StudentProfileModel>? _studentProfileList;
+  Map<String, StudentProfileModel>? _studentProfileMap;
   List<TeacherProfileModel>? _teacherProfileList;
   Map<String, TeacherProfileModel>? _teacherProfileMap;
 
@@ -56,6 +58,8 @@ class AccountModel extends ChangeNotifier {
   StudentProfileModel? get studentProfile => _studentProfile;
   TeacherProfileModel? get teacherProfile => _teacherProfile;
   AdminProfileModel? get adminProfile => _adminProfile;
+  List<StudentProfileModel>? get studentProfileList => _studentProfileList;
+  Map<String, StudentProfileModel>? get studentProfileMap => _studentProfileMap;
   List<TeacherProfileModel>? get teacherProfileList => _teacherProfileList;
   Map<String, TeacherProfileModel>? get teacherProfileModelMap =>
       _teacherProfileMap;
@@ -103,6 +107,9 @@ class AccountModel extends ChangeNotifier {
     await user_service.createMyUserDocIfNotExist(firebaseUser.uid);
     _myUser = await user_service.getMyUserDoc(firebaseUser.uid);
     await _initProfile(firebaseUser.uid);
+    _studentProfileList = await profile_service.getAllStudentProfiles();
+    _studentProfileMap =
+        StudentProfileModel.buildStudentProfileMap(_studentProfileList!);
     _teacherProfileList = await profile_service.getAllTeacherProfiles();
     _teacherProfileMap =
         TeacherProfileModel.buildTeacherProfileMap(_teacherProfileList!);

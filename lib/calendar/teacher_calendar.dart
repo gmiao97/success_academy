@@ -5,6 +5,8 @@ import 'package:success_academy/calendar/calendar_header.dart';
 import 'package:success_academy/calendar/create_event_dialog.dart';
 import 'package:success_academy/calendar/edit_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
+import 'package:success_academy/calendar/signup_event_dialog.dart';
+import 'package:success_academy/calendar/view_event_dialog.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/utils.dart' as utils;
@@ -149,7 +151,12 @@ class TeacherCalendar extends StatelessWidget {
                                   onRefresh: onRefresh,
                                 ),
                               )
-                            : null,
+                            : showDialog(
+                                context: context,
+                                builder: (context) => ViewEventDialog(
+                                  event: value[index],
+                                ),
+                              ),
                         title: Text(value[index].summary),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

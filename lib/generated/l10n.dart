@@ -740,6 +740,16 @@ class S {
     );
   }
 
+  /// `View lesson`
+  String get viewEvent {
+    return Intl.message(
+      'View lesson',
+      name: 'viewEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sign up`
   String get signup {
     return Intl.message(
@@ -975,6 +985,16 @@ class S {
     return Intl.message(
       'Start time must be before end time',
       name: 'eventValidTimeValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registered students`
+  String get studentListTitle {
+    return Intl.message(
+      'Registered students',
+      name: 'studentListTitle',
       desc: '',
       args: [],
     );

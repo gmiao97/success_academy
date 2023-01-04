@@ -163,6 +163,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
+        "studentListTitle": MessageLookupByLibrary.simpleMessage("登録されている生徒"),
         "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
         "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),
         "termsOfUse": MessageLookupByLibrary.simpleMessage("利用規約"),
@@ -175,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
         "verifyEmailMessage": m5,
+        "viewEvent": MessageLookupByLibrary.simpleMessage("レッスンを見る"),
         "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る")
       };
 }

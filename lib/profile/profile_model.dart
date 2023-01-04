@@ -84,6 +84,15 @@ class StudentProfileModel {
       'referrer': referrer,
     };
   }
+
+  static Map<String, StudentProfileModel> buildStudentProfileMap(
+      List<StudentProfileModel> studentProfileList) {
+    Map<String, StudentProfileModel> map = {};
+    for (StudentProfileModel profile in studentProfileList) {
+      map[profile._profileId] = profile;
+    }
+    return map;
+  }
 }
 
 class TeacherProfileModel {

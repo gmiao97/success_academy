@@ -43,6 +43,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
   late String _description;
   int? _numPoints;
   String? _teacherId;
+  List<String> _studentIds = [];
   late TimeOfDay _startTime;
   late TimeOfDay _endTime;
   late String _timeZoneName;
@@ -65,6 +66,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
       _description = widget.event.description;
       _numPoints = widget.event.numPoints;
       _teacherId = widget.event.teacherId;
+      _studentIds = widget.event.studentIdList;
       _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
       _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
       _eventType = widget.event.eventType;
@@ -299,6 +301,22 @@ class _EditEventDialogState extends State<EditEventDialog> {
                   }
                   return null;
                 },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  S.of(context).studentListTitle,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
+              Column(
+                children: _studentIds.map(
+                  (id) {
+                    final studentProfile = _account.studentProfileMap![id]!;
+                    return Text(
+                        '${studentProfile.lastName} ${studentProfile.firstName}');
+                  },
+                ).toList(),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8),
