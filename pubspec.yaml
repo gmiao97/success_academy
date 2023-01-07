@@ -54,6 +54,7 @@ dependencies:
   rrule: ^0.2.10
   font_awesome_flutter: ^10.3.0
   webviewx: ^0.2.1
+  firebase_analytics: ^9.3.8
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:success_academy/profile/profile_model.dart';
@@ -19,8 +20,16 @@ class AccountModel extends ChangeNotifier {
 
   void init() async {
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
+      _authStatus = AuthStatus.loading;
+      notifyListeners();
       if (firebaseUser != null) {
-        await _initAccount(firebaseUser);
+        try {
+          await _initAccount(firebaseUser);
+        } catch (e) {
+          await FirebaseAnalytics.instance.logEvent(
+              name: 'initAccount Failed',
+              parameters: {'message': e.toString()});
+        }
         if (!firebaseUser.emailVerified) {
           if (_authStatus != AuthStatus.emailVerification) {
             // Only send verification email once on initial auth status change
@@ -38,7 +47,7 @@ class AccountModel extends ChangeNotifier {
     _locale = await shared_preferences_service.getLocale();
   }
 
-  AuthStatus _authStatus = AuthStatus.loading;
+  AuthStatus _authStatus = AuthStatus.signedOut;
   String _locale = 'en';
   User? _firebaseUser;
   MyUserModel? _myUser;
