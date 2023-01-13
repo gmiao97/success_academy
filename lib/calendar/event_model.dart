@@ -71,7 +71,7 @@ class EventModel {
             tz.TZDateTime.parse(location, (json['end'] as Map)['dateTime']),
         recurrence = json['recurrence'] != null
             ? (json['recurrence'] as List<dynamic>)
-                .map((e) => e as String)
+                .map((e) => (e as String).replaceAll('WKST=SU', 'WKST=MO'))
                 .toList()
             : [],
         timeZone = (json['start'] as Map)['timeZone'] as String {

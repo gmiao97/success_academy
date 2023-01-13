@@ -18,6 +18,7 @@ class StudentCalendar extends StatefulWidget {
     required this.firstDay,
     required this.lastDay,
     required this.focusedDay,
+    required this.currentDay,
     required this.calendarFormat,
     required this.calendarBuilders,
     required this.availableEventFilters,
@@ -39,6 +40,7 @@ class StudentCalendar extends StatefulWidget {
   final DateTime firstDay;
   final DateTime lastDay;
   final DateTime focusedDay;
+  final DateTime currentDay;
   final CalendarFormat calendarFormat;
   final CalendarBuilders calendarBuilders;
   final List<EventType> availableEventFilters;
@@ -107,6 +109,7 @@ class _StudentCalendarState extends State<StudentCalendar> {
             firstDay: widget.firstDay,
             lastDay: widget.lastDay,
             focusedDay: widget.focusedDay,
+            currentDay: widget.currentDay,
             calendarFormat: widget.calendarFormat,
             locale: account.locale,
             daysOfWeekHeight: 25,

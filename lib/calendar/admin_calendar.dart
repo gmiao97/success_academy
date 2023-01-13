@@ -14,6 +14,7 @@ class AdminCalendar extends StatelessWidget {
   const AdminCalendar({
     Key? key,
     required this.focusedDay,
+    required this.currentDay,
     required this.selectedDay,
     required this.selectedEvents,
     required this.firstDay,
@@ -34,6 +35,7 @@ class AdminCalendar extends StatelessWidget {
   }) : super(key: key);
 
   final DateTime focusedDay;
+  final DateTime currentDay;
   final DateTime? selectedDay;
   final ValueNotifier<List<EventModel>> selectedEvents;
   final DateTime firstDay;
@@ -73,6 +75,7 @@ class AdminCalendar extends StatelessWidget {
             firstDay: firstDay,
             lastDay: lastDay,
             focusedDay: focusedDay,
+            currentDay: currentDay,
             calendarFormat: calendarFormat,
             locale: account.locale,
             daysOfWeekHeight: 25,

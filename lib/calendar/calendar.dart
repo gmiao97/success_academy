@@ -54,7 +54,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
       DateUtils.dateOnly(DateTime.now().subtract(const Duration(days: 365)));
   final DateTime _lastDay =
       DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
-  DateTime _focusedDay = DateTime.now();
+  late DateTime _focusedDay;
+  late DateTime _currentDay;
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
@@ -106,6 +107,11 @@ class _BaseCalendarState extends State<BaseCalendar> {
   Future<void> initCalendar() async {
     _selectedEvents = ValueNotifier([]);
     _accountContext = context.read<AccountModel>();
+
+    _currentDay =
+        tz.TZDateTime.now(tz.getLocation(_accountContext.myUser!.timeZone));
+    _focusedDay = _currentDay;
+
     await _setEventFilters();
     await _setAllEvents();
   }
@@ -120,7 +126,8 @@ class _BaseCalendarState extends State<BaseCalendar> {
   }
 
   void _onTodayButtonTap() {
-    final now = DateTime.now();
+    final now =
+        tz.TZDateTime.now(tz.getLocation(_accountContext.myUser!.timeZone));
     final today = DateTime.utc(now.year, now.month, now.day);
     setState(() {
       _focusedDay = today;
@@ -284,6 +291,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
         firstDay: _firstDay,
         lastDay: _lastDay,
         focusedDay: _focusedDay,
+        currentDay: _currentDay,
         calendarFormat: _calendarFormat,
         calendarBuilders: _calendarBuilders,
         availableEventFilters: _availableEventFilters,
@@ -306,6 +314,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
         firstDay: _firstDay,
         lastDay: _lastDay,
         focusedDay: _focusedDay,
+        currentDay: _currentDay,
         calendarFormat: _calendarFormat,
         calendarBuilders: _calendarBuilders,
         availableEventFilters: _availableEventFilters,
@@ -327,6 +336,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
       firstDay: _firstDay,
       lastDay: _lastDay,
       focusedDay: _focusedDay,
+      currentDay: _currentDay,
       calendarFormat: _calendarFormat,
       calendarBuilders: _calendarBuilders,
       availableEventFilters: _availableEventFilters,

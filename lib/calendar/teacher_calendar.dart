@@ -5,7 +5,6 @@ import 'package:success_academy/calendar/calendar_header.dart';
 import 'package:success_academy/calendar/create_event_dialog.dart';
 import 'package:success_academy/calendar/edit_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/calendar/signup_event_dialog.dart';
 import 'package:success_academy/calendar/view_event_dialog.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -16,6 +15,7 @@ class TeacherCalendar extends StatelessWidget {
   const TeacherCalendar({
     Key? key,
     required this.focusedDay,
+    required this.currentDay,
     required this.selectedDay,
     required this.selectedEvents,
     required this.firstDay,
@@ -36,6 +36,7 @@ class TeacherCalendar extends StatelessWidget {
   }) : super(key: key);
 
   final DateTime focusedDay;
+  final DateTime currentDay;
   final DateTime? selectedDay;
   final ValueNotifier<List<EventModel>> selectedEvents;
   final DateTime firstDay;
@@ -77,6 +78,7 @@ class TeacherCalendar extends StatelessWidget {
             firstDay: firstDay,
             lastDay: lastDay,
             focusedDay: focusedDay,
+            currentDay: currentDay,
             calendarFormat: calendarFormat,
             locale: account.locale,
             daysOfWeekHeight: 25,
