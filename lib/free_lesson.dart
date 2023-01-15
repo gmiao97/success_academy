@@ -7,8 +7,6 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/services/profile_service.dart'
-    as profile_service;
 import 'package:success_academy/utils.dart' as utils;
 import 'package:webviewx/webviewx.dart';
 
@@ -63,26 +61,6 @@ class _FreeLesson extends StatefulWidget {
 
 class _FreeLessonState extends State<_FreeLesson> {
   late WebViewXController webviewController;
-  final _zoomInfo = [
-    [
-      'フリーレッスン小学生',
-      'https://us05web.zoom.us/j/84108519608?pwd=bzRvenNYMTgvcmFFVFNweGJmSGZHdz09',
-      '841 0851 9608',
-      '1616（覚え方：いろいろ）',
-    ],
-    [
-      'フリーレッスン中学生',
-      'https://us04web.zoom.us/j/79192702926?pwd=Xrww61LRbica0ixtzn3DZuec8Dg9Oo.1',
-      '791 9270 2926',
-      '1616',
-    ],
-    [
-      '未就学児クラス',
-      'https://us04web.zoom.us/j/76992941228?pwd=Bic1N6fn86z9OHe5GsjtTU4SN0SdqU.1',
-      '769 9294 1228',
-      '1616',
-    ],
-  ];
 
   @override
   void initState() {
@@ -92,6 +70,31 @@ class _FreeLessonState extends State<_FreeLesson> {
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
+
+    final zoomInfo = [
+      [
+        'フリーレッスン小学生',
+        'https://us05web.zoom.us/j/84108519608?pwd=bzRvenNYMTgvcmFFVFNweGJmSGZHdz09',
+        '841 0851 9608',
+        '1616（覚え方：いろいろ）',
+      ],
+      [
+        'フリーレッスン中学生',
+        'https://us04web.zoom.us/j/79192702926?pwd=Xrww61LRbica0ixtzn3DZuec8Dg9Oo.1',
+        '791 9270 2926',
+        '1616',
+      ],
+      [
+        '未就学児クラス',
+        'https://us04web.zoom.us/j/76992941228?pwd=Bic1N6fn86z9OHe5GsjtTU4SN0SdqU.1',
+        '769 9294 1228',
+        '1616',
+      ],
+    ];
+    if (account.userType == UserType.student &&
+        account.subscriptionPlan != SubscriptionPlan.minimumPreschool) {
+      zoomInfo.removeAt(2);
+    }
 
     return Center(
       child: SingleChildScrollView(
@@ -127,27 +130,11 @@ class _FreeLessonState extends State<_FreeLesson> {
                     SourceType.url),
               ),
               const SizedBox(height: 20),
-              account.userType == UserType.student
-                  ? FutureBuilder<SubscriptionPlan?>(
-                      future: profile_service.getSubscriptionTypeForProfile(
-                          profileId: account.studentProfile?.profileId,
-                          userId: account.firebaseUser!.uid),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          // Profile has subscription
-                          if (snapshot.data != null &&
-                              snapshot.data != SubscriptionPlan.monthly) {
-                            if (snapshot.data !=
-                                SubscriptionPlan.minimumPreschool) {
-                              _zoomInfo.removeAt(2);
-                            }
-                            return ZoomInfo(data: _zoomInfo);
-                          }
-                        }
-                        return const SizedBox();
-                      },
-                    )
-                  : ZoomInfo(data: _zoomInfo),
+              account.userType != UserType.student ||
+                      (account.subscriptionPlan != null &&
+                          account.subscriptionPlan != SubscriptionPlan.monthly)
+                  ? ZoomInfo(data: zoomInfo)
+                  : const SizedBox(),
             ],
           ),
         ),

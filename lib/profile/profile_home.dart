@@ -153,71 +153,62 @@ class _ProfileHomeState extends State<ProfileHome> {
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 const SizedBox(height: 25),
-                // BUG: Can't differentiate between multiple profile subscriptions.
-                FutureBuilder<SubscriptionPlan?>(
-                  future: profile_service.getSubscriptionTypeForProfile(
-                      profileId: account.studentProfile!.profileId,
-                      userId: account.firebaseUser!.uid),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      // Profile has subscription
-                      if (snapshot.data != null) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              getSubscriptionPlanName(context, snapshot.data),
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                            const SizedBox(height: 25),
-                            RichText(
-                              text: TextSpan(
-                                text: '${S.of(context).myCode}     ',
-                                style: Theme.of(context).textTheme.titleMedium,
-                                children: [
-                                  TextSpan(
-                                    text: account.myUser?.referralCode,
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            OutlinedButton(
-                              onPressed: () {
-                                Clipboard.setData(ClipboardData(
-                                    text: account.myUser?.referralCode));
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(S.of(context).copied),
-                                  ),
-                                );
-                              },
-                              child: Text(S.of(context).copy),
-                            ),
-                            const SizedBox(height: 25),
-                            _stripeRedirectClicked
-                                ? const CircularProgressIndicator(value: null)
-                                : ElevatedButton(
-                                    child:
-                                        Text(S.of(context).manageSubscription),
-                                    onPressed: () {
-                                      setState(() {
-                                        _stripeRedirectClicked = true;
-                                      });
-                                      stripe_service.redirectToStripePortal();
-                                    },
-                                  ),
-                          ],
-                        );
-                      }
-                      return Column(
+                account.subscriptionPlan != null
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            getSubscriptionPlanName(context, snapshot.data),
+                            getSubscriptionPlanName(
+                                context, account.subscriptionPlan),
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          const SizedBox(height: 25),
+                          RichText(
+                            text: TextSpan(
+                              text: '${S.of(context).myCode}     ',
+                              style: Theme.of(context).textTheme.titleMedium,
+                              children: [
+                                TextSpan(
+                                  text: account.myUser?.referralCode,
+                                  style: Theme.of(context).textTheme.headline6,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          OutlinedButton(
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(
+                                  text: account.myUser?.referralCode));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(S.of(context).copied),
+                                ),
+                              );
+                            },
+                            child: Text(S.of(context).copy),
+                          ),
+                          const SizedBox(height: 25),
+                          _stripeRedirectClicked
+                              ? const CircularProgressIndicator(value: null)
+                              : ElevatedButton(
+                                  child: Text(S.of(context).manageSubscription),
+                                  onPressed: () {
+                                    setState(() {
+                                      _stripeRedirectClicked = true;
+                                    });
+                                    stripe_service.redirectToStripePortal();
+                                  },
+                                ),
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            getSubscriptionPlanName(
+                                context, account.subscriptionPlan),
                             style: Theme.of(context).textTheme.headline6,
                           ),
                           const SizedBox(height: 25),
@@ -277,11 +268,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                             },
                           ),
                         ],
-                      );
-                    }
-                    return const CircularProgressIndicator(value: null);
-                  },
-                ),
+                      )
               ],
             ),
           ),

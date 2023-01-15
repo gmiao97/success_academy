@@ -61,13 +61,13 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    Map<EventType, String> _eventTypeNames = {
+    Map<EventType, String> eventTypeNames = {
       EventType.free: S.of(context).free,
       EventType.preschool: S.of(context).preschool,
       EventType.private: S.of(context).private,
     };
 
-    Map<Frequency?, String> _frequencyNames = {
+    Map<Frequency?, String> frequencyNames = {
       null: S.of(context).recurNone,
       Frequency.daily: S.of(context).recurDaily,
       Frequency.weekly: S.of(context).recurWeekly,
@@ -90,7 +90,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                 fontSize: 30,
               ),
             ),
-            Text(_eventTypeNames[_eventType]!),
+            Text(eventTypeNames[_eventType]!),
             Text(S.of(context).eventPointsDisplay(_numPoints ?? 0)),
             Text(
               _teacherName ?? '',
@@ -102,7 +102,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
             Text(
                 '${dateFormatter.format(_day)} | ${_startTime.format(context)} - ${_endTime.format(context)}'),
             Text(
-                '${_frequencyNames[_recurFrequency]!}${_recurUntil != null ? ', ' + S.of(context).recurEnd + ' ' + dateFormatter.format(_recurUntil!) : ''}'),
+                '${frequencyNames[_recurFrequency]!}${_recurUntil != null ? ', ${S.of(context).recurEnd} ${dateFormatter.format(_recurUntil!)}' : ''}'),
             const SizedBox(
               height: 20,
             ),

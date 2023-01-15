@@ -121,17 +121,17 @@ class _EditEventDialogState extends State<EditEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final _account = context.read<AccountModel>();
+    final account = context.read<AccountModel>();
     _startTimeController.text = _startTime.format(context);
     _endTimeController.text = _endTime.format(context);
 
-    Map<EventType, String> _eventTypeNames = {
+    Map<EventType, String> eventTypeNames = {
       EventType.free: S.of(context).free,
       EventType.preschool: S.of(context).preschool,
       EventType.private: S.of(context).private,
     };
 
-    Map<Frequency?, String> _frequencyNames = {
+    Map<Frequency?, String> frequencyNames = {
       null: S.of(context).recurNone,
       Frequency.daily: S.of(context).recurDaily,
       Frequency.weekly: S.of(context).recurWeekly,
@@ -153,15 +153,15 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 items: widget.eventTypes
                     .map((eventType) => DropdownMenuItem(
                           value: eventType,
-                          child: Text(_eventTypeNames[eventType]!),
+                          child: Text(eventTypeNames[eventType]!),
                         ))
                     .toList(),
                 onChanged: null,
                 value: _eventType,
               ),
-              _account.userType == UserType.admin
+              account.userType == UserType.admin
                   ? DropdownButtonFormField<String>(
-                      items: _account.teacherProfileList!
+                      items: account.teacherProfileList!
                           .map((profile) => DropdownMenuItem(
                                 value: profile.profileId,
                                 child: Text(
@@ -312,7 +312,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
               Column(
                 children: _studentIds.map(
                   (id) {
-                    final studentProfile = _account.studentProfileMap![id]!;
+                    final studentProfile = account.studentProfileMap![id]!;
                     return Text(
                         '${studentProfile.lastName} ${studentProfile.firstName}');
                   },
@@ -336,7 +336,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 items: recurFrequencies
                     .map((f) => DropdownMenuItem(
                           value: f,
-                          child: Text(_frequencyNames[f]!),
+                          child: Text(frequencyNames[f]!),
                         ))
                     .toList(),
                 value: _recurFrequency,
@@ -383,9 +383,8 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 width: 20,
               )
             : ElevatedButton(
-                child: Text(S.of(context).delete),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.red.shade400,
+                  backgroundColor: Colors.red.shade400,
                 ),
                 onPressed: () {
                   setState(() {
@@ -400,6 +399,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                     },
                   );
                 },
+                child: Text(S.of(context).delete),
               ),
         _submitClicked
             ? const CircularProgressIndicator(

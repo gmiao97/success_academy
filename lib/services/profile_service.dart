@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -145,24 +142,4 @@ Future<void> updateStudentProfile(
       .doc(profileModel.profileId)
       .update(profileModel.toFirestoreJson());
   return profileDoc;
-}
-
-Future<SubscriptionPlan?> getSubscriptionTypeForProfile(
-    {required String userId, required String? profileId}) async {
-  if (profileId == null) {
-    return null;
-  }
-  final subscriptionDocs = await stripe_service.getSubscriptionsForUser(userId);
-  try {
-    return EnumToString.fromString(
-        SubscriptionPlan.values,
-        subscriptionDocs
-            .firstWhere(
-                (doc) => doc.get('metadata.profile_id') as String == profileId)
-            .get('items')[0]['plan']['metadata']['id']);
-  } on StateError {
-    debugPrint(
-        'getSubscriptionTypeForProfile: No subscription found for profile $profileId');
-    return null;
-  }
 }

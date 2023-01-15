@@ -38,13 +38,13 @@ class ProfileCreate extends StatelessWidget {
             child: Column(
               children: [
                 Container(
+                  margin: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.maybePop(context);
                     },
                     child: Text(S.of(context).goBack),
                   ),
-                  margin: const EdgeInsets.all(10),
                 ),
                 Card(
                   child: Container(
@@ -224,7 +224,7 @@ class _SignupFormState extends State<_SignupForm> {
   }
 }
 
-typedef _SubscriptionChangedCallback = Function(SubscriptionPlan?);
+typedef SubscriptionChangedCallback = Function(SubscriptionPlan?);
 
 class StripeSubscriptionCreate extends StatefulWidget {
   const StripeSubscriptionCreate({
@@ -241,7 +241,7 @@ class StripeSubscriptionCreate extends StatefulWidget {
   final bool stripeRedirectClicked;
   final Function(String?) setReferral;
   final Function(String?) setReferrer;
-  final _SubscriptionChangedCallback onSubscriptionChange;
+  final SubscriptionChangedCallback onSubscriptionChange;
   final VoidCallback onStripeSubmitClicked;
 
   @override

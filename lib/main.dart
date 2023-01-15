@@ -123,13 +123,13 @@ class SignInPage extends StatelessWidget {
     return Column(
       children: [
         Container(
+          margin: const EdgeInsets.all(10),
           child: ElevatedButton(
             onPressed: () {
               Navigator.maybePop(context);
             },
             child: Text(S.of(context).goBack),
           ),
-          margin: const EdgeInsets.all(10),
         ),
         const SizedBox(
           width: 500,

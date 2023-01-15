@@ -9,8 +9,6 @@ import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
-import 'package:success_academy/services/profile_service.dart'
-    as profile_service;
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
@@ -63,7 +61,6 @@ class _BaseCalendarState extends State<BaseCalendar> {
   List<EventModel> _allEvents = [];
   Map<DateTime, List<EventModel>> _events = {};
   late final ValueNotifier<List<EventModel>> _selectedEvents;
-  SubscriptionPlan? _subscriptionType;
   bool _isCalendarInitialized = false;
   late final List<EventType> _availableEventFilters;
   List<EventType> _eventFilters = [];
@@ -178,21 +175,13 @@ class _BaseCalendarState extends State<BaseCalendar> {
     });
   }
 
-  Future<void> _setSubscriptionType() async {
-    final subscriptionType =
-        await profile_service.getSubscriptionTypeForProfile(
-            profileId: _accountContext.studentProfile!.profileId,
-            userId: _accountContext.firebaseUser!.uid);
-    _subscriptionType = subscriptionType;
-  }
-
   Future<void> _setEventFilters() async {
     final filters = [];
     if (_accountContext.userType == UserType.student) {
-      await _setSubscriptionType();
-      if (_subscriptionType != null &&
-          _subscriptionType != SubscriptionPlan.monthly) {
-        if (_subscriptionType == SubscriptionPlan.minimumPreschool) {
+      final subscriptionPlan = _accountContext.subscriptionPlan;
+      if (subscriptionPlan != null &&
+          subscriptionPlan != SubscriptionPlan.monthly) {
+        if (subscriptionPlan == SubscriptionPlan.minimumPreschool) {
           filters.add(EventType.preschool);
         }
         filters.addAll([EventType.free, EventType.private]);
@@ -342,7 +331,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
       availableEventFilters: _availableEventFilters,
       eventFilters: _eventFilters,
       eventDisplay: _eventDisplay,
-      subscriptionType: _subscriptionType,
+      subscriptionType: _accountContext.subscriptionPlan,
       onTodayButtonTap: _onTodayButtonTap,
       onDaySelected: _onDaySelected,
       onFormatChanged: _onFormatChanged,

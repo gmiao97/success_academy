@@ -14,8 +14,8 @@ const double _bottomSheetHeight = 60;
 Scaffold buildLoggedOutScaffold(
     {required BuildContext context, required Widget body}) {
   final account = context.watch<AccountModel>();
-  final style =
-      TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+  final style = TextButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onPrimary);
 
   return Scaffold(
     appBar: AppBar(
@@ -60,8 +60,8 @@ Scaffold buildLoggedOutScaffold(
 Scaffold buildLoggedInScaffold(
     {required BuildContext context, required Widget body}) {
   final account = context.watch<AccountModel>();
-  final style =
-      TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+  final style = TextButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onPrimary);
 
   return Scaffold(
     appBar: AppBar(
@@ -104,8 +104,8 @@ Scaffold buildLoggedInScaffold(
 Scaffold buildStudentProfileScaffold(
     {required BuildContext context, required Widget body}) {
   final account = context.watch<AccountModel>();
-  final style =
-      TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+  final style = TextButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onPrimary);
 
   return Scaffold(
     appBar: AppBar(
@@ -207,8 +207,8 @@ Scaffold buildStudentProfileScaffold(
 Scaffold buildTeacherProfileScaffold(
     {required BuildContext context, required Widget body}) {
   final account = context.watch<AccountModel>();
-  final style =
-      TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+  final style = TextButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onPrimary);
 
   return Scaffold(
     appBar: AppBar(
@@ -296,8 +296,8 @@ Scaffold buildTeacherProfileScaffold(
 Scaffold buildAdminProfileScaffold(
     {required BuildContext context, required Widget body}) {
   final account = context.watch<AccountModel>();
-  final style =
-      TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+  final style = TextButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onPrimary);
 
   return Scaffold(
     appBar: AppBar(

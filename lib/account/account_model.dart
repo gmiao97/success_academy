@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 import 'package:success_academy/services/shared_preferences_service.dart'
     as shared_preferences_service;
+import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/services/user_service.dart' as user_service;
 
 // Add loading state to display spinner while initializing user
@@ -27,8 +30,11 @@ class AccountModel extends ChangeNotifier {
           await _initAccount(firebaseUser);
         } catch (e) {
           await FirebaseAnalytics.instance.logEvent(
-              name: 'initAccount Failed',
-              parameters: {'message': e.toString()});
+            name: 'initAccount Failed',
+            parameters: {
+              'message': e.toString(),
+            },
+          );
         }
         if (!firebaseUser.emailVerified) {
           if (_authStatus != AuthStatus.emailVerification) {
@@ -58,6 +64,8 @@ class AccountModel extends ChangeNotifier {
   Map<String, StudentProfileModel>? _studentProfileMap;
   List<TeacherProfileModel>? _teacherProfileList;
   Map<String, TeacherProfileModel>? _teacherProfileMap;
+  List<QueryDocumentSnapshot<Object?>> _subscriptionDocs = [];
+  SubscriptionPlan? _subscriptionPlan;
 
   AuthStatus get authStatus => _authStatus;
   // TODO: Add preferred language and customize welcome email and stripe based on it.
@@ -72,6 +80,7 @@ class AccountModel extends ChangeNotifier {
   List<TeacherProfileModel>? get teacherProfileList => _teacherProfileList;
   Map<String, TeacherProfileModel>? get teacherProfileModelMap =>
       _teacherProfileMap;
+  SubscriptionPlan? get subscriptionPlan => _subscriptionPlan;
   UserType get userType {
     if (_adminProfile != null) {
       return UserType.admin;
@@ -104,6 +113,8 @@ class AccountModel extends ChangeNotifier {
   set studentProfile(StudentProfileModel? studentProfile) {
     _studentProfile = studentProfile;
     shared_preferences_service.updateStudentProfile(studentProfile);
+    _subscriptionPlan =
+        _getSubscriptionTypeForProfile(studentProfile?.profileId);
     notifyListeners();
   }
 
@@ -113,15 +124,18 @@ class AccountModel extends ChangeNotifier {
    */
   Future<void> _initAccount(User firebaseUser) async {
     _firebaseUser = firebaseUser;
-    await user_service.createMyUserDocIfNotExist(firebaseUser.uid);
-    _myUser = await user_service.getMyUserDoc(firebaseUser.uid);
-    await _initProfile(firebaseUser.uid);
     _studentProfileList = await profile_service.getAllStudentProfiles();
     _studentProfileMap =
         StudentProfileModel.buildStudentProfileMap(_studentProfileList!);
     _teacherProfileList = await profile_service.getAllTeacherProfiles();
     _teacherProfileMap =
         TeacherProfileModel.buildTeacherProfileMap(_teacherProfileList!);
+    _subscriptionDocs =
+        await stripe_service.getSubscriptionsForUser(firebaseUser.uid);
+
+    await user_service.createMyUserDocIfNotExist(firebaseUser.uid);
+    _myUser = await user_service.getMyUserDoc(firebaseUser.uid);
+    await _initProfile(firebaseUser.uid);
   }
 
   Future<void> _initProfile(String userId) async {
@@ -143,6 +157,8 @@ class AccountModel extends ChangeNotifier {
               userId: userId, profileId: studentProfile?.profileId);
       if (studentProfileBelongsToUser) {
         _studentProfile = studentProfile;
+        _subscriptionPlan =
+            _getSubscriptionTypeForProfile(studentProfile!.profileId);
       }
     }
   }
@@ -154,6 +170,30 @@ class AccountModel extends ChangeNotifier {
     _teacherProfile = null;
     _adminProfile = null;
     shared_preferences_service.removeStudentProfile();
+  }
+
+  SubscriptionPlan? _getSubscriptionTypeForProfile(String? profileId) {
+    if (profileId == null) {
+      return null;
+    }
+    try {
+      return EnumToString.fromString(
+          SubscriptionPlan.values,
+          _subscriptionDocs
+              .firstWhere((doc) =>
+                  doc.get('metadata.profile_id') as String == profileId)
+              .get('items')[0]['plan']['metadata']['id']);
+    } on StateError {
+      debugPrint(
+          'getSubscriptionTypeForProfile: No subscription found for profile $profileId');
+      FirebaseAnalytics.instance.logEvent(
+        name: 'getSubscriptionTypeForProfile',
+        parameters: {
+          'message': 'No subscription found for profile $profileId',
+        },
+      );
+      return null;
+    }
   }
 }
 
