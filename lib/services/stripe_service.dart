@@ -22,7 +22,7 @@ Future<List<QueryDocumentSnapshot>> getSubscriptionsForUser(
 
 Future<List<QueryDocumentSnapshot>> _getAllPrices() async {
   final pricesQuery = await db.collectionGroup('prices').get();
-  return pricesQuery.docs;
+  return pricesQuery.docs.where((doc) => doc.get('active') == true).toList();
 }
 
 Future<void> startStripeSubscriptionCheckoutSession(
@@ -72,10 +72,12 @@ Future<void> startStripeSubscriptionCheckoutSession(
   return completer.future;
 }
 
-Future<void> startStripePointsCheckoutSession(
-    {required String userId,
-    required String profileId,
-    required int quantity}) async {
+Future<void> startStripePointsCheckoutSession({
+  required String userId,
+  required String profileId,
+  required int quantity,
+  required String coupon,
+}) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
   for (final doc in priceDocs) {
@@ -96,6 +98,7 @@ Future<void> startStripePointsCheckoutSession(
     {
       'mode': 'payment',
       'price': selectedPriceId,
+      'promotion_code': coupon,
       'quantity': quantity,
       'success_url': html.window.location.origin,
       'cancel_url': html.window.location.origin,

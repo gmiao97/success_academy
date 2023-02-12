@@ -24,13 +24,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(numPoints) => "${numPoints} ポイント";
 
-  static String m2(cost) => "${cost}ポイントが還元されます";
+  static String m2(numPoints, cost) => "${numPoints} ポイント - ${cost}米ドル";
 
-  static String m3(timeZone) => "時間帯： ${timeZone}";
+  static String m3(cost) => "${cost}ポイントが還元されます";
 
-  static String m4(cost, balance) => "${balance}ポイントから${cost}ポイントを使う";
+  static String m4(timeZone) => "時間帯： ${timeZone}";
 
-  static String m5(address) => "確認リンクがメールアドレス（${address}）に送信されました";
+  static String m5(cost, balance) => "${balance}ポイントから${cost}ポイントを使う";
+
+  static String m6(address) => "確認リンクがメールアドレス（${address}）に送信されました";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -68,6 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("終了時間を選択してください"),
         "eventPointsDisplay": m1,
         "eventPointsLabel": MessageLookupByLibrary.simpleMessage("ポイント数"),
+        "eventPointsPurchase": m2,
         "eventPointsValidation":
             MessageLookupByLibrary.simpleMessage("ポイント数を入力してください"),
         "eventStartLabel": MessageLookupByLibrary.simpleMessage("開始"),
@@ -145,7 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("入力された紹介コードは無効です"),
         "referrerHint": MessageLookupByLibrary.simpleMessage("山田太郎"),
         "referrerLabel": MessageLookupByLibrary.simpleMessage("紹介者"),
-        "refundPoints": m2,
+        "refundPoints": m3,
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
@@ -167,15 +170,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
         "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),
         "termsOfUse": MessageLookupByLibrary.simpleMessage("利用規約"),
-        "timeZone": m3,
+        "timeZone": m4,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("時間帯"),
         "timeZoneValidation":
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "today": MessageLookupByLibrary.simpleMessage("今日"),
-        "usePoints": m4,
+        "usePoints": m5,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
-        "verifyEmailMessage": m5,
+        "verifyEmailMessage": m6,
         "viewEvent": MessageLookupByLibrary.simpleMessage("レッスンを見る"),
         "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る")
       };

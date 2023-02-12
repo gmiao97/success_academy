@@ -92,6 +92,7 @@
   "eventPointsLabel": "ポイント数",
   "eventPointsValidation": "ポイント数を入力してください",
   "eventPointsDisplay": "{numPoints} ポイント",
+  "eventPointsPurchase": "{numPoints} ポイント - {cost}米ドル",
   "notEnoughPoints": "ポイントを追加してください",
   "usePoints": "{balance}ポイントから{cost}ポイントを使う",
   "refundPoints": "{cost}ポイントが還元されます",

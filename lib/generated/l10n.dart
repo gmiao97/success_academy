@@ -880,6 +880,16 @@ class S {
     );
   }
 
+  /// `{numPoints} Points - ${cost}`
+  String eventPointsPurchase(Object numPoints, Object cost) {
+    return Intl.message(
+      '$numPoints Points - \$$cost',
+      name: 'eventPointsPurchase',
+      desc: '',
+      args: [numPoints, cost],
+    );
+  }
+
   /// `Please add more points`
   String get notEnoughPoints {
     return Intl.message(

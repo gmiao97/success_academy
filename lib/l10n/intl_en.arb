@@ -92,6 +92,7 @@
   "eventPointsLabel": "Number of points",
   "eventPointsValidation": "Please enter number of points",
   "eventPointsDisplay": "{numPoints} Points",
+  "eventPointsPurchase": "{numPoints} Points - ${cost}",
   "notEnoughPoints": "Please add more points",
   "usePoints": "{cost} of {balance} points will be used",
   "refundPoints": "{cost} points will be refunded",

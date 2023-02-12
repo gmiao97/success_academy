@@ -24,14 +24,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(numPoints) => "${numPoints} Points";
 
-  static String m2(cost) => "${cost} points will be refunded";
+  static String m2(numPoints, cost) => "${numPoints} Points - \$${cost}";
 
-  static String m3(timeZone) => "Timezone: ${timeZone}";
+  static String m3(cost) => "${cost} points will be refunded";
 
-  static String m4(cost, balance) =>
+  static String m4(timeZone) => "Timezone: ${timeZone}";
+
+  static String m5(cost, balance) =>
       "${cost} of ${balance} points will be used";
 
-  static String m5(address) =>
+  static String m6(address) =>
       "A verification link has been sent to your email at ${address}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -74,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventPointsDisplay": m1,
         "eventPointsLabel":
             MessageLookupByLibrary.simpleMessage("Number of points"),
+        "eventPointsPurchase": m2,
         "eventPointsValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter number of points"),
         "eventStartLabel": MessageLookupByLibrary.simpleMessage("Start"),
@@ -165,7 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "referrerHint": MessageLookupByLibrary.simpleMessage("John Smith"),
         "referrerLabel":
             MessageLookupByLibrary.simpleMessage("Name of referrer"),
-        "refundPoints": m2,
+        "refundPoints": m3,
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),
         "settings": MessageLookupByLibrary.simpleMessage("Account Settings"),
@@ -194,15 +197,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "teacherProfile":
             MessageLookupByLibrary.simpleMessage("Teacher Profile Information"),
         "termsOfUse": MessageLookupByLibrary.simpleMessage("Terms of use"),
-        "timeZone": m3,
+        "timeZone": m4,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("Time Zone"),
         "timeZoneValidation": MessageLookupByLibrary.simpleMessage(
             "Please select a valid time zone"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
-        "usePoints": m4,
+        "usePoints": m5,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
-        "verifyEmailMessage": m5,
+        "verifyEmailMessage": m6,
         "viewEvent": MessageLookupByLibrary.simpleMessage("View lesson"),
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
       };

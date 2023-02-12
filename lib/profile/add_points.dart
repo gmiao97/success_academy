@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -47,7 +46,19 @@ class _AddPointsForm extends StatefulWidget {
 class _AddPointsFormState extends State<_AddPointsForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _stripeRedirectClicked = false;
-  int _numPoints = 0;
+  int _numPoints = 100;
+  final Map _pointsCouponMap = {
+    1000: 'promo_1MaUbkK9gCxRnlEipn32mBEV',
+    2000: 'promo_1MaUbzK9gCxRnlEi5Xd3CAdJ',
+    5000: 'promo_1MaUc8K9gCxRnlEiiipU5lt3',
+    10000: 'promo_1MaUcHK9gCxRnlEiK2ybiGGA',
+  };
+
+  void _onPointsChanged(value) {
+    setState(() {
+      _numPoints = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,25 +78,56 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                     S.of(context).addPoints,
                     style: Theme.of(context).textTheme.headline4,
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    initialValue: _numPoints.toString(),
-                    decoration: InputDecoration(
-                      icon: const Icon(Icons.add),
-                      labelText: S.of(context).eventPointsLabel,
+                  const SizedBox(height: 25),
+                  RichText(
+                    text: TextSpan(
+                      text: '${S.of(context).eventPointsLabel}     ',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      children: [
+                        TextSpan(
+                          text: '${account.studentProfile!.numPoints}',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ],
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        _numPoints = int.parse(value);
-                      });
-                    },
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty || value == '0') {
-                        return S.of(context).eventPointsValidation;
-                      }
-                      return null;
-                    },
+                  ),
+                  Column(
+                    children: [
+                      RadioListTile<int>(
+                        title: Text(S.of(context).eventPointsPurchase(100, 10)),
+                        value: 100,
+                        groupValue: _numPoints,
+                        onChanged: _onPointsChanged,
+                      ),
+                      RadioListTile<int>(
+                        title:
+                            Text(S.of(context).eventPointsPurchase(1000, 98)),
+                        value: 1000,
+                        groupValue: _numPoints,
+                        onChanged: _onPointsChanged,
+                      ),
+                      RadioListTile<int>(
+                        title:
+                            Text(S.of(context).eventPointsPurchase(2000, 194)),
+                        value: 2000,
+                        groupValue: _numPoints,
+                        onChanged: _onPointsChanged,
+                      ),
+                      RadioListTile<int>(
+                        title:
+                            Text(S.of(context).eventPointsPurchase(5000, 480)),
+                        value: 5000,
+                        groupValue: _numPoints,
+                        onChanged: _onPointsChanged,
+                      ),
+                      RadioListTile<int>(
+                        title:
+                            Text(S.of(context).eventPointsPurchase(10000, 920)),
+                        value: 10000,
+                        groupValue: _numPoints,
+                        onChanged: _onPointsChanged,
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 30,
@@ -106,7 +148,8 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                                         userId: account.firebaseUser!.uid,
                                         profileId:
                                             account.studentProfile!.profileId,
-                                        quantity: _numPoints);
+                                        quantity: _numPoints,
+                                        coupon: _pointsCouponMap[_numPoints]);
                               } catch (e) {
                                 setState(() {
                                   _stripeRedirectClicked = false;
@@ -121,19 +164,6 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                             }
                           },
                         ),
-                  const SizedBox(height: 25),
-                  RichText(
-                    text: TextSpan(
-                      text: '${S.of(context).eventPointsLabel}     ',
-                      style: Theme.of(context).textTheme.titleMedium,
-                      children: [
-                        TextSpan(
-                          text: '${account.studentProfile!.numPoints}',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               )),
         ),
