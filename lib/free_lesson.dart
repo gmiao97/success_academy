@@ -74,21 +74,21 @@ class _FreeLessonState extends State<_FreeLesson> {
     final zoomInfo = [
       [
         'フリーレッスン小学生',
-        'https://us05web.zoom.us/j/84108519608?pwd=YTRmczdlSjhudmxlZlYvWlEwYVdodz09',
+        'https://us05web.zoom.us/j/84108519608?pwd=RCtxRzF1K3NEN0tPbDhrU2F0RUluQT09',
         '841 0851 9608',
-        '2510（覚え方：にごじゅう',
+        '	2416（覚え方：にじいろ）',
       ],
       [
         'フリーレッスン中学生',
-        'https://us04web.zoom.us/j/79192702926?pwd=3KXHrcyt9Peij1OXeIVlcs8Xa8fsIB.1',
+        'https://us04web.zoom.us/j/79192702926?pwd=17C4jNbzFKnxTJMLgRDBPTYlQQIbTO.1',
         '791 9270 2926',
-        '2510',
+        '2416',
       ],
       [
         '未就学児クラス',
-        'https://us04web.zoom.us/j/76992941228?pwd=nhIvDxLNjMj1batargxf20Pc3gvgjw.1',
+        'https://us04web.zoom.us/j/76992941228?pwd=cPbfxbb8QqDDbbae31fUyHCkYKvx8o.1',
         '769 9294 1228',
-        '2510',
+        '2416',
       ],
     ];
     if (account.userType == UserType.student &&
