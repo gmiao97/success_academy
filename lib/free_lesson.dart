@@ -7,6 +7,8 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/main.dart';
 import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/services/lesson_info_service.dart'
+    as lesson_info_service;
 import 'package:success_academy/utils.dart' as utils;
 import 'package:webviewx/webviewx.dart';
 
@@ -71,31 +73,6 @@ class _FreeLessonState extends State<_FreeLesson> {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
-    final zoomInfo = [
-      [
-        'フリーレッスン小学生',
-        'https://us05web.zoom.us/j/84108519608?pwd=RCtxRzF1K3NEN0tPbDhrU2F0RUluQT09',
-        '841 0851 9608',
-        '	2416（覚え方：にじいろ）',
-      ],
-      [
-        'フリーレッスン中学生',
-        'https://us04web.zoom.us/j/79192702926?pwd=17C4jNbzFKnxTJMLgRDBPTYlQQIbTO.1',
-        '791 9270 2926',
-        '2416',
-      ],
-      [
-        '未就学児クラス',
-        'https://us04web.zoom.us/j/76992941228?pwd=cPbfxbb8QqDDbbae31fUyHCkYKvx8o.1',
-        '769 9294 1228',
-        '2416',
-      ],
-    ];
-    if (account.userType == UserType.student &&
-        account.subscriptionPlan != SubscriptionPlan.minimumPreschool) {
-      zoomInfo.removeAt(2);
-    }
-
     return Center(
       child: SingleChildScrollView(
         child: Padding(
@@ -133,7 +110,7 @@ class _FreeLessonState extends State<_FreeLesson> {
               account.userType != UserType.student ||
                       (account.subscriptionPlan != null &&
                           account.subscriptionPlan != SubscriptionPlan.monthly)
-                  ? ZoomInfo(data: zoomInfo)
+                  ? ZoomInfo()
                   : const SizedBox(),
             ],
           ),
@@ -143,14 +120,38 @@ class _FreeLessonState extends State<_FreeLesson> {
   }
 }
 
-class ZoomInfo extends StatelessWidget {
-  const ZoomInfo({
-    Key? key,
-    required List data,
-  })  : _data = data,
-        super(key: key);
+class ZoomInfo extends StatefulWidget {
+  const ZoomInfo({Key? key}) : super(key: key);
 
-  final List _data;
+  @override
+  State<ZoomInfo> createState() => _ZoomInfoState();
+}
+
+class _ZoomInfoState extends State<ZoomInfo> {
+  List<List<String>> zoomInfo = [];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    initLessons();
+  }
+
+  void initLessons() async {
+    final account = context.watch<AccountModel>();
+    final lessons = await lesson_info_service.getLessons(
+        includePreschool: account.userType != UserType.student ||
+            account.subscriptionPlan == SubscriptionPlan.minimumPreschool);
+    setState(() {
+      for (final l in lessons) {
+        zoomInfo.add([
+          l['name'] as String,
+          l['zoom_link'] as String,
+          l['zoom_id'] as String,
+          l['zoom_pw'] as String
+        ]);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,43 +161,46 @@ class ZoomInfo extends StatelessWidget {
           S.of(context).freeLessonZoomInfo,
           style: Theme.of(context).textTheme.headline3,
         ),
-        PaginatedDataTable(
-            rowsPerPage: 5,
-            columns: <DataColumn>[
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    S.of(context).lesson,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
+        SizedBox(
+          width: 1000,
+          child: PaginatedDataTable(
+              rowsPerPage: 5,
+              columns: <DataColumn>[
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).lesson,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    S.of(context).link,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).link,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    S.of(context).meetingId,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).meetingId,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    S.of(context).password,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      S.of(context).password,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-            ],
-            source: _ZoomInfoDataSource(data: _data))
+              ],
+              source: _ZoomInfoDataSource(data: zoomInfo)),
+        )
       ],
     );
   }
