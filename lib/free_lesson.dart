@@ -110,7 +110,7 @@ class _FreeLessonState extends State<_FreeLesson> {
               account.userType != UserType.student ||
                       (account.subscriptionPlan != null &&
                           account.subscriptionPlan != SubscriptionPlan.monthly)
-                  ? ZoomInfo()
+                  ? const ZoomInfo()
                   : const SizedBox(),
             ],
           ),

@@ -47,11 +47,9 @@ CollectionReference<AdminProfileModel> _adminProfileModelRefForUser(userId) {
   * Returns list of document snapshots for each profile under 'profiles 
   * subcollection in the user doc under 'myUsers' collection. 
   */
-Future<List<QueryDocumentSnapshot<StudentProfileModel>>>
-    getStudentProfilesForUser(String userId) {
-  return _studentProfileModelRefForUser(userId)
-      .get()
-      .then((querySnapshot) => querySnapshot.docs);
+Future<List<StudentProfileModel>> getStudentProfilesForUser(String userId) {
+  return _studentProfileModelRefForUser(userId).get().then(
+      (querySnapshot) => querySnapshot.docs.map((doc) => doc.data()).toList());
 }
 
 /**  
@@ -115,7 +113,7 @@ Future<bool> studentProfileBelongsToUser(
     return false;
   }
   return getStudentProfilesForUser(userId)
-      .then((documentRefs) => documentRefs.any((doc) => doc.id == profileId));
+      .then((profiles) => profiles.any((p) => p.profileId == profileId));
 }
 
 /// Get number of points for student profile

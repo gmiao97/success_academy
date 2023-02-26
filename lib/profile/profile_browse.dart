@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
@@ -10,13 +9,33 @@ import 'package:success_academy/services/profile_service.dart'
 import 'package:success_academy/utils.dart' as utils;
 
 // TODO: Make UI responsive for different screen sizes
-class ProfileBrowse extends StatelessWidget {
+class ProfileBrowse extends StatefulWidget {
   const ProfileBrowse({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
+  State<ProfileBrowse> createState() => _ProfileBrowseState();
+}
 
+class _ProfileBrowseState extends State<ProfileBrowse> {
+  List<StudentProfileModel> _studentProfiles = [];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    initProfiles();
+  }
+
+  void initProfiles() async {
+    final account = context.watch<AccountModel>();
+    final studentProfiles = await profile_service
+        .getStudentProfilesForUser(account.firebaseUser!.uid);
+    setState(() {
+      _studentProfiles = studentProfiles;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return utils.buildLoggedInScaffold(
       context: context,
       body: Center(
@@ -29,24 +48,15 @@ class ProfileBrowse extends StatelessWidget {
             ),
             const SizedBox(height: 50),
             // TODO: Add error handling.
-            FutureBuilder<List<QueryDocumentSnapshot<StudentProfileModel>>>(
-              future: profile_service
-                  .getStudentProfilesForUser(account.firebaseUser!.uid),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (var profileSnapshot in snapshot.data!)
-                        _buildProfileCard(context, profileSnapshot.data()),
-                      snapshot.data!.length < constants.maxProfileCount
-                          ? const _AddProfileWidget()
-                          : const SizedBox.shrink(),
-                    ],
-                  );
-                }
-                return const CircularProgressIndicator(value: null);
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (final profile in _studentProfiles)
+                  _buildProfileCard(context, profile),
+                _studentProfiles.length < constants.maxProfileCount
+                    ? const _AddProfileWidget()
+                    : const SizedBox(),
+              ],
             ),
           ],
         ),
