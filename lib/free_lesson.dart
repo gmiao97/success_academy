@@ -288,8 +288,7 @@ class EditableZoomInfo extends StatelessWidget {
           style: Theme.of(context).textTheme.headline3,
         ),
         SizedBox(
-          height: 1000,
-          width: 1000,
+          height: 500,
           child: Editable(
             columns: headers,
             rows: zoomInfo,
