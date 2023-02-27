@@ -294,6 +294,7 @@ class EditableZoomInfo extends StatelessWidget {
             rows: zoomInfo,
             // showCreateButton: true,
             showSaveIcon: true,
+            saveIconColor: Colors.amber,
             onRowSaved: ((value) {
               if (value == 'no edit') {
                 return;
