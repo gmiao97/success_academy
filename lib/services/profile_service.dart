@@ -135,9 +135,8 @@ Future<DocumentReference<StudentProfileModel>> addStudentProfile(
 
 /// Update student profile for specified user
 Future<void> updateStudentProfile(
-    String userId, StudentProfileModel profileModel) async {
-  final profileDoc = await _studentProfileModelRefForUser(userId)
+    String userId, StudentProfileModel profileModel) {
+  return _studentProfileModelRefForUser(userId)
       .doc(profileModel.profileId)
       .update(profileModel.toFirestoreJson());
-  return profileDoc;
 }

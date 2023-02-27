@@ -55,6 +55,7 @@ dependencies:
   font_awesome_flutter: ^10.3.0
   webviewx: ^0.2.1
   firebase_analytics: ^10.1.0
+  editable: ^2.0.0
 
 dev_dependencies:
   flutter_test:

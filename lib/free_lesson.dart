@@ -1,5 +1,6 @@
 import 'dart:html' as html;
 
+import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
@@ -63,10 +64,44 @@ class _FreeLesson extends StatefulWidget {
 
 class _FreeLessonState extends State<_FreeLesson> {
   late WebViewXController webviewController;
+  List<Map<String, Object?>>? _zoomInfo;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    initLessons();
+  }
+
+  void initLessons() async {
+    final account = context.watch<AccountModel>();
+    final lessons = await lesson_info_service.getLessons(
+        includePreschool: account.userType != UserType.student ||
+            account.subscriptionPlan == SubscriptionPlan.minimumPreschool);
+    setState(() {
+      _zoomInfo = lessons;
+    });
+  }
+
+  Widget _getZoomInfoTable(
+      UserType userType, SubscriptionPlan? subscriptionPlan) {
+    if (userType == UserType.admin) {
+      return EditableZoomInfo(
+        zoomInfo: _zoomInfo!,
+      );
+    }
+    if (userType == UserType.teacher ||
+        (subscriptionPlan != null &&
+            subscriptionPlan != SubscriptionPlan.monthly)) {
+      return ZoomInfo(
+        zoomInfo: _zoomInfo!,
+      );
+    }
+    return const SizedBox();
   }
 
   @override
@@ -107,11 +142,10 @@ class _FreeLessonState extends State<_FreeLesson> {
                     SourceType.url),
               ),
               const SizedBox(height: 20),
-              account.userType != UserType.student ||
-                      (account.subscriptionPlan != null &&
-                          account.subscriptionPlan != SubscriptionPlan.monthly)
-                  ? const ZoomInfo()
-                  : const SizedBox(),
+              _zoomInfo == null
+                  ? const CircularProgressIndicator()
+                  : _getZoomInfoTable(
+                      account.userType, account.subscriptionPlan),
             ],
           ),
         ),
@@ -120,38 +154,10 @@ class _FreeLessonState extends State<_FreeLesson> {
   }
 }
 
-class ZoomInfo extends StatefulWidget {
-  const ZoomInfo({Key? key}) : super(key: key);
+class ZoomInfo extends StatelessWidget {
+  const ZoomInfo({Key? key, required this.zoomInfo}) : super(key: key);
 
-  @override
-  State<ZoomInfo> createState() => _ZoomInfoState();
-}
-
-class _ZoomInfoState extends State<ZoomInfo> {
-  List<List<String>> zoomInfo = [];
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    initLessons();
-  }
-
-  void initLessons() async {
-    final account = context.watch<AccountModel>();
-    final lessons = await lesson_info_service.getLessons(
-        includePreschool: account.userType != UserType.student ||
-            account.subscriptionPlan == SubscriptionPlan.minimumPreschool);
-    setState(() {
-      for (final l in lessons) {
-        zoomInfo.add([
-          l['name'] as String,
-          l['zoom_link'] as String,
-          l['zoom_id'] as String,
-          l['zoom_pw'] as String
-        ]);
-      }
-    });
-  }
+  final List<Map<String, Object?>> zoomInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -207,15 +213,15 @@ class _ZoomInfoState extends State<ZoomInfo> {
 }
 
 class _ZoomInfoDataSource extends DataTableSource {
-  _ZoomInfoDataSource({required List data}) : _data = data;
+  _ZoomInfoDataSource({required this.data});
 
-  final List _data;
+  final List<Map<String, Object?>> data;
 
   @override
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _data.length;
+  int get rowCount => data.length;
 
   @override
   int get selectedRowCount => 0;
@@ -223,7 +229,7 @@ class _ZoomInfoDataSource extends DataTableSource {
   @override
   DataRow getRow(int index) {
     return DataRow(cells: [
-      DataCell(Text(_data[index][0])),
+      DataCell(Text(data[index]['name'] as String)),
       DataCell(InkWell(
         child: const Text(
           'Zoom',
@@ -233,11 +239,102 @@ class _ZoomInfoDataSource extends DataTableSource {
           ),
         ),
         onTap: () {
-          html.window.open(_data[index][1], 'Zoom');
+          html.window.open(data[index]['zoom_link'] as String, 'Zoom');
         },
       )),
-      DataCell(Text(_data[index][2])),
-      DataCell(Text(_data[index][3])),
+      DataCell(Text(data[index]['zoom_id'] as String)),
+      DataCell(Text(data[index]['zoom_pw'] as String)),
     ]);
+  }
+}
+
+class EditableZoomInfo extends StatelessWidget {
+  const EditableZoomInfo({Key? key, required this.zoomInfo}) : super(key: key);
+
+  final List<dynamic> zoomInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    final headers = [
+      {
+        'title': S.of(context).lesson,
+        'widthFactor': 0.15,
+        'index': 1,
+        'key': 'name',
+      },
+      {
+        'title': S.of(context).link,
+        'widthFactor': 0.3,
+        'index': 2,
+        'key': 'zoom_link',
+      },
+      {
+        'title': S.of(context).meetingId,
+        'widthFactor': 0.1,
+        'index': 3,
+        'key': 'zoom_id',
+      },
+      {
+        'title': S.of(context).password,
+        'index': 4,
+        'key': 'zoom_pw',
+      },
+    ];
+
+    return Column(
+      children: [
+        Text(
+          S.of(context).freeLessonZoomInfo,
+          style: Theme.of(context).textTheme.headline3,
+        ),
+        SizedBox(
+          height: 1000,
+          width: 1000,
+          child: Editable(
+            columns: headers,
+            rows: zoomInfo,
+            // showCreateButton: true,
+            showSaveIcon: true,
+            onRowSaved: ((value) {
+              if (value == 'no edit') {
+                return;
+              }
+
+              final i = value['row'];
+              value.remove('row');
+
+              value.forEach((k, v) {
+                zoomInfo[i][k] = v;
+              });
+              lesson_info_service
+                  .updateLesson(zoomInfo[i]['id'], zoomInfo[i])
+                  .then(
+                    (unused) => ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('更新しました'),
+                        backgroundColor: Colors.green,
+                      ),
+                    ),
+                  )
+                  .catchError(
+                    (err) => ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('更新できません'),
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                  );
+            }),
+            onSubmitted: ((value) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('保存ボタンを押してください'),
+                ),
+              );
+            }),
+          ),
+        ),
+      ],
+    );
   }
 }
