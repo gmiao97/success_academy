@@ -9,10 +9,10 @@
   "manageProfile": "ユーザー管理",
 
   "createProfile": "プロフィール作成",
-  "lastNameLabel": "生徒性",
+  "lastNameLabel": "生徒（姓）",
   "lastNameHint": "山田",
   "lastNameValidation": "生徒の名字を入力してください",
-  "firstNameLabel": "生徒名",
+  "firstNameLabel": "生徒（名）",
   "firstNameHint": "太郎",
   "firstNameValidation": "生徒の名前を入力してください",
   "dateOfBirthLabel": "生徒生年月日",
@@ -41,7 +41,7 @@
   "stripePurchase": "サブスクリプション購入へ",
   "stripePointsPurchase": "ポイント購入へ",
 
-  "timeZoneLabel": "時間帯",
+  "timeZoneLabel": "タイムゾーン",
   "timeZoneValidation": "有効の時間帯を選択してください",
 
   "verifyEmailMessage": "確認リンクがメールアドレス（{address}）に送信されました",
@@ -60,9 +60,9 @@
   "freeLessonZoomInfo" : "フリーレッスンZOOM情報",
 
   "calendarHeader": "{name}のカレンダー",
-  "timeZone": "時間帯： {timeZone}",
+  "timeZone": "タイムゾーン： {timeZone}",
   "today": "今日",
-  "filter": "レッスンのフィルター",
+  "filter": "レッスンの絞り込み",
   "confirm": "決定",
   "cancel": "キャンセル",
   "free": "フリーレッスン",

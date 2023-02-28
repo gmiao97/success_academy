@@ -28,7 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(cost) => "${cost}ポイントが還元されます";
 
-  static String m4(timeZone) => "時間帯： ${timeZone}";
+  static String m4(timeZone) => "タイムゾーン： ${timeZone}";
 
   static String m5(cost, balance) => "${balance}ポイントから${cost}ポイントを使う";
 
@@ -83,11 +83,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("開始時間は終了時間より前である必要があります"),
         "failedAccountUpdate":
             MessageLookupByLibrary.simpleMessage("アカウント設定更新に失敗しました"),
-        "filter": MessageLookupByLibrary.simpleMessage("レッスンのフィルター"),
+        "filter": MessageLookupByLibrary.simpleMessage("レッスンの絞り込み"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("レッスンの種類で表示する"),
         "firstName": MessageLookupByLibrary.simpleMessage("名"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("太郎"),
-        "firstNameLabel": MessageLookupByLibrary.simpleMessage("生徒名"),
+        "firstNameLabel": MessageLookupByLibrary.simpleMessage("生徒（名）"),
         "firstNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名前を入力してください"),
         "free": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
@@ -104,7 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "id": MessageLookupByLibrary.simpleMessage("ID"),
         "lastName": MessageLookupByLibrary.simpleMessage("姓名"),
         "lastNameHint": MessageLookupByLibrary.simpleMessage("山田"),
-        "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒性"),
+        "lastNameLabel": MessageLookupByLibrary.simpleMessage("生徒（姓）"),
         "lastNameValidation":
             MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
         "lesson": MessageLookupByLibrary.simpleMessage("レッスン"),
@@ -171,7 +171,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),
         "termsOfUse": MessageLookupByLibrary.simpleMessage("利用規約"),
         "timeZone": m4,
-        "timeZoneLabel": MessageLookupByLibrary.simpleMessage("時間帯"),
+        "timeZoneLabel": MessageLookupByLibrary.simpleMessage("タイムゾーン"),
         "timeZoneValidation":
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "today": MessageLookupByLibrary.simpleMessage("今日"),
