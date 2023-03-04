@@ -389,6 +389,116 @@ Scaffold buildAdminProfileScaffold(
   );
 }
 
+DefaultTabController buildAdminProfileScaffoldWithTabs(
+    {required BuildContext context, required Widget body}) {
+  final account = context.watch<AccountModel>();
+  final style = TextButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.onPrimary);
+
+  return DefaultTabController(
+    length: 2,
+    child: Scaffold(
+      appBar: AppBar(
+        title: InkWell(
+          child: const Text(constants.homePageAppBarName),
+          onTap: () {
+            Navigator.pushNamed(context, constants.routeHome);
+          },
+        ),
+        bottom: const TabBar(
+          tabs: [
+            Tab(
+              text: '先生',
+            ),
+            Tab(
+              text: '生徒',
+            )
+          ],
+        ),
+        centerTitle: false,
+        actions: [
+          TextButton(
+            style: style,
+            onPressed: () {
+              account.locale = account.locale == 'en' ? 'ja' : 'en';
+            },
+            child: Text(
+              account.locale == 'en' ? '🇺🇸' : '🇯🇵',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          TextButton(
+            style: style,
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
+            child: Text(S.of(context).signOut),
+          )
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: Text(
+                "ADMIN",
+                style: TextStyle(
+                  fontSize:
+                      Theme.of(context).textTheme.headlineMedium!.fontSize,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.account_circle),
+              title: Text(S.of(context).viewProfile),
+              onTap: () {
+                Navigator.pushNamed(context, constants.routeHome);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_month),
+              title: Text(S.of(context).lessonCalendar),
+              onTap: () {
+                Navigator.pushNamed(context, constants.routeCalendar);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.abc),
+              title: Text(S.of(context).freeLessonInfo),
+              onTap: () {
+                Navigator.pushNamed(context, constants.routeFreeLesson);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.people),
+              title: Text(S.of(context).manageProfile),
+              onTap: () {
+                Navigator.pushNamed(context, constants.routeManageUsers);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: Text(S.of(context).settings),
+              onTap: () {
+                Navigator.pushNamed(context, constants.routeSettings);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: _bottomSheetHeight),
+        child: body,
+      ),
+      bottomSheet: _bottomSheet,
+    ),
+  );
+}
+
 BottomSheet _bottomSheet = BottomSheet(
   onClosing: () {},
   builder: (context) => SizedBox(
