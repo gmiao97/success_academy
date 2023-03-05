@@ -136,78 +136,73 @@ class _ManageState extends State<_Manage> {
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(50),
-                child: Column(
-                  children: [
-                    Text(
-                      '${dateFormatter.format(_dateRange.start)} - ${dateFormatter.format(_dateRange.end)}',
+                child: PaginatedDataTable(
+                  header: Column(
+                    children: [
+                      Text(
+                          '${dateFormatter.format(_dateRange.start)} - ${dateFormatter.format(_dateRange.end)}'),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                          onPressed: _selectDateRange,
+                          child: const Text('期間を変える'))
+                    ],
+                  ),
+                  columns: <DataColumn>[
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).id,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: _selectDateRange,
-                      child: const Text('Select date range'),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).lastName,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ),
-                    PaginatedDataTable(
-                      columns: <DataColumn>[
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              S.of(context).id,
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).firstName,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
                         ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              S.of(context).lastName,
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).freeNum,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
                         ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              S.of(context).firstName,
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).preschoolNum,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
                         ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              S.of(context).freeNum,
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          S.of(context).privateNum,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
                         ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              S.of(context).preschoolNum,
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              S.of(context).privateNum,
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                        ),
-                      ],
-                      source: _TeacherData(
-                        data: _accountContext.teacherProfileList!,
-                        events: _events,
                       ),
                     ),
                   ],
+                  source: _TeacherData(
+                    data: _accountContext.teacherProfileList!,
+                    events: _events,
+                  ),
                 ),
               ),
             ),
