@@ -83,7 +83,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           ),
           ListTile(
             leading: const Icon(Icons.info),
-            title: Text(S.of(context).freeLessonInfo),
+            title: Text(S.of(context).lessonInfo),
             onTap: () => _drawerItemOnClick(2),
           ),
           ListTile(
@@ -111,7 +111,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           ),
           ListTile(
             leading: const Icon(Icons.info),
-            title: Text(S.of(context).freeLessonInfo),
+            title: Text(S.of(context).lessonInfo),
             onTap: () => _drawerItemOnClick(2),
           ),
           ListTile(
@@ -134,11 +134,11 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           ),
           ListTile(
             leading: const Icon(Icons.info),
-            title: Text(S.of(context).freeLessonInfo),
+            title: Text(S.of(context).lessonInfo),
             onTap: () => _drawerItemOnClick(2),
           ),
           ListTile(
-            leading: const Icon(Icons.add_outlined),
+            leading: const Icon(Icons.add),
             title: Text(S.of(context).addPoints),
             onTap: () => _drawerItemOnClick(3),
           ),

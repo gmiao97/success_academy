@@ -43,11 +43,12 @@ class _StudentProfileState extends State<StudentProfile> {
             ),
             Padding(
               padding: const EdgeInsets.all(20),
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
+                icon: const Icon(FontAwesomeIcons.arrowsRotate),
+                label: Text(S.of(context).changeProfile),
                 onPressed: () {
                   account.studentProfile = null;
                 },
-                child: Text(S.of(context).changeProfile),
               ),
             ),
           ],
@@ -211,7 +212,8 @@ class _StudentProfileState extends State<StudentProfile> {
                                 SnackBar(
                                   content:
                                       Text(S.of(context).stripeRedirectFailure),
-                                  backgroundColor: Theme.of(context).errorColor,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.error,
                                 ),
                               );
                               debugPrint(
@@ -243,7 +245,7 @@ class ManageSubscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -260,7 +262,7 @@ class ManageSubscription extends StatelessWidget {
             ),
             Row(
               children: [
-                TextButton.icon(
+                OutlinedButton.icon(
                   icon: const Icon(Icons.exit_to_app),
                   label: Text(S.of(context).manageSubscription),
                   onPressed: redirectClicked
@@ -331,7 +333,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
     final account = context.watch<AccountModel>();
 
     return Card(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -437,7 +439,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(
                 children: [
-                  TextButton.icon(
+                  OutlinedButton.icon(
                     label: Text(S.of(context).stripePurchase),
                     icon: const Icon(Icons.exit_to_app),
                     onPressed: widget.redirectClicked || !_termsOfUseChecked

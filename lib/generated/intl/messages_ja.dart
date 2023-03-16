@@ -51,7 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("登録解除できませんでした"),
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("登録を解除しました"),
-        "changeProfile": MessageLookupByLibrary.simpleMessage("プロフィール選択"),
+        "changeProfile": MessageLookupByLibrary.simpleMessage("プロフィールを切り替える"),
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
         "copy": MessageLookupByLibrary.simpleMessage("コードをコピー"),
@@ -94,7 +94,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("生徒の名前を入力してください"),
         "free": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
         "freeFilter": MessageLookupByLibrary.simpleMessage("フリーレッスン"),
-        "freeLessonInfo": MessageLookupByLibrary.simpleMessage("フリーレッスン情報"),
         "freeLessonMaterials": MessageLookupByLibrary.simpleMessage("教材"),
         "freeLessonTimeTable":
             MessageLookupByLibrary.simpleMessage("フリーレッスン時間割"),
@@ -111,6 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("生徒の名字を入力してください"),
         "lesson": MessageLookupByLibrary.simpleMessage("レッスン"),
         "lessonCalendar": MessageLookupByLibrary.simpleMessage("レッスンカレンダー"),
+        "lessonInfo": MessageLookupByLibrary.simpleMessage("レッスン情報"),
         "link": MessageLookupByLibrary.simpleMessage("リンク"),
         "manageProfile": MessageLookupByLibrary.simpleMessage("ユーザー管理"),
         "manageSubscription":
@@ -128,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションがありません"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("ポイントを追加してください"),
+        "openLinkFailure": MessageLookupByLibrary.simpleMessage("リンクを開けませんでした"),
         "password": MessageLookupByLibrary.simpleMessage("パスワード"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択してください"),

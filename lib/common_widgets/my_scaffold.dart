@@ -4,7 +4,7 @@ import 'package:success_academy/common_widgets/desktop_scaffold.dart';
 import 'package:success_academy/common_widgets/phone_scaffold.dart';
 
 class MyScaffold extends StatelessWidget {
-  static const double _breakpoint = 700;
+  static const double _breakpoint = 1000;
   final UserType userType;
 
   const MyScaffold({super.key, required this.userType});

@@ -384,7 +384,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
               )
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).errorColor,
+                  backgroundColor: Theme.of(context).colorScheme.error,
                 ),
                 onPressed: () {
                   setState(() {

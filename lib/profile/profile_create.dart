@@ -174,7 +174,7 @@ class _SignupFormState extends State<_SignupForm> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(S.of(context).stripeRedirectFailure),
-                        backgroundColor: Theme.of(context).errorColor,
+                        backgroundColor: Theme.of(context).colorScheme.error,
                       ),
                     );
                   });

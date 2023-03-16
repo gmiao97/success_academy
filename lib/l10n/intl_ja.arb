@@ -49,11 +49,11 @@
   "verifyEmailAction": "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。",
   "reloadPage": "再読み込み",
 
-  "changeProfile": "プロフィール選択",
+  "changeProfile": "プロフィールを切り替える",
   "viewProfile": "プロフィールを見る",
   "profile": "プロフィール",
   "lessonCalendar": "レッスンカレンダー",
-  "freeLessonInfo": "フリーレッスン情報",
+  "lessonInfo": "レッスン情報",
   "addPoints": "ポイントを追加する",
   "settings": "アカウント設定",
 
@@ -139,6 +139,7 @@
   "student": "生徒",
 
   "stripeRedirectFailure": "Stripeへリダイレクトできませんでした",
+  "openLinkFailure": "リンクを開けませんでした",
 
   "updated": "更新しました",
   "updateFailed": "更新できません",

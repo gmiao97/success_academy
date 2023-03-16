@@ -1,5 +1,3 @@
-import 'dart:html' as html;
-
 import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +8,7 @@ import 'package:success_academy/lesson_info/lesson_model.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/lesson_info_service.dart'
     as lesson_info_service;
-import 'package:webviewx/webviewx.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LessonInfo extends StatefulWidget {
   const LessonInfo({super.key});
@@ -20,7 +18,6 @@ class LessonInfo extends StatefulWidget {
 }
 
 class _LessonInfoState extends State<LessonInfo> {
-  late WebViewXController webviewController;
   bool _zoomInfoLoaded = false;
   List<LessonModel> _zoomInfo = [];
 
@@ -61,48 +58,70 @@ class _LessonInfoState extends State<LessonInfo> {
     final account = context.watch<AccountModel>();
     initLessons(account.userType, account.subscriptionPlan);
 
-    return Center(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              Text(
-                S.of(context).freeLessonTimeTable,
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              const SizedBox(height: 8),
-              WebViewX(
-                width: 700,
-                height: 300,
-                onWebViewCreated: (controller) => controller.loadContent(
-                    'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list',
-                    SourceType.url),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                S.of(context).freeLessonMaterials,
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              const SizedBox(height: 8),
-              WebViewX(
-                width: 700,
-                height: 300,
-                onWebViewCreated: (controller) => controller.loadContent(
-                    'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list',
-                    SourceType.url),
-              ),
-              const SizedBox(height: 20),
-              !_zoomInfoLoaded
-                  ? const CircularProgressIndicator()
-                  : _getZoomInfoTable(
-                      account.userType, account.subscriptionPlan),
-            ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            S.of(context).lessonInfo,
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ),
-      ),
+        Expanded(
+          child: Card(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (!await launchUrl(Uri.parse(
+                                'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list'))) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.error,
+                                  content: Text(S.of(context).openLinkFailure),
+                                ),
+                              );
+                            }
+                          },
+                          child: Text(S.of(context).freeLessonTimeTable),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (!await launchUrl(Uri.parse(
+                                'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list'))) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.error,
+                                  content: Text(S.of(context).openLinkFailure),
+                                ),
+                              );
+                            }
+                          },
+                          child: Text(S.of(context).freeLessonMaterials),
+                        ),
+                      ],
+                    ),
+                  ),
+                  !_zoomInfoLoaded
+                      ? const CircularProgressIndicator()
+                      : _getZoomInfoTable(
+                          account.userType, account.subscriptionPlan),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -123,7 +142,7 @@ class ZoomInfo extends StatelessWidget {
         SizedBox(
           width: 1000,
           child: PaginatedDataTable(
-              rowsPerPage: 5,
+              rowsPerPage: 3,
               columns: <DataColumn>[
                 DataColumn(
                   label: Expanded(
@@ -158,7 +177,7 @@ class ZoomInfo extends StatelessWidget {
                   ),
                 ),
               ],
-              source: _ZoomInfoDataSource(data: zoomInfo)),
+              source: _ZoomInfoDataSource(context: context, data: zoomInfo)),
         )
       ],
     );
@@ -166,8 +185,9 @@ class ZoomInfo extends StatelessWidget {
 }
 
 class _ZoomInfoDataSource extends DataTableSource {
-  _ZoomInfoDataSource({required this.data});
+  _ZoomInfoDataSource({required this.context, required this.data});
 
+  final BuildContext context;
   final List<LessonModel> data;
 
   @override
@@ -191,8 +211,15 @@ class _ZoomInfoDataSource extends DataTableSource {
             color: constants.linkColor,
           ),
         ),
-        onTap: () {
-          html.window.open(data[i].zoomLink, 'Zoom');
+        onTap: () async {
+          if (!await launchUrl(Uri.parse(data[i].zoomLink))) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Theme.of(context).errorColor,
+                content: Text(S.of(context).openLinkFailure),
+              ),
+            );
+          }
         },
       )),
       DataCell(Text(data[i].zoomId)),
@@ -283,13 +310,13 @@ class EditableZoomInfo extends StatelessWidget {
                   )
                   .catchError(
                 (err) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  debugPrint("Failed to update lesson info: $err");
+                  return ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(S.of(context).updateFailed),
-                      backgroundColor: Theme.of(context).errorColor,
+                      backgroundColor: Theme.of(context).colorScheme.error,
                     ),
                   );
-                  debugPrint("Failed to update lesson info: $err");
                 },
               );
             }),

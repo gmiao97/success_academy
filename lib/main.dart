@@ -45,7 +45,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.lightBlue,
           accentColor: Colors.amber,
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: Colors.grey[200],
           cardColor: Colors.white,
         ),
       ),

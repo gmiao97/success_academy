@@ -49,11 +49,11 @@
   "verifyEmailAction": "Please click on the link in your email to continue the registration process. If you don't see a message in your inbox, please check your spam or junk mail folder.",
   "reloadPage": "Reload page",
 
-  "changeProfile": "Select Profile",
+  "changeProfile": "Change Profile",
   "viewProfile": "View Profile",
   "profile": "Profile",
   "lessonCalendar": "Lesson Calendar",
-  "freeLessonInfo": "Free Lesson Info",
+  "lessonInfo": "Lesson Info",
   "addPoints": "Add points",
   "settings": "Account Settings",
   
@@ -139,6 +139,7 @@
   "student": "STUDENT",
 
   "stripeRedirectFailure": "Failed to redirect to Stripe",
+  "openLinkFailure": "Failed to open link",
 
   "updated": "Updated",
   "updateFailed": "Update failed",

@@ -117,7 +117,8 @@ class _SettingsState extends State<Settings> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(S.of(context).failedAccountUpdate),
-                            backgroundColor: Theme.of(context).errorColor,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.error,
                           ),
                         );
                         debugPrint("Failed to update account settings: $err");

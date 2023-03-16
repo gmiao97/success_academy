@@ -194,7 +194,8 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                                 content: _isSignedUp
                                     ? Text(S.of(context).cancelSignupFailure)
                                     : Text(S.of(context).signupFailure),
-                                backgroundColor: Theme.of(context).errorColor,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.error,
                               ),
                             );
                             debugPrint('Failed to update sign up status: $err');

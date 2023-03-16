@@ -38,7 +38,10 @@ class LandingPage extends StatelessWidget {
           ),
         ],
       ),
-      body: null,
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: Image.asset('assets/images/education.jpg'),
+      ),
     );
   }
 }

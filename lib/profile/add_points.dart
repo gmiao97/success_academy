@@ -136,7 +136,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                                     content: Text(
                                         S.of(context).stripeRedirectFailure),
                                     backgroundColor:
-                                        Theme.of(context).errorColor,
+                                        Theme.of(context).colorScheme.error,
                                   ),
                                 );
                                 debugPrint(

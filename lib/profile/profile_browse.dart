@@ -97,8 +97,8 @@ Card _buildProfileCard(BuildContext context, StudentProfileModel profile) {
         account.studentProfile = profile;
       },
       child: SizedBox(
-        width: 200,
-        height: 200,
+        width: MediaQuery.of(context).size.width < 700 ? 100 : 200,
+        height: MediaQuery.of(context).size.width < 700 ? 100 : 200,
         child: Center(
           child: Text(profile.firstName,
               style: Theme.of(context).textTheme.headlineMedium),
@@ -121,8 +121,8 @@ class _AddProfileWidget extends StatelessWidget {
           Navigator.pushNamed(context, constants.routeCreateProfile);
         },
         child: SizedBox(
-          width: 200,
-          height: 200,
+          width: MediaQuery.of(context).size.width < 700 ? 100 : 200,
+          height: MediaQuery.of(context).size.width < 700 ? 100 : 200,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

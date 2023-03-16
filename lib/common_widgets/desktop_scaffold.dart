@@ -81,7 +81,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
             icon: const Icon(Icons.info_outline),
             selectedIcon: const Icon(Icons.info),
             padding: const EdgeInsets.symmetric(vertical: 5),
-            label: Text(S.of(context).freeLessonInfo),
+            label: Text(S.of(context).lessonInfo),
           ),
           NavigationRailDestination(
             icon: const Icon(Icons.people_outlined),
@@ -114,7 +114,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
             icon: const Icon(Icons.info_outline),
             selectedIcon: const Icon(Icons.info),
             padding: const EdgeInsets.symmetric(vertical: 5),
-            label: Text(S.of(context).freeLessonInfo),
+            label: Text(S.of(context).lessonInfo),
           ),
           NavigationRailDestination(
             icon: const Icon(Icons.settings_outlined),
@@ -141,10 +141,10 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
             icon: const Icon(Icons.info_outline),
             selectedIcon: const Icon(Icons.info),
             padding: const EdgeInsets.symmetric(vertical: 5),
-            label: Text(S.of(context).freeLessonInfo),
+            label: Text(S.of(context).lessonInfo),
           ),
           NavigationRailDestination(
-            icon: const Icon(Icons.add_box_outlined),
+            icon: const Icon(Icons.add),
             selectedIcon: const Icon(Icons.add_outlined),
             padding: const EdgeInsets.symmetric(vertical: 5),
             label: Text(S.of(context).addPoints),
@@ -188,43 +188,40 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
       ),
       body: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: IconButton(
-                    onPressed: () => setState(() {
-                      _extended = !_extended;
-                    }),
-                    icon: Icon(_extended
-                        ? Icons.arrow_back_ios_new
-                        : Icons.arrow_forward_ios),
-                  ),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: IconButton(
+                  onPressed: () => setState(() {
+                    _extended = !_extended;
+                  }),
+                  icon: Icon(_extended
+                      ? Icons.arrow_back_ios_new
+                      : Icons.arrow_forward_ios),
                 ),
-                Expanded(
-                  child: NavigationRail(
-                    selectedIndex: _selectedIndex,
-                    extended: _extended,
-                    backgroundColor: Theme.of(context).backgroundColor,
-                    groupAlignment: -0.8,
-                    onDestinationSelected: (index) {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-                    selectedLabelTextStyle: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(fontWeight: FontWeight.bold),
-                    unselectedLabelTextStyle:
-                        Theme.of(context).textTheme.labelLarge,
-                    destinations: _getDestinations(),
-                  ),
+              ),
+              Expanded(
+                child: NavigationRail(
+                  selectedIndex: _selectedIndex,
+                  extended: _extended,
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  groupAlignment: -0.8,
+                  onDestinationSelected: (index) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                  },
+                  selectedLabelTextStyle: Theme.of(context)
+                      .textTheme
+                      .labelLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
+                  unselectedLabelTextStyle:
+                      Theme.of(context).textTheme.labelLarge,
+                  destinations: _getDestinations(),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Expanded(
             child: IndexedStack(

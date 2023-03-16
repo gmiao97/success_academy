@@ -54,7 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Failed to cancel sign up"),
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("Cancelled sign up"),
-        "changeProfile": MessageLookupByLibrary.simpleMessage("Select Profile"),
+        "changeProfile": MessageLookupByLibrary.simpleMessage("Change Profile"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
         "copy": MessageLookupByLibrary.simpleMessage("Copy Code"),
@@ -102,8 +102,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter student\'s first name"),
         "free": MessageLookupByLibrary.simpleMessage("Free lesson"),
         "freeFilter": MessageLookupByLibrary.simpleMessage("Free lessons"),
-        "freeLessonInfo":
-            MessageLookupByLibrary.simpleMessage("Free Lesson Info"),
         "freeLessonMaterials":
             MessageLookupByLibrary.simpleMessage("Course Materials"),
         "freeLessonTimeTable":
@@ -124,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lesson": MessageLookupByLibrary.simpleMessage("Lesson"),
         "lessonCalendar":
             MessageLookupByLibrary.simpleMessage("Lesson Calendar"),
+        "lessonInfo": MessageLookupByLibrary.simpleMessage("Lesson Info"),
         "link": MessageLookupByLibrary.simpleMessage("Link"),
         "manageProfile": MessageLookupByLibrary.simpleMessage("Manage Users"),
         "manageSubscription":
@@ -142,6 +141,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noPlan": MessageLookupByLibrary.simpleMessage("No subscription plan"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("Please add more points"),
+        "openLinkFailure":
+            MessageLookupByLibrary.simpleMessage("Failed to open link"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),

@@ -480,10 +480,10 @@ class S {
     );
   }
 
-  /// `Select Profile`
+  /// `Change Profile`
   String get changeProfile {
     return Intl.message(
-      'Select Profile',
+      'Change Profile',
       name: 'changeProfile',
       desc: '',
       args: [],
@@ -520,11 +520,11 @@ class S {
     );
   }
 
-  /// `Free Lesson Info`
-  String get freeLessonInfo {
+  /// `Lesson Info`
+  String get lessonInfo {
     return Intl.message(
-      'Free Lesson Info',
-      name: 'freeLessonInfo',
+      'Lesson Info',
+      name: 'lessonInfo',
       desc: '',
       args: [],
     );
@@ -1285,6 +1285,16 @@ class S {
     return Intl.message(
       'Failed to redirect to Stripe',
       name: 'stripeRedirectFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to open link`
+  String get openLinkFailure {
+    return Intl.message(
+      'Failed to open link',
+      name: 'openLinkFailure',
       desc: '',
       args: [],
     );
