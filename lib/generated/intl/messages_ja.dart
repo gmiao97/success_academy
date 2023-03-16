@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("アカウント設定を更新しました"),
         "addPoints": MessageLookupByLibrary.simpleMessage("ポイントを追加する"),
         "addProfile": MessageLookupByLibrary.simpleMessage("プロフィール追加"),
+        "admin": MessageLookupByLibrary.simpleMessage("アドミン"),
         "agreeToTerms": MessageLookupByLibrary.simpleMessage("利用規約に同意"),
         "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
         "businessName": MessageLookupByLibrary.simpleMessage("MERCY EDUCATION"),
@@ -56,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "copy": MessageLookupByLibrary.simpleMessage("コードをコピー"),
         "createEvent": MessageLookupByLibrary.simpleMessage("レッスン作成"),
         "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
+        "dateOfBirth": MessageLookupByLibrary.simpleMessage("生年月日"),
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
             MessageLookupByLibrary.simpleMessage("生徒の生年月日を選択してください"),
@@ -135,6 +137,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateFilter": MessageLookupByLibrary.simpleMessage("個別レッスン"),
         "privateNum": MessageLookupByLibrary.simpleMessage("完了個別レッスンポイント数"),
+        "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
+        "promptSave": MessageLookupByLibrary.simpleMessage("保存ボタンを押してください"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("毎日"),
         "recurEditNotSupported": MessageLookupByLibrary.simpleMessage(
             "繰り返しレッスンの編集や削除は現在サポートされていません。直接Google Calendarで編集や削除をしてください。"),
@@ -166,8 +170,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
+        "stripeRedirectFailure":
+            MessageLookupByLibrary.simpleMessage("Stripeへリダイレクトできませんでした"),
+        "student": MessageLookupByLibrary.simpleMessage("生徒"),
         "studentListTitle": MessageLookupByLibrary.simpleMessage("登録されている生徒"),
         "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
+        "teacher": MessageLookupByLibrary.simpleMessage("先生"),
         "teacherProfile": MessageLookupByLibrary.simpleMessage("講師プロフィール"),
         "termsOfUse": MessageLookupByLibrary.simpleMessage("利用規約"),
         "timeZone": m4,
@@ -175,6 +183,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeZoneValidation":
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "today": MessageLookupByLibrary.simpleMessage("今日"),
+        "updateFailed": MessageLookupByLibrary.simpleMessage("更新できません"),
+        "updated": MessageLookupByLibrary.simpleMessage("更新しました"),
         "usePoints": m5,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),

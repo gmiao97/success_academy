@@ -16,6 +16,7 @@
   "firstNameHint": "太郎",
   "firstNameValidation": "生徒の名前を入力してください",
   "dateOfBirthLabel": "生徒生年月日",
+  "dateOfBirth": "生年月日",
   "dateOfBirthValidation": "生徒の生年月日を選択してください",
   "referralLabel": "紹介コードを入力してください",
   "referralValidation": "入力された紹介コードは無効です",
@@ -50,6 +51,7 @@
 
   "changeProfile": "プロフィール選択",
   "viewProfile": "プロフィールを見る",
+  "profile": "プロフィール",
   "lessonCalendar": "レッスンカレンダー",
   "freeLessonInfo": "フリーレッスン情報",
   "addPoints": "ポイントを追加する",
@@ -130,5 +132,15 @@
   "lesson": "レッスン",
   "link": "リンク",
   "meetingId": "ミーテイングID",
-  "password": "パスワード"
+  "password": "パスワード",
+
+  "admin": "アドミン",
+  "teacher": "先生",
+  "student": "生徒",
+
+  "stripeRedirectFailure": "Stripeへリダイレクトできませんでした",
+
+  "updated": "更新しました",
+  "updateFailed": "更新できません",
+  "promptSave": "保存ボタンを押してください"
 }

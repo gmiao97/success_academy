@@ -86,7 +86,7 @@ class CalendarHeader extends StatelessWidget {
                               ))
                           .toList(),
                       onChanged: onEventDisplayChanged)
-                  : const SizedBox(),
+                  : const SizedBox.shrink(),
             ],
           ),
           Padding(

@@ -42,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Account settings updated"),
         "addPoints": MessageLookupByLibrary.simpleMessage("Add points"),
         "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
+        "admin": MessageLookupByLibrary.simpleMessage("ADMIN"),
         "agreeToTerms":
             MessageLookupByLibrary.simpleMessage("Agree to terms of use"),
         "allEvents": MessageLookupByLibrary.simpleMessage("All Lessons"),
@@ -59,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "copy": MessageLookupByLibrary.simpleMessage("Copy Code"),
         "createEvent": MessageLookupByLibrary.simpleMessage("Add lesson"),
         "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
+        "dateOfBirth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
         "dateOfBirthLabel":
             MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
         "dateOfBirthValidation": MessageLookupByLibrary.simpleMessage(
@@ -153,6 +155,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Private lessons"),
         "privateNum": MessageLookupByLibrary.simpleMessage(
             "Number of points completed from private lessons"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "promptSave": MessageLookupByLibrary.simpleMessage(
+            "Please press the save button"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("Daily"),
         "recurEditNotSupported": MessageLookupByLibrary.simpleMessage(
             "Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar."),
@@ -190,10 +195,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Continue to points purchase"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage(
             "Continue to subscription purchase"),
+        "stripeRedirectFailure": MessageLookupByLibrary.simpleMessage(
+            "Failed to redirect to Stripe"),
+        "student": MessageLookupByLibrary.simpleMessage("STUDENT"),
         "studentListTitle":
             MessageLookupByLibrary.simpleMessage("Registered students"),
         "studentProfile":
             MessageLookupByLibrary.simpleMessage("Student Profile Information"),
+        "teacher": MessageLookupByLibrary.simpleMessage("TEACHER"),
         "teacherProfile":
             MessageLookupByLibrary.simpleMessage("Teacher Profile Information"),
         "termsOfUse": MessageLookupByLibrary.simpleMessage("Terms of use"),
@@ -202,6 +211,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeZoneValidation": MessageLookupByLibrary.simpleMessage(
             "Please select a valid time zone"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
+        "updateFailed": MessageLookupByLibrary.simpleMessage("Update failed"),
+        "updated": MessageLookupByLibrary.simpleMessage("Updated"),
         "usePoints": m5,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),

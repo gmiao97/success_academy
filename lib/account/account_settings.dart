@@ -3,10 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/main.dart';
-import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/services/user_service.dart' as user_service;
-import 'package:success_academy/utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
@@ -26,40 +23,7 @@ class _AccountSettingsState extends State<AccountSettings> {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    if (account.authStatus == AuthStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          value: null,
-        ),
-      );
-    }
-    if (account.authStatus == AuthStatus.emailVerification) {
-      return const EmailVerificationPage();
-    }
-    if (account.authStatus == AuthStatus.signedOut) {
-      return const HomePage();
-    }
-    if (account.userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
-    }
-    if (account.userType == UserType.admin) {
-      return buildAdminProfileScaffold(
-        context: context,
-        body: const Settings(),
-      );
-    }
-    if (account.userType == UserType.teacher) {
-      return buildTeacherProfileScaffold(
-        context: context,
-        body: const Settings(),
-      );
-    }
-    return buildStudentProfileScaffold(
-      context: context,
-      body: const Settings(),
-    );
+    return const Settings();
   }
 }
 
@@ -127,7 +91,7 @@ class _SettingsState extends State<Settings> {
                 },
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -149,13 +113,14 @@ class _SettingsState extends State<Settings> {
                             ),
                           );
                         },
-                      ).catchError((e) {
+                      ).catchError((err) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(S.of(context).failedAccountUpdate),
+                            backgroundColor: Theme.of(context).errorColor,
                           ),
                         );
-                        debugPrint("Failed to update account settings: $e");
+                        debugPrint("Failed to update account settings: $err");
                       });
                     }
                   },

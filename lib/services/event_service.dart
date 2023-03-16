@@ -22,8 +22,8 @@ Future<List<dynamic>> listEvents({
       'singleEvents': singleEvents,
     });
     return result.data;
-  } catch (e) {
-    debugPrint('listEvents failed: $e');
+  } catch (err) {
+    debugPrint('listEvents failed: $err');
     rethrow;
   }
 }
@@ -39,8 +39,8 @@ Future<dynamic> deleteEvent({
       'eventId': eventId,
     });
     return result.data;
-  } catch (e) {
-    debugPrint('deleteEvent failed: $e');
+  } catch (err) {
+    debugPrint('deleteEvent failed: $err');
     rethrow;
   }
 }
@@ -52,8 +52,8 @@ Future<dynamic> insertEvent(EventModel event) async {
   try {
     final result = await callable(event.toJson());
     return result.data;
-  } catch (e) {
-    debugPrint('insertEvent failed: $e');
+  } catch (err) {
+    debugPrint('insertEvent failed: $err');
     rethrow;
   }
 }
@@ -65,8 +65,8 @@ Future<dynamic> updateEvent(EventModel event) async {
   try {
     final result = await callable(event.toJson());
     return result.data;
-  } catch (e) {
-    debugPrint('updateEvent failed: $e');
+  } catch (err) {
+    debugPrint('updateEvent failed: $err');
     rethrow;
   }
 }

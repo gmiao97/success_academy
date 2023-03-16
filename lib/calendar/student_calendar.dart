@@ -7,7 +7,6 @@ import 'package:success_academy/calendar/signup_event_dialog.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
 class StudentCalendar extends StatefulWidget {
@@ -74,121 +73,118 @@ class _StudentCalendarState extends State<StudentCalendar> {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
-    return utils.buildStudentProfileScaffold(
-      context: context,
-      body: Column(
-        children: [
-          _showHeader
-              ? MaterialBanner(
-                  content: Text(S.of(context).noPlan),
-                  actions: <Widget>[
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _showHeader = false;
-                        });
-                      },
-                      icon: const Icon(Icons.clear),
+    return Column(
+      children: [
+        _showHeader
+            ? MaterialBanner(
+                content: Text(S.of(context).noPlan),
+                actions: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _showHeader = false;
+                      });
+                    },
+                    icon: const Icon(Icons.clear),
+                  ),
+                ],
+                backgroundColor: Theme.of(context).secondaryHeaderColor,
+              )
+            : const SizedBox.shrink(),
+        CalendarHeader(
+          header: account.studentProfile!.firstName,
+          timeZone: account.myUser!.timeZone,
+          onTodayButtonTap: widget.onTodayButtonTap,
+          availableEventFilters: widget.availableEventFilters,
+          eventFilters: widget.eventFilters,
+          onEventFilterConfirm: widget.onEventFilterConfirm,
+          shouldShowEventDisplay: true,
+          eventDisplay: widget.eventDisplay,
+          onEventDisplayChanged: widget.onEventDisplayChanged,
+        ),
+        TableCalendar(
+          firstDay: widget.firstDay,
+          lastDay: widget.lastDay,
+          focusedDay: widget.focusedDay,
+          currentDay: widget.currentDay,
+          calendarFormat: widget.calendarFormat,
+          locale: account.locale,
+          daysOfWeekHeight: 25,
+          availableCalendarFormats: {
+            CalendarFormat.month:
+                account.locale == 'en' ? 'Display Monthly' : '月間表示',
+            CalendarFormat.twoWeeks:
+                account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
+            CalendarFormat.week:
+                account.locale == 'en' ? 'Display Weekly' : '一週間表示',
+          },
+          selectedDayPredicate: (day) {
+            return isSameDay(widget.selectedDay, day);
+          },
+          onDaySelected: widget.onDaySelected,
+          onFormatChanged: widget.onFormatChanged,
+          onPageChanged: widget.onPageChanged,
+          eventLoader: widget.getEventsForDay,
+          calendarBuilders: widget.calendarBuilders,
+        ),
+        const SizedBox(height: 10),
+        Text(
+          widget.selectedDay != null
+              ? dateFormatter.format(widget.selectedDay!)
+              : '',
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        Expanded(
+          child: ValueListenableBuilder<List<EventModel>>(
+            valueListenable: widget.selectedEvents,
+            builder: (context, value, _) {
+              return ListView.builder(
+                itemCount: value.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
                     ),
-                  ],
-                  backgroundColor: Theme.of(context).secondaryHeaderColor,
-                )
-              : const SizedBox(),
-          CalendarHeader(
-            header: account.studentProfile!.firstName,
-            timeZone: account.myUser!.timeZone,
-            onTodayButtonTap: widget.onTodayButtonTap,
-            availableEventFilters: widget.availableEventFilters,
-            eventFilters: widget.eventFilters,
-            onEventFilterConfirm: widget.onEventFilterConfirm,
-            shouldShowEventDisplay: true,
-            eventDisplay: widget.eventDisplay,
-            onEventDisplayChanged: widget.onEventDisplayChanged,
-          ),
-          TableCalendar(
-            firstDay: widget.firstDay,
-            lastDay: widget.lastDay,
-            focusedDay: widget.focusedDay,
-            currentDay: widget.currentDay,
-            calendarFormat: widget.calendarFormat,
-            locale: account.locale,
-            daysOfWeekHeight: 25,
-            availableCalendarFormats: {
-              CalendarFormat.month:
-                  account.locale == 'en' ? 'Display Monthly' : '月間表示',
-              CalendarFormat.twoWeeks:
-                  account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
-              CalendarFormat.week:
-                  account.locale == 'en' ? 'Display Weekly' : '一週間表示',
-            },
-            selectedDayPredicate: (day) {
-              return isSameDay(widget.selectedDay, day);
-            },
-            onDaySelected: widget.onDaySelected,
-            onFormatChanged: widget.onFormatChanged,
-            onPageChanged: widget.onPageChanged,
-            eventLoader: widget.getEventsForDay,
-            calendarBuilders: widget.calendarBuilders,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            widget.selectedDay != null
-                ? dateFormatter.format(widget.selectedDay!)
-                : '',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          Expanded(
-            child: ValueListenableBuilder<List<EventModel>>(
-              valueListenable: widget.selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
+                    decoration: BoxDecoration(
+                      color: Color(value[index].fillColor),
+                    ),
+                    child: ListTile(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => SignupEventDialog(
+                          event: value[index],
+                          onRefresh: widget.onRefresh,
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        color: Color(value[index].fillColor),
-                      ),
-                      child: ListTile(
-                        onTap: () => showDialog(
-                          context: context,
-                          builder: (context) => SignupEventDialog(
-                            event: value[index],
-                            onRefresh: widget.onRefresh,
+                      title: Text(value[index].summary),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${timeFormatter.format(value[index].startTime)} - '
+                            '${timeFormatter.format(value[index].endTime)}',
                           ),
-                        ),
-                        title: Text(value[index].summary),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${timeFormatter.format(value[index].startTime)} - '
-                              '${timeFormatter.format(value[index].endTime)}',
-                            ),
-                            value[index]
-                                    .studentIdList
-                                    .contains(account.studentProfile!.profileId)
-                                ? Text(
-                                    S.of(context).signedUp,
-                                    style: TextStyle(
-                                      color: Colors.green[600],
-                                    ),
-                                  )
-                                : const SizedBox(),
-                          ],
-                        ),
+                          value[index]
+                                  .studentIdList
+                                  .contains(account.studentProfile!.profileId)
+                              ? Text(
+                                  S.of(context).signedUp,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        ],
                       ),
-                    );
-                  },
-                );
-              },
-            ),
+                    ),
+                  );
+                },
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

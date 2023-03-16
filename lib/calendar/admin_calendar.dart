@@ -7,7 +7,6 @@ import 'package:success_academy/calendar/edit_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/utils.dart' as utils;
 import 'package:table_calendar/table_calendar.dart';
 
 class AdminCalendar extends StatelessWidget {
@@ -58,113 +57,110 @@ class AdminCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
-    return utils.buildAdminProfileScaffold(
-      context: context,
-      body: Column(
-        children: [
-          CalendarHeader(
-            header: "ADMIN",
-            timeZone: account.myUser!.timeZone,
-            onTodayButtonTap: onTodayButtonTap,
-            availableEventFilters: availableEventFilters,
-            eventFilters: eventFilters,
-            onEventFilterConfirm: onEventFilterConfirm,
-            shouldShowEventDisplay: false,
-          ),
-          TableCalendar(
-            firstDay: firstDay,
-            lastDay: lastDay,
-            focusedDay: focusedDay,
-            currentDay: currentDay,
-            calendarFormat: calendarFormat,
-            locale: account.locale,
-            daysOfWeekHeight: 25,
-            availableCalendarFormats: {
-              CalendarFormat.month:
-                  account.locale == 'en' ? 'Display Monthly' : '月間表示',
-              CalendarFormat.twoWeeks:
-                  account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
-              CalendarFormat.week:
-                  account.locale == 'en' ? 'Display Weekly' : '一週間表示',
-            },
-            selectedDayPredicate: (day) {
-              return isSameDay(selectedDay, day);
-            },
-            onDaySelected: onDaySelected,
-            onFormatChanged: onFormatChanged,
-            onPageChanged: onPageChanged,
-            eventLoader: getEventsForDay,
-            calendarBuilders: calendarBuilders,
-          ),
-          ElevatedButton.icon(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => CreateEventDialog(
-                firstDay: firstDay,
-                lastDay: lastDay,
-                selectedDay: selectedDay,
-                eventTypes: const [
-                  EventType.private,
-                  EventType.free,
-                  EventType.preschool
-                ],
-                onRefresh: onRefresh,
-              ),
+    return Column(
+      children: [
+        CalendarHeader(
+          header: "ADMIN",
+          timeZone: account.myUser!.timeZone,
+          onTodayButtonTap: onTodayButtonTap,
+          availableEventFilters: availableEventFilters,
+          eventFilters: eventFilters,
+          onEventFilterConfirm: onEventFilterConfirm,
+          shouldShowEventDisplay: false,
+        ),
+        TableCalendar(
+          firstDay: firstDay,
+          lastDay: lastDay,
+          focusedDay: focusedDay,
+          currentDay: currentDay,
+          calendarFormat: calendarFormat,
+          locale: account.locale,
+          daysOfWeekHeight: 25,
+          availableCalendarFormats: {
+            CalendarFormat.month:
+                account.locale == 'en' ? 'Display Monthly' : '月間表示',
+            CalendarFormat.twoWeeks:
+                account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
+            CalendarFormat.week:
+                account.locale == 'en' ? 'Display Weekly' : '一週間表示',
+          },
+          selectedDayPredicate: (day) {
+            return isSameDay(selectedDay, day);
+          },
+          onDaySelected: onDaySelected,
+          onFormatChanged: onFormatChanged,
+          onPageChanged: onPageChanged,
+          eventLoader: getEventsForDay,
+          calendarBuilders: calendarBuilders,
+        ),
+        ElevatedButton.icon(
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => CreateEventDialog(
+              firstDay: firstDay,
+              lastDay: lastDay,
+              selectedDay: selectedDay,
+              eventTypes: const [
+                EventType.private,
+                EventType.free,
+                EventType.preschool
+              ],
+              onRefresh: onRefresh,
             ),
-            icon: const Icon(
-              Icons.add,
-              size: 30,
-            ),
-            label: Text(S.of(context).createEvent),
           ),
-          Text(
-            selectedDay != null ? dateFormatter.format(selectedDay!) : '',
-            style: Theme.of(context).textTheme.headline6,
+          icon: const Icon(
+            Icons.add,
+            size: 30,
           ),
-          Expanded(
-            child: ValueListenableBuilder<List<EventModel>>(
-              valueListenable: selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color(value[index].fillColor),
-                      ),
-                      child: ListTile(
-                        onTap: () => showDialog(
-                          context: context,
-                          builder: (context) => EditEventDialog(
-                            event: value[index],
-                            firstDay: firstDay,
-                            lastDay: lastDay,
-                            eventTypes: const [
-                              EventType.private,
-                              EventType.free,
-                              EventType.preschool
-                            ],
-                            onRefresh: onRefresh,
-                          ),
-                        ),
-                        title: Text(value[index].summary),
-                        subtitle: Text(
-                          '${timeFormatter.format(value[index].startTime)} - '
-                          '${timeFormatter.format(value[index].endTime)}',
+          label: Text(S.of(context).createEvent),
+        ),
+        Text(
+          selectedDay != null ? dateFormatter.format(selectedDay!) : '',
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        Expanded(
+          child: ValueListenableBuilder<List<EventModel>>(
+            valueListenable: selectedEvents,
+            builder: (context, value, _) {
+              return ListView.builder(
+                itemCount: value.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Color(value[index].fillColor),
+                    ),
+                    child: ListTile(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => EditEventDialog(
+                          event: value[index],
+                          firstDay: firstDay,
+                          lastDay: lastDay,
+                          eventTypes: const [
+                            EventType.private,
+                            EventType.free,
+                            EventType.preschool
+                          ],
+                          onRefresh: onRefresh,
                         ),
                       ),
-                    );
-                  },
-                );
-              },
-            ),
+                      title: Text(value[index].summary),
+                      subtitle: Text(
+                        '${timeFormatter.format(value[index].startTime)} - '
+                        '${timeFormatter.format(value[index].endTime)}',
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

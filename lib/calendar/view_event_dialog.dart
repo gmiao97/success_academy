@@ -127,7 +127,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
             Card(
               elevation: 5,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: SizedBox(
                   width: 400,
                   height: 200,

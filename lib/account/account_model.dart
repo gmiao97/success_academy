@@ -28,11 +28,11 @@ class AccountModel extends ChangeNotifier {
       if (firebaseUser != null) {
         try {
           await _initAccount(firebaseUser);
-        } catch (e) {
+        } catch (err) {
           await FirebaseAnalytics.instance.logEvent(
             name: 'initAccount_failed',
             parameters: {
-              'message': e.toString(),
+              'message': err.toString(),
             },
           );
         }

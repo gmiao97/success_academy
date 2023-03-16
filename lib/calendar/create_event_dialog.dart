@@ -192,7 +192,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                             },
                           )),
                     )
-                  : const SizedBox(),
+                  : const SizedBox.shrink(),
               TextFormField(
                 decoration: InputDecoration(
                   icon: const Icon(Icons.text_snippet_outlined),
@@ -252,7 +252,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                         return null;
                       },
                     )
-                  : const SizedBox(),
+                  : const SizedBox.shrink(),
               TextFormField(
                 keyboardType: TextInputType.datetime,
                 readOnly: true,

@@ -5,8 +5,6 @@ import 'package:success_academy/calendar/admin_calendar.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/calendar/student_calendar.dart';
 import 'package:success_academy/calendar/teacher_calendar.dart';
-import 'package:success_academy/main.dart';
-import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:table_calendar/table_calendar.dart';
@@ -18,24 +16,6 @@ class Calendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    if (account.authStatus == AuthStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          value: null,
-        ),
-      );
-    }
-    if (account.authStatus == AuthStatus.emailVerification) {
-      return const EmailVerificationPage();
-    }
-    if (account.authStatus == AuthStatus.signedOut) {
-      return const HomePage();
-    }
-    if (account.userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
-    }
     return const BaseCalendar();
   }
 }
@@ -72,7 +52,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
         return Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.amber[600],
+            color: Theme.of(context).primaryColor,
           ),
           height: 15,
           width: 15,

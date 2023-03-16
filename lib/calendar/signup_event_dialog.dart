@@ -117,7 +117,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
             Card(
               elevation: 5,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: SizedBox(
                   width: 400,
                   height: 200,
@@ -194,8 +194,10 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                                 content: _isSignedUp
                                     ? Text(S.of(context).cancelSignupFailure)
                                     : Text(S.of(context).signupFailure),
+                                backgroundColor: Theme.of(context).errorColor,
                               ),
                             );
+                            debugPrint('Failed to update sign up status: $err');
                           }).whenComplete(() {
                             Navigator.of(context).pop();
                           });

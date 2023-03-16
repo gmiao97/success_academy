@@ -16,6 +16,7 @@
   "firstNameHint": "John",
   "firstNameValidation": "Please enter student's first name",
   "dateOfBirthLabel": "Student Date of Birth",
+  "dateOfBirth": "Date of Birth",
   "dateOfBirthValidation": "Please select student's date of birth",
   "referralLabel": "Enter referral code",
   "referralValidation": "Invalid referral code",
@@ -50,6 +51,7 @@
 
   "changeProfile": "Select Profile",
   "viewProfile": "View Profile",
+  "profile": "Profile",
   "lessonCalendar": "Lesson Calendar",
   "freeLessonInfo": "Free Lesson Info",
   "addPoints": "Add points",
@@ -130,5 +132,15 @@
   "lesson": "Lesson",
   "link": "Link",
   "meetingId": "Meeting ID",
-  "password": "Password"
+  "password": "Password",
+
+  "admin": "ADMIN",
+  "teacher": "TEACHER",
+  "student": "STUDENT",
+
+  "stripeRedirectFailure": "Failed to redirect to Stripe",
+
+  "updated": "Updated",
+  "updateFailed": "Update failed",
+  "promptSave": "Please press the save button"
 }

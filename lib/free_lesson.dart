@@ -4,13 +4,11 @@ import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/main.dart';
-import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/lesson_info_service.dart'
     as lesson_info_service;
-import 'package:success_academy/utils.dart' as utils;
 import 'package:webviewx/webviewx.dart';
 
 class FreeLesson extends StatelessWidget {
@@ -18,40 +16,7 @@ class FreeLesson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    if (account.authStatus == AuthStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          value: null,
-        ),
-      );
-    }
-    if (account.authStatus == AuthStatus.emailVerification) {
-      return const EmailVerificationPage();
-    }
-    if (account.authStatus == AuthStatus.signedOut) {
-      return const HomePage();
-    }
-    if (account.userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
-    }
-    if (account.userType == UserType.admin) {
-      return utils.buildAdminProfileScaffold(
-        context: context,
-        body: const _FreeLesson(),
-      );
-    }
-    if (account.userType == UserType.teacher) {
-      return utils.buildTeacherProfileScaffold(
-        context: context,
-        body: const _FreeLesson(),
-      );
-    }
-    return utils.buildStudentProfileScaffold(
-      context: context,
-      body: const _FreeLesson(),
-    );
+    return const _FreeLesson();
   }
 }
 
@@ -101,7 +66,7 @@ class _FreeLessonState extends State<_FreeLesson> {
         zoomInfo: _zoomInfo!,
       );
     }
-    return const SizedBox();
+    return const SizedBox.shrink();
   }
 
   @override
@@ -231,11 +196,11 @@ class _ZoomInfoDataSource extends DataTableSource {
     return DataRow(cells: [
       DataCell(Text(data[index]['name'] as String)),
       DataCell(InkWell(
-        child: const Text(
+        child: Text(
           'Zoom',
           style: TextStyle(
             decoration: TextDecoration.underline,
-            color: Colors.blue,
+            color: constants.linkColor,
           ),
         ),
         onTap: () {
@@ -294,7 +259,7 @@ class EditableZoomInfo extends StatelessWidget {
             rows: zoomInfo,
             // showCreateButton: true,
             showSaveIcon: true,
-            saveIconColor: Colors.amber,
+            saveIconColor: Theme.of(context).primaryColor,
             onRowSaved: ((value) {
               if (value == 'no edit') {
                 return;
@@ -310,25 +275,27 @@ class EditableZoomInfo extends StatelessWidget {
                   .updateLesson(zoomInfo[i]['id'], zoomInfo[i])
                   .then(
                     (unused) => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('更新しました'),
-                        backgroundColor: Colors.green,
+                      SnackBar(
+                        content: Text(S.of(context).updated),
                       ),
                     ),
                   )
                   .catchError(
-                    (err) => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('更新できません'),
-                        backgroundColor: Colors.red,
-                      ),
+                (err) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(S.of(context).updateFailed),
+                      backgroundColor: Theme.of(context).errorColor,
                     ),
                   );
+                  debugPrint("Failed to update lesson info: $err");
+                },
+              );
             }),
             onSubmitted: ((value) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('保存ボタンを押してください'),
+                SnackBar(
+                  content: Text(S.of(context).promptSave),
                 ),
               );
             }),

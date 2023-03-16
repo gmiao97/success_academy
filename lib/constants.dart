@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 
 const homePageAppBarName = 'Success Academy';
@@ -23,6 +25,8 @@ const int grey = 0xffe1e1e1;
 const int yellow = 0xfffbd75b;
 const int blue = 0xffa4bdfc;
 const int purple = 0xffdbadff;
+
+final Color? linkColor = Colors.blue[800];
 
 const termsOfUse = [
   '第 1 条（目的）',

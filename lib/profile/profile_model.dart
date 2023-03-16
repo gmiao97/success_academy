@@ -96,23 +96,23 @@ class StudentProfileModel {
 }
 
 class TeacherProfileModel {
-  TeacherProfileModel();
+  final String _profileId;
+  final String _lastName;
+  final String _firstName;
 
   TeacherProfileModel.fromJson(String profileId, Map<String, Object?> json)
       : _profileId = profileId,
-        lastName = json['last_name'] as String,
-        firstName = json['first_name'] as String;
-
-  String _profileId = '';
-  late String lastName;
-  late String firstName;
+        _lastName = json['last_name'] as String,
+        _firstName = json['first_name'] as String;
 
   String get profileId => _profileId;
+  String get lastName => _lastName;
+  String get firstName => _firstName;
 
   Map<String, Object?> toJson() {
     return {
-      'last_name': lastName,
-      'first_name': firstName,
+      'last_name': _lastName,
+      'first_name': _firstName,
     };
   }
 
@@ -127,11 +127,23 @@ class TeacherProfileModel {
 }
 
 class AdminProfileModel {
-  AdminProfileModel();
+  final String _profileId;
+  final String _lastName;
+  final String _firstName;
 
-  AdminProfileModel.fromJson(String profileId, Map<String, Object?> json);
+  AdminProfileModel.fromJson(String profileId, Map<String, Object?> json)
+      : _profileId = profileId,
+        _lastName = json['last_name'] as String,
+        _firstName = json['first_name'] as String;
+
+  String get profileId => _profileId;
+  String get lastName => _lastName;
+  String get firstName => _firstName;
 
   Map<String, Object?> toJson() {
-    return {};
+    return {
+      'last_name': _lastName,
+      'first_name': _firstName,
+    };
   }
 }

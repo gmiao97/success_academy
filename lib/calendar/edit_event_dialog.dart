@@ -186,7 +186,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                             },
                           )),
                     )
-                  : const SizedBox(),
+                  : const SizedBox.shrink(),
               TextFormField(
                 decoration: InputDecoration(
                   icon: const Icon(Icons.text_snippet_outlined),
@@ -250,7 +250,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                         return null;
                       },
                     )
-                  : const SizedBox(),
+                  : const SizedBox.shrink(),
               TextFormField(
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
@@ -384,7 +384,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
               )
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.shade400,
+                  backgroundColor: Theme.of(context).errorColor,
                 ),
                 onPressed: () {
                   setState(() {

@@ -200,6 +200,16 @@ class S {
     );
   }
 
+  /// `Date of Birth`
+  String get dateOfBirth {
+    return Intl.message(
+      'Date of Birth',
+      name: 'dateOfBirth',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Please select student's date of birth`
   String get dateOfBirthValidation {
     return Intl.message(
@@ -485,6 +495,16 @@ class S {
     return Intl.message(
       'View Profile',
       name: 'viewProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
       desc: '',
       args: [],
     );
@@ -1225,6 +1245,76 @@ class S {
     return Intl.message(
       'Password',
       name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ADMIN`
+  String get admin {
+    return Intl.message(
+      'ADMIN',
+      name: 'admin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TEACHER`
+  String get teacher {
+    return Intl.message(
+      'TEACHER',
+      name: 'teacher',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `STUDENT`
+  String get student {
+    return Intl.message(
+      'STUDENT',
+      name: 'student',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to redirect to Stripe`
+  String get stripeRedirectFailure {
+    return Intl.message(
+      'Failed to redirect to Stripe',
+      name: 'stripeRedirectFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Updated`
+  String get updated {
+    return Intl.message(
+      'Updated',
+      name: 'updated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update failed`
+  String get updateFailed {
+    return Intl.message(
+      'Update failed',
+      name: 'updateFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please press the save button`
+  String get promptSave {
+    return Intl.message(
+      'Please press the save button',
+      name: 'promptSave',
       desc: '',
       args: [],
     );

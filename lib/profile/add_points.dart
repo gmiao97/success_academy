@@ -2,37 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/main.dart';
-import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
-import 'package:success_academy/utils.dart' as utils;
 
 class AddPoints extends StatelessWidget {
   const AddPoints({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    if (account.authStatus == AuthStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          value: null,
-        ),
-      );
-    }
-    if (account.authStatus == AuthStatus.emailVerification) {
-      return const EmailVerificationPage();
-    }
-    if (account.authStatus == AuthStatus.signedOut) {
-      return const HomePage();
-    }
-    if (account.userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
-    }
-
-    return utils.buildStudentProfileScaffold(
-        context: context, body: const _AddPointsForm());
+    return const _AddPointsForm();
   }
 }
 
@@ -45,7 +22,7 @@ class _AddPointsForm extends StatefulWidget {
 
 class _AddPointsFormState extends State<_AddPointsForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _stripeRedirectClicked = false;
+  bool _redirectClicked = false;
   int _numPoints = 100;
   final Map _pointsCouponMap = {
     1000: 'promo_1MaUbkK9gCxRnlEipn32mBEV',
@@ -132,7 +109,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                   const SizedBox(
                     height: 30,
                   ),
-                  _stripeRedirectClicked
+                  _redirectClicked
                       ? const CircularProgressIndicator(value: null)
                       : ElevatedButton.icon(
                           label: Text(S.of(context).stripePointsPurchase),
@@ -140,7 +117,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               setState(() {
-                                _stripeRedirectClicked = true;
+                                _redirectClicked = true;
                               });
                               try {
                                 await stripe_service
@@ -150,16 +127,20 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                                             account.studentProfile!.profileId,
                                         quantity: _numPoints,
                                         coupon: _pointsCouponMap[_numPoints]);
-                              } catch (e) {
+                              } catch (err) {
                                 setState(() {
-                                  _stripeRedirectClicked = false;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e.toString()),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
+                                  _redirectClicked = false;
                                 });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        S.of(context).stripeRedirectFailure),
+                                    backgroundColor:
+                                        Theme.of(context).errorColor,
+                                  ),
+                                );
+                                debugPrint(
+                                    'Failed to start Stripe points purchase: $err');
                               }
                             }
                           },

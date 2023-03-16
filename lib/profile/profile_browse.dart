@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
@@ -6,7 +7,6 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
-import 'package:success_academy/utils.dart' as utils;
 
 // TODO: Make UI responsive for different screen sizes
 class ProfileBrowse extends StatefulWidget {
@@ -36,8 +36,29 @@ class _ProfileBrowseState extends State<ProfileBrowse> {
 
   @override
   Widget build(BuildContext context) {
-    return utils.buildLoggedInScaffold(
-      context: context,
+    final account = context.watch<AccountModel>();
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).cardColor,
+        elevation: 1,
+        title: const Text(constants.homePageAppBarName),
+        centerTitle: false,
+        actions: [
+          TextButton(
+            onPressed: () {
+              account.locale = account.locale == 'en' ? 'ja' : 'en';
+            },
+            child: Text(account.locale == 'en' ? 'US' : 'JP'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
+            child: Text(S.of(context).signOut),
+          )
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +76,7 @@ class _ProfileBrowseState extends State<ProfileBrowse> {
                   _buildProfileCard(context, profile),
                 _studentProfiles.length < constants.maxProfileCount
                     ? const _AddProfileWidget()
-                    : const SizedBox(),
+                    : const SizedBox.shrink(),
               ],
             ),
           ],
@@ -69,7 +90,7 @@ Card _buildProfileCard(BuildContext context, StudentProfileModel profile) {
   final account = context.watch<AccountModel>();
 
   return Card(
-    elevation: 10.0,
+    elevation: 10,
     child: InkWell(
       splashColor: Theme.of(context).colorScheme.primary.withAlpha(30),
       onTap: () {
@@ -93,7 +114,7 @@ class _AddProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10.0,
+      elevation: 10,
       child: InkWell(
         splashColor: Theme.of(context).colorScheme.primary.withAlpha(30),
         onTap: () {
