@@ -56,172 +56,175 @@ class _StudentProfileState extends State<StudentProfile> {
         Expanded(
           child: Card(
             child: Padding(
-              padding: const EdgeInsets.all(50),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: CircleAvatar(
-                      radius: 30,
-                      child: Text(account.studentProfile!.lastName[0],
-                          style: Theme.of(context).textTheme.headlineMedium),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    '${account.studentProfile!.lastName}, ${account.studentProfile!.firstName}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    S.of(context).student,
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  const Divider(),
-                  RichText(
-                    text: TextSpan(
-                      text: '${S.of(context).dateOfBirthLabel} - ',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.bold),
-                      children: [
-                        TextSpan(
-                          text: constants.dateFormatter
-                              .format(account.studentProfile!.dateOfBirth),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: '${S.of(context).eventPointsLabel} - ',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.bold),
-                      children: [
-                        TextSpan(
-                          text: '${account.studentProfile!.numPoints}',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: '${S.of(context).myCode} - ',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(fontWeight: FontWeight.bold),
-                          children: [
-                            TextSpan(
-                              text: account.myUser?.referralCode,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: CircleAvatar(
+                        radius: 30,
+                        child: Text(account.studentProfile!.lastName[0],
+                            style: Theme.of(context).textTheme.headlineMedium),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          Clipboard.setData(ClipboardData(
-                              text: account.myUser?.referralCode));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(S.of(context).copied),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.copy),
-                      )
-                    ],
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: '${S.of(context).referrerLabel} - ',
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '${account.studentProfile!.lastName}, ${account.studentProfile!.firstName}',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyLarge!
+                          .headlineSmall!
                           .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      S.of(context).student,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    const Divider(),
+                    RichText(
+                      text: TextSpan(
+                        text: '${S.of(context).dateOfBirthLabel} - ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                            text: constants.dateFormatter
+                                .format(account.studentProfile!.dateOfBirth),
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: '${S.of(context).eventPointsLabel} - ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                            text: '${account.studentProfile!.numPoints}',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
                       children: [
-                        TextSpan(
-                          text: account.studentProfile!.referrer ?? '',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        RichText(
+                          text: TextSpan(
+                            text: '${S.of(context).myCode} - ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: account.myUser?.referralCode,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
                         ),
+                        IconButton(
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(
+                                text: account.myUser?.referralCode));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(S.of(context).copied),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.copy),
+                        )
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  account.subscriptionPlan != null
-                      ? ManageSubscription(
-                          subscriptionPlan: account.subscriptionPlan!,
-                          redirectClicked: _redirectClicked,
-                          setRedirectClicked: () {
-                            setState(() {
-                              _redirectClicked = true;
-                            });
-                          },
-                        )
-                      : CreateSubscription(
-                          subscriptionPlan: _subscriptionPlan,
-                          onSubscriptionPlanChange: (subscription) {
-                            setState(() {
-                              _subscriptionPlan = subscription!;
-                            });
-                          },
-                          redirectClicked: _redirectClicked,
-                          setIsReferral: (isReferral) {
-                            _isReferral = isReferral;
-                          },
-                          setReferrer: (name) {
-                            _referrer = name;
-                          },
-                          onStripeSubmitClicked: () async {
-                            setState(() {
-                              _redirectClicked = true;
-                            });
-                            final updatedStudentProfile =
-                                account.studentProfile!;
-                            updatedStudentProfile.referrer = _referrer;
-                            profile_service
-                                .updateStudentProfile(account.firebaseUser!.uid,
-                                    updatedStudentProfile)
-                                .then((unused) {
-                              account.studentProfile = updatedStudentProfile;
-                            });
-                            try {
-                              await stripe_service
-                                  .startStripeSubscriptionCheckoutSession(
-                                userId: account.firebaseUser!.uid,
-                                profileId: account.studentProfile!.profileId,
-                                subscriptionPlan: _subscriptionPlan,
-                                isReferral: _isReferral,
-                              );
-                            } catch (err) {
+                    RichText(
+                      text: TextSpan(
+                        text: '${S.of(context).referrerLabel} - ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                            text: account.studentProfile!.referrer ?? '',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    account.subscriptionPlan != null
+                        ? ManageSubscription(
+                            subscriptionPlan: account.subscriptionPlan!,
+                            redirectClicked: _redirectClicked,
+                            setRedirectClicked: () {
                               setState(() {
-                                _redirectClicked = false;
+                                _redirectClicked = true;
                               });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content:
-                                      Text(S.of(context).stripeRedirectFailure),
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.error,
-                                ),
-                              );
-                              debugPrint(
-                                  'Failed to start Stripe subscription checkout $err');
-                            }
-                          },
-                        ),
-                ],
+                            },
+                          )
+                        : CreateSubscription(
+                            subscriptionPlan: _subscriptionPlan,
+                            onSubscriptionPlanChange: (subscription) {
+                              setState(() {
+                                _subscriptionPlan = subscription!;
+                              });
+                            },
+                            redirectClicked: _redirectClicked,
+                            setIsReferral: (isReferral) {
+                              _isReferral = isReferral;
+                            },
+                            setReferrer: (name) {
+                              _referrer = name;
+                            },
+                            onStripeSubmitClicked: () async {
+                              setState(() {
+                                _redirectClicked = true;
+                              });
+                              final updatedStudentProfile =
+                                  account.studentProfile!;
+                              updatedStudentProfile.referrer = _referrer;
+                              profile_service
+                                  .updateStudentProfile(
+                                      account.firebaseUser!.uid,
+                                      updatedStudentProfile)
+                                  .then((unused) {
+                                account.studentProfile = updatedStudentProfile;
+                              });
+                              try {
+                                await stripe_service
+                                    .startStripeSubscriptionCheckoutSession(
+                                  userId: account.firebaseUser!.uid,
+                                  profileId: account.studentProfile!.profileId,
+                                  subscriptionPlan: _subscriptionPlan,
+                                  isReferral: _isReferral,
+                                );
+                              } catch (err) {
+                                setState(() {
+                                  _redirectClicked = false;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        S.of(context).stripeRedirectFailure),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                  ),
+                                );
+                                debugPrint(
+                                    'Failed to start Stripe subscription checkout $err');
+                              }
+                            },
+                          ),
+                  ],
+                ),
               ),
             ),
           ),
