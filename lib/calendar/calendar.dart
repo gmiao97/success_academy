@@ -219,6 +219,7 @@ class _BaseCalendarState extends State<BaseCalendar> {
             timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
             timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
             singleEvents: false))
+        .where((event) => event['status'] != 'cancelled')
         .map((event) => EventModel.fromJson(event, timeZone))
         .where((event) => event.recurrence.isNotEmpty)
         .toList();
