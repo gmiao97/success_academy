@@ -6,49 +6,36 @@ import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/lesson_info/lesson_model.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/lesson_info_service.dart'
     as lesson_info_service;
 import 'package:webviewx/webviewx.dart';
 
-class FreeLesson extends StatelessWidget {
-  const FreeLesson({Key? key}) : super(key: key);
+class LessonInfo extends StatefulWidget {
+  const LessonInfo({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const _FreeLesson();
-  }
+  State<LessonInfo> createState() => _LessonInfoState();
 }
 
-class _FreeLesson extends StatefulWidget {
-  const _FreeLesson({Key? key}) : super(key: key);
-
-  @override
-  State<_FreeLesson> createState() => _FreeLessonState();
-}
-
-class _FreeLessonState extends State<_FreeLesson> {
+class _LessonInfoState extends State<LessonInfo> {
   late WebViewXController webviewController;
-  List<Map<String, Object?>>? _zoomInfo;
+  bool _zoomInfoLoaded = false;
+  List<LessonModel> _zoomInfo = [];
 
   @override
   void initState() {
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    initLessons();
-  }
-
-  void initLessons() async {
-    final account = context.watch<AccountModel>();
+  void initLessons(UserType userType, SubscriptionPlan? subscription) async {
     final lessons = await lesson_info_service.getLessons(
-        includePreschool: account.userType != UserType.student ||
-            account.subscriptionPlan == SubscriptionPlan.minimumPreschool);
+        includePreschool: userType != UserType.student ||
+            subscription == SubscriptionPlan.minimumPreschool);
     setState(() {
       _zoomInfo = lessons;
+      _zoomInfoLoaded = true;
     });
   }
 
@@ -56,14 +43,14 @@ class _FreeLessonState extends State<_FreeLesson> {
       UserType userType, SubscriptionPlan? subscriptionPlan) {
     if (userType == UserType.admin) {
       return EditableZoomInfo(
-        zoomInfo: _zoomInfo!,
+        zoomInfo: _zoomInfo,
       );
     }
     if (userType == UserType.teacher ||
         (subscriptionPlan != null &&
             subscriptionPlan != SubscriptionPlan.monthly)) {
       return ZoomInfo(
-        zoomInfo: _zoomInfo!,
+        zoomInfo: _zoomInfo,
       );
     }
     return const SizedBox.shrink();
@@ -72,6 +59,7 @@ class _FreeLessonState extends State<_FreeLesson> {
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
+    initLessons(account.userType, account.subscriptionPlan);
 
     return Center(
       child: SingleChildScrollView(
@@ -107,7 +95,7 @@ class _FreeLessonState extends State<_FreeLesson> {
                     SourceType.url),
               ),
               const SizedBox(height: 20),
-              _zoomInfo == null
+              !_zoomInfoLoaded
                   ? const CircularProgressIndicator()
                   : _getZoomInfoTable(
                       account.userType, account.subscriptionPlan),
@@ -120,9 +108,9 @@ class _FreeLessonState extends State<_FreeLesson> {
 }
 
 class ZoomInfo extends StatelessWidget {
-  const ZoomInfo({Key? key, required this.zoomInfo}) : super(key: key);
+  const ZoomInfo({super.key, required this.zoomInfo});
 
-  final List<Map<String, Object?>> zoomInfo;
+  final List<LessonModel> zoomInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +168,7 @@ class ZoomInfo extends StatelessWidget {
 class _ZoomInfoDataSource extends DataTableSource {
   _ZoomInfoDataSource({required this.data});
 
-  final List<Map<String, Object?>> data;
+  final List<LessonModel> data;
 
   @override
   bool get isRowCountApproximate => false;
@@ -192,9 +180,9 @@ class _ZoomInfoDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 
   @override
-  DataRow getRow(int index) {
+  DataRow getRow(int i) {
     return DataRow(cells: [
-      DataCell(Text(data[index]['name'] as String)),
+      DataCell(Text(data[i].name)),
       DataCell(InkWell(
         child: Text(
           'Zoom',
@@ -204,11 +192,11 @@ class _ZoomInfoDataSource extends DataTableSource {
           ),
         ),
         onTap: () {
-          html.window.open(data[index]['zoom_link'] as String, 'Zoom');
+          html.window.open(data[i].zoomLink, 'Zoom');
         },
       )),
-      DataCell(Text(data[index]['zoom_id'] as String)),
-      DataCell(Text(data[index]['zoom_pw'] as String)),
+      DataCell(Text(data[i].zoomId)),
+      DataCell(Text(data[i].zoomPassword)),
     ]);
   }
 }
@@ -216,7 +204,7 @@ class _ZoomInfoDataSource extends DataTableSource {
 class EditableZoomInfo extends StatelessWidget {
   const EditableZoomInfo({Key? key, required this.zoomInfo}) : super(key: key);
 
-  final List<dynamic> zoomInfo;
+  final List<LessonModel> zoomInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -256,7 +244,7 @@ class EditableZoomInfo extends StatelessWidget {
           height: 500,
           child: Editable(
             columns: headers,
-            rows: zoomInfo,
+            rows: zoomInfo.map((lesson) => lesson.toJson()).toList(),
             // showCreateButton: true,
             showSaveIcon: true,
             saveIconColor: Theme.of(context).primaryColor,
@@ -269,10 +257,23 @@ class EditableZoomInfo extends StatelessWidget {
               value.remove('row');
 
               value.forEach((k, v) {
-                zoomInfo[i][k] = v;
+                switch (k) {
+                  case 'name':
+                    zoomInfo[i].name = v;
+                    break;
+                  case 'zoom_link':
+                    zoomInfo[i].zoomLink = v;
+                    break;
+                  case 'zoom_id':
+                    zoomInfo[i].zoomId = v;
+                    break;
+                  case 'zoom_pw':
+                    zoomInfo[i].zoomPassword = v;
+                    break;
+                }
               });
               lesson_info_service
-                  .updateLesson(zoomInfo[i]['id'], zoomInfo[i])
+                  .updateLesson(zoomInfo[i].id, zoomInfo[i])
                   .then(
                     (unused) => ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
