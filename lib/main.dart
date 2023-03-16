@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/common_widgets/scaffold.dart';
+import 'package:success_academy/common_widgets/my_scaffold.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/firebase_options.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -14,7 +14,6 @@ import 'package:success_academy/landing/landing.dart';
 import 'package:success_academy/landing/sign_in.dart';
 import 'package:success_academy/landing/verification.dart';
 import 'package:success_academy/profile/profile_browse.dart';
-import 'package:success_academy/profile/profile_home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -90,9 +89,6 @@ class Root extends StatelessWidget {
     if (account.userType == UserType.studentNoProfile) {
       return const ProfileBrowse();
     }
-    return MyScaffold(
-      userType: account.userType,
-      body: const ProfileHome(),
-    );
+    return MyScaffold(userType: account.userType);
   }
 }

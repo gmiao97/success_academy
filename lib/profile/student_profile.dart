@@ -31,12 +31,26 @@ class _StudentProfileState extends State<StudentProfile> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Text(
-            S.of(context).profile,
-            style: Theme.of(context).textTheme.displaySmall,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                S.of(context).profile,
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: ElevatedButton(
+                onPressed: () {
+                  account.studentProfile = null;
+                },
+                child: Text(S.of(context).changeProfile),
+              ),
+            ),
+          ],
         ),
         Expanded(
           child: Card(

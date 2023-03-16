@@ -1,0 +1,192 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/account/account_settings.dart';
+import 'package:success_academy/calendar/calendar.dart';
+import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/free_lesson.dart';
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/add_points.dart';
+import 'package:success_academy/profile/profile_home.dart';
+import 'package:success_academy/profile/profile_manage.dart';
+
+class PhoneScaffold extends StatefulWidget {
+  const PhoneScaffold({super.key, required this.userType});
+
+  final UserType userType;
+
+  @override
+  State<PhoneScaffold> createState() => _PhoneScaffoldState();
+}
+
+class _PhoneScaffoldState extends State<PhoneScaffold> {
+  List<Widget> _content = [];
+  int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    switch (widget.userType) {
+      case UserType.admin:
+        _content = [
+          const ProfileHome(),
+          const Calendar(),
+          const FreeLesson(),
+          const ManageUsers(),
+          const Settings()
+        ];
+        break;
+      case UserType.teacher:
+        _content = [
+          const ProfileHome(),
+          const Calendar(),
+          const FreeLesson(),
+          const Settings()
+        ];
+        break;
+      case UserType.student:
+        _content = [
+          const ProfileHome(),
+          const Calendar(),
+          const FreeLesson(),
+          const AddPoints(),
+          const Settings()
+        ];
+        break;
+      default:
+        _content = [];
+        break;
+    }
+  }
+
+  void _drawerItemOnClick(int i) {
+    setState(() {
+      _selectedIndex = i;
+      Navigator.pop(context);
+    });
+  }
+
+  List<ListTile> _getDestinations() {
+    switch (widget.userType) {
+      case UserType.admin:
+        return [
+          ListTile(
+            leading: const Icon(Icons.account_box),
+            title: Text(S.of(context).viewProfile),
+            onTap: () => _drawerItemOnClick(0),
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_month),
+            title: Text(S.of(context).lessonCalendar),
+            onTap: () => _drawerItemOnClick(1),
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: Text(S.of(context).freeLessonInfo),
+            onTap: () => _drawerItemOnClick(2),
+          ),
+          ListTile(
+            leading: const Icon(Icons.people),
+            title: Text(S.of(context).manageProfile),
+            onTap: () => _drawerItemOnClick(3),
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text(S.of(context).settings),
+            onTap: () => _drawerItemOnClick(4),
+          ),
+        ];
+      case UserType.teacher:
+        return [
+          ListTile(
+            leading: const Icon(Icons.account_box),
+            title: Text(S.of(context).viewProfile),
+            onTap: () => _drawerItemOnClick(0),
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_month),
+            title: Text(S.of(context).lessonCalendar),
+            onTap: () => _drawerItemOnClick(1),
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: Text(S.of(context).freeLessonInfo),
+            onTap: () => _drawerItemOnClick(2),
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text(S.of(context).settings),
+            onTap: () => _drawerItemOnClick(3),
+          ),
+        ];
+      case UserType.student:
+        return [
+          ListTile(
+            leading: const Icon(Icons.account_box),
+            title: Text(S.of(context).viewProfile),
+            onTap: () => _drawerItemOnClick(0),
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_month),
+            title: Text(S.of(context).lessonCalendar),
+            onTap: () => _drawerItemOnClick(1),
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: Text(S.of(context).freeLessonInfo),
+            onTap: () => _drawerItemOnClick(2),
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_outlined),
+            title: Text(S.of(context).addPoints),
+            onTap: () => _drawerItemOnClick(3),
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text(S.of(context).settings),
+            onTap: () => _drawerItemOnClick(4),
+          ),
+        ];
+      default:
+        return [];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final account = context.watch<AccountModel>();
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).cardColor,
+        elevation: 1,
+        title: const Text(constants.homePageAppBarName),
+        centerTitle: false,
+        actions: [
+          TextButton(
+            onPressed: () {
+              account.locale = account.locale == 'en' ? 'ja' : 'en';
+            },
+            child: Text(account.locale == 'en' ? 'US' : 'JP'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
+            child: Text(S.of(context).signOut),
+          )
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: _getDestinations(),
+        ),
+      ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _content,
+      ),
+    );
+  }
+}

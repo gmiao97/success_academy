@@ -7,7 +7,7 @@ import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
-import 'package:success_academy/utils.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
