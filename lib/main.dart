@@ -14,6 +14,7 @@ import 'package:success_academy/landing/landing.dart';
 import 'package:success_academy/landing/sign_in.dart';
 import 'package:success_academy/landing/verification.dart';
 import 'package:success_academy/profile/profile_browse.dart';
+import 'package:success_academy/profile/profile_create.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,6 +63,7 @@ class App extends StatelessWidget {
       routes: {
         constants.routeSignIn: (context) => const SignIn(),
         constants.routeInfo: (context) => const Info(),
+        constants.routeCreateProfile: (context) => const ProfileCreate(),
       },
     );
   }

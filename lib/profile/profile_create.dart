@@ -10,7 +10,7 @@ import 'package:success_academy/services/profile_service.dart'
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 
 class ProfileCreate extends StatelessWidget {
-  const ProfileCreate({Key? key}) : super(key: key);
+  const ProfileCreate({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class ProfileCreate extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.all(10),
+            Padding(
+              padding: const EdgeInsets.all(10),
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.maybePop(context);
@@ -42,7 +42,7 @@ class ProfileCreate extends StatelessWidget {
 }
 
 class _SignupForm extends StatefulWidget {
-  const _SignupForm({Key? key}) : super(key: key);
+  const _SignupForm();
 
   @override
   _SignupFormState createState() => _SignupFormState();
@@ -140,6 +140,7 @@ class _SignupFormState extends State<_SignupForm> {
               return null;
             },
           ),
+          const SizedBox(height: 20),
           CreateSubscription(
             subscriptionPlan: _subscriptionPlan,
             redirectClicked: _redirectClicked,
