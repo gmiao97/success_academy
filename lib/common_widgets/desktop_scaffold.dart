@@ -169,7 +169,19 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).cardColor,
         elevation: 1,
-        title: const Text(constants.homePageAppBarName),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              width: 40,
+              height: 40,
+            ),
+            Text(
+              constants.homePageAppBarName,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+          ],
+        ),
         centerTitle: false,
         actions: [
           TextButton(

@@ -161,7 +161,11 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).cardColor,
         elevation: 1,
-        title: const Text(constants.homePageAppBarName),
+        title: Image.asset(
+          'assets/images/logo.png',
+          width: 40,
+          height: 40,
+        ),
         centerTitle: false,
         actions: [
           TextButton(
