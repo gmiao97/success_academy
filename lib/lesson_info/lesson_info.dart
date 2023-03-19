@@ -137,7 +137,7 @@ class ZoomInfo extends StatelessWidget {
       children: [
         Text(
           S.of(context).freeLessonZoomInfo,
-          style: Theme.of(context).textTheme.headline3,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         SizedBox(
           width: 1000,
@@ -265,7 +265,7 @@ class EditableZoomInfo extends StatelessWidget {
       children: [
         Text(
           S.of(context).freeLessonZoomInfo,
-          style: Theme.of(context).textTheme.headline3,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         SizedBox(
           height: 500,

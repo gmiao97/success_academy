@@ -125,7 +125,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.read<AccountModel>();
+    final account = context.watch<AccountModel>();
 
     Map<EventType, String> eventTypeNames = {
       EventType.free: S.of(context).free,

@@ -121,7 +121,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.read<AccountModel>();
+    final account = context.watch<AccountModel>();
     _startTimeController.text = _startTime.format(context);
     _endTimeController.text = _endTime.format(context);
 

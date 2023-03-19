@@ -17,22 +17,7 @@ class ManageUsers extends StatefulWidget {
 }
 
 class _ManageUsersState extends State<ManageUsers> {
-  @override
-  Widget build(BuildContext context) {
-    return const _Manage();
-  }
-}
-
-class _Manage extends StatefulWidget {
-  const _Manage({Key? key}) : super(key: key);
-
-  @override
-  State<_Manage> createState() => _ManageState();
-}
-
-class _ManageState extends State<_Manage> {
-  late AccountModel _accountContext;
-  bool _isInitialized = false;
+  final List<bool> _selectedToggle = [true, false];
   List<EventModel> _allEvents = [];
   List<EventModel> _events = [];
   late DateTimeRange _dateRange;
@@ -45,9 +30,7 @@ class _ManageState extends State<_Manage> {
   }
 
   void _init() async {
-    _accountContext = context.read<AccountModel>();
-
-    final timeZoneName = _accountContext.myUser!.timeZone;
+    final timeZoneName = context.read<AccountModel>().myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
     _dateRange = DateTimeRange(
         start: _getDateFromDateTime(tz.TZDateTime.now(timeZone), timeZone)
@@ -65,9 +48,6 @@ class _ManageState extends State<_Manage> {
             event.startTime.isAfter(_dateRange.start) &&
             event.startTime.isBefore(_dateRange.end))
         .toList();
-    setState(() {
-      _isInitialized = true;
-    });
   }
 
   DateTime _getDateFromDateTime(DateTime dateTime, tz.Location timeZone) {
@@ -75,7 +55,7 @@ class _ManageState extends State<_Manage> {
   }
 
   void _selectDateRange() async {
-    final timeZoneName = _accountContext.myUser!.timeZone;
+    final timeZoneName = context.read<AccountModel>().myUser!.timeZone;
     final timeZone = tz.getLocation(timeZoneName);
 
     final dateRange = await showDateRangePicker(
@@ -98,140 +78,197 @@ class _ManageState extends State<_Manage> {
 
   @override
   Widget build(BuildContext context) {
-    return !_isInitialized
-        ? const Center(
-            child: CircularProgressIndicator(
-              value: null,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                S.of(context).manageProfile,
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
             ),
-          )
-        : Column(
-            children: [
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: PaginatedDataTable(
-                    header: Column(
-                      children: [
-                        Text(
-                            '${dateFormatter.format(_dateRange.start)} - ${dateFormatter.format(_dateRange.end)}'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ElevatedButton(
-                            onPressed: _selectDateRange,
-                            child: const Text('期間を変える'))
-                      ],
-                    ),
-                    columns: <DataColumn>[
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).id,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).lastName,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).firstName,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).freeNum,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).preschoolNum,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).privateNum,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                    ],
-                    source: _TeacherData(
-                      data: _accountContext.teacherProfileList!,
-                      events: _events,
-                    ),
-                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ToggleButtons(
+                onPressed: (index) {
+                  setState(() {
+                    for (int i = 0; i < _selectedToggle.length; i++) {
+                      _selectedToggle[i] = i == index;
+                    }
+                  });
+                },
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                constraints: const BoxConstraints(
+                  minHeight: 40,
+                  minWidth: 80,
                 ),
+                isSelected: _selectedToggle,
+                children: [
+                  Text(S.of(context).student),
+                  Text(S.of(context).teacher),
+                ],
               ),
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: PaginatedDataTable(
-                    columns: <DataColumn>[
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).id,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
+            ),
+          ],
+        ),
+        Expanded(
+          child: Card(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: _selectedToggle[0]
+                    ? _StudentTable()
+                    : _TeacherTable(
+                        dateRange: _dateRange,
+                        onSelectDateRange: _selectDateRange,
+                        events: _events,
                       ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).lastName,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).firstName,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).eventPointsLabel,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            S.of(context).referrerLabel,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                    ],
-                    source:
-                        _StudentData(data: _accountContext.studentProfileList!),
-                  ),
-                ),
               ),
-            ],
-          );
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TeacherTable extends StatelessWidget {
+  final DateTimeRange dateRange;
+  final VoidCallback onSelectDateRange;
+  final List<EventModel> events;
+
+  const _TeacherTable(
+      {required this.dateRange,
+      required this.onSelectDateRange,
+      required this.events});
+
+  @override
+  Widget build(BuildContext context) {
+    final teacherProfiles =
+        context.select<AccountModel, List<TeacherProfileModel>>(
+            (account) => account.teacherProfileList!);
+
+    return PaginatedDataTable(
+      header: TextButton.icon(
+        icon: const Icon(Icons.edit),
+        label: Text(
+            '${dateFormatter.format(dateRange.start)} - ${dateFormatter.format(dateRange.end)}'),
+        onPressed: onSelectDateRange,
+      ),
+      columns: <DataColumn>[
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).id,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).lastName,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).firstName,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).freeNum,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).preschoolNum,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).privateNum,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+      ],
+      source: _TeacherData(
+        data: teacherProfiles,
+        events: events,
+      ),
+    );
+  }
+}
+
+class _StudentTable extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final studentProfiles =
+        context.select<AccountModel, List<StudentProfileModel>>(
+            (account) => account.studentProfileList!);
+
+    return PaginatedDataTable(
+      columns: <DataColumn>[
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).id,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).lastName,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).firstName,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).eventPointsLabel,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              S.of(context).referrerLabel,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+      ],
+      source: _StudentData(data: studentProfiles),
+    );
   }
 }
 
@@ -262,12 +299,12 @@ class _TeacherData extends DataTableSource {
       DataCell(Text(_data[index].firstName)),
       DataCell(
         Text(
-          '${_events.where((e) => e.eventType == EventType.free && e.teacherId == _data[index].profileId).toList().length}',
+          '${_events.where((e) => e.eventType == EventType.free && e.teacherId == _data[index].profileId).length}',
         ),
       ),
       DataCell(
         Text(
-          '${_events.where((e) => e.eventType == EventType.preschool && e.teacherId == _data[index].profileId).toList().length}',
+          '${_events.where((e) => e.eventType == EventType.preschool && e.teacherId == _data[index].profileId).length}',
         ),
       ),
       DataCell(
