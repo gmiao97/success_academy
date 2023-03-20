@@ -6,7 +6,7 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/landing/sign_in.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({Key? key}) : super(key: key);
+  const LandingPage({super.key});
 
   @override
   Widget build(BuildContext context) {

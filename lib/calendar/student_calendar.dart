@@ -11,7 +11,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 class StudentCalendar extends StatefulWidget {
   const StudentCalendar({
-    Key? key,
+    super.key,
     required this.selectedDay,
     required this.selectedEvents,
     required this.firstDay,
@@ -32,7 +32,7 @@ class StudentCalendar extends StatefulWidget {
     required this.onEventFilterConfirm,
     required this.onEventDisplayChanged,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   final DateTime? selectedDay;
   final ValueNotifier<List<EventModel>> selectedEvents;

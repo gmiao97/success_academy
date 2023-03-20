@@ -10,7 +10,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 class ManageUsers extends StatefulWidget {
-  const ManageUsers({Key? key}) : super(key: key);
+  const ManageUsers({super.key});
 
   @override
   State<ManageUsers> createState() => _ManageUsersState();
@@ -81,8 +81,8 @@ class _ManageUsersState extends State<ManageUsers> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        OverflowBar(
+          alignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),

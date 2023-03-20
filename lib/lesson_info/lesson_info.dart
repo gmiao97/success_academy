@@ -229,7 +229,7 @@ class _ZoomInfoDataSource extends DataTableSource {
 }
 
 class EditableZoomInfo extends StatelessWidget {
-  const EditableZoomInfo({Key? key, required this.zoomInfo}) : super(key: key);
+  const EditableZoomInfo({super.key, required this.zoomInfo});
 
   final List<LessonModel> zoomInfo;
 

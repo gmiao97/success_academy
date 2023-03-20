@@ -5,7 +5,7 @@ import 'package:success_academy/generated/l10n.dart';
 
 class CalendarHeader extends StatelessWidget {
   const CalendarHeader({
-    Key? key,
+    super.key,
     required this.header,
     required this.timeZone,
     required this.onTodayButtonTap,
@@ -15,7 +15,7 @@ class CalendarHeader extends StatelessWidget {
     required this.shouldShowEventDisplay,
     this.eventDisplay,
     this.onEventDisplayChanged,
-  }) : super(key: key);
+  });
 
   final String header;
   final String timeZone;

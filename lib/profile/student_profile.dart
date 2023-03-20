@@ -239,11 +239,12 @@ class ManageSubscription extends StatelessWidget {
   final bool redirectClicked;
   final VoidCallback setRedirectClicked;
 
-  const ManageSubscription(
-      {super.key,
-      required this.subscriptionPlan,
-      required this.redirectClicked,
-      required this.setRedirectClicked});
+  const ManageSubscription({
+    super.key,
+    required this.subscriptionPlan,
+    required this.redirectClicked,
+    required this.setRedirectClicked,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -295,14 +296,14 @@ class ManageSubscription extends StatelessWidget {
 
 class CreateSubscription extends StatefulWidget {
   const CreateSubscription({
-    Key? key,
+    super.key,
     required this.subscriptionPlan,
     required this.onSubscriptionPlanChange,
     required this.redirectClicked,
     required this.setIsReferral,
     required this.setReferrer,
     required this.onStripeSubmitClicked,
-  }) : super(key: key);
+  });
 
   final SubscriptionPlan subscriptionPlan;
   final Function(SubscriptionPlan?) onSubscriptionPlanChange;

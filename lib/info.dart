@@ -3,7 +3,7 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/constants.dart';
 
 class Info extends StatelessWidget {
-  const Info({Key? key}) : super(key: key);
+  const Info({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class Info extends StatelessWidget {
 }
 
 class _Info extends StatelessWidget {
-  const _Info({Key? key}) : super(key: key);
+  const _Info();
 
   @override
   Widget build(BuildContext context) {

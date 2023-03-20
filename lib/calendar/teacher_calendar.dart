@@ -12,7 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 class TeacherCalendar extends StatelessWidget {
   const TeacherCalendar({
-    Key? key,
+    super.key,
     required this.focusedDay,
     required this.currentDay,
     required this.selectedDay,
@@ -32,7 +32,7 @@ class TeacherCalendar extends StatelessWidget {
     required this.onEventFilterConfirm,
     required this.onEventDisplayChanged,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   final DateTime focusedDay;
   final DateTime currentDay;

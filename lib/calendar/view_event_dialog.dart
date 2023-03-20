@@ -8,10 +8,7 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 class ViewEventDialog extends StatefulWidget {
-  const ViewEventDialog({
-    Key? key,
-    required this.event,
-  }) : super(key: key);
+  const ViewEventDialog({super.key, required this.event});
 
   final EventModel event;
 

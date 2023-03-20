@@ -13,14 +13,14 @@ import 'package:timezone/data/latest_10y.dart' as tz;
 
 class CreateEventDialog extends StatefulWidget {
   const CreateEventDialog({
-    Key? key,
+    super.key,
     this.teacherId,
     required this.firstDay,
     required this.lastDay,
     required this.selectedDay,
     required this.eventTypes,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   final String? teacherId;
   final DateTime firstDay;

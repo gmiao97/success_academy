@@ -13,10 +13,10 @@ import 'package:timezone/data/latest_10y.dart' as tz;
 
 class SignupEventDialog extends StatefulWidget {
   const SignupEventDialog({
-    Key? key,
+    super.key,
     required this.event,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   final EventModel event;
   final void Function() onRefresh;

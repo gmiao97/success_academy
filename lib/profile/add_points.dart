@@ -5,7 +5,7 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 
 class AddPoints extends StatelessWidget {
-  const AddPoints({Key? key}) : super(key: key);
+  const AddPoints({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class AddPoints extends StatelessWidget {
 }
 
 class _AddPointsForm extends StatefulWidget {
-  const _AddPointsForm({Key? key}) : super(key: key);
+  const _AddPointsForm();
 
   @override
   State<_AddPointsForm> createState() => _AddPointsFormState();

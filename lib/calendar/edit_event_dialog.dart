@@ -13,13 +13,13 @@ import 'package:timezone/data/latest_10y.dart' as tz;
 
 class EditEventDialog extends StatefulWidget {
   const EditEventDialog({
-    Key? key,
+    super.key,
     required this.event,
     required this.firstDay,
     required this.lastDay,
     required this.eventTypes,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   final EventModel event;
   final DateTime firstDay;

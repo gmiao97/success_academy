@@ -7,28 +7,8 @@ import 'package:success_academy/services/user_service.dart' as user_service;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
-class AccountSettings extends StatefulWidget {
-  const AccountSettings({Key? key}) : super(key: key);
-
-  @override
-  State<AccountSettings> createState() => _AccountSettingsState();
-}
-
-class _AccountSettingsState extends State<AccountSettings> {
-  @override
-  void initState() {
-    super.initState();
-    tz.initializeTimeZones();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Settings();
-  }
-}
-
 class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+  const Settings({super.key});
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -38,6 +18,12 @@ class _SettingsState extends State<Settings> {
   final TextEditingController _timeZoneController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _selectedTimeZone;
+
+  @override
+  void initState() {
+    super.initState();
+    tz.initializeTimeZones();
+  }
 
   @override
   Widget build(BuildContext context) {

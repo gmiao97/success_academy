@@ -6,7 +6,7 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 
 class SignIn extends StatelessWidget {
-  const SignIn({Key? key}) : super(key: key);
+  const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 class Calendar extends StatelessWidget {
-  const Calendar({Key? key}) : super(key: key);
+  const Calendar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class Calendar extends StatelessWidget {
 }
 
 class BaseCalendar extends StatefulWidget {
-  const BaseCalendar({Key? key}) : super(key: key);
+  const BaseCalendar({super.key});
 
   @override
   State<BaseCalendar> createState() => _BaseCalendarState();

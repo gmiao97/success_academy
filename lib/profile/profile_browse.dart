@@ -10,7 +10,7 @@ import 'package:success_academy/services/profile_service.dart'
 
 // TODO: Make UI responsive for different screen sizes
 class ProfileBrowse extends StatefulWidget {
-  const ProfileBrowse({Key? key}) : super(key: key);
+  const ProfileBrowse({super.key});
 
   @override
   State<ProfileBrowse> createState() => _ProfileBrowseState();
@@ -72,80 +72,72 @@ class _ProfileBrowseState extends State<ProfileBrowse> {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              S.of(context).selectProfile,
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            const SizedBox(height: 50),
-            // TODO: Add error handling.
-            Row(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (final profile in _studentProfiles)
-                  _buildProfileCard(context, profile),
-                _studentProfiles.length < constants.maxProfileCount
-                    ? const _AddProfileWidget()
-                    : const SizedBox.shrink(),
+                Text(
+                  S.of(context).selectProfile,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                const SizedBox(height: 20),
+                OverflowBar(
+                  alignment: MainAxisAlignment.center,
+                  overflowAlignment: OverflowBarAlignment.center,
+                  spacing: 10,
+                  overflowSpacing: 10,
+                  children: [
+                    for (final profile in _studentProfiles)
+                      _buildProfileCard(context, profile),
+                    _studentProfiles.length < constants.maxProfileCount
+                        ? const _AddProfileWidget()
+                        : const SizedBox.shrink(),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-Card _buildProfileCard(BuildContext context, StudentProfileModel profile) {
+Widget _buildProfileCard(BuildContext context, StudentProfileModel profile) {
   final account = context.watch<AccountModel>();
 
-  return Card(
-    elevation: 10,
+  return CircleAvatar(
+    radius: 100,
+    backgroundColor: Theme.of(context).colorScheme.secondary,
     child: InkWell(
-      splashColor: Theme.of(context).colorScheme.primary.withAlpha(30),
       onTap: () {
         account.studentProfile = profile;
       },
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width < 700 ? 100 : 200,
-        height: MediaQuery.of(context).size.width < 700 ? 100 : 200,
-        child: Center(
-          child: Text(profile.firstName,
-              style: Theme.of(context).textTheme.headlineMedium),
-        ),
+      child: Text(
+        profile.firstName,
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
     ),
   );
 }
 
 class _AddProfileWidget extends StatelessWidget {
-  const _AddProfileWidget({Key? key}) : super(key: key);
+  const _AddProfileWidget();
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 10,
+    return CircleAvatar(
+      radius: 100,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       child: InkWell(
-        splashColor: Theme.of(context).colorScheme.primary.withAlpha(30),
         onTap: () {
           Navigator.pushNamed(context, constants.routeCreateProfile);
         },
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width < 700 ? 100 : 200,
-          height: MediaQuery.of(context).size.width < 700 ? 100 : 200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.add,
-                color: Theme.of(context).colorScheme.primary,
-                size: 50,
-              ),
-              Text(S.of(context).addProfile),
-            ],
-          ),
+        child: const Icon(
+          Icons.add,
+          size: 50,
         ),
       ),
     );
