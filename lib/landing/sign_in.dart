@@ -18,7 +18,7 @@ class SignIn extends StatelessWidget {
 
     return ConstrainedBox(
       constraints: const BoxConstraints(
-          minWidth: 400, minHeight: 400, maxWidth: 500, maxHeight: 400),
+          minWidth: 400, minHeight: 400, maxWidth: 500, maxHeight: 500),
       child: const SignInScreen(
         providerConfigs: [
           EmailProviderConfiguration(),

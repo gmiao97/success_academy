@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutterfire_ui/i10n.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/common_widgets/my_scaffold.dart';
@@ -9,9 +9,7 @@ import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/firebase_options.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/info.dart';
-import 'package:success_academy/l10n/FlutterFireUIJaLocalizationsDelegate.dart';
 import 'package:success_academy/landing/landing.dart';
-import 'package:success_academy/landing/sign_in.dart';
 import 'package:success_academy/landing/verification.dart';
 import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/profile/profile_create.dart';
@@ -51,17 +49,16 @@ class App extends StatelessWidget {
         ),
       ),
       locale: Locale(locale),
+      supportedLocales: S.delegate.supportedLocales,
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        FlutterFireUIJaLocalizationsDelegate(),
-        // TODO: GlobalCupertinoLocalizations.delegate,
+        FlutterFireUILocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: S.delegate.supportedLocales,
       home: const Root(),
       routes: {
-        constants.routeSignIn: (context) => const SignIn(),
         constants.routeInfo: (context) => const Info(),
         constants.routeCreateProfile: (context) => const ProfileCreate(),
       },

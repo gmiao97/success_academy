@@ -7,7 +7,6 @@ const googleAuthProviderConfigurationClientId =
     '954737248617-u4k6mmsbp9l0pmmivftmkf2brt4cheid.apps.googleusercontent.com';
 
 const routeHome = '/';
-const routeSignIn = '/sign-in';
 const routeCreateProfile = '/create-profile';
 const routeCalendar = '/calendar';
 const routeAddPoints = '/add-points';
