@@ -65,9 +65,9 @@ class _SettingsState extends State<Settings> {
                 ),
                 suggestionsCallback: (pattern) => tz
                     .timeZoneDatabase.locations.keys
-                    .map((timezone) => timezone.replaceAll('_', ' '))
-                    .where((timezone) =>
-                        timezone.toLowerCase().contains(pattern.toLowerCase())),
+                    .map((timeZone) => timeZone.replaceAll('_', ' '))
+                    .where((timeZone) =>
+                        timeZone.toLowerCase().contains(pattern.toLowerCase())),
                 validator: (String? value) {
                   if (!tz.timeZoneDatabase.locations.keys
                       .contains(value?.replaceAll(' ', '_'))) {

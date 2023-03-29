@@ -37,12 +37,11 @@ class _ManageUsersState extends State<ManageUsers> {
             .subtract(const Duration(days: 30)),
         end: _getDateFromDateTime(tz.TZDateTime.now(timeZone), timeZone));
     _allEvents = (await event_service.listEvents(
-            timeZone: timeZoneName,
-            timeMin: _dateRange.start.toIso8601String(),
-            timeMax: _dateRange.end.toIso8601String(),
-            singleEvents: true))
-        .map((event) => EventModel.fromJson(event, timeZone))
-        .toList();
+        timeZone: timeZoneName,
+        location: timeZone,
+        timeMin: _dateRange.start.toIso8601String(),
+        timeMax: _dateRange.end.toIso8601String(),
+        singleEvents: true));
     _events = _allEvents
         .where((event) =>
             event.startTime.isAfter(_dateRange.start) &&
@@ -119,7 +118,7 @@ class _ManageUsersState extends State<ManageUsers> {
           child: Card(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(8),
                 child: _selectedToggle[0]
                     ? _StudentTable()
                     : _TeacherTable(

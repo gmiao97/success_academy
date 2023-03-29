@@ -18,14 +18,12 @@ class AdminCalendar extends StatelessWidget {
     required this.selectedEvents,
     required this.firstDay,
     required this.lastDay,
-    required this.calendarFormat,
     required this.calendarBuilders,
     required this.availableEventFilters,
     required this.eventFilters,
     required this.eventDisplay,
     required this.onTodayButtonTap,
     required this.onDaySelected,
-    required this.onFormatChanged,
     required this.onPageChanged,
     required this.getEventsForDay,
     required this.onEventFilterConfirm,
@@ -39,14 +37,12 @@ class AdminCalendar extends StatelessWidget {
   final ValueNotifier<List<EventModel>> selectedEvents;
   final DateTime firstDay;
   final DateTime lastDay;
-  final CalendarFormat calendarFormat;
   final CalendarBuilders calendarBuilders;
   final List<EventType> availableEventFilters;
   final List<EventType> eventFilters;
   final EventDisplay eventDisplay;
   final VoidCallback onTodayButtonTap;
   final void Function(DateTime, DateTime) onDaySelected;
-  final void Function(CalendarFormat) onFormatChanged;
   final void Function(DateTime) onPageChanged;
   final List<EventModel> Function(DateTime) getEventsForDay;
   final void Function(List<EventType>) onEventFilterConfirm;
@@ -69,26 +65,20 @@ class AdminCalendar extends StatelessWidget {
           shouldShowEventDisplay: false,
         ),
         TableCalendar(
+          headerStyle: const HeaderStyle(
+            formatButtonVisible: false,
+          ),
           firstDay: firstDay,
           lastDay: lastDay,
           focusedDay: focusedDay,
           currentDay: currentDay,
-          calendarFormat: calendarFormat,
+          calendarFormat: CalendarFormat.week,
           locale: account.locale,
           daysOfWeekHeight: 25,
-          availableCalendarFormats: {
-            CalendarFormat.month:
-                account.locale == 'en' ? 'Display Monthly' : '月間表示',
-            CalendarFormat.twoWeeks:
-                account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
-            CalendarFormat.week:
-                account.locale == 'en' ? 'Display Weekly' : '一週間表示',
-          },
           selectedDayPredicate: (day) {
             return isSameDay(selectedDay, day);
           },
           onDaySelected: onDaySelected,
-          onFormatChanged: onFormatChanged,
           onPageChanged: onPageChanged,
           eventLoader: getEventsForDay,
           calendarBuilders: calendarBuilders,

@@ -53,7 +53,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                 children: [
                   Text(
                     S.of(context).addPoints,
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 25),
                   RichText(
@@ -63,7 +63,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                       children: [
                         TextSpan(
                           text: '${account.studentProfile!.numPoints}',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ],
                     ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:success_academy/account/account_model.dart';
-
 import 'package:success_academy/constants.dart' as constants;
 
 class SignIn extends StatelessWidget {

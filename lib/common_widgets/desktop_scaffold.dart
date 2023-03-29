@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/account/account_settings.dart';
 import 'package:success_academy/calendar/calendar.dart';
+import 'package:success_academy/calendar/calendar_v2.dart';
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/lesson_info/lesson_info.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -32,7 +33,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
       case UserType.admin:
         _content = [
           const ProfileHome(),
-          const Calendar(),
+          const CalendarV2(),
           const LessonInfo(),
           const ManageUsers(),
           const Settings()
@@ -203,14 +204,13 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: IconButton(
                   onPressed: () => setState(() {
                     _extended = !_extended;
                   }),
-                  icon: Icon(_extended
-                      ? Icons.arrow_back_ios_new
-                      : Icons.arrow_forward_ios),
+                  icon: Icon(
+                      _extended ? Icons.chevron_left : Icons.chevron_right),
                 ),
               ),
               Expanded(

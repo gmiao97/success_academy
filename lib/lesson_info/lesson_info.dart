@@ -1,4 +1,5 @@
 import 'package:editable/editable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
@@ -22,14 +23,12 @@ class _LessonInfoState extends State<LessonInfo> {
   List<LessonModel> _zoomInfo = [];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  void initLessons(UserType userType, SubscriptionPlan? subscription) async {
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    final account = context.watch<AccountModel>();
     final lessons = await lesson_info_service.getLessons(
-        includePreschool: userType != UserType.student ||
-            subscription == SubscriptionPlan.minimumPreschool);
+        includePreschool: account.userType != UserType.student ||
+            account.subscriptionPlan == SubscriptionPlan.minimumPreschool);
     setState(() {
       _zoomInfo = lessons;
       _zoomInfoLoaded = true;
@@ -56,7 +55,6 @@ class _LessonInfoState extends State<LessonInfo> {
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
-    initLessons(account.userType, account.subscriptionPlan);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

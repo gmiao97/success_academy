@@ -35,10 +35,15 @@ class _Info extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).termsOfUse,
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const Divider(),
-                    ...termsOfUse.map((line) => Text(line)).toList(),
+                    ...termsOfUse
+                        .map((line) => Text(
+                              line,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ))
+                        .toList(),
                   ],
                 ),
               ),

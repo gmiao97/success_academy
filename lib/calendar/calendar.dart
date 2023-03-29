@@ -35,7 +35,6 @@ class _BaseCalendarState extends State<BaseCalendar> {
   late DateTime _focusedDay;
   late DateTime _currentDay;
   DateTime? _selectedDay;
-  CalendarFormat _calendarFormat = CalendarFormat.week;
 
   late AccountModel _accountContext;
   List<EventModel> _allEvents = [];
@@ -121,12 +120,6 @@ class _BaseCalendarState extends State<BaseCalendar> {
         _selectedEvents.value = _getEventsForDay(selectedDay);
       });
     }
-  }
-
-  void _onFormatChanged(CalendarFormat format) {
-    setState(() {
-      _calendarFormat = format;
-    });
   }
 
   void _onPageChanged(DateTime focusedDay) {
@@ -216,11 +209,10 @@ class _BaseCalendarState extends State<BaseCalendar> {
 
     List<EventModel> recurringEvents = (await event_service.listEvents(
             timeZone: timeZoneName,
+            location: timeZone,
             timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
             timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
             singleEvents: false))
-        .where((event) => event['status'] != 'cancelled')
-        .map((event) => EventModel.fromJson(event, timeZone))
         .where((event) => event.recurrence.isNotEmpty)
         .toList();
 
@@ -229,12 +221,11 @@ class _BaseCalendarState extends State<BaseCalendar> {
     };
 
     List<EventModel> singleEvents = (await event_service.listEvents(
-            timeZone: timeZoneName,
-            timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
-            timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
-            singleEvents: true))
-        .map((event) => EventModel.fromJson(event, timeZone))
-        .toList();
+        timeZone: timeZoneName,
+        location: timeZone,
+        timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
+        timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+        singleEvents: true));
 
     for (EventModel event in singleEvents) {
       if (event.recurrenceId != null) {
@@ -262,14 +253,12 @@ class _BaseCalendarState extends State<BaseCalendar> {
         lastDay: _lastDay,
         focusedDay: _focusedDay,
         currentDay: _currentDay,
-        calendarFormat: _calendarFormat,
         calendarBuilders: _calendarBuilders,
         availableEventFilters: _availableEventFilters,
         eventFilters: _eventFilters,
         eventDisplay: _eventDisplay,
         onTodayButtonTap: _onTodayButtonTap,
         onDaySelected: _onDaySelected,
-        onFormatChanged: _onFormatChanged,
         onPageChanged: _onPageChanged,
         getEventsForDay: _getEventsForDay,
         onEventFilterConfirm: _onEventFilterConfirm,
@@ -285,14 +274,12 @@ class _BaseCalendarState extends State<BaseCalendar> {
         lastDay: _lastDay,
         focusedDay: _focusedDay,
         currentDay: _currentDay,
-        calendarFormat: _calendarFormat,
         calendarBuilders: _calendarBuilders,
         availableEventFilters: _availableEventFilters,
         eventFilters: _eventFilters,
         eventDisplay: _eventDisplay,
         onTodayButtonTap: _onTodayButtonTap,
         onDaySelected: _onDaySelected,
-        onFormatChanged: _onFormatChanged,
         onPageChanged: _onPageChanged,
         getEventsForDay: _getEventsForDay,
         onEventFilterConfirm: _onEventFilterConfirm,
@@ -307,7 +294,6 @@ class _BaseCalendarState extends State<BaseCalendar> {
       lastDay: _lastDay,
       focusedDay: _focusedDay,
       currentDay: _currentDay,
-      calendarFormat: _calendarFormat,
       calendarBuilders: _calendarBuilders,
       availableEventFilters: _availableEventFilters,
       eventFilters: _eventFilters,
@@ -315,7 +301,6 @@ class _BaseCalendarState extends State<BaseCalendar> {
       subscriptionType: _accountContext.subscriptionPlan,
       onTodayButtonTap: _onTodayButtonTap,
       onDaySelected: _onDaySelected,
-      onFormatChanged: _onFormatChanged,
       onPageChanged: _onPageChanged,
       getEventsForDay: _getEventsForDay,
       onEventFilterConfirm: _onEventFilterConfirm,

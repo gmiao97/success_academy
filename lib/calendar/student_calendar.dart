@@ -12,13 +12,12 @@ import 'package:table_calendar/table_calendar.dart';
 class StudentCalendar extends StatefulWidget {
   const StudentCalendar({
     super.key,
+    required this.focusedDay,
+    required this.currentDay,
     required this.selectedDay,
     required this.selectedEvents,
     required this.firstDay,
     required this.lastDay,
-    required this.focusedDay,
-    required this.currentDay,
-    required this.calendarFormat,
     required this.calendarBuilders,
     required this.availableEventFilters,
     required this.eventFilters,
@@ -26,7 +25,6 @@ class StudentCalendar extends StatefulWidget {
     required this.subscriptionType,
     required this.onTodayButtonTap,
     required this.onDaySelected,
-    required this.onFormatChanged,
     required this.onPageChanged,
     required this.getEventsForDay,
     required this.onEventFilterConfirm,
@@ -40,7 +38,6 @@ class StudentCalendar extends StatefulWidget {
   final DateTime lastDay;
   final DateTime focusedDay;
   final DateTime currentDay;
-  final CalendarFormat calendarFormat;
   final CalendarBuilders calendarBuilders;
   final List<EventType> availableEventFilters;
   final List<EventType> eventFilters;
@@ -48,7 +45,6 @@ class StudentCalendar extends StatefulWidget {
   final SubscriptionPlan? subscriptionType;
   final VoidCallback onTodayButtonTap;
   final void Function(DateTime, DateTime) onDaySelected;
-  final void Function(CalendarFormat) onFormatChanged;
   final void Function(DateTime) onPageChanged;
   final List<EventModel> Function(DateTime) getEventsForDay;
   final void Function(List<EventType>) onEventFilterConfirm;
@@ -103,26 +99,20 @@ class _StudentCalendarState extends State<StudentCalendar> {
           onEventDisplayChanged: widget.onEventDisplayChanged,
         ),
         TableCalendar(
+          headerStyle: const HeaderStyle(
+            formatButtonVisible: false,
+          ),
           firstDay: widget.firstDay,
           lastDay: widget.lastDay,
           focusedDay: widget.focusedDay,
           currentDay: widget.currentDay,
-          calendarFormat: widget.calendarFormat,
+          calendarFormat: CalendarFormat.week,
           locale: account.locale,
           daysOfWeekHeight: 25,
-          availableCalendarFormats: {
-            CalendarFormat.month:
-                account.locale == 'en' ? 'Display Monthly' : '月間表示',
-            CalendarFormat.twoWeeks:
-                account.locale == 'en' ? 'Display Biweekly' : '二週間表示',
-            CalendarFormat.week:
-                account.locale == 'en' ? 'Display Weekly' : '一週間表示',
-          },
           selectedDayPredicate: (day) {
             return isSameDay(widget.selectedDay, day);
           },
           onDaySelected: widget.onDaySelected,
-          onFormatChanged: widget.onFormatChanged,
           onPageChanged: widget.onPageChanged,
           eventLoader: widget.getEventsForDay,
           calendarBuilders: widget.calendarBuilders,
