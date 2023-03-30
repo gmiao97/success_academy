@@ -1,11 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/services/event_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
@@ -25,7 +25,7 @@ class _CalendarV2State extends State<CalendarV2> {
   late DateTime _focusedDay;
   late DateTime _selectedDay;
   bool _showLoadingIndicator = false;
-  final List<EventModel> _selectedEvents = [];
+  final ValueNotifier<List<EventModel>> _selectedEvents = ValueNotifier([]);
   final Map<DateTime, List<EventModel>> _events = HashMap(
     equals: (a, b) => isSameDay(a, b),
     hashCode: (e) => DateUtils.dateOnly(e).hashCode,
@@ -67,10 +67,9 @@ class _CalendarV2State extends State<CalendarV2> {
     setState(() {
       _events.clear();
       _events.addAll(buildEventMap(singleEvents));
-      _selectedEvents.clear();
-      _selectedEvents.addAll(_getEventsForDay(_selectedDay));
       _showLoadingIndicator = false;
     });
+    _selectedEvents.value = _getEventsForDay(_selectedDay);
   }
 
   List<EventModel> _getEventsForDay(DateTime day) {
@@ -80,18 +79,16 @@ class _CalendarV2State extends State<CalendarV2> {
   void _onTodayButtonClick() {
     setState(() {
       _focusedDay = _selectedDay = _currentDay;
-      _selectedEvents.clear();
-      _selectedEvents.addAll(_getEventsForDay(_selectedDay));
     });
+    _selectedEvents.value = _getEventsForDay(_selectedDay);
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
-      _selectedEvents.clear();
-      _selectedEvents.addAll(_getEventsForDay(_selectedDay));
     });
+    _selectedEvents.value = _getEventsForDay(_selectedDay);
   }
 
   @override
@@ -158,13 +155,65 @@ class _CalendarV2State extends State<CalendarV2> {
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: _selectedEvents.length,
-            itemBuilder: (context, index) =>
-                Text(_selectedEvents[index].startTime.toString()),
+          child: ValueListenableBuilder<List<EventModel>>(
+            valueListenable: _selectedEvents,
+            builder: (context, value, child) => _EventList(events: value),
           ),
         ),
       ],
+    );
+  }
+}
+
+class _EventList extends StatelessWidget {
+  final Map<EventType, Color> _eventColors = {
+    EventType.unknown: Colors.grey[100]!,
+    EventType.free: Colors.amber[100]!,
+    EventType.preschool: Colors.lightBlue[100]!,
+    EventType.private: Colors.purple[100]!,
+  };
+  final Map<EventType, Icon> _eventIcons = {
+    EventType.unknown: const Icon(FontAwesomeIcons.question),
+    EventType.free: const Icon(FontAwesomeIcons.personChalkboard),
+    EventType.preschool: const Icon(FontAwesomeIcons.shapes),
+    EventType.private: const Icon(FontAwesomeIcons.graduationCap),
+  };
+
+  _EventList({
+    required this.events,
+  });
+
+  final List<EventModel> events;
+
+  @override
+  Widget build(BuildContext context) {
+    final account = context.watch<AccountModel>();
+
+    return ListView.builder(
+      itemCount: events.length,
+      itemBuilder: (context, index) => Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1000),
+          child: Card(
+            elevation: 4,
+            color: _eventColors[events[index].eventType],
+            child: ListTile(
+              leading: _eventIcons[events[index].eventType],
+              title: Text(
+                events[index].summary,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                '${DateFormat.jm(account.locale).format(events[index].startTime)} - ${DateFormat.jm(account.locale).format(events[index].endTime)}',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
