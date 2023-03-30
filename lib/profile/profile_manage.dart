@@ -30,15 +30,14 @@ class _ManageUsersState extends State<ManageUsers> {
   }
 
   void _init() async {
-    final timeZoneName = context.read<AccountModel>().myUser!.timeZone;
-    final timeZone = tz.getLocation(timeZoneName);
+    final location =
+        tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
     _dateRange = DateTimeRange(
-        start: _getDateFromDateTime(tz.TZDateTime.now(timeZone), timeZone)
+        start: _getDateFromDateTime(tz.TZDateTime.now(location), location)
             .subtract(const Duration(days: 30)),
-        end: _getDateFromDateTime(tz.TZDateTime.now(timeZone), timeZone));
+        end: _getDateFromDateTime(tz.TZDateTime.now(location), location));
     _allEvents = (await event_service.listEvents(
-        timeZone: timeZoneName,
-        location: timeZone,
+        location: location,
         timeMin: _dateRange.start.toIso8601String(),
         timeMax: _dateRange.end.toIso8601String(),
         singleEvents: true));

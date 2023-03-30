@@ -1,14 +1,13 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:success_academy/calendar/event_model.dart';
-import 'package:timezone/timezone.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'us-west2');
 
 Future<List<EventModel>> listEvents({
-  required String timeZone,
-  required Location location,
+  required tz.Location location,
   required String timeMin,
   required String timeMax,
   required bool singleEvents,
@@ -22,14 +21,14 @@ Future<List<EventModel>> listEvents({
 
   try {
     final result = await callable({
-      'timeZone': timeZone,
+      'timeZone': location.name,
       'timeMin': timeMin,
       'timeMax': timeMax,
       'singleEvents': singleEvents,
     });
     return (result.data as List<dynamic>)
         .where((e) => e['status'] != 'cancelled')
-        .map((event) => EventModel.fromJson(event, location))
+        .map((event) => EventModel.fromJson(event, location: location))
         .toList();
   } catch (err) {
     debugPrint('listEvents failed: $err');

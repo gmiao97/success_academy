@@ -204,14 +204,12 @@ class _BaseCalendarState extends State<BaseCalendar> {
   }
 
   Future<List<EventModel>> _listEvents() async {
-    final timeZoneName = _accountContext.myUser!.timeZone;
-    final timeZone = tz.getLocation(timeZoneName);
+    final location = tz.getLocation(_accountContext.myUser!.timeZone);
 
     List<EventModel> recurringEvents = (await event_service.listEvents(
-            timeZone: timeZoneName,
-            location: timeZone,
-            timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
-            timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+            location: location,
+            timeMin: tz.TZDateTime.from(_firstDay, location).toIso8601String(),
+            timeMax: tz.TZDateTime.from(_lastDay, location).toIso8601String(),
             singleEvents: false))
         .where((event) => event.recurrence.isNotEmpty)
         .toList();
@@ -221,10 +219,9 @@ class _BaseCalendarState extends State<BaseCalendar> {
     };
 
     List<EventModel> singleEvents = (await event_service.listEvents(
-        timeZone: timeZoneName,
-        location: timeZone,
-        timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
-        timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
+        location: location,
+        timeMin: tz.TZDateTime.from(_firstDay, location).toIso8601String(),
+        timeMax: tz.TZDateTime.from(_lastDay, location).toIso8601String(),
         singleEvents: true));
 
     for (EventModel event in singleEvents) {

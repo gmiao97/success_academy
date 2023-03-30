@@ -59,7 +59,8 @@ class EventModel {
   });
 
   /// Build object from response returned by Google Calendar API.
-  EventModel.fromJson(Map<String, Object?> json, tz.Location location)
+  EventModel.fromJson(Map<String, Object?> json,
+      {required tz.Location location})
       : eventId = json['id'] as String?,
         recurrenceId = json['recurringEventId'] as String?,
         summary = json['summary'] as String,
@@ -127,5 +128,8 @@ Map<DateTime, List<EventModel>> buildEventMap(List<EventModel> eventList) {
 
     eventMap.putIfAbsent(localStartDay, () => []).add(event);
   }
+  eventMap.forEach((key, value) {
+    value.sort(((a, b) => a.startTime.compareTo(b.startTime)));
+  });
   return eventMap;
 }

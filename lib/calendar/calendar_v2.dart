@@ -25,6 +25,7 @@ class _CalendarV2State extends State<CalendarV2> {
   late DateTime _focusedDay;
   late DateTime _selectedDay;
   bool _showLoadingIndicator = false;
+  final List<EventModel> _selectedEvents = [];
   final Map<DateTime, List<EventModel>> _events = HashMap(
     equals: (a, b) => isSameDay(a, b),
     hashCode: (e) => DateUtils.dateOnly(e).hashCode,
@@ -42,7 +43,7 @@ class _CalendarV2State extends State<CalendarV2> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     final account = context.watch<AccountModel>();
     _currentDay = tz.TZDateTime.now(tz.getLocation(account.myUser!.timeZone));
@@ -54,35 +55,43 @@ class _CalendarV2State extends State<CalendarV2> {
       _showLoadingIndicator = true;
     });
     final account = context.watch<AccountModel>();
-    final timeZone = account.myUser!.timeZone;
-    final location = tz.getLocation(timeZone);
+    final location = tz.getLocation(account.myUser!.timeZone);
 
     final singleEvents = (await listEvents(
-        timeZone: timeZone,
         location: location,
-        timeMin: tz.TZDateTime.from(
-                _currentDay.subtract(const Duration(days: 28)), location)
-            .toIso8601String(),
-        timeMax: tz.TZDateTime.from(
-                _currentDay.add(const Duration(days: 28)), location)
-            .toIso8601String(),
+        timeMin:
+            _currentDay.subtract(const Duration(days: 28)).toIso8601String(),
+        timeMax: _currentDay.add(const Duration(days: 28)).toIso8601String(),
         singleEvents: true));
 
     setState(() {
       _events.clear();
       _events.addAll(buildEventMap(singleEvents));
+      _selectedEvents.clear();
+      _selectedEvents.addAll(_getEventsForDay(_selectedDay));
       _showLoadingIndicator = false;
-    });
-  }
-
-  void _onTodayButtonClick() {
-    setState(() {
-      _focusedDay = _selectedDay = _currentDay;
     });
   }
 
   List<EventModel> _getEventsForDay(DateTime day) {
     return _events[day] ?? [];
+  }
+
+  void _onTodayButtonClick() {
+    setState(() {
+      _focusedDay = _selectedDay = _currentDay;
+      _selectedEvents.clear();
+      _selectedEvents.addAll(_getEventsForDay(_selectedDay));
+    });
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _selectedEvents.clear();
+      _selectedEvents.addAll(_getEventsForDay(_selectedDay));
+    });
   }
 
   @override
@@ -138,12 +147,7 @@ class _CalendarV2State extends State<CalendarV2> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            },
+            onDaySelected: _onDaySelected,
             eventLoader: _getEventsForDay,
           ),
         ),
@@ -151,6 +155,13 @@ class _CalendarV2State extends State<CalendarV2> {
           child: Text(
             DateFormat.yMMMMEEEEd(account.locale).format(_selectedDay),
             style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _selectedEvents.length,
+            itemBuilder: (context, index) =>
+                Text(_selectedEvents[index].startTime.toString()),
           ),
         ),
       ],
