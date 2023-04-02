@@ -90,6 +90,6 @@ class Root extends StatelessWidget {
     if (userType == UserType.studentNoProfile) {
       return const ProfileBrowse();
     }
-    return MyScaffold(userType: userType);
+    return const MyScaffold();
   }
 }

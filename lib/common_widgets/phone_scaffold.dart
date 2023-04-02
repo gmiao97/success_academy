@@ -12,22 +12,20 @@ import 'package:success_academy/profile/profile_home.dart';
 import 'package:success_academy/profile/profile_manage.dart';
 
 class PhoneScaffold extends StatefulWidget {
-  const PhoneScaffold({super.key, required this.userType});
-
-  final UserType userType;
+  const PhoneScaffold({super.key});
 
   @override
   State<PhoneScaffold> createState() => _PhoneScaffoldState();
 }
 
 class _PhoneScaffoldState extends State<PhoneScaffold> {
-  List<Widget> _content = [];
+  late final List<Widget> _content;
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    switch (widget.userType) {
+    switch (context.read<AccountModel>().userType) {
       case UserType.admin:
         _content = [
           const ProfileHome(),
@@ -68,7 +66,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
   }
 
   List<ListTile> _getDestinations() {
-    switch (widget.userType) {
+    switch (context.watch<AccountModel>().userType) {
       case UserType.admin:
         return [
           ListTile(

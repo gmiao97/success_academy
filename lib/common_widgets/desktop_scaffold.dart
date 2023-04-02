@@ -13,23 +13,21 @@ import 'package:success_academy/profile/profile_home.dart';
 import 'package:success_academy/profile/profile_manage.dart';
 
 class DesktopScaffold extends StatefulWidget {
-  const DesktopScaffold({super.key, required this.userType});
-
-  final UserType userType;
+  const DesktopScaffold({super.key});
 
   @override
   State<DesktopScaffold> createState() => _DesktopScaffoldState();
 }
 
 class _DesktopScaffoldState extends State<DesktopScaffold> {
-  List<Widget> _content = [];
+  late final List<Widget> _content;
   int _selectedIndex = 0;
   bool _extended = false;
 
   @override
   void initState() {
     super.initState();
-    switch (widget.userType) {
+    switch (context.read<AccountModel>().userType) {
       case UserType.admin:
         _content = [
           const ProfileHome(),
@@ -63,7 +61,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
   }
 
   List<NavigationRailDestination> _getDestinations() {
-    switch (widget.userType) {
+    switch (context.watch<AccountModel>().userType) {
       case UserType.admin:
         return [
           NavigationRailDestination(
