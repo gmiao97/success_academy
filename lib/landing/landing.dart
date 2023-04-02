@@ -40,9 +40,7 @@ class LandingPage extends StatelessWidget {
           TextButton(
             onPressed: () => showDialog(
               context: context,
-              builder: (context) => const AlertDialog(
-                content: SignIn(),
-              ),
+              builder: (context) => const SignInDialog(),
             ),
             child: Text(
               S.of(context).signIn,

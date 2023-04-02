@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -28,7 +30,6 @@ class SignupEventDialog extends StatefulWidget {
 class _SignupEventDialogState extends State<SignupEventDialog> {
   late AccountModel _accountContext;
   late DateTime _day;
-  late DateTime? _recurUntil;
   late String _summary;
   String? _teacherName;
   late String _description;
@@ -36,7 +37,6 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
   late TimeOfDay _startTime;
   late TimeOfDay _endTime;
   late EventType _eventType;
-  late Frequency? _recurFrequency;
   late bool _isSignedUp;
   bool _submitClicked = false;
 
@@ -45,23 +45,18 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
     super.initState();
     _accountContext = context.read<AccountModel>();
     tz.initializeTimeZones();
-    final RecurrenceRule? rrule = widget.event.recurrence.isNotEmpty
-        ? RecurrenceRule.fromString(widget.event.recurrence[0])
-        : null;
     setState(() {
       _day = DateTime(widget.event.startTime.year, widget.event.startTime.month,
           widget.event.startTime.day);
       _summary = widget.event.summary;
       _teacherName = widget.event.teacherId != null
-          ? '${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.lastName} ${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.firstName}'
+          ? '${_accountContext.teacherProfileModelMap[widget.event.teacherId]!.lastName} ${_accountContext.teacherProfileModelMap[widget.event.teacherId]!.firstName}'
           : null;
       _description = widget.event.description;
       _numPoints = widget.event.numPoints;
       _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
       _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
       _eventType = widget.event.eventType;
-      _recurFrequency = rrule?.frequency;
-      _recurUntil = rrule?.until;
       _isSignedUp = widget.event.studentIdList
           .contains(_accountContext.studentProfile!.profileId);
     });
@@ -69,24 +64,11 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    Map<EventType, String> eventTypeNames = {
-      EventType.free: S.of(context).free,
-      EventType.preschool: S.of(context).preschool,
-      EventType.private: S.of(context).private,
-    };
-
-    Map<Frequency?, String> frequencyNames = {
-      null: S.of(context).recurNone,
-      Frequency.daily: S.of(context).recurDaily,
-      Frequency.weekly: S.of(context).recurWeekly,
-      Frequency.monthly: S.of(context).recurMonthly,
-    };
+    final rrule = widget.event.recurrence.isNotEmpty
+        ? RecurrenceRule.fromString(widget.event.recurrence[0])
+        : null;
 
     return AlertDialog(
-      title: Text(
-        S.of(context).signupEvent,
-        style: Theme.of(context).textTheme.headline6,
-      ),
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +80,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                 fontSize: 30,
               ),
             ),
-            Text(eventTypeNames[_eventType]!),
+            Text(_eventType.getName(context)),
             Text(S.of(context).eventPointsDisplay(_numPoints ?? 0)),
             Text(
               _teacherName ?? '',
@@ -109,8 +91,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
             ),
             Text(
                 '${dateFormatter.format(_day)} | ${_startTime.format(context)} - ${_endTime.format(context)}'),
-            Text(
-                '${frequencyNames[_recurFrequency]!}${_recurUntil != null ? ', ${S.of(context).recurEnd} ${dateFormatter.format(_recurUntil!)}' : ''}'),
+            Text(rruleToString(context, rrule)),
             const SizedBox(
               height: 20,
             ),

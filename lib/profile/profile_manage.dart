@@ -148,7 +148,7 @@ class _TeacherTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final teacherProfiles =
         context.select<AccountModel, List<TeacherProfileModel>>(
-            (account) => account.teacherProfileList!);
+            (a) => a.teacherProfileList);
 
     return PaginatedDataTable(
       header: TextButton.icon(
@@ -220,7 +220,7 @@ class _StudentTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final studentProfiles =
         context.select<AccountModel, List<StudentProfileModel>>(
-            (account) => account.studentProfileList!);
+            (a) => a.studentProfileList);
 
     return PaginatedDataTable(
       columns: <DataColumn>[

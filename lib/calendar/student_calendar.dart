@@ -9,6 +9,7 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+@Deprecated('migration to CalendarV2')
 class StudentCalendar extends StatefulWidget {
   const StudentCalendar({
     super.key,

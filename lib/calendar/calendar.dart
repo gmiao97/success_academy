@@ -11,6 +11,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
+@Deprecated('migration to CalendarV2')
 class Calendar extends StatelessWidget {
   const Calendar({super.key});
 

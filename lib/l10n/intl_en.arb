@@ -67,20 +67,14 @@
   "filter": "Lesson Filter",
   "confirm": "Confirm",
   "cancel": "Cancel",
+  "close": "Close",
   "free": "Free lesson",
   "preschool": "Preschool lesson",
   "private": "Private lesson",
   "filterTitle": "Display by lesson type",
-  "freeFilter": "Free lessons",
-  "preschoolFilter": "Preschool lessons",
-  "privateFilter": "Private lessons",
   "allEvents": "All Lessons",
   "myEvents": "My Lessons",
-  "createEvent": "Add lesson",
-  "editEvent": "Edit lesson",
-  "signupEvent": "Sign up for lesson",
-  "viewEvent": "View lesson",
-  "signup": "Sign up",  
+  "signup": "Sign up",
   "signedUp": "My lesson",
   "cancelSignup": "Cancel sign up",
   "signupSuccess": "Sign up successful",
@@ -106,6 +100,7 @@
   "eventEndLabel": "End",
   "eventEndValidation": "Please select an end time",
   "eventValidTimeValidation": "Start time must be before end time",
+  "teacherTitle": "Teacher",
   "studentListTitle": "Registered students",
   "recurTitle": "Repeat",
   "recurEditNotSupported": "Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar.",
@@ -114,9 +109,11 @@
   "recurWeekly": "Weekly",
   "recurMonthly": "Monthly",
   "recurEnd": "End",
+  "recurUntil": " until {until}",
 
   "accountUpdated": "Account settings updated",
   "failedAccountUpdate": "Failed to update account settings",
+  "failedGetRecurrenceEvent": "Failed to load event",
 
   "id": "ID",
   "lastName": "Last name",
@@ -143,5 +140,7 @@
 
   "updated": "Updated",
   "updateFailed": "Update failed",
-  "promptSave": "Please press the save button"
+  "promptSave": "Please press the save button",
+
+  "unspecified": "Unspecified"
 }

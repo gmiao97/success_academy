@@ -29,16 +29,6 @@ class CalendarHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<EventType, String> filterNames = {
-      EventType.free: S.of(context).freeFilter,
-      EventType.preschool: S.of(context).preschoolFilter,
-      EventType.private: S.of(context).privateFilter,
-    };
-    final Map<EventDisplay, String> displayNames = {
-      EventDisplay.all: S.of(context).allEvents,
-      EventDisplay.mine: S.of(context).myEvents,
-    };
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -64,7 +54,7 @@ class CalendarHeader extends StatelessWidget {
             children: [
               MultiSelectDialogField<EventType>(
                 items: availableEventFilters
-                    .map((type) => MultiSelectItem(type, filterNames[type]!))
+                    .map((type) => MultiSelectItem(type, type.getName(context)))
                     .toList(),
                 initialValue: eventFilters,
                 onConfirm: onEventFilterConfirm,
@@ -82,7 +72,7 @@ class CalendarHeader extends StatelessWidget {
                       items: EventDisplay.values
                           .map((e) => DropdownMenuItem<EventDisplay>(
                                 value: e,
-                                child: Text(displayNames[e]!),
+                                child: Text(e.getName(context)),
                               ))
                           .toList(),
                       onChanged: onEventDisplayChanged)

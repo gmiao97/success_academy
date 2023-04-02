@@ -6,6 +6,26 @@ import 'package:timezone/timezone.dart' as tz;
 final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'us-west2');
 
+Future<EventModel> getEvent({
+  required String eventId,
+  required tz.Location location,
+}) async {
+  HttpsCallable callable = functions.httpsCallable(
+    'calendar_functions-get_event',
+    options: HttpsCallableOptions(
+      timeout: const Duration(seconds: 60),
+    ),
+  );
+
+  try {
+    final result = await callable({'eventId': eventId});
+    return EventModel.fromJson(result.data, location: location);
+  } catch (err) {
+    debugPrint('getEvent failed: $err');
+    rethrow;
+  }
+}
+
 Future<List<EventModel>> listEvents({
   required tz.Location location,
   required String timeMin,
@@ -15,7 +35,7 @@ Future<List<EventModel>> listEvents({
   HttpsCallable callable = functions.httpsCallable(
     'calendar_functions-list_events',
     options: HttpsCallableOptions(
-      timeout: const Duration(seconds: 540),
+      timeout: const Duration(seconds: 60),
     ),
   );
 
@@ -42,7 +62,7 @@ Future<dynamic> deleteEvent({
   HttpsCallable callable = functions.httpsCallable(
     'calendar_functions-delete_event',
     options: HttpsCallableOptions(
-      timeout: const Duration(seconds: 540),
+      timeout: const Duration(seconds: 60),
     ),
   );
 
@@ -61,7 +81,7 @@ Future<dynamic> insertEvent(EventModel event) async {
   HttpsCallable callable = functions.httpsCallable(
     'calendar_functions-insert_event',
     options: HttpsCallableOptions(
-      timeout: const Duration(seconds: 540),
+      timeout: const Duration(seconds: 60),
     ),
   );
 
@@ -78,7 +98,7 @@ Future<dynamic> updateEvent(EventModel event) async {
   HttpsCallable callable = functions.httpsCallable(
     'calendar_functions-update_event',
     options: HttpsCallableOptions(
-      timeout: const Duration(seconds: 540),
+      timeout: const Duration(seconds: 60),
     ),
   );
 

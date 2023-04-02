@@ -127,24 +127,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
 
-    Map<EventType, String> eventTypeNames = {
-      EventType.free: S.of(context).free,
-      EventType.preschool: S.of(context).preschool,
-      EventType.private: S.of(context).private,
-    };
-
-    Map<Frequency?, String> frequencyNames = {
-      null: S.of(context).recurNone,
-      Frequency.daily: S.of(context).recurDaily,
-      Frequency.weekly: S.of(context).recurWeekly,
-      Frequency.monthly: S.of(context).recurMonthly,
-    };
-
     return AlertDialog(
-      title: Text(
-        S.of(context).createEvent,
-        style: Theme.of(context).textTheme.headlineSmall,
-      ),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -155,7 +138,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 items: widget.eventTypes
                     .map((eventType) => DropdownMenuItem(
                           value: eventType,
-                          child: Text(eventTypeNames[eventType]!),
+                          child: Text(eventType.getName(context)),
                         ))
                     .toList(),
                 onChanged: (value) {
@@ -167,7 +150,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
               ),
               account.userType == UserType.admin
                   ? DropdownButtonFormField<String>(
-                      items: account.teacherProfileList!
+                      items: account.teacherProfileList
                           .map((profile) => DropdownMenuItem(
                                 value: profile.profileId,
                                 child: Text(
@@ -315,7 +298,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 items: recurFrequencies
                     .map((f) => DropdownMenuItem(
                           value: f,
-                          child: Text(frequencyNames[f]!),
+                          child: Text(frequencyToString(context, f)),
                         ))
                     .toList(),
                 value: _recurFrequency,

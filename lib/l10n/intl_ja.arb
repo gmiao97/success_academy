@@ -67,6 +67,7 @@
   "filter": "レッスンの絞り込み",
   "confirm": "決定",
   "cancel": "キャンセル",
+  "close": "閉じる",
   "free": "フリーレッスン",
   "preschool": "未就学児レッスン",
   "private": "個別レッスン",
@@ -76,11 +77,7 @@
   "privateFilter": "個別レッスン",
   "allEvents": "すべてのレッスン",
   "myEvents": "マイレッスン",
-  "createEvent": "レッスン作成",
-  "editEvent": "レッスン編集",
-  "signupEvent": "レッスン登録",
-  "viewEvent": "レッスンを見る",
-  "signup": "登録",  
+  "signup": "登録",
   "signedUp": "マイレッスン",
   "cancelSignup": "登録解除",
   "signupSuccess": "登録できました",
@@ -106,6 +103,7 @@
   "eventEndLabel": "終了",
   "eventEndValidation": "終了時間を選択してください",
   "eventValidTimeValidation": "開始時間は終了時間より前である必要があります",
+  "teacherTitle": "先生",
   "studentListTitle": "登録されている生徒",
   "recurTitle": "繰り返し",
   "recurEditNotSupported": "繰り返しレッスンの編集や削除は現在サポートされていません。直接Google Calendarで編集や削除をしてください。",
@@ -114,9 +112,11 @@
   "recurWeekly": "毎週",
   "recurMonthly": "毎月",
   "recurEnd": "最終日",
+  "recurUntil": "{until}まで",
 
   "accountUpdated": "アカウント設定を更新しました",
   "failedAccountUpdate": "アカウント設定更新に失敗しました",
+  "failedGetRecurrenceEvent": "エベントの読み込みをできませんでした",
 
   "id": "ID",
   "lastName": "姓名",
@@ -143,5 +143,7 @@
 
   "updated": "更新しました",
   "updateFailed": "更新できません",
-  "promptSave": "保存ボタンを押してください"
+  "promptSave": "保存ボタンを押してください",
+
+  "unspecified": "未定"
 }

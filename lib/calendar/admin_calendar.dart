@@ -9,6 +9,7 @@ import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+@Deprecated('migration to CalendarV2')
 class AdminCalendar extends StatelessWidget {
   const AdminCalendar({
     super.key,
@@ -83,7 +84,7 @@ class AdminCalendar extends StatelessWidget {
           eventLoader: getEventsForDay,
           calendarBuilders: calendarBuilders,
         ),
-        ElevatedButton.icon(
+        IconButton(
           onPressed: () => showDialog(
             context: context,
             builder: (context) => CreateEventDialog(
@@ -102,7 +103,6 @@ class AdminCalendar extends StatelessWidget {
             Icons.add,
             size: 30,
           ),
-          label: Text(S.of(context).createEvent),
         ),
         Text(
           selectedDay != null ? dateFormatter.format(selectedDay!) : '',

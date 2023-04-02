@@ -640,6 +640,16 @@ class S {
     );
   }
 
+  /// `Close`
+  String get close {
+    return Intl.message(
+      'Close',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Free lesson`
   String get free {
     return Intl.message(
@@ -680,36 +690,6 @@ class S {
     );
   }
 
-  /// `Free lessons`
-  String get freeFilter {
-    return Intl.message(
-      'Free lessons',
-      name: 'freeFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Preschool lessons`
-  String get preschoolFilter {
-    return Intl.message(
-      'Preschool lessons',
-      name: 'preschoolFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Private lessons`
-  String get privateFilter {
-    return Intl.message(
-      'Private lessons',
-      name: 'privateFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `All Lessons`
   String get allEvents {
     return Intl.message(
@@ -725,46 +705,6 @@ class S {
     return Intl.message(
       'My Lessons',
       name: 'myEvents',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add lesson`
-  String get createEvent {
-    return Intl.message(
-      'Add lesson',
-      name: 'createEvent',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Edit lesson`
-  String get editEvent {
-    return Intl.message(
-      'Edit lesson',
-      name: 'editEvent',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sign up for lesson`
-  String get signupEvent {
-    return Intl.message(
-      'Sign up for lesson',
-      name: 'signupEvent',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View lesson`
-  String get viewEvent {
-    return Intl.message(
-      'View lesson',
-      name: 'viewEvent',
       desc: '',
       args: [],
     );
@@ -1020,6 +960,16 @@ class S {
     );
   }
 
+  /// `Teacher`
+  String get teacherTitle {
+    return Intl.message(
+      'Teacher',
+      name: 'teacherTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Registered students`
   String get studentListTitle {
     return Intl.message(
@@ -1100,6 +1050,16 @@ class S {
     );
   }
 
+  /// ` until {until}`
+  String recurUntil(Object until) {
+    return Intl.message(
+      ' until $until',
+      name: 'recurUntil',
+      desc: '',
+      args: [until],
+    );
+  }
+
   /// `Account settings updated`
   String get accountUpdated {
     return Intl.message(
@@ -1115,6 +1075,16 @@ class S {
     return Intl.message(
       'Failed to update account settings',
       name: 'failedAccountUpdate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to load event`
+  String get failedGetRecurrenceEvent {
+    return Intl.message(
+      'Failed to load event',
+      name: 'failedGetRecurrenceEvent',
       desc: '',
       args: [],
     );
@@ -1325,6 +1295,16 @@ class S {
     return Intl.message(
       'Please press the save button',
       name: 'promptSave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unspecified`
+  String get unspecified {
+    return Intl.message(
+      'Unspecified',
+      name: 'unspecified',
       desc: '',
       args: [],
     );

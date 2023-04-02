@@ -1,11 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
+import 'package:success_academy/calendar/view_event_dialog.dart';
 import 'package:success_academy/services/event_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
@@ -78,7 +78,8 @@ class _CalendarV2State extends State<CalendarV2> {
 
   void _onTodayButtonClick() {
     setState(() {
-      _focusedDay = _selectedDay = _currentDay;
+      _focusedDay = _selectedDay = _currentDay = tz.TZDateTime.now(
+          tz.getLocation(context.read<AccountModel>().myUser!.timeZone));
     });
     _selectedEvents.value = _getEventsForDay(_selectedDay);
   }
@@ -93,7 +94,9 @@ class _CalendarV2State extends State<CalendarV2> {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
+    final locale = context.select<AccountModel, String>((a) => a.locale);
+    final timeZone =
+        context.select<AccountModel, String>((a) => a.myUser!.timeZone);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -113,7 +116,7 @@ class _CalendarV2State extends State<CalendarV2> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                    DateFormat.yMMM(account.locale).format(day),
+                    DateFormat.yMMM(locale).format(day),
                     style: Theme.of(context)
                         .textTheme
                         .labelLarge!
@@ -124,7 +127,7 @@ class _CalendarV2State extends State<CalendarV2> {
                     icon: const Icon(Icons.today),
                   ),
                   Text(
-                    account.myUser!.timeZone.replaceAll('_', ' '),
+                    timeZone.replaceAll('_', ' '),
                     style: Theme.of(context)
                         .textTheme
                         .labelLarge!
@@ -135,7 +138,7 @@ class _CalendarV2State extends State<CalendarV2> {
             ),
             calendarFormat: CalendarFormat.week,
             daysOfWeekHeight: 20,
-            locale: account.locale,
+            locale: locale,
             currentDay: _currentDay,
             focusedDay: _focusedDay,
             firstDay: _firstDay,
@@ -148,10 +151,13 @@ class _CalendarV2State extends State<CalendarV2> {
             eventLoader: _getEventsForDay,
           ),
         ),
-        Align(
-          child: Text(
-            DateFormat.yMMMMEEEEd(account.locale).format(_selectedDay),
-            style: Theme.of(context).textTheme.titleLarge,
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Text(
+              DateFormat.yMMMMEEEEd(locale).format(_selectedDay),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
         ),
         Expanded(
@@ -166,28 +172,15 @@ class _CalendarV2State extends State<CalendarV2> {
 }
 
 class _EventList extends StatelessWidget {
-  final Map<EventType, Color> _eventColors = {
-    EventType.unknown: Colors.grey[100]!,
-    EventType.free: Colors.amber[100]!,
-    EventType.preschool: Colors.lightBlue[100]!,
-    EventType.private: Colors.purple[100]!,
-  };
-  final Map<EventType, Icon> _eventIcons = {
-    EventType.unknown: const Icon(FontAwesomeIcons.question),
-    EventType.free: const Icon(FontAwesomeIcons.personChalkboard),
-    EventType.preschool: const Icon(FontAwesomeIcons.shapes),
-    EventType.private: const Icon(FontAwesomeIcons.graduationCap),
-  };
+  final List<EventModel> events;
 
-  _EventList({
+  const _EventList({
     required this.events,
   });
 
-  final List<EventModel> events;
-
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
+    final locale = context.select<AccountModel, String>((a) => a.locale);
 
     return ListView.builder(
       itemCount: events.length,
@@ -196,9 +189,9 @@ class _EventList extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1000),
           child: Card(
             elevation: 4,
-            color: _eventColors[events[index].eventType],
+            color: events[index].eventType.getColor(context),
             child: ListTile(
-              leading: _eventIcons[events[index].eventType],
+              leading: events[index].eventType.getIcon(context),
               title: Text(
                 events[index].summary,
                 style: Theme.of(context)
@@ -206,9 +199,27 @@ class _EventList extends StatelessWidget {
                     .titleMedium!
                     .copyWith(fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(
-                '${DateFormat.jm(account.locale).format(events[index].startTime)} - ${DateFormat.jm(account.locale).format(events[index].endTime)}',
-                style: Theme.of(context).textTheme.bodyMedium,
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    events[index].eventType.getName(context),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(fontStyle: FontStyle.italic),
+                  ),
+                  Text(
+                    '${DateFormat.jm(locale).format(events[index].startTime)} - ${DateFormat.jm(locale).format(events[index].endTime)}',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ],
+              ),
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => ViewEventDialog(
+                  event: events[index],
+                ),
               ),
             ),
           ),

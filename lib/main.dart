@@ -33,8 +33,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale =
-        context.select<AccountModel, String>((account) => account.locale);
+    final locale = context.select<AccountModel, String>((a) => a.locale);
 
     // TODO: Import 'dart:io' show Platform; if (Platform.isIOS)
     return MaterialApp(
@@ -71,23 +70,26 @@ class Root extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-    if (account.authStatus == AuthStatus.loading) {
+    final authStatus = context
+        .select<AccountModel, AuthStatus>((account) => account.authStatus);
+    final userType = context.select<AccountModel, UserType>((a) => a.userType);
+
+    if (authStatus == AuthStatus.loading) {
       return const Center(
         child: CircularProgressIndicator(
           value: null,
         ),
       );
     }
-    if (account.authStatus == AuthStatus.emailVerification) {
+    if (authStatus == AuthStatus.emailVerification) {
       return const EmailVerificationPage();
     }
-    if (account.authStatus == AuthStatus.signedOut) {
+    if (authStatus == AuthStatus.signedOut) {
       return const LandingPage();
     }
-    if (account.userType == UserType.studentNoProfile) {
+    if (userType == UserType.studentNoProfile) {
       return const ProfileBrowse();
     }
-    return MyScaffold(userType: account.userType);
+    return MyScaffold(userType: userType);
   }
 }

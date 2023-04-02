@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:success_academy/generated/l10n.dart';
 import 'package:rrule/rrule.dart';
 import 'package:success_academy/constants.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -10,12 +13,60 @@ enum EventType {
   unknown,
   free,
   preschool,
-  private,
+  private;
+
+  String getName(BuildContext context) {
+    switch (this) {
+      case unknown:
+        return "¯\\_(ツ)_/¯";
+      case free:
+        return S.of(context).free;
+      case preschool:
+        return S.of(context).preschool;
+      case private:
+        return S.of(context).private;
+    }
+  }
+
+  Color getColor(BuildContext context) {
+    switch (this) {
+      case unknown:
+        return Colors.grey[100]!;
+      case free:
+        return Colors.amber[100]!;
+      case preschool:
+        return Colors.lightBlue[100]!;
+      case private:
+        return Colors.purple[100]!;
+    }
+  }
+
+  Icon getIcon(BuildContext context) {
+    switch (this) {
+      case unknown:
+        return const Icon(FontAwesomeIcons.question);
+      case free:
+        return const Icon(FontAwesomeIcons.personChalkboard);
+      case preschool:
+        return const Icon(FontAwesomeIcons.shapes);
+      case private:
+        return const Icon(FontAwesomeIcons.graduationCap);
+    }
+  }
 }
 
 enum EventDisplay {
   all,
-  mine,
+  mine;
+
+  String getName(BuildContext context) {
+    switch (this) {
+      case all:
+        return S.of(context).allEvents;
+      case mine:
+        return S.of(context).myEvents;
+    }
+  }
 }
 
 List<Frequency?> recurFrequencies = [
@@ -95,6 +146,7 @@ class EventModel {
   DateTime startTime;
   DateTime endTime;
   String timeZone;
+
   List<String> recurrence;
   String? teacherId;
   List<String> studentIdList = [];

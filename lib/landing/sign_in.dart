@@ -4,8 +4,8 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/constants.dart' as constants;
 
-class SignIn extends StatelessWidget {
-  const SignIn({super.key});
+class SignInDialog extends StatelessWidget {
+  const SignInDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +15,22 @@ class SignIn extends StatelessWidget {
       Navigator.of(context).pop();
     }
 
-    return ConstrainedBox(
-      constraints: const BoxConstraints(
-          minWidth: 400, minHeight: 400, maxWidth: 500, maxHeight: 500),
-      child: const SignInScreen(
-        providerConfigs: [
-          EmailProviderConfiguration(),
-          GoogleProviderConfiguration(
-            clientId: constants.googleAuthProviderConfigurationClientId,
-          ),
-        ],
+    return AlertDialog(
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: 400,
+          minHeight: 400,
+          maxWidth: 500,
+          maxHeight: 500,
+        ),
+        child: const SignInScreen(
+          providerConfigs: [
+            EmailProviderConfiguration(),
+            GoogleProviderConfiguration(
+              clientId: constants.googleAuthProviderConfigurationClientId,
+            ),
+          ],
+        ),
       ),
     );
   }

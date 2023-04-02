@@ -60,10 +60,10 @@ class AccountModel extends ChangeNotifier {
   StudentProfileModel? _studentProfile;
   TeacherProfileModel? _teacherProfile;
   AdminProfileModel? _adminProfile;
-  List<StudentProfileModel>? _studentProfileList;
-  Map<String, StudentProfileModel>? _studentProfileMap;
-  List<TeacherProfileModel>? _teacherProfileList;
-  Map<String, TeacherProfileModel>? _teacherProfileMap;
+  late List<StudentProfileModel> _studentProfileList;
+  late Map<String, StudentProfileModel> _studentProfileMap;
+  late List<TeacherProfileModel> _teacherProfileList;
+  late Map<String, TeacherProfileModel> _teacherProfileMap;
   List<QueryDocumentSnapshot<Object?>> _subscriptionDocs = [];
   SubscriptionPlan? _subscriptionPlan;
 
@@ -75,10 +75,10 @@ class AccountModel extends ChangeNotifier {
   StudentProfileModel? get studentProfile => _studentProfile;
   TeacherProfileModel? get teacherProfile => _teacherProfile;
   AdminProfileModel? get adminProfile => _adminProfile;
-  List<StudentProfileModel>? get studentProfileList => _studentProfileList;
-  Map<String, StudentProfileModel>? get studentProfileMap => _studentProfileMap;
-  List<TeacherProfileModel>? get teacherProfileList => _teacherProfileList;
-  Map<String, TeacherProfileModel>? get teacherProfileModelMap =>
+  List<StudentProfileModel> get studentProfileList => _studentProfileList;
+  Map<String, StudentProfileModel> get studentProfileMap => _studentProfileMap;
+  List<TeacherProfileModel> get teacherProfileList => _teacherProfileList;
+  Map<String, TeacherProfileModel> get teacherProfileModelMap =>
       _teacherProfileMap;
   SubscriptionPlan? get subscriptionPlan => _subscriptionPlan;
   UserType get userType {
@@ -126,10 +126,10 @@ class AccountModel extends ChangeNotifier {
     _firebaseUser = firebaseUser;
     _studentProfileList = await profile_service.getAllStudentProfiles();
     _studentProfileMap =
-        StudentProfileModel.buildStudentProfileMap(_studentProfileList!);
+        StudentProfileModel.buildStudentProfileMap(_studentProfileList);
     _teacherProfileList = await profile_service.getAllTeacherProfiles();
     _teacherProfileMap =
-        TeacherProfileModel.buildTeacherProfileMap(_teacherProfileList!);
+        TeacherProfileModel.buildTeacherProfileMap(_teacherProfileList);
     _subscriptionDocs =
         await stripe_service.getSubscriptionsForUser(firebaseUser.uid);
 
