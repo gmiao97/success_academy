@@ -163,12 +163,6 @@ class _StudentProfileState extends State<StudentProfile> {
                     account.subscriptionPlan != null
                         ? ManageSubscription(
                             subscriptionPlan: account.subscriptionPlan!,
-                            redirectClicked: _redirectClicked,
-                            setRedirectClicked: () {
-                              setState(() {
-                                _redirectClicked = true;
-                              });
-                            },
                           )
                         : CreateSubscription(
                             subscriptionPlan: _subscriptionPlan,
@@ -234,17 +228,20 @@ class _StudentProfileState extends State<StudentProfile> {
   }
 }
 
-class ManageSubscription extends StatelessWidget {
+class ManageSubscription extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
-  final bool redirectClicked;
-  final VoidCallback setRedirectClicked;
 
   const ManageSubscription({
     super.key,
     required this.subscriptionPlan,
-    required this.redirectClicked,
-    required this.setRedirectClicked,
   });
+
+  @override
+  State<ManageSubscription> createState() => _ManageSubscriptionState();
+}
+
+class _ManageSubscriptionState extends State<ManageSubscription> {
+  bool _redirectClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -261,7 +258,7 @@ class ManageSubscription extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Text(
-              getSubscriptionPlanName(context, subscriptionPlan),
+              getSubscriptionPlanName(context, widget.subscriptionPlan),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Row(
@@ -269,22 +266,29 @@ class ManageSubscription extends StatelessWidget {
                 OutlinedButton.icon(
                   icon: const Icon(Icons.exit_to_app),
                   label: Text(S.of(context).manageSubscription),
-                  onPressed: redirectClicked
+                  onPressed: _redirectClicked
                       ? null
                       : () {
-                          setRedirectClicked();
-                          stripe_service.redirectToStripePortal();
+                          setState(() {
+                            _redirectClicked = true;
+                          });
+                          try {
+                            stripe_service.redirectToStripePortal();
+                          } catch (e) {
+                            setState(() {
+                              _redirectClicked = false;
+                            });
+                          }
                         },
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: redirectClicked
-                      ? Transform.scale(
-                          scale: 0.5,
-                          child: const CircularProgressIndicator(),
-                        )
-                      : const SizedBox.shrink(),
-                ),
+                if (_redirectClicked)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Transform.scale(
+                      scale: 0.5,
+                      child: const CircularProgressIndicator(),
+                    ),
+                  ),
               ],
             ),
           ],
@@ -295,6 +299,13 @@ class ManageSubscription extends StatelessWidget {
 }
 
 class CreateSubscription extends StatefulWidget {
+  final SubscriptionPlan subscriptionPlan;
+  final Function(SubscriptionPlan?) onSubscriptionPlanChange;
+  final bool redirectClicked;
+  final Function(bool) setIsReferral;
+  final Function(String?) setReferrer;
+  final VoidCallback onStripeSubmitClicked;
+
   const CreateSubscription({
     super.key,
     required this.subscriptionPlan,
@@ -304,13 +315,6 @@ class CreateSubscription extends StatefulWidget {
     required this.setReferrer,
     required this.onStripeSubmitClicked,
   });
-
-  final SubscriptionPlan subscriptionPlan;
-  final Function(SubscriptionPlan?) onSubscriptionPlanChange;
-  final bool redirectClicked;
-  final Function(bool) setIsReferral;
-  final Function(String?) setReferrer;
-  final VoidCallback onStripeSubmitClicked;
 
   @override
   State<CreateSubscription> createState() => _CreateSubscriptionState();
@@ -378,7 +382,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                     _invalidReferral ? S.of(context).referralValidation : null,
                 suffixIcon: _isReferral
                     ? Icon(Icons.check, color: Theme.of(context).primaryColor)
-                    : const SizedBox.shrink(),
+                    : null,
               ),
               onChanged: (value) {
                 setState(() {
@@ -436,9 +440,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                   ? const TextStyle(decoration: TextDecoration.lineThrough)
                   : null,
             ),
-            _isReferral
-                ? Text(S.of(context).signUpFeeDiscount)
-                : const SizedBox.shrink(),
+            if (_isReferral) Text(S.of(context).signUpFeeDiscount),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(
@@ -450,15 +452,14 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                         ? null
                         : widget.onStripeSubmitClicked,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: widget.redirectClicked
-                        ? Transform.scale(
-                            scale: 0.5,
-                            child: const CircularProgressIndicator(),
-                          )
-                        : const SizedBox.shrink(),
-                  ),
+                  if (widget.redirectClicked)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Transform.scale(
+                        scale: 0.5,
+                        child: const CircularProgressIndicator(),
+                      ),
+                    ),
                 ],
               ),
             ),

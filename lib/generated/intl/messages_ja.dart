@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
         "copy": MessageLookupByLibrary.simpleMessage("コードをコピー"),
+        "createEvent": MessageLookupByLibrary.simpleMessage("エベント作成"),
         "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
         "dateOfBirth": MessageLookupByLibrary.simpleMessage("生年月日"),
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
@@ -82,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventSummaryLabel": MessageLookupByLibrary.simpleMessage("タイトル"),
         "eventSummaryValidation":
             MessageLookupByLibrary.simpleMessage("レッスンのタイトルを入力してください"),
+        "eventTooLongValidation":
+            MessageLookupByLibrary.simpleMessage("エベントの期間は24時間以下である必要があります"),
         "eventValidTimeValidation":
             MessageLookupByLibrary.simpleMessage("開始時間は終了時間より前である必要があります"),
         "failedAccountUpdate":

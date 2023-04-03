@@ -61,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
         "copy": MessageLookupByLibrary.simpleMessage("Copy Code"),
+        "createEvent": MessageLookupByLibrary.simpleMessage("Create event"),
         "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
         "dateOfBirth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
         "dateOfBirthLabel":
@@ -88,6 +89,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventSummaryLabel": MessageLookupByLibrary.simpleMessage("Title"),
         "eventSummaryValidation":
             MessageLookupByLibrary.simpleMessage("Please enter lesson title"),
+        "eventTooLongValidation": MessageLookupByLibrary.simpleMessage(
+            "Event duration must be less than 24 hours"),
         "eventValidTimeValidation": MessageLookupByLibrary.simpleMessage(
             "Start time must be before end time"),
         "failedAccountUpdate": MessageLookupByLibrary.simpleMessage(

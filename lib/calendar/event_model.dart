@@ -143,8 +143,8 @@ class EventModel {
   String? recurrenceId;
   String summary;
   String description;
-  DateTime startTime;
-  DateTime endTime;
+  tz.TZDateTime startTime;
+  tz.TZDateTime endTime;
   String timeZone;
 
   List<String> recurrence;

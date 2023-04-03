@@ -117,9 +117,9 @@ class TeacherProfileModel {
   }
 
   static Map<String, TeacherProfileModel> buildTeacherProfileMap(
-      List<TeacherProfileModel> teacherProfileList) {
+      List<TeacherProfileModel> teacherProfiles) {
     Map<String, TeacherProfileModel> map = {};
-    for (TeacherProfileModel profile in teacherProfileList) {
+    for (TeacherProfileModel profile in teacherProfiles) {
       map[profile._profileId] = profile;
     }
     return map;

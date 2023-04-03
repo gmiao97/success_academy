@@ -790,6 +790,16 @@ class S {
     );
   }
 
+  /// `Create event`
+  String get createEvent {
+    return Intl.message(
+      'Create event',
+      name: 'createEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Title`
   String get eventSummaryLabel {
     return Intl.message(
@@ -955,6 +965,16 @@ class S {
     return Intl.message(
       'Start time must be before end time',
       name: 'eventValidTimeValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event duration must be less than 24 hours`
+  String get eventTooLongValidation {
+    return Intl.message(
+      'Event duration must be less than 24 hours',
+      name: 'eventTooLongValidation',
       desc: '',
       args: [],
     );

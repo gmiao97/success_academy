@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
+import 'package:success_academy/calendar/create_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/calendar/view_event_dialog.dart';
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/services/event_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
@@ -95,6 +98,7 @@ class _CalendarV2State extends State<CalendarV2> {
   @override
   Widget build(BuildContext context) {
     final locale = context.select<AccountModel, String>((a) => a.locale);
+    final userType = context.select<AccountModel, UserType>((a) => a.userType);
     final timeZone =
         context.select<AccountModel, String>((a) => a.myUser!.timeZone);
 
@@ -110,6 +114,10 @@ class _CalendarV2State extends State<CalendarV2> {
           child: TableCalendar(
             headerStyle: const HeaderStyle(
               formatButtonVisible: false,
+              leftChevronPadding: EdgeInsets.all(8),
+              rightChevronPadding: EdgeInsets.all(8),
+              leftChevronMargin: EdgeInsets.symmetric(horizontal: 4),
+              rightChevronMargin: EdgeInsets.symmetric(horizontal: 4),
             ),
             calendarBuilders: CalendarBuilders(
               headerTitleBuilder: (context, day) => Row(
@@ -161,9 +169,36 @@ class _CalendarV2State extends State<CalendarV2> {
           ),
         ),
         Expanded(
-          child: ValueListenableBuilder<List<EventModel>>(
-            valueListenable: _selectedEvents,
-            builder: (context, value, child) => _EventList(events: value),
+          child: Stack(
+            children: [
+              ValueListenableBuilder<List<EventModel>>(
+                valueListenable: _selectedEvents,
+                builder: (context, value, child) => _EventList(events: value),
+              ),
+              if (canAddEvents(userType))
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(kFloatingActionButtonMargin),
+                    child: FloatingActionButton.extended(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => CreateEventDialog(
+                          firstDay: _firstDay,
+                          lastDay: _lastDay,
+                          onRefresh: () {},
+                        ),
+                      ),
+                      icon: const Icon(Icons.add),
+                      label: Text(
+                        S.of(context).createEvent,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ],
@@ -183,6 +218,7 @@ class _EventList extends StatelessWidget {
     final locale = context.select<AccountModel, String>((a) => a.locale);
 
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 80),
       itemCount: events.length,
       itemBuilder: (context, index) => Center(
         child: ConstrainedBox(

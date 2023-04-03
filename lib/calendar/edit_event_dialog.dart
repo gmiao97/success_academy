@@ -142,34 +142,33 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 onChanged: null,
                 value: _eventType,
               ),
-              account.userType == UserType.admin
-                  ? DropdownButtonFormField<String>(
-                      items: account.teacherProfileList
-                          .map((profile) => DropdownMenuItem(
-                                value: profile.profileId,
-                                child: Text(
-                                    '${profile.lastName}, ${profile.firstName}'),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _teacherId = value;
-                        });
-                      },
-                      value: _teacherId,
-                      decoration: InputDecoration(
-                          hintText: 'Teacher',
-                          icon: const Icon(Icons.person_outline),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              setState(() {
-                                _teacherId = null;
-                              });
-                            },
-                          )),
-                    )
-                  : const SizedBox.shrink(),
+              if (account.userType == UserType.admin)
+                DropdownButtonFormField<String>(
+                  items: account.teacherProfileList
+                      .map((profile) => DropdownMenuItem(
+                            value: profile.profileId,
+                            child: Text(
+                                '${profile.lastName}, ${profile.firstName}'),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _teacherId = value;
+                    });
+                  },
+                  value: _teacherId,
+                  decoration: InputDecoration(
+                      hintText: 'Teacher',
+                      icon: const Icon(Icons.person_outline),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          setState(() {
+                            _teacherId = null;
+                          });
+                        },
+                      )),
+                ),
               TextFormField(
                 decoration: InputDecoration(
                   icon: const Icon(Icons.text_snippet_outlined),

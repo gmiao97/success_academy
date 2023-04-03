@@ -91,9 +91,8 @@ class _ProfileBrowseState extends State<ProfileBrowse> {
                   children: [
                     for (final profile in _studentProfiles)
                       _buildProfileCard(context, profile),
-                    _studentProfiles.length < constants.maxProfileCount
-                        ? const _AddProfileWidget()
-                        : const SizedBox.shrink(),
+                    if (_studentProfiles.length < constants.maxProfileCount)
+                      const _AddProfileWidget(),
                   ],
                 ),
               ],

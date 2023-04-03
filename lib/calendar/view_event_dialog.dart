@@ -27,6 +27,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
   EventModel? _recurrenceEvent;
   TeacherProfileModel? _teacher;
   List<StudentProfileModel?> _students = [];
+  bool _isLoadingRecurringEvent = true;
 
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
         );
         setState(() {
           _recurrenceEvent = event;
+          _isLoadingRecurringEvent = false;
         });
       } catch (e) {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -83,7 +85,12 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
         ),
       ],
       content: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500, maxHeight: 600),
+        constraints: const BoxConstraints(
+          minWidth: 300,
+          minHeight: 300,
+          maxWidth: 500,
+          maxHeight: 600,
+        ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -109,7 +116,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                     const WidgetSpan(child: Icon(Icons.access_time)),
                     TextSpan(
                         text:
-                            '${DateFormat.MMMMd(locale).add_jm().format(widget.event.startTime)} - ${DateFormat.jm(locale).format(widget.event.endTime)}')
+                            '${DateFormat.MMMMd(locale).add_jm().format(widget.event.startTime)} - ${DateFormat.MMMMd(locale).add_jm().format(widget.event.endTime)}')
                   ],
                 ),
               ),
@@ -118,7 +125,14 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                   style: Theme.of(context).textTheme.labelLarge,
                   children: [
                     const WidgetSpan(child: Icon(Icons.repeat)),
-                    TextSpan(text: rruleToString(context, rrule))
+                    _isLoadingRecurringEvent
+                        ? WidgetSpan(
+                            child: Transform.scale(
+                              scale: 0.5,
+                              child: const CircularProgressIndicator(),
+                            ),
+                          )
+                        : TextSpan(text: rruleToString(context, rrule))
                   ],
                 ),
               ),
@@ -166,9 +180,8 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                     .copyWith(fontWeight: FontWeight.bold),
               ),
               for (final s in _students)
-                (s != null && userType != UserType.student
-                    ? Text('・${s.lastName} ${s.firstName}')
-                    : const SizedBox.shrink()),
+                if (s != null && userType != UserType.student)
+                  Text('・${s.lastName} ${s.firstName}'),
               const SizedBox(height: 20),
               ConstrainedBox(
                 constraints: const BoxConstraints(

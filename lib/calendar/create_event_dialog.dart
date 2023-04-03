@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 class CreateEventDialog extends StatefulWidget {
+  final String? teacherId;
+  final DateTime firstDay;
+  final DateTime lastDay;
+  final VoidCallback onRefresh;
+
   const CreateEventDialog({
     super.key,
     this.teacherId,
     required this.firstDay,
     required this.lastDay,
-    required this.selectedDay,
-    required this.eventTypes,
     required this.onRefresh,
   });
-
-  final String? teacherId;
-  final DateTime firstDay;
-  final DateTime lastDay;
-  final DateTime? selectedDay;
-  final List<EventType> eventTypes;
-  final void Function() onRefresh;
 
   @override
   State<CreateEventDialog> createState() => _CreateEventDialogState();
@@ -35,21 +32,21 @@ class CreateEventDialog extends StatefulWidget {
 
 class _CreateEventDialogState extends State<CreateEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _dayController = TextEditingController();
   final TextEditingController _recurUntilController = TextEditingController();
-  final TextEditingController _startTimeController = TextEditingController();
-  final TextEditingController _endTimeController = TextEditingController();
-  late DateTime _recurUntilInitialValue;
-  late DateTime _day;
-  DateTime? _recurUntil;
+  final TextEditingController _startController = TextEditingController();
+  final TextEditingController _endController = TextEditingController();
+  late final tz.Location _location;
+  late final String _locale;
+  late final List<EventType> _eventTypes;
+
+  late tz.TZDateTime _start;
+  late tz.TZDateTime _end;
+  tz.TZDateTime? _recurUntil;
+  Frequency? _recurFrequency;
   late String _summary;
   late String _description;
   int? _numPoints;
-  TimeOfDay _startTime = TimeOfDay.now();
-  TimeOfDay _endTime = TimeOfDay.now();
-  late String _timeZoneName;
   late EventType _eventType;
-  Frequency? _recurFrequency;
   bool _submitClicked = false;
   String? _teacherId;
 
@@ -57,27 +54,55 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   void initState() {
     super.initState();
     tz.initializeTimeZones();
-    _timeZoneName = context.read<AccountModel>().myUser!.timeZone;
-    setState(() {
-      _day = widget.selectedDay ?? DateTime.now();
-      _recurUntilInitialValue = _day.add(const Duration(days: 30));
-      _dayController.text = dateFormatter.format(_day);
-      _eventType = widget.eventTypes[0];
-      _teacherId = widget.teacherId;
-    });
+    final account = context.read<AccountModel>();
+    _location = tz.getLocation(account.myUser!.timeZone);
+    _locale = account.locale;
+    _eventTypes = getEventTypesCanCreate(account.userType);
+    _start = tz.TZDateTime.now(_location);
+    _end = _start.add(const Duration(hours: 1));
+    _startController.text = DateFormat.yMMMMd(_locale).add_jm().format(_start);
+    _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
+    _eventType = _eventTypes[0];
+    _teacherId = widget.teacherId;
   }
 
-  void _selectDay() async {
-    final DateTime? day = await showDatePicker(
-      context: context,
-      initialDate: _day,
-      firstDate: widget.firstDay,
-      lastDate: widget.lastDay,
-    );
-    if (day != null) {
+  Future<tz.TZDateTime?> _pickDateTime({required tz.TZDateTime initial}) async {
+    DateTime? date = await showDatePicker(
+        context: context,
+        initialDate: initial,
+        firstDate: widget.firstDay,
+        lastDate: widget.lastDay);
+    if (date == null) {
+      return null;
+    }
+
+    TimeOfDay? time = await showTimePicker(
+        context: context, initialTime: TimeOfDay.fromDateTime(initial));
+    if (time == null) {
+      return null;
+    }
+    return tz.TZDateTime(
+        _location, date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  void _selectStartTime() async {
+    final tz.TZDateTime? dateTime = await _pickDateTime(initial: _start);
+    if (dateTime != null) {
       setState(() {
-        _day = day;
-        _dayController.text = dateFormatter.format(day);
+        _start = dateTime;
+        _startController.text =
+            DateFormat.yMMMMd(_locale).add_jm().format(dateTime);
+      });
+    }
+  }
+
+  void _selectEndTime() async {
+    final tz.TZDateTime? dateTime = await _pickDateTime(initial: _end);
+    if (dateTime != null) {
+      setState(() {
+        _end = dateTime;
+        _endController.text =
+            DateFormat.yMMMMd(_locale).add_jm().format(dateTime);
       });
     }
   }
@@ -85,47 +110,27 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   void _selectRecurUntil() async {
     final DateTime? day = await showDatePicker(
       context: context,
-      initialDate: _recurUntilInitialValue,
+      initialDate: _recurUntil ?? _end,
       firstDate: widget.firstDay,
       lastDate: widget.lastDay,
     );
     if (day != null) {
       setState(() {
-        _recurUntil = day;
-        _recurUntilController.text = dateFormatter.format(day);
-      });
-    }
-  }
-
-  void _selectStartTime() async {
-    final TimeOfDay? time = await showTimePicker(
-      context: context,
-      initialTime: _startTime,
-    );
-    if (time != null) {
-      setState(() {
-        _startTime = time;
-        _startTimeController.text = time.format(context);
-      });
-    }
-  }
-
-  void _selectEndTime() async {
-    final TimeOfDay? time = await showTimePicker(
-      context: context,
-      initialTime: _endTime,
-    );
-    if (time != null) {
-      setState(() {
-        _endTime = time;
-        _endTimeController.text = time.format(context);
+        _recurUntil = tz.TZDateTime(_location, day.year, day.month, day.day)
+            .add(const Duration(days: 1));
+        _recurUntilController.text = DateFormat.yMMMMd(_locale).format(day);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
+    final timeZone =
+        context.select<AccountModel, String>((a) => a.myUser!.timeZone);
+    final userType = context.select<AccountModel, UserType>((a) => a.userType);
+    final teacherProfiles =
+        context.select<AccountModel, List<TeacherProfileModel>>(
+            (a) => a.teacherProfileList);
 
     return AlertDialog(
       content: SingleChildScrollView(
@@ -135,7 +140,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DropdownButtonFormField<EventType>(
-                items: widget.eventTypes
+                items: _eventTypes
                     .map((eventType) => DropdownMenuItem(
                           value: eventType,
                           child: Text(eventType.getName(context)),
@@ -148,34 +153,33 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 },
                 value: _eventType,
               ),
-              account.userType == UserType.admin
-                  ? DropdownButtonFormField<String>(
-                      items: account.teacherProfileList
-                          .map((profile) => DropdownMenuItem(
-                                value: profile.profileId,
-                                child: Text(
-                                    '${profile.lastName}, ${profile.firstName}'),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _teacherId = value;
-                        });
-                      },
-                      value: _teacherId,
-                      decoration: InputDecoration(
-                          hintText: 'Teacher',
-                          icon: const Icon(Icons.person_outline),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              setState(() {
-                                _teacherId = null;
-                              });
-                            },
-                          )),
-                    )
-                  : const SizedBox.shrink(),
+              if (userType == UserType.admin)
+                DropdownButtonFormField<String>(
+                  items: teacherProfiles
+                      .map((profile) => DropdownMenuItem(
+                            value: profile.profileId,
+                            child: Text(
+                                '${profile.lastName}, ${profile.firstName}'),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _teacherId = value;
+                    });
+                  },
+                  value: _teacherId,
+                  decoration: InputDecoration(
+                      hintText: 'Teacher',
+                      icon: const Icon(Icons.person_outline),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          setState(() {
+                            _teacherId = null;
+                          });
+                        },
+                      )),
+                ),
               TextFormField(
                 decoration: InputDecoration(
                   icon: const Icon(Icons.text_snippet_outlined),
@@ -237,23 +241,11 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     )
                   : const SizedBox.shrink(),
               TextFormField(
-                keyboardType: TextInputType.datetime,
+                controller: _startController,
                 readOnly: true,
-                controller: _dayController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.calendar_month),
-                  labelText: S.of(context).eventDateLabel,
-                ),
-                onTap: () {
-                  _selectDay();
-                },
-              ),
-              TextFormField(
                 keyboardType: TextInputType.datetime,
-                readOnly: true,
-                controller: _startTimeController,
                 decoration: InputDecoration(
-                  icon: const Icon(Icons.watch_later_outlined),
+                  icon: const Icon(Icons.access_time),
                   labelText: S.of(context).eventStartLabel,
                 ),
                 onTap: () {
@@ -263,18 +255,15 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   if (value == null || value.isEmpty) {
                     return S.of(context).eventStartValidation;
                   }
-                  if (timeOfDayToInt(_startTime) >= timeOfDayToInt(_endTime)) {
-                    return S.of(context).eventValidTimeValidation;
-                  }
                   return null;
                 },
               ),
               TextFormField(
-                keyboardType: TextInputType.datetime,
+                controller: _endController,
                 readOnly: true,
-                controller: _endTimeController,
+                keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
-                  icon: const Icon(Icons.watch_later_outlined),
+                  icon: const Icon(Icons.access_time),
                   labelText: S.of(context).eventEndLabel,
                 ),
                 onTap: () {
@@ -284,15 +273,18 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   if (value == null || value.isEmpty) {
                     return S.of(context).eventEndValidation;
                   }
+                  if (!_start.isBefore(_end)) {
+                    return S.of(context).eventValidTimeValidation;
+                  }
+                  if (_end.difference(_start) >= const Duration(hours: 24)) {
+                    return S.of(context).eventTooLongValidation;
+                  }
                   return null;
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  S.of(context).recurTitle,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
+              Text(
+                S.of(context).recurTitle,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               DropdownButtonFormField<Frequency>(
                 items: recurFrequencies
@@ -318,9 +310,10 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                           onChanged: (value) {
                             setState(() {
                               if (value!) {
-                                _recurUntil = _recurUntilInitialValue;
-                                _recurUntilController.text = dateFormatter
-                                    .format(_recurUntilInitialValue);
+                                _recurUntil = _end;
+                                _recurUntilController.text =
+                                    DateFormat.yMMMMd(_locale)
+                                        .format(_recurUntil!);
                               } else {
                                 _recurUntil = null;
                               }
@@ -332,9 +325,9 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     ),
                     if (_recurUntil != null)
                       TextFormField(
-                        keyboardType: TextInputType.datetime,
-                        readOnly: true,
                         controller: _recurUntilController,
+                        readOnly: true,
+                        keyboardType: TextInputType.datetime,
                         decoration: InputDecoration(
                           icon: const Icon(Icons.calendar_month),
                           labelText: S.of(context).eventDateLabel,
@@ -373,33 +366,12 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                         description: _description,
                         numPoints:
                             _eventType == EventType.private ? _numPoints : 0,
-                        startTime: tz.TZDateTime(
-                          tz.getLocation(_timeZoneName),
-                          _day.year,
-                          _day.month,
-                          _day.day,
-                          _startTime.hour,
-                          _startTime.minute,
-                        ),
-                        endTime: tz.TZDateTime(
-                          tz.getLocation(_timeZoneName),
-                          _day.year,
-                          _day.month,
-                          _day.day,
-                          _endTime.hour,
-                          _endTime.minute,
-                        ),
+                        startTime: _start,
+                        endTime: _end,
                         recurrence: buildRecurrence(
                             frequency: _recurFrequency,
-                            recurUntil: _recurUntil != null
-                                ? tz.TZDateTime(
-                                        tz.getLocation(_timeZoneName),
-                                        _recurUntil!.year,
-                                        _recurUntil!.month,
-                                        _recurUntil!.day)
-                                    .add(const Duration(days: 1))
-                                : null),
-                        timeZone: _timeZoneName,
+                            recurUntil: _recurUntil),
+                        timeZone: timeZone,
                         teacherId: _teacherId);
                     event_service.insertEvent(event).then(
                       (unused) {

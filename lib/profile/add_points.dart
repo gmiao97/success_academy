@@ -110,7 +110,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                     height: 30,
                   ),
                   _redirectClicked
-                      ? const CircularProgressIndicator(value: null)
+                      ? const CircularProgressIndicator()
                       : ElevatedButton.icon(
                           label: Text(S.of(context).stripePointsPurchase),
                           icon: const Icon(Icons.exit_to_app),

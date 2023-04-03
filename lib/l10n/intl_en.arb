@@ -82,6 +82,7 @@
   "cancelSignupSuccess": "Cancelled sign up",
   "cancelSignupFailure": "Failed to cancel sign up",
   "delete": "Delete",
+  "createEvent": "Create event",
 
   "eventSummaryLabel": "Title",
   "eventSummaryValidation": "Please enter lesson title",
@@ -100,6 +101,7 @@
   "eventEndLabel": "End",
   "eventEndValidation": "Please select an end time",
   "eventValidTimeValidation": "Start time must be before end time",
+  "eventTooLongValidation": "Event duration must be less than 24 hours",
   "teacherTitle": "Teacher",
   "studentListTitle": "Registered students",
   "recurTitle": "Repeat",
