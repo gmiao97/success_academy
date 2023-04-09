@@ -42,7 +42,7 @@ String rruleToString(BuildContext context, RecurrenceRule? rrule) {
   return buffer.toString();
 }
 
-bool canAddEvents(UserType userType) {
+bool canCreateEvents(UserType userType) {
   return userType == UserType.admin || userType == UserType.teacher;
 }
 

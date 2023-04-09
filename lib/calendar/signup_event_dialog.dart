@@ -33,7 +33,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
   late String _summary;
   String? _teacherName;
   late String _description;
-  int? _numPoints;
+  late int _numPoints;
   late TimeOfDay _startTime;
   late TimeOfDay _endTime;
   late EventType _eventType;
@@ -81,7 +81,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
               ),
             ),
             Text(_eventType.getName(context)),
-            Text(S.of(context).eventPointsDisplay(_numPoints ?? 0)),
+            Text(S.of(context).eventPointsDisplay(_numPoints)),
             Text(
               _teacherName ?? '',
               style: Theme.of(context).textTheme.labelLarge,
@@ -124,17 +124,16 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
               )
             : Tooltip(
                 message: _isSignedUp
-                    ? S.of(context).refundPoints(_numPoints ?? 0)
-                    : _accountContext.studentProfile!.numPoints <
-                            (_numPoints ?? 0)
+                    ? S.of(context).refundPoints(_numPoints)
+                    : _accountContext.studentProfile!.numPoints < (_numPoints)
                         ? S.of(context).notEnoughPoints
-                        : S.of(context).usePoints(_numPoints ?? 0,
+                        : S.of(context).usePoints(_numPoints,
                             _accountContext.studentProfile!.numPoints),
                 child: ElevatedButton(
                   onPressed: _day.isAfter(DateTime.now()
                               .subtract(const Duration(days: 1))) &&
                           _accountContext.studentProfile!.numPoints >=
-                              (_numPoints ?? 0)
+                              (_numPoints)
                       ? () {
                           setState(() {
                             _submitClicked = true;
@@ -147,13 +146,13 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                           if (_isSignedUp) {
                             event.studentIdList.remove(
                                 _accountContext.studentProfile!.profileId);
-                            updatedProfile.numPoints += _numPoints ?? 0;
+                            updatedProfile.numPoints += _numPoints;
                           } else {
                             if (!event.studentIdList.contains(
                                 _accountContext.studentProfile!.profileId)) {
                               event.studentIdList.add(
                                   _accountContext.studentProfile!.profileId);
-                              updatedProfile.numPoints -= _numPoints ?? 0;
+                              updatedProfile.numPoints -= _numPoints;
                             }
                           }
                           event_service.updateEvent(event).then((unused) {

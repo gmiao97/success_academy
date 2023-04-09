@@ -41,7 +41,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
   late DateTime? _recurUntil;
   late String _summary;
   late String _description;
-  int? _numPoints;
+  late int _numPoints;
   String? _teacherId;
   List<String> _studentIds = [];
   late TimeOfDay _startTime;
@@ -218,8 +218,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                         icon: const Icon(Icons.add),
                         labelText: S.of(context).eventPointsLabel,
                       ),
-                      initialValue:
-                          _numPoints != null ? _numPoints.toString() : '',
+                      initialValue: _numPoints.toString(),
                       onChanged: (value) {
                         setState(() {
                           _numPoints = int.parse(value);

@@ -40,6 +40,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
+    assert(account.userType == UserType.student);
 
     return Center(
       child: Card(

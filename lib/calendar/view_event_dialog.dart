@@ -144,7 +144,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                     TextSpan(
                         text: S
                             .of(context)
-                            .eventPointsDisplay(widget.event.numPoints ?? 0))
+                            .eventPointsDisplay(widget.event.numPoints))
                   ],
                 ),
               ),

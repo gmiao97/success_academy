@@ -38,7 +38,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
       case UserType.teacher:
         _content = [
           const ProfileHome(),
-          const Calendar(),
+          const CalendarV2(),
           const LessonInfo(),
           const Settings()
         ];

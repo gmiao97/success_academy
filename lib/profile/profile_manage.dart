@@ -307,7 +307,7 @@ class _TeacherData extends DataTableSource {
       ),
       DataCell(
         Text(
-          '${_events.where((e) => e.eventType == EventType.private && e.teacherId == _data[index].profileId).toList().map((event) => event.numPoints).fold(0, (int a, int? b) => a + (b ?? 0))}',
+          '${_events.where((e) => e.eventType == EventType.private && e.teacherId == _data[index].profileId).toList().map((event) => event.numPoints).fold(0, (int a, int b) => a + b)}',
         ),
       ),
     ]);

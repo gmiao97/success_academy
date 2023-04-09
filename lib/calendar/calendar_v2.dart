@@ -101,6 +101,8 @@ class _CalendarV2State extends State<CalendarV2> {
     final userType = context.select<AccountModel, UserType>((a) => a.userType);
     final timeZone =
         context.select<AccountModel, String>((a) => a.myUser!.timeZone);
+    final teacherId = context
+        .select<AccountModel, String?>((a) => a.teacherProfile?.profileId);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -175,7 +177,7 @@ class _CalendarV2State extends State<CalendarV2> {
                 valueListenable: _selectedEvents,
                 builder: (context, value, child) => _EventList(events: value),
               ),
-              if (canAddEvents(userType))
+              if (canCreateEvents(userType))
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
@@ -185,6 +187,7 @@ class _CalendarV2State extends State<CalendarV2> {
                       onPressed: () => showDialog(
                         context: context,
                         builder: (context) => CreateEventDialog(
+                          teacherId: teacherId,
                           firstDay: _firstDay,
                           lastDay: _lastDay,
                           onRefresh: () {},

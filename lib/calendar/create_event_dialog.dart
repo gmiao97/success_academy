@@ -41,29 +41,31 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
 
   late tz.TZDateTime _start;
   late tz.TZDateTime _end;
-  tz.TZDateTime? _recurUntil;
-  Frequency? _recurFrequency;
   late String _summary;
   late String _description;
-  int? _numPoints;
   late EventType _eventType;
-  bool _submitClicked = false;
+  int _numPoints = 0;
   String? _teacherId;
+  tz.TZDateTime? _recurUntil;
+  Frequency? _recurFrequency;
+  bool _submitClicked = false;
 
   @override
   void initState() {
     super.initState();
     tz.initializeTimeZones();
+
     final account = context.read<AccountModel>();
+    assert(canCreateEvents(account.userType));
     _location = tz.getLocation(account.myUser!.timeZone);
     _locale = account.locale;
     _eventTypes = getEventTypesCanCreate(account.userType);
+    assert(_eventTypes.isNotEmpty);
     _start = tz.TZDateTime.now(_location);
     _end = _start.add(const Duration(hours: 1));
     _startController.text = DateFormat.yMMMMd(_locale).add_jm().format(_start);
     _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
     _eventType = _eventTypes[0];
-    _teacherId = widget.teacherId;
   }
 
   Future<tz.TZDateTime?> _pickDateTime({required tz.TZDateTime initial}) async {
@@ -372,7 +374,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                             frequency: _recurFrequency,
                             recurUntil: _recurUntil),
                         timeZone: timeZone,
-                        teacherId: _teacherId);
+                        teacherId: _teacherId ?? widget.teacherId);
                     event_service.insertEvent(event).then(
                       (unused) {
                         widget.onRefresh();

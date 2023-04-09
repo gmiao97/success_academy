@@ -87,6 +87,7 @@ List<String> buildRecurrence(
   ];
 }
 
+// TODO: remove
 Map<EventType, int> _eventColorMap = {
   EventType.unknown: grey,
   EventType.free: yellow,
@@ -95,6 +96,21 @@ Map<EventType, int> _eventColorMap = {
 };
 
 class EventModel {
+  String? eventId;
+  String? recurrenceId;
+  String summary;
+  String description;
+  tz.TZDateTime startTime;
+  tz.TZDateTime endTime;
+  String timeZone;
+
+  List<String> recurrence;
+  String? teacherId;
+  List<String> studentIdList = [];
+  late int numPoints;
+  EventType eventType = EventType.unknown;
+  int fillColor = grey;
+
   EventModel({
     this.eventId,
     required this.eventType,
@@ -106,7 +122,7 @@ class EventModel {
     this.recurrence = const [],
     this.teacherId,
     this.studentIdList = const [],
-    this.numPoints,
+    required this.numPoints,
   });
 
   /// Build object from response returned by Google Calendar API.
@@ -135,24 +151,9 @@ class EventModel {
     studentIdList = extendedProperties['studentIdList'] != null
         ? jsonDecode(extendedProperties['studentIdList']).cast<String>()
         : [];
-    numPoints = int.tryParse(extendedProperties['numPoints'] ?? 'none');
+    numPoints = int.tryParse(extendedProperties['numPoints'] ?? 'none') ?? 0;
     fillColor = _eventColorMap[eventType]!;
   }
-
-  String? eventId;
-  String? recurrenceId;
-  String summary;
-  String description;
-  tz.TZDateTime startTime;
-  tz.TZDateTime endTime;
-  String timeZone;
-
-  List<String> recurrence;
-  String? teacherId;
-  List<String> studentIdList = [];
-  int? numPoints;
-  EventType eventType = EventType.unknown;
-  int fillColor = grey;
 
   Map<String, Object?> toJson() {
     return {

@@ -40,7 +40,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
       case UserType.teacher:
         _content = [
           const ProfileHome(),
-          const Calendar(),
+          const CalendarV2(),
           const LessonInfo(),
           const Settings()
         ];

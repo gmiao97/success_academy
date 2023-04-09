@@ -21,6 +21,13 @@ String getSubscriptionPlanName(BuildContext context, SubscriptionPlan? plan) {
 }
 
 class StudentProfileModel {
+  String _profileId = '';
+  late String lastName;
+  late String firstName;
+  late DateTime dateOfBirth;
+  int numPoints;
+  String? referrer;
+
   StudentProfileModel() : numPoints = 0;
 
   StudentProfileModel.fromFirestoreJson(
@@ -50,16 +57,6 @@ class StudentProfileModel {
         userId: userId, profileId: json['id'] as String);
     return profile;
   }
-
-  // TODO: Add field to indicate whether student has already had a subscription.
-
-  /// Store the profile document id in order to add it to subscription metadata
-  String _profileId = '';
-  late String lastName;
-  late String firstName;
-  late DateTime dateOfBirth;
-  int numPoints;
-  String? referrer;
 
   String get profileId => _profileId;
 
