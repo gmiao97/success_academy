@@ -190,6 +190,7 @@ class _CalendarV2State extends State<CalendarV2> {
                           teacherId: teacherId,
                           firstDay: _firstDay,
                           lastDay: _lastDay,
+                          selectedDay: _selectedDay,
                           onRefresh: () {},
                         ),
                       ),

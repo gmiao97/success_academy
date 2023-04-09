@@ -90,6 +90,7 @@ class AdminCalendar extends StatelessWidget {
             builder: (context) => CreateEventDialog(
               firstDay: firstDay,
               lastDay: lastDay,
+              selectedDay: selectedDay ?? DateTime.now(),
               onRefresh: onRefresh,
             ),
           ),

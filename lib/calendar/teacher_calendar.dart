@@ -94,6 +94,7 @@ class TeacherCalendar extends StatelessWidget {
               teacherId: account.teacherProfile!.profileId,
               firstDay: firstDay,
               lastDay: lastDay,
+              selectedDay: selectedDay ?? DateTime.now(),
               onRefresh: onRefresh,
             ),
           ),

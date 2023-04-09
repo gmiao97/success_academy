@@ -16,6 +16,7 @@ class CreateEventDialog extends StatefulWidget {
   final String? teacherId;
   final DateTime firstDay;
   final DateTime lastDay;
+  final DateTime selectedDay;
   final VoidCallback onRefresh;
 
   const CreateEventDialog({
@@ -23,6 +24,7 @@ class CreateEventDialog extends StatefulWidget {
     this.teacherId,
     required this.firstDay,
     required this.lastDay,
+    required this.selectedDay,
     required this.onRefresh,
   });
 
@@ -64,8 +66,8 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     assert(_eventTypes.isNotEmpty);
 
     final now = tz.TZDateTime.now(_location);
-    _start = tz.TZDateTime(
-        _location, now.year, now.month, now.day, now.hour, now.minute);
+    _start = tz.TZDateTime(_location, widget.selectedDay.year,
+        widget.selectedDay.month, widget.selectedDay.day, now.hour, now.minute);
     _end = _start.add(const Duration(hours: 1));
     _startController.text = DateFormat.yMMMMd(_locale).add_jm().format(_start);
     _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
@@ -95,9 +97,12 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     final tz.TZDateTime? dateTime = await _pickDateTime(initial: _start);
     if (dateTime != null) {
       setState(() {
+        final delta = _end.difference(_start);
         _start = dateTime;
         _startController.text =
-            DateFormat.yMMMMd(_locale).add_jm().format(dateTime);
+            DateFormat.yMMMMd(_locale).add_jm().format(_start);
+        _end = _start.add(delta);
+        _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
       });
     }
   }
@@ -107,8 +112,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     if (dateTime != null) {
       setState(() {
         _end = dateTime;
-        _endController.text =
-            DateFormat.yMMMMd(_locale).add_jm().format(dateTime);
+        _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
       });
     }
   }
@@ -375,8 +379,11 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           },
         ),
         _submitClicked
-            ? const CircularProgressIndicator(
-                value: null,
+            ? Transform.scale(
+                scale: 0.5,
+                child: const CircularProgressIndicator(
+                  value: null,
+                ),
               )
             : ElevatedButton(
                 child: Text(S.of(context).confirm),

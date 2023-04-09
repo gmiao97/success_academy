@@ -64,6 +64,8 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
           );
         });
       }
+    } else {
+      _isLoadingRecurringEvent = false;
     }
   }
 
