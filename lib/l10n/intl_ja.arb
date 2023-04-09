@@ -110,7 +110,7 @@
   "recurDaily": "毎日",
   "recurWeekly": "毎週",
   "recurMonthly": "毎月",
-  "recurEnd": "最終日",
+  "recurEnd": "終了日",
   "recurUntil": "{until}まで",
 
   "accountUpdated": "アカウント設定を更新しました",

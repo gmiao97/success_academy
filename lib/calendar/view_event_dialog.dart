@@ -86,7 +86,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
       ],
       content: ConstrainedBox(
         constraints: const BoxConstraints(
-          minWidth: 300,
+          minWidth: 350,
           minHeight: 300,
           maxWidth: 500,
           maxHeight: 600,

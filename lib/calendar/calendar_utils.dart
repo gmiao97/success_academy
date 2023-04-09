@@ -8,10 +8,7 @@ import 'package:success_academy/generated/l10n.dart';
 
 int timeOfDayToInt(TimeOfDay time) => time.hour * 60 + time.minute;
 
-String frequencyToString(BuildContext context, Frequency? frequency) {
-  if (frequency == null) {
-    return S.of(context).recurNone;
-  }
+String frequencyToString(BuildContext context, Frequency frequency) {
   if (frequency == Frequency.daily) {
     return S.of(context).recurDaily;
   }
@@ -40,6 +37,13 @@ String rruleToString(BuildContext context, RecurrenceRule? rrule) {
         .recurUntil(DateFormat.yMMMMd(locale).format(rrule.until!)));
   }
   return buffer.toString();
+}
+
+List<String> buildRecurrence({required Frequency frequency, DateTime? until}) {
+  return [
+    RecurrenceRule(frequency: frequency, until: until?.toUtc())
+        .toString(options: const RecurrenceRuleToStringOptions(isTimeUtc: true))
+  ];
 }
 
 bool canCreateEvents(UserType userType) {

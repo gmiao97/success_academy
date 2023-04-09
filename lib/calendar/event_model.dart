@@ -69,23 +69,11 @@ enum EventDisplay {
   }
 }
 
-List<Frequency?> recurFrequencies = [
-  null,
+List<Frequency> recurFrequencies = [
   Frequency.daily,
   Frequency.weekly,
   Frequency.monthly
 ];
-
-List<String> buildRecurrence(
-    {required Frequency? frequency, DateTime? recurUntil}) {
-  if (frequency == null) {
-    return [];
-  }
-  return [
-    RecurrenceRule(frequency: frequency, until: recurUntil?.toUtc())
-        .toString(options: const RecurrenceRuleToStringOptions(isTimeUtc: true))
-  ];
-}
 
 // TODO: remove
 Map<EventType, int> _eventColorMap = {
