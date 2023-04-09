@@ -92,7 +92,7 @@ class _SignupFormState extends State<_SignupForm> {
           const SizedBox(height: 25),
           TextFormField(
             decoration: InputDecoration(
-              icon: const Icon(Icons.account_circle),
+              icon: const Icon(Icons.account_box),
               labelText: S.of(context).lastNameLabel,
               hintText: S.of(context).lastNameHint,
             ),
@@ -108,7 +108,7 @@ class _SignupFormState extends State<_SignupForm> {
           ),
           TextFormField(
             decoration: InputDecoration(
-              icon: const Icon(Icons.account_circle),
+              icon: const Icon(Icons.account_box),
               labelText: S.of(context).firstNameLabel,
               hintText: S.of(context).firstNameHint,
             ),

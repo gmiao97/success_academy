@@ -257,6 +257,11 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                         },
                       )
                     : const SizedBox.shrink(),
+                const SizedBox(height: 8),
+                Text(
+                  '${S.of(context).timeZoneLabel}: ${timeZone.replaceAll('_', ' ')}',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
                 TextFormField(
                   controller: _startController,
                   readOnly: true,
