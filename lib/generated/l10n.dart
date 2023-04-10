@@ -610,11 +610,21 @@ class S {
     );
   }
 
-  /// `Lesson Filter`
+  /// `Filter`
   String get filter {
     return Intl.message(
-      'Lesson Filter',
+      'Filter',
       name: 'filter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson type`
+  String get eventType {
+    return Intl.message(
+      'Lesson type',
+      name: 'eventType',
       desc: '',
       args: [],
     );

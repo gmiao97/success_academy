@@ -91,13 +91,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please enter lesson title"),
         "eventTooLongValidation": MessageLookupByLibrary.simpleMessage(
             "Event duration must be less than 24 hours"),
+        "eventType": MessageLookupByLibrary.simpleMessage("Lesson type"),
         "eventValidTimeValidation": MessageLookupByLibrary.simpleMessage(
             "Start time must be before end time"),
         "failedAccountUpdate": MessageLookupByLibrary.simpleMessage(
             "Failed to update account settings"),
         "failedGetRecurrenceEvent":
             MessageLookupByLibrary.simpleMessage("Failed to load event"),
-        "filter": MessageLookupByLibrary.simpleMessage("Lesson Filter"),
+        "filter": MessageLookupByLibrary.simpleMessage("Filter"),
         "filterTitle":
             MessageLookupByLibrary.simpleMessage("Display by lesson type"),
         "firstName": MessageLookupByLibrary.simpleMessage("First name"),

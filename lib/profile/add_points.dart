@@ -31,9 +31,9 @@ class _AddPointsFormState extends State<_AddPointsForm> {
     10000: 'promo_1MaUcHK9gCxRnlEiK2ybiGGA',
   };
 
-  void _onPointsChanged(value) {
+  void _onPointsChanged(int? value) {
     setState(() {
-      _numPoints = value;
+      _numPoints = value!;
     });
   }
 

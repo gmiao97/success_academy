@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_utils.dart';
@@ -22,17 +23,20 @@ class CalendarV2 extends StatefulWidget {
 }
 
 class _CalendarV2State extends State<CalendarV2> {
+  late final List<EventType> _availableEventTypes;
   late final DateTime _firstDay;
   late final DateTime _lastDay;
-  late DateTime _currentDay;
-  late DateTime _focusedDay;
-  late DateTime _selectedDay;
-  bool _showLoadingIndicator = false;
   final ValueNotifier<List<EventModel>> _selectedEvents = ValueNotifier([]);
   final Map<DateTime, List<EventModel>> _events = HashMap(
     equals: (a, b) => isSameDay(a, b),
     hashCode: (e) => DateUtils.dateOnly(e).hashCode,
   );
+  late DateTime _currentDay;
+  late DateTime _focusedDay;
+  late DateTime _selectedDay;
+  late List<EventType> _selectedEventTypes;
+  EventDisplay _eventDisplay = EventDisplay.all;
+  bool _showLoadingIndicator = false;
 
   @override
   void initState() {
@@ -43,6 +47,9 @@ class _CalendarV2State extends State<CalendarV2> {
         tz.TZDateTime.now(tz.getLocation(account.myUser!.timeZone));
     _firstDay = _currentDay.subtract(const Duration(days: 365));
     _lastDay = _currentDay.add(const Duration(days: 365));
+    _availableEventTypes = _selectedEventTypes =
+        getEventTypesCanView(account.userType, account.subscriptionPlan);
+    assert(_selectedEventTypes.isNotEmpty);
   }
 
   @override
@@ -57,15 +64,32 @@ class _CalendarV2State extends State<CalendarV2> {
     setState(() {
       _showLoadingIndicator = true;
     });
-    final account = context.watch<AccountModel>();
+    final account = context.read<AccountModel>();
     final location = tz.getLocation(account.myUser!.timeZone);
 
     final singleEvents = (await listEvents(
-        location: location,
-        timeMin:
-            _currentDay.subtract(const Duration(days: 28)).toIso8601String(),
-        timeMax: _currentDay.add(const Duration(days: 28)).toIso8601String(),
-        singleEvents: true));
+            location: location,
+            timeMin: _currentDay
+                .subtract(const Duration(days: 28))
+                .toIso8601String(),
+            timeMax:
+                _currentDay.add(const Duration(days: 28)).toIso8601String(),
+            singleEvents: true))
+        .where((event) {
+      if (!_selectedEventTypes.contains(event.eventType)) {
+        return false;
+      }
+      if (_eventDisplay == EventDisplay.mine) {
+        if (account.userType == UserType.teacher) {
+          return event.teacherId == account.teacherProfile!.profileId;
+        }
+        if (account.userType == UserType.student) {
+          return event.studentIdList
+              .contains(account.studentProfile!.profileId);
+        }
+      }
+      return true;
+    }).toList();
 
     setState(() {
       _events.clear();
@@ -87,6 +111,15 @@ class _CalendarV2State extends State<CalendarV2> {
     _selectedEvents.value = _getEventsForDay(_selectedDay);
   }
 
+  void _onEventFiltersChanged(
+      List<EventType> eventTypes, EventDisplay eventDisplay) {
+    setState(() {
+      _selectedEventTypes = eventTypes;
+      _eventDisplay = eventDisplay;
+    });
+    _setEvents();
+  }
+
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       _selectedDay = selectedDay;
@@ -99,8 +132,6 @@ class _CalendarV2State extends State<CalendarV2> {
   Widget build(BuildContext context) {
     final locale = context.select<AccountModel, String>((a) => a.locale);
     final userType = context.select<AccountModel, UserType>((a) => a.userType);
-    final timeZone =
-        context.select<AccountModel, String>((a) => a.myUser!.timeZone);
     final teacherId = context
         .select<AccountModel, String?>((a) => a.teacherProfile?.profileId);
 
@@ -122,28 +153,13 @@ class _CalendarV2State extends State<CalendarV2> {
               rightChevronMargin: EdgeInsets.symmetric(horizontal: 4),
             ),
             calendarBuilders: CalendarBuilders(
-              headerTitleBuilder: (context, day) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    DateFormat.yMMM(locale).format(day),
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    onPressed: _onTodayButtonClick,
-                    icon: const Icon(Icons.today),
-                  ),
-                  Text(
-                    timeZone.replaceAll('_', ' '),
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
+              headerTitleBuilder: (context, day) => _CalendarHeader(
+                day: day,
+                availableEventTypes: _availableEventTypes,
+                selectedEventTypes: _selectedEventTypes,
+                eventDisplay: _eventDisplay,
+                onTodayButtonClick: _onTodayButtonClick,
+                onEventFiltersChanged: _onEventFiltersChanged,
               ),
             ),
             calendarFormat: CalendarFormat.week,
@@ -205,6 +221,150 @@ class _CalendarV2State extends State<CalendarV2> {
             ],
           ),
         ),
+      ],
+    );
+  }
+}
+
+class _CalendarHeader extends StatefulWidget {
+  final DateTime day;
+  final List<EventType> availableEventTypes;
+  final List<EventType> selectedEventTypes;
+  final EventDisplay eventDisplay;
+  final VoidCallback onTodayButtonClick;
+  final void Function(List<EventType>, EventDisplay) onEventFiltersChanged;
+
+  const _CalendarHeader({
+    required this.day,
+    required this.availableEventTypes,
+    required this.selectedEventTypes,
+    required this.eventDisplay,
+    required this.onTodayButtonClick,
+    required this.onEventFiltersChanged,
+  });
+
+  @override
+  State<_CalendarHeader> createState() => _CalendarHeaderState();
+}
+
+class _CalendarHeaderState extends State<_CalendarHeader> {
+  // Track local copy of event display radio and set calendar's event display
+  // state together with event types when confirm is clicked.
+  late EventDisplay _eventDisplay;
+
+  @override
+  void initState() {
+    super.initState();
+    _eventDisplay = widget.eventDisplay;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = context.select<AccountModel, String>((a) => a.locale);
+    final timeZone =
+        context.select<AccountModel, String>((a) => a.myUser!.timeZone);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              DateFormat.yMMM(locale).format(widget.day),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              timeZone.replaceAll('_', ' '),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TextButton.icon(
+              icon: const Icon(Icons.filter_list),
+              label: Text(S.of(context).filter),
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                builder: (context) => StatefulBuilder(
+                  builder: (context, setState) => SizedBox(
+                    height: 400,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          Text(
+                            S.of(context).filter,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          Column(
+                            children: [
+                              RadioListTile<EventDisplay>(
+                                title: Text(EventDisplay.all.getName(context)),
+                                value: EventDisplay.all,
+                                groupValue: _eventDisplay,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _eventDisplay = value!;
+                                  });
+                                },
+                              ),
+                              RadioListTile<EventDisplay>(
+                                title: Text(EventDisplay.mine.getName(context)),
+                                value: EventDisplay.mine,
+                                groupValue: _eventDisplay,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _eventDisplay = value!;
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                          Expanded(
+                            child: MultiSelectBottomSheet<EventType>(
+                              items: widget.availableEventTypes
+                                  .map((e) =>
+                                      MultiSelectItem(e, e.getName(context)))
+                                  .toList(),
+                              initialValue: widget.selectedEventTypes,
+                              title: Text(
+                                S.of(context).eventType,
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              listType: MultiSelectListType.CHIP,
+                              confirmText: Text(S.of(context).confirm),
+                              cancelText: Text(S.of(context).cancel),
+                              initialChildSize: 1.0,
+                              maxChildSize: 1.0,
+                              onConfirm: (values) {
+                                widget.onEventFiltersChanged(
+                                    values, _eventDisplay);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            TextButton.icon(
+              icon: Text(S.of(context).today),
+              label: const Icon(Icons.today),
+              onPressed: widget.onTodayButtonClick,
+            ),
+          ],
+        )
       ],
     );
   }

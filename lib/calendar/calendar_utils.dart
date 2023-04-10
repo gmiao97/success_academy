@@ -5,6 +5,7 @@ import 'package:rrule/rrule.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/profile_model.dart';
 
 int timeOfDayToInt(TimeOfDay time) => time.hour * 60 + time.minute;
 
@@ -59,4 +60,34 @@ List<EventType> getEventTypesCanCreate(UserType userType) {
     default:
       return [];
   }
+}
+
+List<EventType> getEventTypesCanView(
+    UserType userType, SubscriptionPlan? subscription) {
+  if ([UserType.admin, UserType.teacher].contains(userType)) {
+    return [
+      EventType.free,
+      EventType.preschool,
+      EventType.private,
+    ];
+  }
+  if (userType == UserType.student) {
+    if (subscription == null || subscription == SubscriptionPlan.monthly) {
+      return [];
+    }
+    if (subscription == SubscriptionPlan.minimumPreschool) {
+      return [
+        EventType.free,
+        EventType.preschool,
+        EventType.private,
+      ];
+    }
+    if (subscription == SubscriptionPlan.minimum) {
+      return [
+        EventType.free,
+        EventType.private,
+      ];
+    }
+  }
+  return [];
 }

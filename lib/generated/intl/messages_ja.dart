@@ -85,13 +85,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("レッスンのタイトルを入力してください"),
         "eventTooLongValidation":
             MessageLookupByLibrary.simpleMessage("エベントの期間は24時間以下である必要があります"),
+        "eventType": MessageLookupByLibrary.simpleMessage("レッスンの種類"),
         "eventValidTimeValidation":
             MessageLookupByLibrary.simpleMessage("開始時間は終了時間より前である必要があります"),
         "failedAccountUpdate":
             MessageLookupByLibrary.simpleMessage("アカウント設定更新に失敗しました"),
         "failedGetRecurrenceEvent":
             MessageLookupByLibrary.simpleMessage("エベントの読み込みをできませんでした"),
-        "filter": MessageLookupByLibrary.simpleMessage("レッスンの絞り込み"),
+        "filter": MessageLookupByLibrary.simpleMessage("フィルター"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("レッスンの種類で表示する"),
         "firstName": MessageLookupByLibrary.simpleMessage("名"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("太郎"),
