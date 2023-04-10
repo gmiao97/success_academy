@@ -68,14 +68,13 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                           studentProfile.numPoints -= widget.event.numPoints;
                           try {
                             await event_service.updateEvent(widget.event);
-                            if (!context.mounted) {
-                              return;
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(S.of(context).signupSuccess),
+                                ),
+                              );
                             }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(S.of(context).signupSuccess),
-                              ),
-                            );
                           } catch (e) {
                             widget.event.studentIdList.removeWhere(
                                 (id) => id == studentProfile.profileId);

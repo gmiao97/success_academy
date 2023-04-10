@@ -12,12 +12,12 @@ import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class ViewEventDialog extends StatefulWidget {
+  final EventModel event;
+
   const ViewEventDialog({
     super.key,
     required this.event,
   });
-
-  final EventModel event;
 
   @override
   State<ViewEventDialog> createState() => _ViewEventDialogState();

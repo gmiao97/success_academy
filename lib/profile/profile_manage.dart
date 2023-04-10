@@ -316,9 +316,11 @@ class _TeacherData extends DataTableSource {
 }
 
 class _StudentData extends DataTableSource {
-  _StudentData({required List<StudentProfileModel> data}) : _data = data;
-
   final List<StudentProfileModel> _data;
+
+  _StudentData({
+    required List<StudentProfileModel> data,
+  }) : _data = data;
 
   @override
   bool get isRowCountApproximate => false;

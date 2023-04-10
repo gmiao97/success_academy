@@ -7,7 +7,7 @@ import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
 
-@Deprecated('To be removed')
+// TODO: Remove
 int timeOfDayToInt(TimeOfDay time) => time.hour * 60 + time.minute;
 
 String frequencyToString(BuildContext context, Frequency frequency) {

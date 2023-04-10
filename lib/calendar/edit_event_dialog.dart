@@ -12,6 +12,12 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 class EditEventDialog extends StatefulWidget {
+  final EventModel event;
+  final DateTime firstDay;
+  final DateTime lastDay;
+  final List<EventType> eventTypes;
+  final void Function() onRefresh;
+
   const EditEventDialog({
     super.key,
     required this.event,
@@ -20,12 +26,6 @@ class EditEventDialog extends StatefulWidget {
     required this.eventTypes,
     required this.onRefresh,
   });
-
-  final EventModel event;
-  final DateTime firstDay;
-  final DateTime lastDay;
-  final List<EventType> eventTypes;
-  final void Function() onRefresh;
 
   @override
   State<EditEventDialog> createState() => _EditEventDialogState();

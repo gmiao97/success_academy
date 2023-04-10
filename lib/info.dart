@@ -7,15 +7,6 @@ class Info extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _Info();
-  }
-}
-
-class _Info extends StatelessWidget {
-  const _Info();
-
-  @override
-  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(

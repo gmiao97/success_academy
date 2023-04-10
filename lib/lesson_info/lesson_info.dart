@@ -1,9 +1,7 @@
 import 'package:editable/editable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/lesson_info/lesson_model.dart';
 import 'package:success_academy/profile/profile_model.dart';
@@ -81,13 +79,16 @@ class _LessonInfoState extends State<LessonInfo> {
                           onPressed: () async {
                             if (!await launchUrl(Uri.parse(
                                 'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list'))) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.error,
-                                  content: Text(S.of(context).openLinkFailure),
-                                ),
-                              );
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                    content:
+                                        Text(S.of(context).openLinkFailure),
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: Text(S.of(context).freeLessonTimeTable),
@@ -96,13 +97,16 @@ class _LessonInfoState extends State<LessonInfo> {
                           onPressed: () async {
                             if (!await launchUrl(Uri.parse(
                                 'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list'))) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.error,
-                                  content: Text(S.of(context).openLinkFailure),
-                                ),
-                              );
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                    content:
+                                        Text(S.of(context).openLinkFailure),
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: Text(S.of(context).freeLessonMaterials),
@@ -125,9 +129,12 @@ class _LessonInfoState extends State<LessonInfo> {
 }
 
 class ZoomInfo extends StatelessWidget {
-  const ZoomInfo({super.key, required this.zoomInfo});
-
   final List<LessonModel> zoomInfo;
+
+  const ZoomInfo({
+    super.key,
+    required this.zoomInfo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -183,10 +190,13 @@ class ZoomInfo extends StatelessWidget {
 }
 
 class _ZoomInfoDataSource extends DataTableSource {
-  _ZoomInfoDataSource({required this.context, required this.data});
-
   final BuildContext context;
   final List<LessonModel> data;
+
+  _ZoomInfoDataSource({
+    required this.context,
+    required this.data,
+  });
 
   @override
   bool get isRowCountApproximate => false;
@@ -202,21 +212,23 @@ class _ZoomInfoDataSource extends DataTableSource {
     return DataRow(cells: [
       DataCell(Text(data[i].name)),
       DataCell(InkWell(
-        child: Text(
+        child: const Text(
           'Zoom',
           style: TextStyle(
             decoration: TextDecoration.underline,
-            color: constants.linkColor,
+            color: Colors.blue,
           ),
         ),
         onTap: () async {
           if (!await launchUrl(Uri.parse(data[i].zoomLink))) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Theme.of(context).errorColor,
-                content: Text(S.of(context).openLinkFailure),
-              ),
-            );
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  content: Text(S.of(context).openLinkFailure),
+                ),
+              );
+            }
           }
         },
       )),
@@ -227,9 +239,12 @@ class _ZoomInfoDataSource extends DataTableSource {
 }
 
 class EditableZoomInfo extends StatelessWidget {
-  const EditableZoomInfo({super.key, required this.zoomInfo});
-
   final List<LessonModel> zoomInfo;
+
+  const EditableZoomInfo({
+    super.key,
+    required this.zoomInfo,
+  });
 
   @override
   Widget build(BuildContext context) {

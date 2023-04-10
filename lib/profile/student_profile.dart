@@ -417,9 +417,9 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                 InkWell(
                   child: Text(
                     S.of(context).agreeToTerms,
-                    style: TextStyle(
+                    style: const TextStyle(
                       decoration: TextDecoration.underline,
-                      color: constants.linkColor,
+                      color: Colors.blue,
                     ),
                   ),
                   onTap: () {

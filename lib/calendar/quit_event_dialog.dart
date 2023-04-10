@@ -66,15 +66,14 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                           studentProfile.numPoints += widget.event.numPoints;
                           try {
                             await event_service.updateEvent(widget.event);
-                            if (!context.mounted) {
-                              return;
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text(S.of(context).cancelSignupSuccess),
+                                ),
+                              );
                             }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content:
-                                    Text(S.of(context).cancelSignupSuccess),
-                              ),
-                            );
                           } catch (e) {
                             widget.event.studentIdList
                                 .add(studentProfile.profileId);

@@ -8,7 +8,6 @@ import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 
-// TODO: Make UI responsive for different screen sizes
 class ProfileBrowse extends StatefulWidget {
   const ProfileBrowse({super.key});
 
@@ -17,6 +16,7 @@ class ProfileBrowse extends StatefulWidget {
 }
 
 class _ProfileBrowseState extends State<ProfileBrowse> {
+  static const maxProfiles = 5;
   List<StudentProfileModel> _studentProfiles = [];
 
   @override
@@ -32,6 +32,24 @@ class _ProfileBrowseState extends State<ProfileBrowse> {
     setState(() {
       _studentProfiles = studentProfiles;
     });
+  }
+
+  Widget _buildProfileCard(BuildContext context, StudentProfileModel profile) {
+    final account = context.watch<AccountModel>();
+
+    return CircleAvatar(
+      radius: 100,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      child: InkWell(
+        onTap: () {
+          account.studentProfile = profile;
+        },
+        child: Text(
+          profile.firstName,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+      ),
+    );
   }
 
   @override
@@ -91,7 +109,7 @@ class _ProfileBrowseState extends State<ProfileBrowse> {
                   children: [
                     for (final profile in _studentProfiles)
                       _buildProfileCard(context, profile),
-                    if (_studentProfiles.length < constants.maxProfileCount)
+                    if (_studentProfiles.length < maxProfiles)
                       const _AddProfileWidget(),
                   ],
                 ),
@@ -102,24 +120,6 @@ class _ProfileBrowseState extends State<ProfileBrowse> {
       ),
     );
   }
-}
-
-Widget _buildProfileCard(BuildContext context, StudentProfileModel profile) {
-  final account = context.watch<AccountModel>();
-
-  return CircleAvatar(
-    radius: 100,
-    backgroundColor: Theme.of(context).colorScheme.secondary,
-    child: InkWell(
-      onTap: () {
-        account.studentProfile = profile;
-      },
-      child: Text(
-        profile.firstName,
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-    ),
-  );
 }
 
 class _AddProfileWidget extends StatelessWidget {

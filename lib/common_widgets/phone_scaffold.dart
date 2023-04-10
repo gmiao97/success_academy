@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/account/account_settings.dart';
-import 'package:success_academy/calendar/calendar_v2.dart';
+import 'package:success_academy/calendar/calendar.dart';
 import 'package:success_academy/lesson_info/lesson_info.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/add_points.dart';
@@ -28,7 +28,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
       case UserType.admin:
         _content = [
           const ProfileHome(),
-          const CalendarV2(),
+          const Calendar(),
           const LessonInfo(),
           const ManageUsers(),
           const Settings()
@@ -37,7 +37,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
       case UserType.teacher:
         _content = [
           const ProfileHome(),
-          const CalendarV2(),
+          const Calendar(),
           const LessonInfo(),
           const Settings()
         ];
@@ -45,7 +45,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
       case UserType.student:
         _content = [
           const ProfileHome(),
-          const CalendarV2(),
+          const Calendar(),
           const LessonInfo(),
           const AddPoints(),
           const Settings()

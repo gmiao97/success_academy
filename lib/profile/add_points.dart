@@ -4,32 +4,23 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 
-class AddPoints extends StatelessWidget {
+class AddPoints extends StatefulWidget {
   const AddPoints({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const _AddPointsForm();
-  }
+  State<AddPoints> createState() => _AddPointsState();
 }
 
-class _AddPointsForm extends StatefulWidget {
-  const _AddPointsForm();
-
-  @override
-  State<_AddPointsForm> createState() => _AddPointsFormState();
-}
-
-class _AddPointsFormState extends State<_AddPointsForm> {
+class _AddPointsState extends State<AddPoints> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _redirectClicked = false;
-  int _numPoints = 100;
-  final Map _pointsCouponMap = {
+  static const Map _pointsCouponMap = {
     1000: 'promo_1MaUbkK9gCxRnlEipn32mBEV',
     2000: 'promo_1MaUbzK9gCxRnlEi5Xd3CAdJ',
     5000: 'promo_1MaUc8K9gCxRnlEiiipU5lt3',
     10000: 'promo_1MaUcHK9gCxRnlEiK2ybiGGA',
   };
+  bool _redirectClicked = false;
+  int _numPoints = 100;
 
   void _onPointsChanged(int? value) {
     setState(() {

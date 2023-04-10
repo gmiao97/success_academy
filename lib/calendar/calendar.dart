@@ -17,14 +17,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-class CalendarV2 extends StatefulWidget {
-  const CalendarV2({super.key});
+class Calendar extends StatefulWidget {
+  const Calendar({super.key});
 
   @override
-  State<CalendarV2> createState() => _CalendarV2State();
+  State<Calendar> createState() => _CalendarState();
 }
 
-class _CalendarV2State extends State<CalendarV2> {
+class _CalendarState extends State<Calendar> {
   late final List<EventType> _availableEventTypes;
   late final DateTime _firstDay;
   late final DateTime _lastDay;

@@ -11,48 +11,21 @@ import 'package:success_academy/services/shared_preferences_service.dart'
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/services/user_service.dart' as user_service;
 
-// Add loading state to display spinner while initializing user
-enum AuthStatus { signedIn, signedOut, emailVerification, loading }
+enum AuthStatus {
+  signedIn,
+  signedOut,
+  emailVerification,
+  loading,
+}
 
-enum UserType { student, studentNoProfile, teacher, admin }
+enum UserType {
+  student,
+  studentNoProfile,
+  teacher,
+  admin,
+}
 
 class AccountModel extends ChangeNotifier {
-  AccountModel() {
-    init();
-  }
-
-  void init() async {
-    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
-      _authStatus = AuthStatus.loading;
-      notifyListeners();
-      if (firebaseUser != null) {
-        try {
-          await _initAccount(firebaseUser);
-        } catch (err) {
-          await FirebaseAnalytics.instance.logEvent(
-            name: 'initAccount_failed',
-            parameters: {
-              'message': err.toString(),
-            },
-          );
-        }
-        if (!firebaseUser.emailVerified) {
-          if (_authStatus != AuthStatus.emailVerification) {
-            // Only send verification email once on initial auth status change
-            firebaseUser.sendEmailVerification();
-          }
-          _authStatus = AuthStatus.emailVerification;
-        } else {
-          _authStatus = AuthStatus.signedIn;
-        }
-      } else {
-        _signOut();
-      }
-      notifyListeners();
-    });
-    _locale = await shared_preferences_service.getLocale();
-  }
-
   AuthStatus _authStatus = AuthStatus.signedOut;
   String _locale = 'en';
   User? _firebaseUser;
@@ -67,8 +40,11 @@ class AccountModel extends ChangeNotifier {
   List<QueryDocumentSnapshot<Object?>> _subscriptionDocs = [];
   SubscriptionPlan? _subscriptionPlan;
 
+  AccountModel() {
+    init();
+  }
+
   AuthStatus get authStatus => _authStatus;
-  // TODO: Add preferred language and customize welcome email and stripe based on it.
   String get locale => _locale;
   User? get firebaseUser => _firebaseUser;
   MyUserModel? get myUser => _myUser;
@@ -116,6 +92,38 @@ class AccountModel extends ChangeNotifier {
     _subscriptionPlan =
         _getSubscriptionTypeForProfile(studentProfile?.profileId);
     notifyListeners();
+  }
+
+  void init() async {
+    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
+      _authStatus = AuthStatus.loading;
+      notifyListeners();
+      if (firebaseUser != null) {
+        try {
+          await _initAccount(firebaseUser);
+        } catch (err) {
+          await FirebaseAnalytics.instance.logEvent(
+            name: 'initAccount_failed',
+            parameters: {
+              'message': err.toString(),
+            },
+          );
+        }
+        if (!firebaseUser.emailVerified) {
+          if (_authStatus != AuthStatus.emailVerification) {
+            // Only send verification email once on initial auth status change
+            firebaseUser.sendEmailVerification();
+          }
+          _authStatus = AuthStatus.emailVerification;
+        } else {
+          _authStatus = AuthStatus.signedIn;
+        }
+      } else {
+        _signOut();
+      }
+      notifyListeners();
+    });
+    _locale = await shared_preferences_service.getLocale();
   }
 
   /**
@@ -198,7 +206,10 @@ class AccountModel extends ChangeNotifier {
 }
 
 class MyUserModel {
-  MyUserModel({required this.referralCode, required this.timeZone});
+  MyUserModel({
+    required this.referralCode,
+    required this.timeZone,
+  });
 
   MyUserModel.fromJson(Map<String, Object?> json)
       : referralCode = json['referral_code'] as String,
