@@ -370,10 +370,10 @@ class S {
     );
   }
 
-  /// `$50 USD sign up fee due after trial`
+  /// `$50 USD sign-up fee due after trial`
   String get signUpFee {
     return Intl.message(
-      '\$50 USD sign up fee due after trial',
+      '\$50 USD sign-up fee due after trial',
       name: 'signUpFee',
       desc: '',
       args: [],
@@ -730,60 +730,80 @@ class S {
     );
   }
 
-  /// `My lesson`
+  /// `Signed-up`
   String get signedUp {
     return Intl.message(
-      'My lesson',
+      'Signed-up',
       name: 'signedUp',
       desc: '',
       args: [],
     );
   }
 
-  /// `Cancel sign up`
+  /// `Cancel sign-up`
   String get cancelSignup {
     return Intl.message(
-      'Cancel sign up',
+      'Cancel sign-up',
       name: 'cancelSignup',
       desc: '',
       args: [],
     );
   }
 
-  /// `Sign up successful`
+  /// `Cannot sign up for past lesson`
+  String get signupPastEvent {
+    return Intl.message(
+      'Cannot sign up for past lesson',
+      name: 'signupPastEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cannot cancel sign-up for past lesson`
+  String get cancelSignupPastEvent {
+    return Intl.message(
+      'Cannot cancel sign-up for past lesson',
+      name: 'cancelSignupPastEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign-up successful`
   String get signupSuccess {
     return Intl.message(
-      'Sign up successful',
+      'Sign-up successful',
       name: 'signupSuccess',
       desc: '',
       args: [],
     );
   }
 
-  /// `Sign up unsuccessful`
+  /// `Sign-up unsuccessful`
   String get signupFailure {
     return Intl.message(
-      'Sign up unsuccessful',
+      'Sign-up unsuccessful',
       name: 'signupFailure',
       desc: '',
       args: [],
     );
   }
 
-  /// `Cancelled sign up`
+  /// `Cancelled sign-up`
   String get cancelSignupSuccess {
     return Intl.message(
-      'Cancelled sign up',
+      'Cancelled sign-up',
       name: 'cancelSignupSuccess',
       desc: '',
       args: [],
     );
   }
 
-  /// `Failed to cancel sign up`
+  /// `Failed to cancel sign-up`
   String get cancelSignupFailure {
     return Intl.message(
-      'Failed to cancel sign up',
+      'Failed to cancel sign-up',
       name: 'cancelSignupFailure',
       desc: '',
       args: [],

@@ -28,11 +28,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(until) => "${until}まで";
 
-  static String m4(cost) => "${cost}ポイントが還元されます";
+  static String m4(cost) => "${cost} ポイントが還元されます";
 
   static String m5(timeZone) => "タイムゾーン： ${timeZone}";
 
-  static String m6(cost, balance) => "${balance}ポイントから${cost}ポイントを使う";
+  static String m6(cost, balance) => "${balance} ポイントから ${cost} ポイントを使う";
 
   static String m7(address) => "確認リンクがメールアドレス（${address}）に送信されました";
 
@@ -51,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelSignup": MessageLookupByLibrary.simpleMessage("登録解除"),
         "cancelSignupFailure":
             MessageLookupByLibrary.simpleMessage("登録解除できませんでした"),
+        "cancelSignupPastEvent":
+            MessageLookupByLibrary.simpleMessage("過去のレッスンの登録解除ができません"),
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("登録を解除しました"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("プロフィールを切り替える"),
@@ -91,7 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedAccountUpdate":
             MessageLookupByLibrary.simpleMessage("アカウント設定更新に失敗しました"),
         "failedGetRecurrenceEvent":
-            MessageLookupByLibrary.simpleMessage("エベントの読み込みをできませんでした"),
+            MessageLookupByLibrary.simpleMessage("エベントの読み込みができませんでした"),
         "filter": MessageLookupByLibrary.simpleMessage("フィルター"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("レッスンの種類で表示する"),
         "firstName": MessageLookupByLibrary.simpleMessage("名"),
@@ -169,9 +171,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("トライアル後に入会費50米ドルが請求されます"),
         "signUpFeeDiscount":
             MessageLookupByLibrary.simpleMessage("20%割引ー40米ドル"),
-        "signedUp": MessageLookupByLibrary.simpleMessage("マイレッスン"),
-        "signup": MessageLookupByLibrary.simpleMessage("登録"),
+        "signedUp": MessageLookupByLibrary.simpleMessage("登録済み"),
+        "signup": MessageLookupByLibrary.simpleMessage("登録する"),
         "signupFailure": MessageLookupByLibrary.simpleMessage("登録できませんでした"),
+        "signupPastEvent":
+            MessageLookupByLibrary.simpleMessage("過去のレッスンに登録できません"),
         "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),

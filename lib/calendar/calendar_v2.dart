@@ -8,6 +8,8 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/create_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
+import 'package:success_academy/calendar/quit_event_dialog.dart';
+import 'package:success_academy/calendar/signup_event_dialog.dart';
 import 'package:success_academy/calendar/view_event_dialog.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/services/event_service.dart';
@@ -26,7 +28,6 @@ class _CalendarV2State extends State<CalendarV2> {
   late final List<EventType> _availableEventTypes;
   late final DateTime _firstDay;
   late final DateTime _lastDay;
-  final ValueNotifier<List<EventModel>> _selectedEvents = ValueNotifier([]);
   final Map<DateTime, List<EventModel>> _events = HashMap(
     equals: (a, b) => isSameDay(a, b),
     hashCode: (e) => DateUtils.dateOnly(e).hashCode,
@@ -35,6 +36,7 @@ class _CalendarV2State extends State<CalendarV2> {
   late DateTime _focusedDay;
   late DateTime _selectedDay;
   late List<EventType> _selectedEventTypes;
+  List<EventModel> _selectedEvents = [];
   EventDisplay _eventDisplay = EventDisplay.all;
   bool _showLoadingIndicator = false;
 
@@ -81,11 +83,10 @@ class _CalendarV2State extends State<CalendarV2> {
       }
       if (_eventDisplay == EventDisplay.mine) {
         if (account.userType == UserType.teacher) {
-          return event.teacherId == account.teacherProfile!.profileId;
+          return isTeacherInEvent(account.teacherProfile!.profileId, event);
         }
         if (account.userType == UserType.student) {
-          return event.studentIdList
-              .contains(account.studentProfile!.profileId);
+          return isStudentInEvent(account.studentProfile!.profileId, event);
         }
       }
       return true;
@@ -94,9 +95,9 @@ class _CalendarV2State extends State<CalendarV2> {
     setState(() {
       _events.clear();
       _events.addAll(buildEventMap(singleEvents));
+      _selectedEvents = _getEventsForDay(_selectedDay);
       _showLoadingIndicator = false;
     });
-    _selectedEvents.value = _getEventsForDay(_selectedDay);
   }
 
   List<EventModel> _getEventsForDay(DateTime day) {
@@ -107,8 +108,8 @@ class _CalendarV2State extends State<CalendarV2> {
     setState(() {
       _focusedDay = _selectedDay = _currentDay = tz.TZDateTime.now(
           tz.getLocation(context.read<AccountModel>().myUser!.timeZone));
+      _selectedEvents = _getEventsForDay(_selectedDay);
     });
-    _selectedEvents.value = _getEventsForDay(_selectedDay);
   }
 
   void _onEventFiltersChanged(
@@ -124,8 +125,8 @@ class _CalendarV2State extends State<CalendarV2> {
     setState(() {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
+      _selectedEvents = _getEventsForDay(_selectedDay);
     });
-    _selectedEvents.value = _getEventsForDay(_selectedDay);
   }
 
   @override
@@ -189,9 +190,11 @@ class _CalendarV2State extends State<CalendarV2> {
         Expanded(
           child: Stack(
             children: [
-              ValueListenableBuilder<List<EventModel>>(
-                valueListenable: _selectedEvents,
-                builder: (context, value, child) => _EventList(events: value),
+              _EventList(
+                events: _selectedEvents,
+                refresh: () {
+                  setState(() {});
+                },
               ),
               if (canCreateEvents(userType))
                 Align(
@@ -372,10 +375,66 @@ class _CalendarHeaderState extends State<_CalendarHeader> {
 
 class _EventList extends StatelessWidget {
   final List<EventModel> events;
+  final VoidCallback refresh;
 
   const _EventList({
     required this.events,
+    required this.refresh,
   });
+
+  Widget _getEventActions(BuildContext context, EventModel event) {
+    final account = context.read<AccountModel>();
+
+    if (account.userType == UserType.student) {
+      if (isStudentInEvent(account.studentProfile!.profileId, event)) {
+        return ElevatedButton.icon(
+          icon: const Icon(Icons.check),
+          label: Text(S.of(context).signedUp),
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => QuitEventDialog(
+              event: event,
+              refresh: refresh,
+            ),
+          ),
+        );
+      } else {
+        return OutlinedButton(
+          child: Text(S.of(context).signup),
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => SignupEventDialog(
+              event: event,
+              refresh: refresh,
+            ),
+          ),
+        );
+      }
+    }
+    if (account.userType == UserType.teacher) {
+      if (isTeacherInEvent(account.teacherProfile!.profileId, event)) {
+        return Text(S.of(context).signedUp);
+      }
+    }
+    if (account.userType == UserType.admin) {
+      return SizedBox(
+        width: 80,
+        child: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      );
+    }
+    return const SizedBox.shrink();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -392,6 +451,7 @@ class _EventList extends StatelessWidget {
             color: events[index].eventType.getColor(context),
             child: ListTile(
               leading: events[index].eventType.getIcon(context),
+              trailing: _getEventActions(context, events[index]),
               title: Text(
                 events[index].summary,
                 style: Theme.of(context)

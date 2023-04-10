@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:rrule/rrule.dart';
-import 'package:success_academy/constants.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-// If change, also change _filterNames in calendar_header.dart, _eventColorMap,
-// _eventTypeNames in event_dialog.dart.
 enum EventType {
   unknown,
   free,
@@ -75,14 +72,6 @@ List<Frequency> recurFrequencies = [
   Frequency.monthly
 ];
 
-// TODO: remove
-Map<EventType, int> _eventColorMap = {
-  EventType.unknown: grey,
-  EventType.free: yellow,
-  EventType.preschool: blue,
-  EventType.private: purple,
-};
-
 class EventModel {
   String? eventId;
   String? recurrenceId;
@@ -97,7 +86,6 @@ class EventModel {
   List<String> studentIdList = [];
   late int numPoints;
   EventType eventType = EventType.unknown;
-  int fillColor = grey;
 
   EventModel({
     this.eventId,
@@ -140,7 +128,6 @@ class EventModel {
         ? jsonDecode(extendedProperties['studentIdList']).cast<String>()
         : [];
     numPoints = int.tryParse(extendedProperties['numPoints'] ?? 'none') ?? 0;
-    fillColor = _eventColorMap[eventType]!;
   }
 
   Map<String, Object?> toJson() {

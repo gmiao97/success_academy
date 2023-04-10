@@ -174,16 +174,20 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                   ],
                 ),
               ),
-              Text(
-                S.of(context).studentListTitle,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-              for (final s in _students)
-                if (s != null && userType != UserType.student)
-                  Text('・${s.lastName} ${s.firstName}'),
+              if (userType != UserType.student)
+                Column(
+                  children: [
+                    Text(
+                      S.of(context).studentListTitle,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    for (final s in _students)
+                      if (s != null) Text('・${s.lastName} ${s.firstName}'),
+                  ],
+                ),
               const SizedBox(height: 20),
               ConstrainedBox(
                 constraints: const BoxConstraints(

@@ -51,11 +51,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "businessName": MessageLookupByLibrary.simpleMessage("MERCY EDUCATION"),
         "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-        "cancelSignup": MessageLookupByLibrary.simpleMessage("Cancel sign up"),
+        "cancelSignup": MessageLookupByLibrary.simpleMessage("Cancel sign-up"),
         "cancelSignupFailure":
-            MessageLookupByLibrary.simpleMessage("Failed to cancel sign up"),
+            MessageLookupByLibrary.simpleMessage("Failed to cancel sign-up"),
+        "cancelSignupPastEvent": MessageLookupByLibrary.simpleMessage(
+            "Cannot cancel sign-up for past lesson"),
         "cancelSignupSuccess":
-            MessageLookupByLibrary.simpleMessage("Cancelled sign up"),
+            MessageLookupByLibrary.simpleMessage("Cancelled sign-up"),
         "changeProfile": MessageLookupByLibrary.simpleMessage("Change Profile"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
@@ -184,15 +186,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
         "signUpFee": MessageLookupByLibrary.simpleMessage(
-            "\$50 USD sign up fee due after trial"),
+            "\$50 USD sign-up fee due after trial"),
         "signUpFeeDiscount":
             MessageLookupByLibrary.simpleMessage("20% off - \$40 USD"),
-        "signedUp": MessageLookupByLibrary.simpleMessage("My lesson"),
+        "signedUp": MessageLookupByLibrary.simpleMessage("Signed-up"),
         "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
         "signupFailure":
-            MessageLookupByLibrary.simpleMessage("Sign up unsuccessful"),
+            MessageLookupByLibrary.simpleMessage("Sign-up unsuccessful"),
+        "signupPastEvent": MessageLookupByLibrary.simpleMessage(
+            "Cannot sign up for past lesson"),
         "signupSuccess":
-            MessageLookupByLibrary.simpleMessage("Sign up successful"),
+            MessageLookupByLibrary.simpleMessage("Sign-up successful"),
         "stripePointsPurchase":
             MessageLookupByLibrary.simpleMessage("Continue to points purchase"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage(

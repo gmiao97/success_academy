@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
@@ -297,17 +298,17 @@ class _TeacherData extends DataTableSource {
       DataCell(Text(_data[index].firstName)),
       DataCell(
         Text(
-          '${_events.where((e) => e.eventType == EventType.free && e.teacherId == _data[index].profileId).length}',
+          '${_events.where((e) => e.eventType == EventType.free && isTeacherInEvent(_data[index].profileId, e)).length}',
         ),
       ),
       DataCell(
         Text(
-          '${_events.where((e) => e.eventType == EventType.preschool && e.teacherId == _data[index].profileId).length}',
+          '${_events.where((e) => e.eventType == EventType.preschool && isTeacherInEvent(_data[index].profileId, e)).length}',
         ),
       ),
       DataCell(
         Text(
-          '${_events.where((e) => e.eventType == EventType.private && e.teacherId == _data[index].profileId).toList().map((event) => event.numPoints).fold(0, (int a, int b) => a + b)}',
+          '${_events.where((e) => e.eventType == EventType.private && isTeacherInEvent(_data[index].profileId, e)).toList().map((event) => event.numPoints).fold(0, (int a, int b) => a + b)}',
         ),
       ),
     ]);

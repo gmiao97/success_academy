@@ -80,7 +80,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         initialDate: initial,
         firstDate: widget.firstDay,
         lastDate: widget.lastDay);
-    if (date == null) {
+    if (date == null || !context.mounted) {
       return null;
     }
 
@@ -151,9 +151,9 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           maxWidth: 500,
           maxHeight: 600,
         ),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

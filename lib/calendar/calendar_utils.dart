@@ -7,6 +7,7 @@ import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
 
+@Deprecated('To be removed')
 int timeOfDayToInt(TimeOfDay time) => time.hour * 60 + time.minute;
 
 String frequencyToString(BuildContext context, Frequency frequency) {
@@ -90,4 +91,12 @@ List<EventType> getEventTypesCanView(
     }
   }
   return [];
+}
+
+bool isStudentInEvent(String profileId, EventModel event) {
+  return event.studentIdList.contains(profileId);
+}
+
+bool isTeacherInEvent(String profileId, EventModel event) {
+  return event.teacherId == profileId;
 }
