@@ -373,7 +373,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
             ),
             TextFormField(
               decoration: InputDecoration(
-                icon: const Icon(FontAwesomeIcons.percent),
+                icon: const Icon(Icons.percent),
                 labelText: S.of(context).referralLabel,
                 errorText:
                     _invalidReferral ? S.of(context).referralValidation : null,
@@ -392,7 +392,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
             ),
             TextFormField(
               decoration: InputDecoration(
-                icon: const Icon(FontAwesomeIcons.userGroup),
+                icon: const Icon(Icons.person_add_alt),
                 labelText: S.of(context).referrerLabel,
                 hintText: S.of(context).referrerHint,
               ),

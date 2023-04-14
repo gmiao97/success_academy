@@ -159,7 +159,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                   value: _teacherId,
                   decoration: InputDecoration(
                       hintText: 'Teacher',
-                      icon: const Icon(Icons.person_outline),
+                      icon: const Icon(Icons.person),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.clear),
                         onPressed: () {
@@ -249,7 +249,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 readOnly: true,
                 controller: _startTimeController,
                 decoration: InputDecoration(
-                  icon: const Icon(Icons.watch_later_outlined),
+                  icon: const Icon(Icons.access_time),
                   labelText: S.of(context).eventStartLabel,
                 ),
                 onTap: () {
@@ -270,7 +270,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 readOnly: true,
                 controller: _endTimeController,
                 decoration: InputDecoration(
-                  icon: const Icon(Icons.watch_later_outlined),
+                  icon: const Icon(Icons.access_time),
                   labelText: S.of(context).eventEndLabel,
                 ),
                 onTap: () {

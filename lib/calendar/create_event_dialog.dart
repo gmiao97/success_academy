@@ -188,7 +188,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     value: _teacherId,
                     decoration: InputDecoration(
                         hintText: 'Teacher',
-                        icon: const Icon(Icons.person_outline),
+                        icon: const Icon(Icons.person),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: () {
