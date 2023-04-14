@@ -43,8 +43,8 @@ class _StudentProfileState extends State<StudentProfile> {
             ),
             Padding(
               padding: const EdgeInsets.all(20),
-              child: ElevatedButton.icon(
-                icon: const Icon(FontAwesomeIcons.arrowsRotate),
+              child: FilledButton.icon(
+                icon: const Icon(Icons.rotate_left),
                 label: Text(S.of(context).changeProfile),
                 onPressed: () {
                   account.studentProfile = null;
@@ -185,14 +185,11 @@ class _StudentProfileState extends State<StudentProfile> {
                               final updatedStudentProfile =
                                   account.studentProfile!;
                               updatedStudentProfile.referrer = _referrer;
-                              profile_service
-                                  .updateStudentProfile(
-                                      account.firebaseUser!.uid,
-                                      updatedStudentProfile)
-                                  .then((unused) {
-                                account.studentProfile = updatedStudentProfile;
-                              });
                               try {
+                                await profile_service.updateStudentProfile(
+                                    account.firebaseUser!.uid,
+                                    updatedStudentProfile);
+                                account.studentProfile = updatedStudentProfile;
                                 await stripe_service
                                     .startStripeSubscriptionCheckoutSession(
                                   userId: account.firebaseUser!.uid,
@@ -200,7 +197,7 @@ class _StudentProfileState extends State<StudentProfile> {
                                   subscriptionPlan: _subscriptionPlan,
                                   isReferral: _isReferral,
                                 );
-                              } catch (err) {
+                              } catch (e) {
                                 setState(() {
                                   _redirectClicked = false;
                                 });
@@ -213,7 +210,7 @@ class _StudentProfileState extends State<StudentProfile> {
                                   ),
                                 );
                                 debugPrint(
-                                    'Failed to start Stripe subscription checkout $err');
+                                    'Failed to start Stripe subscription checkout $e');
                               }
                             },
                           ),
@@ -263,7 +260,7 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
             ),
             Row(
               children: [
-                OutlinedButton.icon(
+                FilledButton.tonalIcon(
                   icon: const Icon(Icons.exit_to_app),
                   label: Text(S.of(context).manageSubscription),
                   onPressed: _redirectClicked
@@ -445,7 +442,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(
                 children: [
-                  OutlinedButton.icon(
+                  FilledButton.tonalIcon(
                     label: Text(S.of(context).stripePurchase),
                     icon: const Icon(Icons.exit_to_app),
                     onPressed: widget.redirectClicked || !_termsOfUseChecked

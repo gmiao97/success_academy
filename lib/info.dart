@@ -12,11 +12,12 @@ class Info extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ElevatedButton(
+            FilledButton.icon(
               onPressed: () {
                 Navigator.maybePop(context);
               },
-              child: Text(S.of(context).goBack),
+              label: Text(S.of(context).goBack),
+              icon: const Icon(Icons.chevron_left),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 100),

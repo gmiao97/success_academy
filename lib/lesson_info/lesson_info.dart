@@ -75,7 +75,7 @@ class _LessonInfoState extends State<LessonInfo> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        OutlinedButton(
+                        FilledButton.tonalIcon(
                           onPressed: () async {
                             if (!await launchUrl(Uri.parse(
                                 'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list'))) {
@@ -91,9 +91,10 @@ class _LessonInfoState extends State<LessonInfo> {
                               }
                             }
                           },
-                          child: Text(S.of(context).freeLessonTimeTable),
+                          label: Text(S.of(context).freeLessonTimeTable),
+                          icon: const Icon(Icons.exit_to_app),
                         ),
-                        OutlinedButton(
+                        FilledButton.tonalIcon(
                           onPressed: () async {
                             if (!await launchUrl(Uri.parse(
                                 'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list'))) {
@@ -109,7 +110,8 @@ class _LessonInfoState extends State<LessonInfo> {
                               }
                             }
                           },
-                          child: Text(S.of(context).freeLessonMaterials),
+                          label: Text(S.of(context).freeLessonMaterials),
+                          icon: const Icon(Icons.exit_to_app),
                         ),
                       ],
                     ),

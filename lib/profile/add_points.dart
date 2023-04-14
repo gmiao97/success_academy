@@ -103,7 +103,7 @@ class _AddPointsState extends State<AddPoints> {
                   ),
                   _redirectClicked
                       ? const CircularProgressIndicator()
-                      : ElevatedButton.icon(
+                      : FilledButton.tonalIcon(
                           label: Text(S.of(context).stripePointsPurchase),
                           icon: const Icon(Icons.exit_to_app),
                           onPressed: () async {

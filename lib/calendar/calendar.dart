@@ -417,7 +417,7 @@ class _EventList extends StatelessWidget {
 
     if (account.userType == UserType.student) {
       if (isStudentInEvent(account.studentProfile!.profileId, event)) {
-        return ElevatedButton.icon(
+        return FilledButton.tonalIcon(
           icon: const Icon(Icons.check),
           label: Text(S.of(context).signedUp),
           onPressed: () => showDialog(

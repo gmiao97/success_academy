@@ -20,11 +20,12 @@ class ProfileCreate extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
+              child: FilledButton.icon(
                 onPressed: () {
                   Navigator.maybePop(context);
                 },
-                child: Text(S.of(context).goBack),
+                label: Text(S.of(context).goBack),
+                icon: const Icon(Icons.chevron_left),
               ),
             ),
             Card(

@@ -78,28 +78,27 @@ class _SettingsState extends State<Settings> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                child: ElevatedButton(
-                  onPressed: () {
+                child: FilledButton.tonal(
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       final timeZone = _selectedTimeZone?.replaceAll(' ', '_');
-                      user_service
-                          .updateMyUser(
-                              userId: account.firebaseUser!.uid,
-                              timeZone: timeZone)
-                          .then(
-                        (unused) {
-                          final updatedMyUser = account.myUser!;
-                          updatedMyUser.timeZone =
-                              timeZone ?? account.myUser!.timeZone;
-                          account.myUser = updatedMyUser;
+                      try {
+                        await user_service.updateMyUser(
+                            userId: account.firebaseUser!.uid,
+                            timeZone: timeZone);
+                        final updatedMyUser = account.myUser!;
+                        updatedMyUser.timeZone =
+                            timeZone ?? account.myUser!.timeZone;
+                        account.myUser = updatedMyUser;
+                        if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(S.of(context).accountUpdated),
                             ),
                           );
-                        },
-                      ).catchError((err) {
+                        }
+                      } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(S.of(context).failedAccountUpdate),
@@ -107,8 +106,8 @@ class _SettingsState extends State<Settings> {
                                 Theme.of(context).colorScheme.error,
                           ),
                         );
-                        debugPrint("Failed to update account settings: $err");
-                      });
+                        debugPrint("Failed to update account settings: $e");
+                      }
                     }
                   },
                   child: Text(S.of(context).confirm),
