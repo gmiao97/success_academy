@@ -75,7 +75,7 @@ class _LessonInfoState extends State<LessonInfo> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ElevatedButton(
+                        OutlinedButton(
                           onPressed: () async {
                             if (!await launchUrl(Uri.parse(
                                 'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list'))) {
@@ -93,7 +93,7 @@ class _LessonInfoState extends State<LessonInfo> {
                           },
                           child: Text(S.of(context).freeLessonTimeTable),
                         ),
-                        ElevatedButton(
+                        OutlinedButton(
                           onPressed: () async {
                             if (!await launchUrl(Uri.parse(
                                 'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list'))) {
@@ -288,7 +288,7 @@ class EditableZoomInfo extends StatelessWidget {
             // showCreateButton: true,
             showSaveIcon: true,
             saveIconColor: Theme.of(context).primaryColor,
-            onRowSaved: ((value) {
+            onRowSaved: (value) async {
               if (value == 'no edit') {
                 return;
               }
@@ -312,31 +312,34 @@ class EditableZoomInfo extends StatelessWidget {
                     break;
                 }
               });
-              lesson_info_service
-                  .updateLesson(zoomInfo[i].id, zoomInfo[i])
-                  .then(
-                    (unused) => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(S.of(context).updated),
+              try {
+                await lesson_info_service.updateLesson(
+                    zoomInfo[i].id, zoomInfo[i]);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        S.of(context).updated,
                       ),
                     ),
-                  )
-                  .catchError(
-                (err) {
-                  debugPrint("Failed to update lesson info: $err");
-                  return ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(S.of(context).updateFailed),
-                      backgroundColor: Theme.of(context).colorScheme.error,
-                    ),
                   );
-                },
-              );
-            }),
+                }
+              } catch (e) {
+                debugPrint("Failed to update lesson info: $e");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(S.of(context).updateFailed),
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                  ),
+                );
+              }
+            },
             onSubmitted: ((value) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(S.of(context).promptSave),
+                  content: Text(
+                    S.of(context).promptSave,
+                  ),
                 ),
               );
             }),

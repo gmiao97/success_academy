@@ -133,7 +133,6 @@ Future<void> redirectToStripePortal() async {
         .call(<String, dynamic>{'returnUrl': html.window.location.origin});
     html.window.location.assign(data.data['url']);
   } catch (err) {
-    // TODO: Collect client error logs to be viewable.
     debugPrint('redirectToStripePortal failed: $err');
     throw HttpException('redirectToStripePortal failed: $err');
   }

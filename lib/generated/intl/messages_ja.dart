@@ -50,7 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
         "cancelSignup": MessageLookupByLibrary.simpleMessage("登録解除"),
         "cancelSignupFailure":
-            MessageLookupByLibrary.simpleMessage("登録解除できませんでした"),
+            MessageLookupByLibrary.simpleMessage("登録解除に失敗しました"),
         "cancelSignupPastEvent":
             MessageLookupByLibrary.simpleMessage("過去のレッスンの登録解除ができません"),
         "cancelSignupSuccess":
@@ -60,13 +60,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
         "copy": MessageLookupByLibrary.simpleMessage("コードをコピー"),
-        "createEvent": MessageLookupByLibrary.simpleMessage("エベント作成"),
+        "createEvent": MessageLookupByLibrary.simpleMessage("レッスン作成"),
+        "createEventFailure":
+            MessageLookupByLibrary.simpleMessage("レッスンの作成ができませんでした"),
+        "createEventSuccess":
+            MessageLookupByLibrary.simpleMessage("レッスンを作成しました"),
         "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
         "dateOfBirth": MessageLookupByLibrary.simpleMessage("生年月日"),
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
             MessageLookupByLibrary.simpleMessage("生徒の生年月日を選択してください"),
-        "delete": MessageLookupByLibrary.simpleMessage("削除"),
+        "deleteAll": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
+        "deleteEvent": MessageLookupByLibrary.simpleMessage("レッスン削除"),
+        "deleteEventFailure":
+            MessageLookupByLibrary.simpleMessage("レッスンの削除ができませんでした"),
+        "deleteEventSuccess":
+            MessageLookupByLibrary.simpleMessage("レッスンを削除しました"),
+        "deleteFuture": MessageLookupByLibrary.simpleMessage("これ以降のすべてのレッスン"),
+        "deleteSingle": MessageLookupByLibrary.simpleMessage("このレッスン"),
         "eventDateLabel": MessageLookupByLibrary.simpleMessage("日付"),
         "eventDescriptionLabel": MessageLookupByLibrary.simpleMessage("説明"),
         "eventDescriptionValidation":
@@ -86,14 +97,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventSummaryValidation":
             MessageLookupByLibrary.simpleMessage("レッスンのタイトルを入力してください"),
         "eventTooLongValidation":
-            MessageLookupByLibrary.simpleMessage("エベントの期間は24時間以下である必要があります"),
+            MessageLookupByLibrary.simpleMessage("期間は24時間以下である必要があります"),
         "eventType": MessageLookupByLibrary.simpleMessage("レッスンの種類"),
         "eventValidTimeValidation":
             MessageLookupByLibrary.simpleMessage("開始時間は終了時間より前である必要があります"),
         "failedAccountUpdate":
             MessageLookupByLibrary.simpleMessage("アカウント設定更新に失敗しました"),
         "failedGetRecurrenceEvent":
-            MessageLookupByLibrary.simpleMessage("エベントの読み込みができませんでした"),
+            MessageLookupByLibrary.simpleMessage("レッスンの読み込みができませんでした"),
         "filter": MessageLookupByLibrary.simpleMessage("フィルター"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("レッスンの種類で表示する"),
         "firstName": MessageLookupByLibrary.simpleMessage("名"),
@@ -173,14 +184,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("20%割引ー40米ドル"),
         "signedUp": MessageLookupByLibrary.simpleMessage("登録済み"),
         "signup": MessageLookupByLibrary.simpleMessage("登録する"),
-        "signupFailure": MessageLookupByLibrary.simpleMessage("登録できませんでした"),
+        "signupFailure": MessageLookupByLibrary.simpleMessage("登録に失敗しました"),
         "signupPastEvent":
             MessageLookupByLibrary.simpleMessage("過去のレッスンに登録できません"),
         "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "stripeRedirectFailure":
-            MessageLookupByLibrary.simpleMessage("Stripeへリダイレクトできませんでした"),
+            MessageLookupByLibrary.simpleMessage("Stripeへのリダイレクトができませんでした"),
         "student": MessageLookupByLibrary.simpleMessage("生徒"),
         "studentListTitle": MessageLookupByLibrary.simpleMessage("登録されている生徒"),
         "studentProfile": MessageLookupByLibrary.simpleMessage("生徒プロフィール"),
@@ -194,7 +205,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "today": MessageLookupByLibrary.simpleMessage("今日"),
         "unspecified": MessageLookupByLibrary.simpleMessage("未定"),
-        "updateFailed": MessageLookupByLibrary.simpleMessage("更新できません"),
+        "updateFailed": MessageLookupByLibrary.simpleMessage("更新に失敗しました"),
         "updated": MessageLookupByLibrary.simpleMessage("更新しました"),
         "usePoints": m6,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(

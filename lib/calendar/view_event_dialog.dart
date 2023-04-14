@@ -7,7 +7,7 @@ import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/services/event_service.dart';
+import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -45,7 +45,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
     final recurrenceId = widget.event.recurrenceId;
     if (recurrenceId != null) {
       try {
-        final event = await getEvent(
+        final event = await event_service.getEvent(
           eventId: recurrenceId,
           location:
               tz.getLocation(context.read<AccountModel>().myUser!.timeZone),
@@ -176,6 +176,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
               ),
               if (userType != UserType.student)
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       S.of(context).studentListTitle,

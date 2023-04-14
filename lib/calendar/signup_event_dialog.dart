@@ -54,7 +54,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                 scale: 0.5,
                 child: const CircularProgressIndicator(),
               )
-            : ElevatedButton(
+            : TextButton(
                 onPressed: isPast
                     ? null
                     : () async {

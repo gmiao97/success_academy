@@ -63,14 +63,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
         "copy": MessageLookupByLibrary.simpleMessage("Copy Code"),
-        "createEvent": MessageLookupByLibrary.simpleMessage("Create event"),
+        "createEvent": MessageLookupByLibrary.simpleMessage("Create lesson"),
+        "createEventFailure":
+            MessageLookupByLibrary.simpleMessage("Failed to create lesson"),
+        "createEventSuccess":
+            MessageLookupByLibrary.simpleMessage("Created lesson"),
         "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
         "dateOfBirth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
         "dateOfBirthLabel":
             MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
         "dateOfBirthValidation": MessageLookupByLibrary.simpleMessage(
             "Please select student\'s date of birth"),
-        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "deleteAll": MessageLookupByLibrary.simpleMessage("All lessons"),
+        "deleteEvent": MessageLookupByLibrary.simpleMessage("Delete lesson"),
+        "deleteEventFailure":
+            MessageLookupByLibrary.simpleMessage("Failed to delete lesson"),
+        "deleteEventSuccess":
+            MessageLookupByLibrary.simpleMessage("Deleted lesson"),
+        "deleteFuture":
+            MessageLookupByLibrary.simpleMessage("This and following lessons"),
+        "deleteSingle": MessageLookupByLibrary.simpleMessage("This lesson"),
         "eventDateLabel": MessageLookupByLibrary.simpleMessage("Date"),
         "eventDescriptionLabel":
             MessageLookupByLibrary.simpleMessage("Description"),
@@ -92,14 +104,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventSummaryValidation":
             MessageLookupByLibrary.simpleMessage("Please enter lesson title"),
         "eventTooLongValidation": MessageLookupByLibrary.simpleMessage(
-            "Event duration must be less than 24 hours"),
+            "Duration must be less than 24 hours"),
         "eventType": MessageLookupByLibrary.simpleMessage("Lesson type"),
         "eventValidTimeValidation": MessageLookupByLibrary.simpleMessage(
             "Start time must be before end time"),
         "failedAccountUpdate": MessageLookupByLibrary.simpleMessage(
             "Failed to update account settings"),
         "failedGetRecurrenceEvent":
-            MessageLookupByLibrary.simpleMessage("Failed to load event"),
+            MessageLookupByLibrary.simpleMessage("Failed to load lesson"),
         "filter": MessageLookupByLibrary.simpleMessage("Filter"),
         "filterTitle":
             MessageLookupByLibrary.simpleMessage("Display by lesson type"),

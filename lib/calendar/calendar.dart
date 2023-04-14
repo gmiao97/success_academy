@@ -7,12 +7,13 @@ import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/create_event_dialog.dart';
+import 'package:success_academy/calendar/delete_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/calendar/quit_event_dialog.dart';
 import 'package:success_academy/calendar/signup_event_dialog.dart';
 import 'package:success_academy/calendar/view_event_dialog.dart';
 import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/services/event_service.dart';
+import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -69,7 +70,7 @@ class _CalendarState extends State<Calendar> {
     final account = context.read<AccountModel>();
     final location = tz.getLocation(account.myUser!.timeZone);
 
-    final singleEvents = (await listEvents(
+    final singleEvents = (await event_service.listEvents(
             location: location,
             timeMin: _currentDay
                 .subtract(const Duration(days: 28))
@@ -102,6 +103,28 @@ class _CalendarState extends State<Calendar> {
 
   List<EventModel> _getEventsForDay(DateTime day) {
     return _events[day] ?? [];
+  }
+
+  void _deleteEventsLocally(
+      {required String eventId, bool isRecurrence = false, DateTime? from}) {
+    if (isRecurrence) {
+      setState(() {
+        for (final eventList in _events.values) {
+          eventList.removeWhere((e) {
+            if (from != null) {
+              return e.startTime.isAfter(from) && e.recurrenceId == eventId;
+            }
+            return e.recurrenceId == eventId;
+          });
+        }
+      });
+    } else {
+      setState(() {
+        for (final eventList in _events.values) {
+          eventList.removeWhere((e) => e.eventId == eventId);
+        }
+      });
+    }
   }
 
   void _onTodayButtonClick() {
@@ -192,9 +215,10 @@ class _CalendarState extends State<Calendar> {
             children: [
               _EventList(
                 events: _selectedEvents,
-                refresh: () {
+                refreshState: () {
                   setState(() {});
                 },
+                deleteEventsLocally: _deleteEventsLocally,
               ),
               if (canCreateEvents(userType))
                 Align(
@@ -329,7 +353,7 @@ class _CalendarHeaderState extends State<_CalendarHeader> {
                                     _eventDisplay = value!;
                                   });
                                 },
-                              )
+                              ),
                             ],
                           ),
                           Expanded(
@@ -375,11 +399,17 @@ class _CalendarHeaderState extends State<_CalendarHeader> {
 
 class _EventList extends StatelessWidget {
   final List<EventModel> events;
-  final VoidCallback refresh;
+  final VoidCallback refreshState;
+  final void Function({
+    required String eventId,
+    bool isRecurrence,
+    DateTime? from,
+  }) deleteEventsLocally;
 
   const _EventList({
     required this.events,
-    required this.refresh,
+    required this.refreshState,
+    required this.deleteEventsLocally,
   });
 
   Widget _getEventActions(BuildContext context, EventModel event) {
@@ -394,7 +424,7 @@ class _EventList extends StatelessWidget {
             context: context,
             builder: (context) => QuitEventDialog(
               event: event,
-              refresh: refresh,
+              refresh: refreshState,
             ),
           ),
         );
@@ -405,7 +435,7 @@ class _EventList extends StatelessWidget {
             context: context,
             builder: (context) => SignupEventDialog(
               event: event,
-              refresh: refresh,
+              refresh: refreshState,
             ),
           ),
         );
@@ -413,7 +443,27 @@ class _EventList extends StatelessWidget {
     }
     if (account.userType == UserType.teacher) {
       if (isTeacherInEvent(account.teacherProfile!.profileId, event)) {
-        return Text(S.of(context).signedUp);
+        return SizedBox(
+          width: 80,
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => DeleteEventDialog(
+                    event: event,
+                    deleteEventsLocally: deleteEventsLocally,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       }
     }
     if (account.userType == UserType.admin) {
@@ -427,7 +477,13 @@ class _EventList extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.delete),
-              onPressed: () {},
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => DeleteEventDialog(
+                  event: event,
+                  deleteEventsLocally: deleteEventsLocally,
+                ),
+              ),
             ),
           ],
         ),

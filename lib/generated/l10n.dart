@@ -810,20 +810,60 @@ class S {
     );
   }
 
-  /// `Delete`
-  String get delete {
+  /// `Deleted lesson`
+  String get deleteEventSuccess {
     return Intl.message(
-      'Delete',
-      name: 'delete',
+      'Deleted lesson',
+      name: 'deleteEventSuccess',
       desc: '',
       args: [],
     );
   }
 
-  /// `Create event`
+  /// `Failed to delete lesson`
+  String get deleteEventFailure {
+    return Intl.message(
+      'Failed to delete lesson',
+      name: 'deleteEventFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Created lesson`
+  String get createEventSuccess {
+    return Intl.message(
+      'Created lesson',
+      name: 'createEventSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to create lesson`
+  String get createEventFailure {
+    return Intl.message(
+      'Failed to create lesson',
+      name: 'createEventFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete lesson`
+  String get deleteEvent {
+    return Intl.message(
+      'Delete lesson',
+      name: 'deleteEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create lesson`
   String get createEvent {
     return Intl.message(
-      'Create event',
+      'Create lesson',
       name: 'createEvent',
       desc: '',
       args: [],
@@ -1000,10 +1040,10 @@ class S {
     );
   }
 
-  /// `Event duration must be less than 24 hours`
+  /// `Duration must be less than 24 hours`
   String get eventTooLongValidation {
     return Intl.message(
-      'Event duration must be less than 24 hours',
+      'Duration must be less than 24 hours',
       name: 'eventTooLongValidation',
       desc: '',
       args: [],
@@ -1130,10 +1170,10 @@ class S {
     );
   }
 
-  /// `Failed to load event`
+  /// `Failed to load lesson`
   String get failedGetRecurrenceEvent {
     return Intl.message(
-      'Failed to load event',
+      'Failed to load lesson',
       name: 'failedGetRecurrenceEvent',
       desc: '',
       args: [],
@@ -1355,6 +1395,36 @@ class S {
     return Intl.message(
       'Unspecified',
       name: 'unspecified',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This lesson`
+  String get deleteSingle {
+    return Intl.message(
+      'This lesson',
+      name: 'deleteSingle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This and following lessons`
+  String get deleteFuture {
+    return Intl.message(
+      'This and following lessons',
+      name: 'deleteFuture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All lessons`
+  String get deleteAll {
+    return Intl.message(
+      'All lessons',
+      name: 'deleteAll',
       desc: '',
       args: [],
     );

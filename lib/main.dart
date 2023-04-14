@@ -35,7 +35,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.select<AccountModel, String>((a) => a.locale);
 
-    // TODO: Import 'dart:io' show Platform; if (Platform.isIOS)
     return MaterialApp(
       title: constants.homePageAppBarName,
       theme: ThemeData.from(

@@ -102,6 +102,7 @@ class AccountModel extends ChangeNotifier {
         try {
           await _initAccount(firebaseUser);
         } catch (err) {
+          // TODO: Handle errors and log events
           await FirebaseAnalytics.instance.logEvent(
             name: 'initAccount_failed',
             parameters: {
@@ -215,7 +216,6 @@ class MyUserModel {
       : referralCode = json['referral_code'] as String,
         timeZone = json['time_zone'] as String;
 
-  // TODO: Add check to prevent repeats
   final String referralCode;
   String timeZone;
 

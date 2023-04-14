@@ -51,7 +51,7 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                 scale: 0.5,
                 child: const CircularProgressIndicator(),
               )
-            : ElevatedButton(
+            : TextButton(
                 onPressed: isPast
                     ? null
                     : () async {

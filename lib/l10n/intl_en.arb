@@ -84,8 +84,12 @@
   "signupFailure": "Sign-up unsuccessful",
   "cancelSignupSuccess": "Cancelled sign-up",
   "cancelSignupFailure": "Failed to cancel sign-up",
-  "delete": "Delete",
-  "createEvent": "Create event",
+  "deleteEventSuccess": "Deleted lesson",
+  "deleteEventFailure": "Failed to delete lesson",
+  "createEventSuccess": "Created lesson",
+  "createEventFailure": "Failed to create lesson",
+  "deleteEvent": "Delete lesson",
+  "createEvent": "Create lesson",
 
   "eventSummaryLabel": "Title",
   "eventSummaryValidation": "Please enter lesson title",
@@ -104,7 +108,7 @@
   "eventEndLabel": "End",
   "eventEndValidation": "Please select an end time",
   "eventValidTimeValidation": "Start time must be before end time",
-  "eventTooLongValidation": "Event duration must be less than 24 hours",
+  "eventTooLongValidation": "Duration must be less than 24 hours",
   "teacherTitle": "Teacher",
   "studentListTitle": "Registered students",
   "recurTitle": "Repeat",
@@ -118,7 +122,7 @@
 
   "accountUpdated": "Account settings updated",
   "failedAccountUpdate": "Failed to update account settings",
-  "failedGetRecurrenceEvent": "Failed to load event",
+  "failedGetRecurrenceEvent": "Failed to load lesson",
 
   "id": "ID",
   "lastName": "Last name",
@@ -147,5 +151,9 @@
   "updateFailed": "Update failed",
   "promptSave": "Please press the save button",
 
-  "unspecified": "Unspecified"
+  "unspecified": "Unspecified",
+
+  "deleteSingle": "This lesson",
+  "deleteFuture": "This and following lessons",
+  "deleteAll": "All lessons"
 }

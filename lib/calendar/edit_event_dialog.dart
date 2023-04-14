@@ -380,7 +380,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                     },
                   );
                 },
-                child: Text(S.of(context).delete),
+                child: Text(S.of(context).deleteEvent),
               ),
         _submitClicked
             ? const CircularProgressIndicator(

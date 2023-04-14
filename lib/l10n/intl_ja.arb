@@ -81,11 +81,15 @@
   "signupPastEvent": "過去のレッスンに登録できません",
   "cancelSignupPastEvent": "過去のレッスンの登録解除ができません",
   "signupSuccess": "登録できました",
-  "signupFailure": "登録できませんでした",
+  "signupFailure": "登録に失敗しました",
   "cancelSignupSuccess": "登録を解除しました",
-  "cancelSignupFailure": "登録解除できませんでした",
-  "delete": "削除",
-  "createEvent": "エベント作成",
+  "cancelSignupFailure": "登録解除に失敗しました",
+  "deleteEventSuccess": "レッスンを削除しました",
+  "deleteEventFailure": "レッスンの削除ができませんでした",
+  "createEventSuccess": "レッスンを作成しました",
+  "createEventFailure": "レッスンの作成ができませんでした",
+  "deleteEvent": "レッスン削除",
+  "createEvent": "レッスン作成",
 
   "eventSummaryLabel": "タイトル",
   "eventSummaryValidation": "レッスンのタイトルを入力してください",
@@ -104,7 +108,7 @@
   "eventEndLabel": "終了",
   "eventEndValidation": "終了時間を選択してください",
   "eventValidTimeValidation": "開始時間は終了時間より前である必要があります",
-  "eventTooLongValidation": "エベントの期間は24時間以下である必要があります",
+  "eventTooLongValidation": "期間は24時間以下である必要があります",
   "teacherTitle": "先生",
   "studentListTitle": "登録されている生徒",
   "recurTitle": "繰り返し",
@@ -118,7 +122,7 @@
 
   "accountUpdated": "アカウント設定を更新しました",
   "failedAccountUpdate": "アカウント設定更新に失敗しました",
-  "failedGetRecurrenceEvent": "エベントの読み込みができませんでした",
+  "failedGetRecurrenceEvent": "レッスンの読み込みができませんでした",
 
   "id": "ID",
   "lastName": "姓名",
@@ -140,12 +144,16 @@
   "teacher": "先生",
   "student": "生徒",
 
-  "stripeRedirectFailure": "Stripeへリダイレクトできませんでした",
+  "stripeRedirectFailure": "Stripeへのリダイレクトができませんでした",
   "openLinkFailure": "リンクを開けませんでした",
 
   "updated": "更新しました",
-  "updateFailed": "更新できません",
+  "updateFailed": "更新に失敗しました",
   "promptSave": "保存ボタンを押してください",
 
-  "unspecified": "未定"
+  "unspecified": "未定",
+
+  "deleteSingle": "このレッスン",
+  "deleteFuture": "これ以降のすべてのレッスン",
+  "deleteAll": "すべてのレッスン"
 }

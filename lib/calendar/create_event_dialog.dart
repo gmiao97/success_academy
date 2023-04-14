@@ -390,9 +390,9 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   value: null,
                 ),
               )
-            : ElevatedButton(
+            : TextButton(
                 child: Text(S.of(context).confirm),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     setState(() {
                       _submitClicked = true;
@@ -411,12 +411,26 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                             : [],
                         timeZone: timeZone,
                         teacherId: _teacherId ?? widget.teacherId);
-                    event_service.insertEvent(event).then(
-                      (unused) {
-                        widget.onRefresh();
-                        Navigator.of(context).pop();
-                      },
-                    );
+                    try {
+                      await event_service.insertEvent(event);
+                      widget.onRefresh();
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(S.of(context).createEventSuccess),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(S.of(context).createEventFailure),
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                        ),
+                      );
+                    } finally {
+                      Navigator.of(context).pop();
+                    }
                   }
                 },
               ),
