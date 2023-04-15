@@ -80,6 +80,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         initialDate: initial,
         firstDate: widget.firstDay,
         lastDate: widget.lastDay);
+    // ignore: use_build_context_synchronously
     if (date == null || !context.mounted) {
       return null;
     }

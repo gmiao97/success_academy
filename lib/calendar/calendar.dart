@@ -52,7 +52,6 @@ class _CalendarState extends State<Calendar> {
     _lastDay = _currentDay.add(const Duration(days: 365));
     _availableEventTypes = _selectedEventTypes =
         getEventTypesCanView(account.userType, account.subscriptionPlan);
-    assert(_selectedEventTypes.isNotEmpty);
   }
 
   @override
