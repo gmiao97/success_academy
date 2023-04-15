@@ -204,6 +204,12 @@ class AccountModel extends ChangeNotifier {
       return null;
     }
   }
+
+  bool shouldShowContent() {
+    return userType != UserType.student ||
+        (subscriptionPlan != null &&
+            subscriptionPlan != SubscriptionPlan.monthly);
+  }
 }
 
 class MyUserModel {

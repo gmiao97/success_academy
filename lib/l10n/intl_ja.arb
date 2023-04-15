@@ -39,6 +39,7 @@
   "signUpFeeDiscount": "20%割引ー40米ドル",
   "pickPlan": "サブスクリプションのコースを選択してください",
   "noPlan": "サブスクリプションがありません",
+  "addPlan": "サブスクリプションを追加",
   "stripePurchase": "サブスクリプション購入へ",
   "stripePointsPurchase": "ポイント購入へ",
 

@@ -410,6 +410,16 @@ class S {
     );
   }
 
+  /// `Add subscription`
+  String get addPlan {
+    return Intl.message(
+      'Add subscription',
+      name: 'addPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Continue to subscription purchase`
   String get stripePurchase {
     return Intl.message(

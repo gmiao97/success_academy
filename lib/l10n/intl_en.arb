@@ -39,6 +39,7 @@
   "signUpFeeDiscount": "20% off - $40 USD",
   "pickPlan": "Choose a subscription plan",
   "noPlan": "No subscription plan",
+  "addPlan": "Add subscription",
   "stripePurchase": "Continue to subscription purchase",
   "stripePointsPurchase": "Continue to points purchase",
 

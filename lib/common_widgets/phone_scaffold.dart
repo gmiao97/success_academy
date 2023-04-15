@@ -9,6 +9,7 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/add_points.dart';
 import 'package:success_academy/profile/profile_home.dart';
 import 'package:success_academy/profile/profile_manage.dart';
+import 'package:success_academy/profile/profile_model.dart';
 
 class PhoneScaffold extends StatefulWidget {
   const PhoneScaffold({super.key});
@@ -188,6 +189,23 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
         index: _selectedIndex,
         children: _content,
       ),
+      bottomSheet: account.shouldShowContent()
+          ? null
+          : MaterialBanner(
+              leading: const Icon(Icons.block),
+              content: Text(S.of(context).noPlan),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              actions: [
+                FilledButton.tonal(
+                  onPressed: () {
+                    setState(() {
+                      _selectedIndex = 0;
+                    });
+                  },
+                  child: Text(S.of(context).addPlan),
+                )
+              ],
+            ),
     );
   }
 }
