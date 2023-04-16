@@ -73,10 +73,10 @@ class _CalendarState extends State<Calendar> {
     final singleEvents = (await event_service.listEvents(
             location: location,
             timeMin: _currentDay
-                .subtract(const Duration(days: 28))
+                .subtract(const Duration(days: 100))
                 .toIso8601String(),
             timeMax:
-                _currentDay.add(const Duration(days: 28)).toIso8601String(),
+                _currentDay.add(const Duration(days: 100)).toIso8601String(),
             singleEvents: true))
         .where((event) {
       if (!_selectedEventTypes.contains(event.eventType)) {
@@ -152,6 +152,10 @@ class _CalendarState extends State<Calendar> {
     });
   }
 
+  void _onPageChanged(focusedDay) {
+    _focusedDay = focusedDay;
+  }
+
   @override
   Widget build(BuildContext context) {
     final locale = context.select<AccountModel, String>((a) => a.locale);
@@ -194,9 +198,7 @@ class _CalendarState extends State<Calendar> {
             firstDay: _firstDay,
             lastDay: _lastDay,
             selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
+            onPageChanged: _onPageChanged,
             onDaySelected: _onDaySelected,
             eventLoader: _getEventsForDay,
           ),

@@ -170,7 +170,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
     }
   }
 
-  // TODO: Remove when edit event supports changing recurring events.
+  // TODO: Use returned event id from Google Calendar API to refresh.
   void _updateLocalEvent(EventModel event) {
     widget.event.summary = event.summary;
     widget.event.description = event.description;
