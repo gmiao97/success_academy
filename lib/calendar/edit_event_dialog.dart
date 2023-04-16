@@ -170,6 +170,16 @@ class _EditEventDialogState extends State<EditEventDialog> {
     }
   }
 
+  // TODO: Remove when edit event supports changing recurring events.
+  void _updateLocalEvent(EventModel event) {
+    widget.event.summary = event.summary;
+    widget.event.description = event.description;
+    widget.event.numPoints = event.numPoints;
+    widget.event.startTime = event.startTime;
+    widget.event.endTime = event.endTime;
+    widget.event.teacherId = event.teacherId;
+  }
+
   @override
   Widget build(BuildContext context) {
     final timeZone =
@@ -446,10 +456,11 @@ class _EditEventDialogState extends State<EditEventDialog> {
                             : 0,
                         startTime: _start,
                         endTime: _end,
-                        timeZone: timeZone,
+                        timeZone: widget.event.timeZone,
                         teacherId: _teacherId);
                     try {
                       await event_service.updateEvent(event);
+                      _updateLocalEvent(event);
                       widget.onRefresh();
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
