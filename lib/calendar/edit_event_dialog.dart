@@ -88,9 +88,11 @@ class _EditEventDialogState extends State<EditEventDialog> {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           setState(() {
             _isLoadingRecurringEvent = false;
-            _recurUntil = rrule.until != null
-                ? tz.TZDateTime.from(rrule.until!, _location)
-                : null;
+            if (rrule.until != null) {
+              _recurUntil = tz.TZDateTime.from(rrule.until!, _location);
+              _recurUntilController.text =
+                  DateFormat.yMMMMd(_locale).format(_recurUntil!);
+            }
             _recurFrequency = rrule.frequency;
           });
         });
@@ -352,11 +354,12 @@ class _EditEventDialogState extends State<EditEventDialog> {
                   children: [
                     Checkbox(
                       value: _isRecur,
-                      onChanged: (value) {
-                        setState(() {
-                          _isRecur = value!;
-                        });
-                      },
+                      onChanged: null,
+                      // (value) {
+                      //   setState(() {
+                      //     _isRecur = value!;
+                      //   });
+                      // },
                     ),
                     Text(S.of(context).recurTitle),
                     if (_isLoadingRecurringEvent)
@@ -380,29 +383,31 @@ class _EditEventDialogState extends State<EditEventDialog> {
                                 ))
                             .toList(),
                         value: _recurFrequency,
-                        onChanged: (value) {
-                          setState(() {
-                            _recurFrequency = value!;
-                          });
-                        },
+                        onChanged: null,
+                        // (value) {
+                        //   setState(() {
+                        //     _recurFrequency = value!;
+                        //   });
+                        // },
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
                           Checkbox(
                             value: _recurUntil != null,
-                            onChanged: (value) {
-                              setState(() {
-                                if (value!) {
-                                  _recurUntil = _end;
-                                  _recurUntilController.text =
-                                      DateFormat.yMMMMd(_locale)
-                                          .format(_recurUntil!);
-                                } else {
-                                  _recurUntil = null;
-                                }
-                              });
-                            },
+                            onChanged: null,
+                            // (value) {
+                            //   setState(() {
+                            //     if (value!) {
+                            //       _recurUntil = _end;
+                            //       _recurUntilController.text =
+                            //           DateFormat.yMMMMd(_locale)
+                            //               .format(_recurUntil!);
+                            //     } else {
+                            //       _recurUntil = null;
+                            //     }
+                            //   });
+                            // },
                           ),
                           Text(S.of(context).recurEnd),
                         ],
@@ -416,9 +421,10 @@ class _EditEventDialogState extends State<EditEventDialog> {
                             icon: const Icon(Icons.calendar_month),
                             labelText: S.of(context).eventDateLabel,
                           ),
-                          onTap: () {
-                            _selectRecurUntil();
-                          },
+                          onTap: null,
+                          // () {
+                          //   _selectRecurUntil();
+                          // },
                         ),
                     ],
                   ),
