@@ -8,6 +8,7 @@ import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/create_event_dialog.dart';
 import 'package:success_academy/calendar/delete_event_dialog.dart';
+import 'package:success_academy/calendar/edit_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/calendar/quit_event_dialog.dart';
 import 'package:success_academy/calendar/signup_event_dialog.dart';
@@ -214,12 +215,14 @@ class _CalendarState extends State<Calendar> {
             children: [
               _EventList(
                 events: _selectedEvents,
+                firstDay: _firstDay,
+                lastDay: _lastDay,
                 refreshState: () {
                   setState(() {});
                 },
                 deleteEventsLocally: _deleteEventsLocally,
               ),
-              if (canCreateEvents(userType))
+              if (canEditEvents(userType))
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
@@ -398,6 +401,8 @@ class _CalendarHeaderState extends State<_CalendarHeader> {
 
 class _EventList extends StatelessWidget {
   final List<EventModel> events;
+  final DateTime firstDay;
+  final DateTime lastDay;
   final VoidCallback refreshState;
   final void Function({
     required String eventId,
@@ -407,6 +412,8 @@ class _EventList extends StatelessWidget {
 
   const _EventList({
     required this.events,
+    required this.firstDay,
+    required this.lastDay,
     required this.refreshState,
     required this.deleteEventsLocally,
   });
@@ -448,7 +455,15 @@ class _EventList extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () {},
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => EditEventDialog(
+                    event: event,
+                    firstDay: firstDay,
+                    lastDay: lastDay,
+                    onRefresh: () {},
+                  ),
+                ),
               ),
               IconButton(
                 icon: const Icon(Icons.delete),
@@ -472,7 +487,15 @@ class _EventList extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.edit),
-              onPressed: () {},
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => EditEventDialog(
+                  event: event,
+                  firstDay: firstDay,
+                  lastDay: lastDay,
+                  onRefresh: () {},
+                ),
+              ),
             ),
             IconButton(
               icon: const Icon(Icons.delete),

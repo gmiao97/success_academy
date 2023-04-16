@@ -84,6 +84,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteFuture":
             MessageLookupByLibrary.simpleMessage("This and following lessons"),
         "deleteSingle": MessageLookupByLibrary.simpleMessage("This lesson"),
+        "editEvent": MessageLookupByLibrary.simpleMessage("Edit lesson"),
+        "editEventFailure":
+            MessageLookupByLibrary.simpleMessage("Failed to edit lesson"),
+        "editEventSuccess":
+            MessageLookupByLibrary.simpleMessage("Edited lesson"),
         "eventDateLabel": MessageLookupByLibrary.simpleMessage("Date"),
         "eventDescriptionLabel":
             MessageLookupByLibrary.simpleMessage("Description"),

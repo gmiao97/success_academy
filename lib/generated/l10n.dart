@@ -860,6 +860,26 @@ class S {
     );
   }
 
+  /// `Edited lesson`
+  String get editEventSuccess {
+    return Intl.message(
+      'Edited lesson',
+      name: 'editEventSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to edit lesson`
+  String get editEventFailure {
+    return Intl.message(
+      'Failed to edit lesson',
+      name: 'editEventFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Delete lesson`
   String get deleteEvent {
     return Intl.message(
@@ -875,6 +895,16 @@ class S {
     return Intl.message(
       'Create lesson',
       name: 'createEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit lesson`
+  String get editEvent {
+    return Intl.message(
+      'Edit lesson',
+      name: 'editEvent',
       desc: '',
       args: [],
     );

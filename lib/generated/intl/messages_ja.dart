@@ -79,6 +79,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("レッスンを削除しました"),
         "deleteFuture": MessageLookupByLibrary.simpleMessage("これ以降のすべてのレッスン"),
         "deleteSingle": MessageLookupByLibrary.simpleMessage("このレッスン"),
+        "editEvent": MessageLookupByLibrary.simpleMessage("レッスン編集"),
+        "editEventFailure":
+            MessageLookupByLibrary.simpleMessage("レッスンの編集ができませんでした"),
+        "editEventSuccess": MessageLookupByLibrary.simpleMessage("レッスンを編集しました"),
         "eventDateLabel": MessageLookupByLibrary.simpleMessage("日付"),
         "eventDescriptionLabel": MessageLookupByLibrary.simpleMessage("説明"),
         "eventDescriptionValidation":

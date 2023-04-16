@@ -89,8 +89,11 @@
   "deleteEventFailure": "Failed to delete lesson",
   "createEventSuccess": "Created lesson",
   "createEventFailure": "Failed to create lesson",
+  "editEventSuccess": "Edited lesson",
+  "editEventFailure": "Failed to edit lesson",
   "deleteEvent": "Delete lesson",
   "createEvent": "Create lesson",
+  "editEvent": "Edit lesson",
 
   "eventSummaryLabel": "Title",
   "eventSummaryValidation": "Please enter lesson title",

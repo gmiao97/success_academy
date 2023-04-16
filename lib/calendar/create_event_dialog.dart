@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
-import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
@@ -59,12 +59,13 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     tz.initializeTimeZones();
 
     final account = context.read<AccountModel>();
-    assert(canCreateEvents(account.userType));
+    assert(canEditEvents(account.userType));
     _location = tz.getLocation(account.myUser!.timeZone);
     _locale = account.locale;
-    _eventTypes = getEventTypesCanCreate(account.userType);
+    _eventTypes = getEventTypesCanEdit(account.userType);
     assert(_eventTypes.isNotEmpty);
 
+    _teacherId = widget.teacherId;
     final now = tz.TZDateTime.now(_location);
     _start = tz.TZDateTime(_location, widget.selectedDay.year,
         widget.selectedDay.month, widget.selectedDay.day, now.hour, now.minute);
@@ -188,7 +189,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     },
                     value: _teacherId,
                     decoration: InputDecoration(
-                        hintText: 'Teacher',
+                        hintText: S.of(context).teacherTitle,
                         icon: const Icon(Icons.person),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear),
@@ -387,9 +388,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         _submitClicked
             ? Transform.scale(
                 scale: 0.5,
-                child: const CircularProgressIndicator(
-                  value: null,
-                ),
+                child: const CircularProgressIndicator(),
               )
             : TextButton(
                 child: Text(S.of(context).confirm),
@@ -411,7 +410,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                                 frequency: _recurFrequency, until: _recurUntil)
                             : [],
                         timeZone: timeZone,
-                        teacherId: _teacherId ?? widget.teacherId);
+                        teacherId: _teacherId);
                     try {
                       await event_service.insertEvent(event);
                       widget.onRefresh();

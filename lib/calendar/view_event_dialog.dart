@@ -50,9 +50,11 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
           location:
               tz.getLocation(context.read<AccountModel>().myUser!.timeZone),
         );
-        setState(() {
-          _recurrenceEvent = event;
-          _isLoadingRecurringEvent = false;
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          setState(() {
+            _recurrenceEvent = event;
+            _isLoadingRecurringEvent = false;
+          });
         });
       } catch (e) {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

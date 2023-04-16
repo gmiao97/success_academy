@@ -89,8 +89,11 @@
   "deleteEventFailure": "レッスンの削除ができませんでした",
   "createEventSuccess": "レッスンを作成しました",
   "createEventFailure": "レッスンの作成ができませんでした",
+  "editEventSuccess": "レッスンを編集しました",
+  "editEventFailure": "レッスンの編集ができませんでした",
   "deleteEvent": "レッスン削除",
   "createEvent": "レッスン作成",
+  "editEvent": "レッスン編集",
 
   "eventSummaryLabel": "タイトル",
   "eventSummaryValidation": "レッスンのタイトルを入力してください",

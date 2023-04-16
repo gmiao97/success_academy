@@ -7,9 +7,6 @@ import 'package:success_academy/calendar/event_model.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
 
-// TODO: Remove
-int timeOfDayToInt(TimeOfDay time) => time.hour * 60 + time.minute;
-
 String frequencyToString(BuildContext context, Frequency frequency) {
   if (frequency == Frequency.daily) {
     return S.of(context).recurDaily;
@@ -48,11 +45,11 @@ List<String> buildRecurrence({required Frequency frequency, DateTime? until}) {
   ];
 }
 
-bool canCreateEvents(UserType userType) {
+bool canEditEvents(UserType userType) {
   return userType == UserType.admin || userType == UserType.teacher;
 }
 
-List<EventType> getEventTypesCanCreate(UserType userType) {
+List<EventType> getEventTypesCanEdit(UserType userType) {
   switch (userType) {
     case UserType.admin:
       return [EventType.free, EventType.preschool, EventType.private];

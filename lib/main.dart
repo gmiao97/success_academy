@@ -75,9 +75,7 @@ class Root extends StatelessWidget {
 
     if (authStatus == AuthStatus.loading) {
       return const Center(
-        child: CircularProgressIndicator(
-          value: null,
-        ),
+        child: CircularProgressIndicator(),
       );
     }
     if (authStatus == AuthStatus.emailVerification) {
