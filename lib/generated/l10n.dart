@@ -70,6 +70,76 @@ class S {
     );
   }
 
+  /// `A verification link has been sent to your email at {address}`
+  String verifyEmailMessage(Object address) {
+    return Intl.message(
+      'A verification link has been sent to your email at $address',
+      name: 'verifyEmailMessage',
+      desc: '',
+      args: [address],
+    );
+  }
+
+  /// `Please click on the link in your email to continue the registration process. If you don't see a message in your inbox, please check your spam or junk mail folder.`
+  String get verifyEmailAction {
+    return Intl.message(
+      'Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder.',
+      name: 'verifyEmailAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account Settings`
+  String get settings {
+    return Intl.message(
+      'Account Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account settings updated`
+  String get accountUpdated {
+    return Intl.message(
+      'Account settings updated',
+      name: 'accountUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to update account settings`
+  String get failedAccountUpdate {
+    return Intl.message(
+      'Failed to update account settings',
+      name: 'failedAccountUpdate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time Zone`
+  String get timeZoneLabel {
+    return Intl.message(
+      'Time Zone',
+      name: 'timeZoneLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a valid time zone`
+  String get timeZoneValidation {
+    return Intl.message(
+      'Please select a valid time zone',
+      name: 'timeZoneValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Go back`
   String get goBack {
     return Intl.message(
@@ -80,41 +150,101 @@ class S {
     );
   }
 
-  /// `Next`
-  String get next {
+  /// `Confirm`
+  String get confirm {
     return Intl.message(
-      'Next',
-      name: 'next',
+      'Confirm',
+      name: 'confirm',
       desc: '',
       args: [],
     );
   }
 
-  /// `Select profile`
-  String get selectProfile {
+  /// `Cancel`
+  String get cancel {
     return Intl.message(
-      'Select profile',
-      name: 'selectProfile',
+      'Cancel',
+      name: 'cancel',
       desc: '',
       args: [],
     );
   }
 
-  /// `Add profile`
-  String get addProfile {
+  /// `Close`
+  String get close {
     return Intl.message(
-      'Add profile',
-      name: 'addProfile',
+      'Close',
+      name: 'close',
       desc: '',
       args: [],
     );
   }
 
-  /// `Manage Users`
-  String get manageProfile {
+  /// `Reload page`
+  String get reloadPage {
     return Intl.message(
-      'Manage Users',
-      name: 'manageProfile',
+      'Reload page',
+      name: 'reloadPage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ID`
+  String get id {
+    return Intl.message(
+      'ID',
+      name: 'id',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last name`
+  String get lastName {
+    return Intl.message(
+      'Last name',
+      name: 'lastName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First name`
+  String get firstName {
+    return Intl.message(
+      'First name',
+      name: 'firstName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of points completed from private lessons`
+  String get privateNum {
+    return Intl.message(
+      'Number of points completed from private lessons',
+      name: 'privateNum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of preschool lessons completed`
+  String get preschoolNum {
+    return Intl.message(
+      'Number of preschool lessons completed',
+      name: 'preschoolNum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of free lessons completed`
+  String get freeNum {
+    return Intl.message(
+      'Number of free lessons completed',
+      name: 'freeNum',
       desc: '',
       args: [],
     );
@@ -127,6 +257,26 @@ class S {
       name: 'createProfile',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Add points`
+  String get addPoints {
+    return Intl.message(
+      'Add points',
+      name: 'addPoints',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{numPoints} Points - ${cost}`
+  String pointsPurchase(Object numPoints, Object cost) {
+    return Intl.message(
+      '$numPoints Points - \$$cost',
+      name: 'pointsPurchase',
+      desc: '',
+      args: [numPoints, cost],
     );
   }
 
@@ -250,31 +400,71 @@ class S {
     );
   }
 
-  /// `Student Profile Information`
-  String get studentProfile {
+  /// `Terms of use`
+  String get termsOfUse {
     return Intl.message(
-      'Student Profile Information',
-      name: 'studentProfile',
+      'Terms of use',
+      name: 'termsOfUse',
       desc: '',
       args: [],
     );
   }
 
-  /// `Teacher Profile Information`
-  String get teacherProfile {
+  /// `Agree to terms of use`
+  String get agreeToTerms {
     return Intl.message(
-      'Teacher Profile Information',
-      name: 'teacherProfile',
+      'Agree to terms of use',
+      name: 'agreeToTerms',
       desc: '',
       args: [],
     );
   }
 
-  /// `Name`
-  String get name {
+  /// `Profile`
+  String get profile {
     return Intl.message(
-      'Name',
-      name: 'name',
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View Profile`
+  String get viewProfile {
+    return Intl.message(
+      'View Profile',
+      name: 'viewProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage Users`
+  String get manageProfile {
+    return Intl.message(
+      'Manage Users',
+      name: 'manageProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switch Profile`
+  String get switchProfile {
+    return Intl.message(
+      'Switch Profile',
+      name: 'switchProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select profile`
+  String get selectProfile {
+    return Intl.message(
+      'Select profile',
+      name: 'selectProfile',
       desc: '',
       args: [],
     );
@@ -320,6 +510,46 @@ class S {
     );
   }
 
+  /// `{numPoints} Points`
+  String eventPointsDisplay(Object numPoints) {
+    return Intl.message(
+      '$numPoints Points',
+      name: 'eventPointsDisplay',
+      desc: '',
+      args: [numPoints],
+    );
+  }
+
+  /// `ADMIN`
+  String get admin {
+    return Intl.message(
+      'ADMIN',
+      name: 'admin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TEACHER`
+  String get teacher {
+    return Intl.message(
+      'TEACHER',
+      name: 'teacher',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `STUDENT`
+  String get student {
+    return Intl.message(
+      'STUDENT',
+      name: 'student',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Free Lesson - $40 USD/month`
   String get minimumCourse {
     return Intl.message(
@@ -350,6 +580,36 @@ class S {
     );
   }
 
+  /// `Free lesson`
+  String get free {
+    return Intl.message(
+      'Free lesson',
+      name: 'free',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preschool lesson`
+  String get preschool {
+    return Intl.message(
+      'Preschool lesson',
+      name: 'preschool',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private lesson`
+  String get private {
+    return Intl.message(
+      'Private lesson',
+      name: 'private',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `14 days free trial`
   String get freeTrial {
     return Intl.message(
@@ -360,10 +620,10 @@ class S {
     );
   }
 
-  /// `$50 USD sign up fee due after trial`
+  /// `$50 USD sign-up fee due after trial`
   String get signUpFee {
     return Intl.message(
-      '\$50 USD sign up fee due after trial',
+      '\$50 USD sign-up fee due after trial',
       name: 'signUpFee',
       desc: '',
       args: [],
@@ -400,6 +660,16 @@ class S {
     );
   }
 
+  /// `Add subscription`
+  String get addPlan {
+    return Intl.message(
+      'Add subscription',
+      name: 'addPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Continue to subscription purchase`
   String get stripePurchase {
     return Intl.message(
@@ -420,111 +690,21 @@ class S {
     );
   }
 
-  /// `Time Zone`
-  String get timeZoneLabel {
+  /// `Failed to redirect to Stripe`
+  String get stripeRedirectFailure {
     return Intl.message(
-      'Time Zone',
-      name: 'timeZoneLabel',
+      'Failed to redirect to Stripe',
+      name: 'stripeRedirectFailure',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please select a valid time zone`
-  String get timeZoneValidation {
+  /// `Lesson Info`
+  String get lessonInfo {
     return Intl.message(
-      'Please select a valid time zone',
-      name: 'timeZoneValidation',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `A verification link has been sent to your email at {address}`
-  String verifyEmailMessage(Object address) {
-    return Intl.message(
-      'A verification link has been sent to your email at $address',
-      name: 'verifyEmailMessage',
-      desc: '',
-      args: [address],
-    );
-  }
-
-  /// `Please click on the link in your email to continue the registration process. If you don't see a message in your inbox, please check your spam or junk mail folder.`
-  String get verifyEmailAction {
-    return Intl.message(
-      'Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder.',
-      name: 'verifyEmailAction',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Reload page`
-  String get reloadPage {
-    return Intl.message(
-      'Reload page',
-      name: 'reloadPage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select Profile`
-  String get changeProfile {
-    return Intl.message(
-      'Select Profile',
-      name: 'changeProfile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View Profile`
-  String get viewProfile {
-    return Intl.message(
-      'View Profile',
-      name: 'viewProfile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Lesson Calendar`
-  String get lessonCalendar {
-    return Intl.message(
-      'Lesson Calendar',
-      name: 'lessonCalendar',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Free Lesson Info`
-  String get freeLessonInfo {
-    return Intl.message(
-      'Free Lesson Info',
-      name: 'freeLessonInfo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add points`
-  String get addPoints {
-    return Intl.message(
-      'Add points',
-      name: 'addPoints',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Account Settings`
-  String get settings {
-    return Intl.message(
-      'Account Settings',
-      name: 'settings',
+      'Lesson Info',
+      name: 'lessonInfo',
       desc: '',
       args: [],
     );
@@ -560,131 +740,91 @@ class S {
     );
   }
 
-  /// `{name}'s Calendar`
-  String calendarHeader(Object name) {
+  /// `Lesson`
+  String get lesson {
     return Intl.message(
-      '$name\'s Calendar',
-      name: 'calendarHeader',
-      desc: '',
-      args: [name],
-    );
-  }
-
-  /// `Timezone: {timeZone}`
-  String timeZone(Object timeZone) {
-    return Intl.message(
-      'Timezone: $timeZone',
-      name: 'timeZone',
-      desc: '',
-      args: [timeZone],
-    );
-  }
-
-  /// `Today`
-  String get today {
-    return Intl.message(
-      'Today',
-      name: 'today',
+      'Lesson',
+      name: 'lesson',
       desc: '',
       args: [],
     );
   }
 
-  /// `Lesson Filter`
-  String get filter {
+  /// `Link`
+  String get link {
     return Intl.message(
-      'Lesson Filter',
-      name: 'filter',
+      'Link',
+      name: 'link',
       desc: '',
       args: [],
     );
   }
 
-  /// `Confirm`
-  String get confirm {
+  /// `Meeting ID`
+  String get meetingId {
     return Intl.message(
-      'Confirm',
-      name: 'confirm',
+      'Meeting ID',
+      name: 'meetingId',
       desc: '',
       args: [],
     );
   }
 
-  /// `Cancel`
-  String get cancel {
+  /// `Password`
+  String get password {
     return Intl.message(
-      'Cancel',
-      name: 'cancel',
+      'Password',
+      name: 'password',
       desc: '',
       args: [],
     );
   }
 
-  /// `Free lesson`
-  String get free {
+  /// `Failed to open link`
+  String get openLinkFailure {
     return Intl.message(
-      'Free lesson',
-      name: 'free',
+      'Failed to open link',
+      name: 'openLinkFailure',
       desc: '',
       args: [],
     );
   }
 
-  /// `Preschool lesson`
-  String get preschool {
+  /// `Updated`
+  String get lessonInfoUpdated {
     return Intl.message(
-      'Preschool lesson',
-      name: 'preschool',
+      'Updated',
+      name: 'lessonInfoUpdated',
       desc: '',
       args: [],
     );
   }
 
-  /// `Private lesson`
-  String get private {
+  /// `Update failed`
+  String get lessonInfoUpdateFailed {
     return Intl.message(
-      'Private lesson',
-      name: 'private',
+      'Update failed',
+      name: 'lessonInfoUpdateFailed',
       desc: '',
       args: [],
     );
   }
 
-  /// `Display by lesson type`
-  String get filterTitle {
+  /// `Please press the save button`
+  String get promptSave {
     return Intl.message(
-      'Display by lesson type',
-      name: 'filterTitle',
+      'Please press the save button',
+      name: 'promptSave',
       desc: '',
       args: [],
     );
   }
 
-  /// `Free lessons`
-  String get freeFilter {
+  /// `Lesson type`
+  String get eventType {
     return Intl.message(
-      'Free lessons',
-      name: 'freeFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Preschool lessons`
-  String get preschoolFilter {
-    return Intl.message(
-      'Preschool lessons',
-      name: 'preschoolFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Private lessons`
-  String get privateFilter {
-    return Intl.message(
-      'Private lessons',
-      name: 'privateFilter',
+      'Lesson type',
+      name: 'eventType',
       desc: '',
       args: [],
     );
@@ -710,41 +850,91 @@ class S {
     );
   }
 
-  /// `Add lesson`
-  String get createEvent {
+  /// `No repeat`
+  String get recurNone {
     return Intl.message(
-      'Add lesson',
-      name: 'createEvent',
+      'No repeat',
+      name: 'recurNone',
       desc: '',
       args: [],
     );
   }
 
-  /// `Edit lesson`
-  String get editEvent {
+  /// `Daily`
+  String get recurDaily {
     return Intl.message(
-      'Edit lesson',
-      name: 'editEvent',
+      'Daily',
+      name: 'recurDaily',
       desc: '',
       args: [],
     );
   }
 
-  /// `Sign up for lesson`
-  String get signupEvent {
+  /// `Weekly`
+  String get recurWeekly {
     return Intl.message(
-      'Sign up for lesson',
-      name: 'signupEvent',
+      'Weekly',
+      name: 'recurWeekly',
       desc: '',
       args: [],
     );
   }
 
-  /// `View lesson`
-  String get viewEvent {
+  /// `Monthly`
+  String get recurMonthly {
     return Intl.message(
-      'View lesson',
-      name: 'viewEvent',
+      'Monthly',
+      name: 'recurMonthly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` until {until}`
+  String recurUntil(Object until) {
+    return Intl.message(
+      ' until $until',
+      name: 'recurUntil',
+      desc: '',
+      args: [until],
+    );
+  }
+
+  /// `Unspecified`
+  String get unspecified {
+    return Intl.message(
+      'Unspecified',
+      name: 'unspecified',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson Calendar`
+  String get lessonCalendar {
+    return Intl.message(
+      'Lesson Calendar',
+      name: 'lessonCalendar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message(
+      'Today',
+      name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter`
+  String get filter {
+    return Intl.message(
+      'Filter',
+      name: 'filter',
       desc: '',
       args: [],
     );
@@ -760,71 +950,231 @@ class S {
     );
   }
 
-  /// `My lesson`
+  /// `Signed-up`
   String get signedUp {
     return Intl.message(
-      'My lesson',
+      'Signed-up',
       name: 'signedUp',
       desc: '',
       args: [],
     );
   }
 
-  /// `Cancel sign up`
+  /// `Cancel sign-up`
   String get cancelSignup {
     return Intl.message(
-      'Cancel sign up',
+      'Cancel sign-up',
       name: 'cancelSignup',
       desc: '',
       args: [],
     );
   }
 
-  /// `Sign up successful`
+  /// `Cannot sign up for past lesson`
+  String get signupPastEvent {
+    return Intl.message(
+      'Cannot sign up for past lesson',
+      name: 'signupPastEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cannot cancel sign-up for past lesson`
+  String get cancelSignupPastEvent {
+    return Intl.message(
+      'Cannot cancel sign-up for past lesson',
+      name: 'cancelSignupPastEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign-up successful`
   String get signupSuccess {
     return Intl.message(
-      'Sign up successful',
+      'Sign-up successful',
       name: 'signupSuccess',
       desc: '',
       args: [],
     );
   }
 
-  /// `Sign up unsuccessful`
+  /// `Sign-up unsuccessful`
   String get signupFailure {
     return Intl.message(
-      'Sign up unsuccessful',
+      'Sign-up unsuccessful',
       name: 'signupFailure',
       desc: '',
       args: [],
     );
   }
 
-  /// `Cancelled sign up`
+  /// `Cancelled sign-up`
   String get cancelSignupSuccess {
     return Intl.message(
-      'Cancelled sign up',
+      'Cancelled sign-up',
       name: 'cancelSignupSuccess',
       desc: '',
       args: [],
     );
   }
 
-  /// `Failed to cancel sign up`
+  /// `Failed to cancel sign-up`
   String get cancelSignupFailure {
     return Intl.message(
-      'Failed to cancel sign up',
+      'Failed to cancel sign-up',
       name: 'cancelSignupFailure',
       desc: '',
       args: [],
     );
   }
 
-  /// `Delete`
-  String get delete {
+  /// `Please add more points`
+  String get notEnoughPoints {
     return Intl.message(
-      'Delete',
-      name: 'delete',
+      'Please add more points',
+      name: 'notEnoughPoints',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{cost} of {balance} points will be used`
+  String usePoints(Object cost, Object balance) {
+    return Intl.message(
+      '$cost of $balance points will be used',
+      name: 'usePoints',
+      desc: '',
+      args: [cost, balance],
+    );
+  }
+
+  /// `{cost} points will be refunded`
+  String refundPoints(Object cost) {
+    return Intl.message(
+      '$cost points will be refunded',
+      name: 'refundPoints',
+      desc: '',
+      args: [cost],
+    );
+  }
+
+  /// `Delete lesson`
+  String get deleteEvent {
+    return Intl.message(
+      'Delete lesson',
+      name: 'deleteEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted lesson`
+  String get deleteEventSuccess {
+    return Intl.message(
+      'Deleted lesson',
+      name: 'deleteEventSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to delete lesson`
+  String get deleteEventFailure {
+    return Intl.message(
+      'Failed to delete lesson',
+      name: 'deleteEventFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This lesson`
+  String get deleteSingle {
+    return Intl.message(
+      'This lesson',
+      name: 'deleteSingle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This and following lessons`
+  String get deleteFuture {
+    return Intl.message(
+      'This and following lessons',
+      name: 'deleteFuture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All lessons`
+  String get deleteAll {
+    return Intl.message(
+      'All lessons',
+      name: 'deleteAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create lesson`
+  String get createEvent {
+    return Intl.message(
+      'Create lesson',
+      name: 'createEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Created lesson`
+  String get createEventSuccess {
+    return Intl.message(
+      'Created lesson',
+      name: 'createEventSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to create lesson`
+  String get createEventFailure {
+    return Intl.message(
+      'Failed to create lesson',
+      name: 'createEventFailure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit lesson`
+  String get editEvent {
+    return Intl.message(
+      'Edit lesson',
+      name: 'editEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edited lesson`
+  String get editEventSuccess {
+    return Intl.message(
+      'Edited lesson',
+      name: 'editEventSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to edit lesson`
+  String get editEventFailure {
+    return Intl.message(
+      'Failed to edit lesson',
+      name: 'editEventFailure',
       desc: '',
       args: [],
     );
@@ -870,56 +1220,6 @@ class S {
     );
   }
 
-  /// `{numPoints} Points`
-  String eventPointsDisplay(Object numPoints) {
-    return Intl.message(
-      '$numPoints Points',
-      name: 'eventPointsDisplay',
-      desc: '',
-      args: [numPoints],
-    );
-  }
-
-  /// `{numPoints} Points - ${cost}`
-  String eventPointsPurchase(Object numPoints, Object cost) {
-    return Intl.message(
-      '$numPoints Points - \$$cost',
-      name: 'eventPointsPurchase',
-      desc: '',
-      args: [numPoints, cost],
-    );
-  }
-
-  /// `Please add more points`
-  String get notEnoughPoints {
-    return Intl.message(
-      'Please add more points',
-      name: 'notEnoughPoints',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `{cost} of {balance} points will be used`
-  String usePoints(Object cost, Object balance) {
-    return Intl.message(
-      '$cost of $balance points will be used',
-      name: 'usePoints',
-      desc: '',
-      args: [cost, balance],
-    );
-  }
-
-  /// `{cost} points will be refunded`
-  String refundPoints(Object cost) {
-    return Intl.message(
-      '$cost points will be refunded',
-      name: 'refundPoints',
-      desc: '',
-      args: [cost],
-    );
-  }
-
   /// `Description`
   String get eventDescriptionLabel {
     return Intl.message(
@@ -940,11 +1240,11 @@ class S {
     );
   }
 
-  /// `Date`
-  String get eventDateLabel {
+  /// `Until`
+  String get recurUntilLabel {
     return Intl.message(
-      'Date',
-      name: 'eventDateLabel',
+      'Until',
+      name: 'recurUntilLabel',
       desc: '',
       args: [],
     );
@@ -1000,6 +1300,26 @@ class S {
     );
   }
 
+  /// `Duration must be less than 24 hours`
+  String get eventTooLongValidation {
+    return Intl.message(
+      'Duration must be less than 24 hours',
+      name: 'eventTooLongValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Teacher`
+  String get teacherTitle {
+    return Intl.message(
+      'Teacher',
+      name: 'teacherTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Registered students`
   String get studentListTitle {
     return Intl.message(
@@ -1020,56 +1340,6 @@ class S {
     );
   }
 
-  /// `Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar.`
-  String get recurEditNotSupported {
-    return Intl.message(
-      'Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar.',
-      name: 'recurEditNotSupported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No repeat`
-  String get recurNone {
-    return Intl.message(
-      'No repeat',
-      name: 'recurNone',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Daily`
-  String get recurDaily {
-    return Intl.message(
-      'Daily',
-      name: 'recurDaily',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Weekly`
-  String get recurWeekly {
-    return Intl.message(
-      'Weekly',
-      name: 'recurWeekly',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Monthly`
-  String get recurMonthly {
-    return Intl.message(
-      'Monthly',
-      name: 'recurMonthly',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `End`
   String get recurEnd {
     return Intl.message(
@@ -1080,151 +1350,11 @@ class S {
     );
   }
 
-  /// `Account settings updated`
-  String get accountUpdated {
+  /// `Failed to load lesson`
+  String get failedGetRecurrenceEvent {
     return Intl.message(
-      'Account settings updated',
-      name: 'accountUpdated',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Failed to update account settings`
-  String get failedAccountUpdate {
-    return Intl.message(
-      'Failed to update account settings',
-      name: 'failedAccountUpdate',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `ID`
-  String get id {
-    return Intl.message(
-      'ID',
-      name: 'id',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Last name`
-  String get lastName {
-    return Intl.message(
-      'Last name',
-      name: 'lastName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `First name`
-  String get firstName {
-    return Intl.message(
-      'First name',
-      name: 'firstName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Number of points completed from private lessons`
-  String get privateNum {
-    return Intl.message(
-      'Number of points completed from private lessons',
-      name: 'privateNum',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Number of preschool lessons completed`
-  String get preschoolNum {
-    return Intl.message(
-      'Number of preschool lessons completed',
-      name: 'preschoolNum',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Number of free lessons completed`
-  String get freeNum {
-    return Intl.message(
-      'Number of free lessons completed',
-      name: 'freeNum',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `MERCY EDUCATION`
-  String get businessName {
-    return Intl.message(
-      'MERCY EDUCATION',
-      name: 'businessName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Terms of use`
-  String get termsOfUse {
-    return Intl.message(
-      'Terms of use',
-      name: 'termsOfUse',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Agree to terms of use`
-  String get agreeToTerms {
-    return Intl.message(
-      'Agree to terms of use',
-      name: 'agreeToTerms',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Lesson`
-  String get lesson {
-    return Intl.message(
-      'Lesson',
-      name: 'lesson',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Link`
-  String get link {
-    return Intl.message(
-      'Link',
-      name: 'link',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Meeting ID`
-  String get meetingId {
-    return Intl.message(
-      'Meeting ID',
-      name: 'meetingId',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Password`
-  String get password {
-    return Intl.message(
-      'Password',
-      name: 'password',
+      'Failed to load lesson',
+      name: 'failedGetRecurrenceEvent',
       desc: '',
       args: [],
     );

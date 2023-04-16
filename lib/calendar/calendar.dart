@@ -1,346 +1,570 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/admin_calendar.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
+import 'package:success_academy/calendar/create_event_dialog.dart';
+import 'package:success_academy/calendar/delete_event_dialog.dart';
+import 'package:success_academy/calendar/edit_event_dialog.dart';
 import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/calendar/student_calendar.dart';
-import 'package:success_academy/calendar/teacher_calendar.dart';
-import 'package:success_academy/main.dart';
-import 'package:success_academy/profile/profile_browse.dart';
-import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/calendar/quit_event_dialog.dart';
+import 'package:success_academy/calendar/signup_event_dialog.dart';
+import 'package:success_academy/calendar/view_event_dialog.dart';
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:table_calendar/table_calendar.dart';
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
-class Calendar extends StatelessWidget {
-  const Calendar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    if (account.authStatus == AuthStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          value: null,
-        ),
-      );
-    }
-    if (account.authStatus == AuthStatus.emailVerification) {
-      return const EmailVerificationPage();
-    }
-    if (account.authStatus == AuthStatus.signedOut) {
-      return const HomePage();
-    }
-    if (account.userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
-    }
-    return const BaseCalendar();
-  }
-}
-
-class BaseCalendar extends StatefulWidget {
-  const BaseCalendar({Key? key}) : super(key: key);
+class Calendar extends StatefulWidget {
+  const Calendar({super.key});
 
   @override
-  State<BaseCalendar> createState() => _BaseCalendarState();
+  State<Calendar> createState() => _CalendarState();
 }
 
-class _BaseCalendarState extends State<BaseCalendar> {
-  final DateTime _firstDay =
-      DateUtils.dateOnly(DateTime.now().subtract(const Duration(days: 365)));
-  final DateTime _lastDay =
-      DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
-  late DateTime _focusedDay;
-  late DateTime _currentDay;
-  DateTime? _selectedDay;
-  CalendarFormat _calendarFormat = CalendarFormat.week;
-
-  late AccountModel _accountContext;
-  List<EventModel> _allEvents = [];
-  Map<DateTime, List<EventModel>> _events = {};
-  late final ValueNotifier<List<EventModel>> _selectedEvents;
-  bool _isCalendarInitialized = false;
-  late final List<EventType> _availableEventFilters;
-  List<EventType> _eventFilters = [];
-  EventDisplay _eventDisplay = EventDisplay.all;
-
-  final CalendarBuilders _calendarBuilders = CalendarBuilders(
-    markerBuilder: ((context, day, events) {
-      if (events.isNotEmpty) {
-        return Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.amber[600],
-          ),
-          height: 15,
-          width: 15,
-          alignment: Alignment.center,
-          child: Text(
-            '${events.length}',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        );
-      }
-      return null;
-    }),
+class _CalendarState extends State<Calendar> {
+  late final List<EventType> _availableEventTypes;
+  late final DateTime _firstDay;
+  late final DateTime _lastDay;
+  final Map<DateTime, List<EventModel>> _events = HashMap(
+    equals: (a, b) => isSameDay(a, b),
+    hashCode: (e) => DateUtils.dateOnly(e).hashCode,
   );
+  late DateTime _currentDay;
+  late DateTime _focusedDay;
+  late DateTime _selectedDay;
+  late List<EventType> _selectedEventTypes;
+  List<EventModel> _selectedEvents = [];
+  EventDisplay _eventDisplay = EventDisplay.all;
+  bool _showLoadingIndicator = false;
 
   @override
   void initState() {
-    // TODO: Calendar refresh
     super.initState();
     tz.initializeTimeZones();
-    initCalendar();
+    final account = context.read<AccountModel>();
+    _currentDay = _focusedDay = _selectedDay =
+        tz.TZDateTime.now(tz.getLocation(account.myUser!.timeZone));
+    _firstDay = _currentDay.subtract(const Duration(days: 365));
+    _lastDay = _currentDay.add(const Duration(days: 365));
+    _availableEventTypes = _selectedEventTypes =
+        getEventTypesCanView(account.userType, account.subscriptionPlan);
   }
 
   @override
-  void dispose() {
-    _selectedEvents.dispose();
-    super.dispose();
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    final account = context.watch<AccountModel>();
+    _currentDay = tz.TZDateTime.now(tz.getLocation(account.myUser!.timeZone));
+    _setEvents();
   }
 
-  Future<void> initCalendar() async {
-    _selectedEvents = ValueNotifier([]);
-    _accountContext = context.read<AccountModel>();
-
-    _currentDay =
-        tz.TZDateTime.now(tz.getLocation(_accountContext.myUser!.timeZone));
-    _focusedDay = _currentDay;
-
-    await _setEventFilters();
-    await _setAllEvents();
-  }
-
-  List<EventModel> _getEventsForDay(DateTime day) {
-    if (_events[day] == null) {
-      return [];
-    }
-    _events[day]!.sort((a, b) => a.startTime.millisecondsSinceEpoch
-        .compareTo(b.startTime.millisecondsSinceEpoch));
-    return _events[day]!;
-  }
-
-  void _onTodayButtonTap() {
-    final now =
-        tz.TZDateTime.now(tz.getLocation(_accountContext.myUser!.timeZone));
-    final today = DateTime.utc(now.year, now.month, now.day);
+  void _setEvents() async {
     setState(() {
-      _focusedDay = today;
-      _selectedDay = today;
-      _selectedEvents.value = _getEventsForDay(today);
+      _showLoadingIndicator = true;
     });
-  }
+    final account = context.read<AccountModel>();
+    final location = tz.getLocation(account.myUser!.timeZone);
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _selectedEvents.value = _getEventsForDay(selectedDay);
-      });
-    }
-  }
-
-  void _onFormatChanged(CalendarFormat format) {
-    setState(() {
-      _calendarFormat = format;
-    });
-  }
-
-  void _onPageChanged(DateTime focusedDay) {
-    setState(() {
-      _focusedDay = focusedDay;
-    });
-  }
-
-  void _onEventFilterConfirm(List<EventType> filters) {
-    setState(() {
-      _eventFilters = filters;
-      _events = buildEventMap(_filterAllEvents(
-          showMyEventsOnly: _eventDisplay == EventDisplay.mine));
-      _selectedEvents.value =
-          _selectedDay != null ? _getEventsForDay(_selectedDay!) : [];
-    });
-  }
-
-  void _onEventDisplayChanged(EventDisplay? display) {
-    setState(() {
-      _eventDisplay = display!;
-      _events = buildEventMap(_filterAllEvents(
-          showMyEventsOnly: _eventDisplay == EventDisplay.mine));
-      _selectedEvents.value =
-          _selectedDay != null ? _getEventsForDay(_selectedDay!) : [];
-    });
-  }
-
-  Future<void> _setEventFilters() async {
-    final filters = [];
-    if (_accountContext.userType == UserType.student) {
-      final subscriptionPlan = _accountContext.subscriptionPlan;
-      if (subscriptionPlan != null &&
-          subscriptionPlan != SubscriptionPlan.monthly) {
-        if (subscriptionPlan == SubscriptionPlan.minimumPreschool) {
-          filters.add(EventType.preschool);
-        }
-        filters.addAll([EventType.free, EventType.private]);
-      }
-    } else {
-      filters.addAll([
-        EventType.free,
-        EventType.preschool,
-        EventType.private,
-      ]);
-    }
-
-    setState(() {
-      _availableEventFilters = List.from(filters);
-      _eventFilters = List.from(filters);
-    });
-  }
-
-  Future<void> _setAllEvents() async {
-    _allEvents = await _listEvents();
-    setState(() {
-      _events = buildEventMap(_filterAllEvents(
-          showMyEventsOnly: _eventDisplay == EventDisplay.mine));
-      _isCalendarInitialized = true;
-    });
-    if (_selectedDay != null) {
-      _selectedEvents.value = _getEventsForDay(_selectedDay!);
-    }
-  }
-
-  List<EventModel> _filterAllEvents({showMyEventsOnly = false}) {
-    return _allEvents.where((event) {
-      if (!_eventFilters.contains(event.eventType)) {
+    final singleEvents = (await event_service.listEvents(
+            location: location,
+            timeMin: _currentDay
+                .subtract(const Duration(days: 100))
+                .toIso8601String(),
+            timeMax:
+                _currentDay.add(const Duration(days: 100)).toIso8601String(),
+            singleEvents: true))
+        .where((event) {
+      if (!_selectedEventTypes.contains(event.eventType)) {
         return false;
       }
-      if (showMyEventsOnly) {
-        if (_accountContext.userType == UserType.teacher) {
-          return event.teacherId == _accountContext.teacherProfile!.profileId;
+      if (_eventDisplay == EventDisplay.mine) {
+        if (account.userType == UserType.teacher) {
+          return isTeacherInEvent(account.teacherProfile!.profileId, event);
         }
-        if (_accountContext.userType == UserType.student) {
-          return event.studentIdList
-              .contains(_accountContext.studentProfile!.profileId);
+        if (account.userType == UserType.student) {
+          return isStudentInEvent(account.studentProfile!.profileId, event);
         }
       }
       return true;
     }).toList();
+
+    setState(() {
+      _events.clear();
+      _events.addAll(buildEventMap(singleEvents));
+      _selectedEvents = _getEventsForDay(_selectedDay);
+      _showLoadingIndicator = false;
+    });
   }
 
-  Future<List<EventModel>> _listEvents() async {
-    final timeZoneName = _accountContext.myUser!.timeZone;
-    final timeZone = tz.getLocation(timeZoneName);
+  List<EventModel> _getEventsForDay(DateTime day) {
+    return _events[day] ?? [];
+  }
 
-    List<EventModel> recurringEvents = (await event_service.listEvents(
-            timeZone: timeZoneName,
-            timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
-            timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
-            singleEvents: false))
-        .where((event) => event['status'] != 'cancelled')
-        .map((event) => EventModel.fromJson(event, timeZone))
-        .where((event) => event.recurrence.isNotEmpty)
-        .toList();
-
-    Map<String, List<String>> recurringEventsMap = {
-      for (EventModel e in recurringEvents) e.eventId!: e.recurrence
-    };
-
-    List<EventModel> singleEvents = (await event_service.listEvents(
-            timeZone: timeZoneName,
-            timeMin: tz.TZDateTime.from(_firstDay, timeZone).toIso8601String(),
-            timeMax: tz.TZDateTime.from(_lastDay, timeZone).toIso8601String(),
-            singleEvents: true))
-        .map((event) => EventModel.fromJson(event, timeZone))
-        .toList();
-
-    for (EventModel event in singleEvents) {
-      if (event.recurrenceId != null) {
-        event.recurrence = recurringEventsMap[event.recurrenceId]!;
-      }
+  void _deleteEventsLocally(
+      {required String eventId, bool isRecurrence = false, DateTime? from}) {
+    if (isRecurrence) {
+      setState(() {
+        for (final eventList in _events.values) {
+          eventList.removeWhere((e) {
+            if (from != null) {
+              return e.startTime.isAfter(from) && e.recurrenceId == eventId;
+            }
+            return e.recurrenceId == eventId;
+          });
+        }
+      });
+    } else {
+      setState(() {
+        for (final eventList in _events.values) {
+          eventList.removeWhere((e) => e.eventId == eventId);
+        }
+      });
     }
+  }
 
-    return singleEvents;
+  void _onTodayButtonClick() {
+    setState(() {
+      _focusedDay = _selectedDay = _currentDay = tz.TZDateTime.now(
+          tz.getLocation(context.read<AccountModel>().myUser!.timeZone));
+      _selectedEvents = _getEventsForDay(_selectedDay);
+    });
+  }
+
+  void _onEventFiltersChanged(
+      List<EventType> eventTypes, EventDisplay eventDisplay) {
+    setState(() {
+      _selectedEventTypes = eventTypes;
+      _eventDisplay = eventDisplay;
+    });
+    _setEvents();
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _selectedEvents = _getEventsForDay(_selectedDay);
+    });
+  }
+
+  void _onPageChanged(focusedDay) {
+    _focusedDay = focusedDay;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_isCalendarInitialized) {
-      return const Center(
-        child: CircularProgressIndicator(
-          value: null,
+    final locale = context.select<AccountModel, String>((a) => a.locale);
+    final userType = context.select<AccountModel, UserType>((a) => a.userType);
+    final teacherId = context
+        .select<AccountModel, String?>((a) => a.teacherProfile?.profileId);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _showLoadingIndicator
+            ? LinearProgressIndicator(
+                backgroundColor: Theme.of(context).colorScheme.background,
+              )
+            : const SizedBox(height: 4),
+        Card(
+          child: TableCalendar(
+            headerStyle: const HeaderStyle(
+              formatButtonVisible: false,
+              leftChevronPadding: EdgeInsets.all(8),
+              rightChevronPadding: EdgeInsets.all(8),
+              leftChevronMargin: EdgeInsets.symmetric(horizontal: 4),
+              rightChevronMargin: EdgeInsets.symmetric(horizontal: 4),
+            ),
+            calendarBuilders: CalendarBuilders(
+              headerTitleBuilder: (context, day) => _CalendarHeader(
+                day: day,
+                availableEventTypes: _availableEventTypes,
+                selectedEventTypes: _selectedEventTypes,
+                eventDisplay: _eventDisplay,
+                onTodayButtonClick: _onTodayButtonClick,
+                onEventFiltersChanged: _onEventFiltersChanged,
+              ),
+            ),
+            calendarFormat: CalendarFormat.week,
+            daysOfWeekHeight: 20,
+            locale: locale,
+            currentDay: _currentDay,
+            focusedDay: _focusedDay,
+            firstDay: _firstDay,
+            lastDay: _lastDay,
+            selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+            onPageChanged: _onPageChanged,
+            onDaySelected: _onDaySelected,
+            eventLoader: _getEventsForDay,
+          ),
+        ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Text(
+              DateFormat.yMMMMEEEEd(locale).format(_selectedDay),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Stack(
+            children: [
+              _EventList(
+                events: _selectedEvents,
+                firstDay: _firstDay,
+                lastDay: _lastDay,
+                refreshState: () {
+                  setState(() {});
+                },
+                deleteEventsLocally: _deleteEventsLocally,
+              ),
+              if (canEditEvents(userType))
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(kFloatingActionButtonMargin),
+                    child: FloatingActionButton.extended(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => CreateEventDialog(
+                          teacherId: teacherId,
+                          firstDay: _firstDay,
+                          lastDay: _lastDay,
+                          selectedDay: _selectedDay,
+                          onRefresh: _setEvents,
+                        ),
+                      ),
+                      icon: const Icon(Icons.add),
+                      label: Text(
+                        S.of(context).createEvent,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CalendarHeader extends StatefulWidget {
+  final DateTime day;
+  final List<EventType> availableEventTypes;
+  final List<EventType> selectedEventTypes;
+  final EventDisplay eventDisplay;
+  final VoidCallback onTodayButtonClick;
+  final void Function(List<EventType>, EventDisplay) onEventFiltersChanged;
+
+  const _CalendarHeader({
+    required this.day,
+    required this.availableEventTypes,
+    required this.selectedEventTypes,
+    required this.eventDisplay,
+    required this.onTodayButtonClick,
+    required this.onEventFiltersChanged,
+  });
+
+  @override
+  State<_CalendarHeader> createState() => _CalendarHeaderState();
+}
+
+class _CalendarHeaderState extends State<_CalendarHeader> {
+  // Track local copy of event display radio and set calendar's event display
+  // state together with event types when confirm is clicked.
+  late EventDisplay _eventDisplay;
+
+  @override
+  void initState() {
+    super.initState();
+    _eventDisplay = widget.eventDisplay;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = context.select<AccountModel, String>((a) => a.locale);
+    final timeZone =
+        context.select<AccountModel, String>((a) => a.myUser!.timeZone);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              DateFormat.yMMM(locale).format(widget.day),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              timeZone.replaceAll('_', ' '),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TextButton.icon(
+              icon: const Icon(Icons.filter_list),
+              label: Text(S.of(context).filter),
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                builder: (context) => StatefulBuilder(
+                  builder: (context, setState) => SizedBox(
+                    height: 400,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          Text(
+                            S.of(context).filter,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          Column(
+                            children: [
+                              RadioListTile<EventDisplay>(
+                                title: Text(EventDisplay.all.getName(context)),
+                                value: EventDisplay.all,
+                                groupValue: _eventDisplay,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _eventDisplay = value!;
+                                  });
+                                },
+                              ),
+                              RadioListTile<EventDisplay>(
+                                title: Text(EventDisplay.mine.getName(context)),
+                                value: EventDisplay.mine,
+                                groupValue: _eventDisplay,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _eventDisplay = value!;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: MultiSelectBottomSheet<EventType>(
+                              items: widget.availableEventTypes
+                                  .map((e) =>
+                                      MultiSelectItem(e, e.getName(context)))
+                                  .toList(),
+                              initialValue: widget.selectedEventTypes,
+                              title: Text(
+                                S.of(context).eventType,
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              listType: MultiSelectListType.CHIP,
+                              confirmText: Text(S.of(context).confirm),
+                              cancelText: Text(S.of(context).cancel),
+                              initialChildSize: 1.0,
+                              maxChildSize: 1.0,
+                              onConfirm: (values) {
+                                widget.onEventFiltersChanged(
+                                    values, _eventDisplay);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            TextButton.icon(
+              icon: Text(S.of(context).today),
+              label: const Icon(Icons.today),
+              onPressed: widget.onTodayButtonClick,
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class _EventList extends StatelessWidget {
+  final List<EventModel> events;
+  final DateTime firstDay;
+  final DateTime lastDay;
+  final VoidCallback refreshState;
+  final void Function({
+    required String eventId,
+    bool isRecurrence,
+    DateTime? from,
+  }) deleteEventsLocally;
+
+  const _EventList({
+    required this.events,
+    required this.firstDay,
+    required this.lastDay,
+    required this.refreshState,
+    required this.deleteEventsLocally,
+  });
+
+  Widget _getEventActions(BuildContext context, EventModel event) {
+    final account = context.read<AccountModel>();
+
+    if (account.userType == UserType.student) {
+      if (isStudentInEvent(account.studentProfile!.profileId, event)) {
+        return FilledButton.tonalIcon(
+          icon: const Icon(Icons.check),
+          label: Text(S.of(context).signedUp),
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => QuitEventDialog(
+              event: event,
+              refresh: refreshState,
+            ),
+          ),
+        );
+      } else {
+        return OutlinedButton(
+          child: Text(S.of(context).signup),
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => SignupEventDialog(
+              event: event,
+              refresh: refreshState,
+            ),
+          ),
+        );
+      }
+    }
+    if (account.userType == UserType.teacher) {
+      if (isTeacherInEvent(account.teacherProfile!.profileId, event)) {
+        return SizedBox(
+          width: 80,
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => EditEventDialog(
+                    event: event,
+                    firstDay: firstDay,
+                    lastDay: lastDay,
+                    onRefresh: refreshState,
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => DeleteEventDialog(
+                    event: event,
+                    deleteEventsLocally: deleteEventsLocally,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+    if (account.userType == UserType.admin) {
+      return SizedBox(
+        width: 80,
+        child: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => EditEventDialog(
+                  event: event,
+                  firstDay: firstDay,
+                  lastDay: lastDay,
+                  onRefresh: () {},
+                ),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => DeleteEventDialog(
+                  event: event,
+                  deleteEventsLocally: deleteEventsLocally,
+                ),
+              ),
+            ),
+          ],
         ),
       );
     }
-    if (_accountContext.userType == UserType.admin) {
-      return AdminCalendar(
-        selectedDay: _selectedDay,
-        selectedEvents: _selectedEvents,
-        firstDay: _firstDay,
-        lastDay: _lastDay,
-        focusedDay: _focusedDay,
-        currentDay: _currentDay,
-        calendarFormat: _calendarFormat,
-        calendarBuilders: _calendarBuilders,
-        availableEventFilters: _availableEventFilters,
-        eventFilters: _eventFilters,
-        eventDisplay: _eventDisplay,
-        onTodayButtonTap: _onTodayButtonTap,
-        onDaySelected: _onDaySelected,
-        onFormatChanged: _onFormatChanged,
-        onPageChanged: _onPageChanged,
-        getEventsForDay: _getEventsForDay,
-        onEventFilterConfirm: _onEventFilterConfirm,
-        onEventDisplayChanged: _onEventDisplayChanged,
-        onRefresh: _setAllEvents,
-      );
-    }
-    if (_accountContext.userType == UserType.teacher) {
-      return TeacherCalendar(
-        selectedDay: _selectedDay,
-        selectedEvents: _selectedEvents,
-        firstDay: _firstDay,
-        lastDay: _lastDay,
-        focusedDay: _focusedDay,
-        currentDay: _currentDay,
-        calendarFormat: _calendarFormat,
-        calendarBuilders: _calendarBuilders,
-        availableEventFilters: _availableEventFilters,
-        eventFilters: _eventFilters,
-        eventDisplay: _eventDisplay,
-        onTodayButtonTap: _onTodayButtonTap,
-        onDaySelected: _onDaySelected,
-        onFormatChanged: _onFormatChanged,
-        onPageChanged: _onPageChanged,
-        getEventsForDay: _getEventsForDay,
-        onEventFilterConfirm: _onEventFilterConfirm,
-        onEventDisplayChanged: _onEventDisplayChanged,
-        onRefresh: _setAllEvents,
-      );
-    }
-    return StudentCalendar(
-      selectedDay: _selectedDay,
-      selectedEvents: _selectedEvents,
-      firstDay: _firstDay,
-      lastDay: _lastDay,
-      focusedDay: _focusedDay,
-      currentDay: _currentDay,
-      calendarFormat: _calendarFormat,
-      calendarBuilders: _calendarBuilders,
-      availableEventFilters: _availableEventFilters,
-      eventFilters: _eventFilters,
-      eventDisplay: _eventDisplay,
-      subscriptionType: _accountContext.subscriptionPlan,
-      onTodayButtonTap: _onTodayButtonTap,
-      onDaySelected: _onDaySelected,
-      onFormatChanged: _onFormatChanged,
-      onPageChanged: _onPageChanged,
-      getEventsForDay: _getEventsForDay,
-      onEventFilterConfirm: _onEventFilterConfirm,
-      onEventDisplayChanged: _onEventDisplayChanged,
-      onRefresh: _setAllEvents,
+    return const SizedBox.shrink();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = context.select<AccountModel, String>((a) => a.locale);
+
+    return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 80),
+      itemCount: events.length,
+      itemBuilder: (context, index) => Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1000),
+          child: Card(
+            elevation: 4,
+            color: events[index].eventType.getColor(context),
+            child: ListTile(
+              leading: events[index].eventType.getIcon(context),
+              trailing: _getEventActions(context, events[index]),
+              title: Text(
+                events[index].summary,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    events[index].eventType.getName(context),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(fontStyle: FontStyle.italic),
+                  ),
+                  Text(
+                    '${DateFormat.jm(locale).format(events[index].startTime)} - ${DateFormat.jm(locale).format(events[index].endTime)}',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ],
+              ),
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => ViewEventDialog(
+                  event: events[index],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

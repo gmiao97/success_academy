@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/event_service.dart' as event_service;
-import 'package:success_academy/utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
 
 class EditEventDialog extends StatefulWidget {
-  const EditEventDialog({
-    Key? key,
-    required this.event,
-    required this.firstDay,
-    required this.lastDay,
-    required this.eventTypes,
-    required this.onRefresh,
-  }) : super(key: key);
-
   final EventModel event;
   final DateTime firstDay;
   final DateTime lastDay;
-  final List<EventType> eventTypes;
-  final void Function() onRefresh;
+  final VoidCallback onRefresh;
+
+  const EditEventDialog({
+    super.key,
+    required this.event,
+    required this.firstDay,
+    required this.lastDay,
+    required this.onRefresh,
+  });
 
   @override
   State<EditEventDialog> createState() => _EditEventDialogState();
@@ -33,185 +32,237 @@ class EditEventDialog extends StatefulWidget {
 
 class _EditEventDialogState extends State<EditEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _dayController = TextEditingController();
-  final TextEditingController _startTimeController = TextEditingController();
-  final TextEditingController _endTimeController = TextEditingController();
   final TextEditingController _recurUntilController = TextEditingController();
-  late DateTime _day;
-  late DateTime? _recurUntil;
+  final TextEditingController _startController = TextEditingController();
+  final TextEditingController _endController = TextEditingController();
+  late final tz.Location _location;
+  late final String _locale;
+
+  late tz.TZDateTime _start;
+  late tz.TZDateTime _end;
   late String _summary;
   late String _description;
-  int? _numPoints;
+  late int _numPoints;
   String? _teacherId;
-  List<String> _studentIds = [];
-  late TimeOfDay _startTime;
-  late TimeOfDay _endTime;
-  late String _timeZoneName;
-  late EventType _eventType;
-  late Frequency? _recurFrequency;
+  late bool _isRecur;
+  Frequency _recurFrequency = Frequency.daily;
+  tz.TZDateTime? _recurUntil;
   bool _submitClicked = false;
+  bool _isLoadingRecurringEvent = true;
 
   @override
   void initState() {
     super.initState();
     tz.initializeTimeZones();
-    _timeZoneName = context.read<AccountModel>().myUser!.timeZone;
-    final RecurrenceRule? rrule = widget.event.recurrence.isNotEmpty
-        ? RecurrenceRule.fromString(widget.event.recurrence[0])
-        : null;
-    setState(() {
-      _day = DateTime(widget.event.startTime.year, widget.event.startTime.month,
-          widget.event.startTime.day);
-      _summary = widget.event.summary;
-      _description = widget.event.description;
-      _numPoints = widget.event.numPoints;
-      _teacherId = widget.event.teacherId;
-      _studentIds = widget.event.studentIdList;
-      _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
-      _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
-      _eventType = widget.event.eventType;
-      _recurFrequency = rrule?.frequency;
-      _recurUntil = rrule?.until;
-      _dayController.text = dateFormatter.format(_day);
-      _recurUntilController.text =
-          _recurUntil != null ? dateFormatter.format(_recurUntil!) : '';
-    });
+
+    final account = context.read<AccountModel>();
+    assert(canEditEvents(account.userType));
+    _location = tz.getLocation(account.myUser!.timeZone);
+    _locale = account.locale;
+
+    _start = widget.event.startTime;
+    _end = widget.event.endTime;
+    _startController.text = DateFormat.yMMMMd(_locale).add_jm().format(_start);
+    _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
+    _summary = widget.event.summary;
+    _description = widget.event.description;
+    _numPoints = widget.event.numPoints;
+    _teacherId = widget.event.teacherId;
+    if (account.userType == UserType.teacher) {
+      assert(account.teacherProfile!.profileId == _teacherId);
+    }
+    _loadRecurrenceEvent();
   }
 
-  void _selectDay() async {
-    final DateTime? day = await showDatePicker(
-      context: context,
-      initialDate: _day,
-      firstDate: widget.firstDay,
-      lastDate: widget.lastDay,
-    );
-    if (day != null) {
-      setState(() {
-        _day = day;
-        _dayController.text = dateFormatter.format(day);
-      });
+  void _loadRecurrenceEvent() async {
+    final recurrenceId = widget.event.recurrenceId;
+    if (recurrenceId != null) {
+      _isRecur = true;
+      try {
+        final event = await event_service.getEvent(
+          eventId: recurrenceId,
+          location:
+              tz.getLocation(context.read<AccountModel>().myUser!.timeZone),
+        );
+        final rrule = RecurrenceRule.fromString(event.recurrence[0]);
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          setState(() {
+            _isLoadingRecurringEvent = false;
+            if (rrule.until != null) {
+              _recurUntil = tz.TZDateTime.from(rrule.until!, _location);
+              _recurUntilController.text =
+                  DateFormat.yMMMMd(_locale).format(_recurUntil!);
+            }
+            _recurFrequency = rrule.frequency;
+          });
+        });
+      } catch (e) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(S.of(context).failedGetRecurrenceEvent),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        });
+      }
+    } else {
+      _isLoadingRecurringEvent = false;
+      _isRecur = false;
     }
   }
 
+  Future<tz.TZDateTime?> _pickDateTime({required tz.TZDateTime initial}) async {
+    DateTime? date = await showDatePicker(
+        context: context,
+        initialDate: initial,
+        firstDate: widget.firstDay,
+        lastDate: widget.lastDay);
+    // ignore: use_build_context_synchronously
+    if (date == null || !context.mounted) {
+      return null;
+    }
+
+    TimeOfDay? time = await showTimePicker(
+        context: context, initialTime: TimeOfDay.fromDateTime(initial));
+    if (time == null) {
+      return null;
+    }
+    return tz.TZDateTime(
+        _location, date.year, date.month, date.day, time.hour, time.minute);
+  }
+
   void _selectStartTime() async {
-    final TimeOfDay? time = await showTimePicker(
-      context: context,
-      initialTime: _startTime,
-    );
-    if (time != null) {
+    final tz.TZDateTime? dateTime = await _pickDateTime(initial: _start);
+    if (dateTime != null) {
       setState(() {
-        _startTime = time;
-        _startTimeController.text = time.format(context);
+        final delta = _end.difference(_start);
+        _start = dateTime;
+        _startController.text =
+            DateFormat.yMMMMd(_locale).add_jm().format(_start);
+        _end = _start.add(delta);
+        _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
       });
     }
   }
 
   void _selectEndTime() async {
-    final TimeOfDay? time = await showTimePicker(
-      context: context,
-      initialTime: _endTime,
-    );
-    if (time != null) {
+    final tz.TZDateTime? dateTime = await _pickDateTime(initial: _end);
+    if (dateTime != null) {
       setState(() {
-        _endTime = time;
-        _endTimeController.text = time.format(context);
+        _end = dateTime;
+        _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
       });
     }
   }
 
+  void _selectRecurUntil() async {
+    final DateTime? day = await showDatePicker(
+      context: context,
+      initialDate: _recurUntil ?? _end,
+      firstDate: widget.firstDay,
+      lastDate: widget.lastDay,
+    );
+    if (day != null) {
+      setState(() {
+        _recurUntil = tz.TZDateTime(_location, day.year, day.month, day.day)
+            .add(const Duration(days: 1));
+        _recurUntilController.text = DateFormat.yMMMMd(_locale).format(day);
+      });
+    }
+  }
+
+  // TODO: Use returned event id from Google Calendar API to refresh.
+  void _updateLocalEvent(EventModel event) {
+    widget.event.summary = event.summary;
+    widget.event.description = event.description;
+    widget.event.numPoints = event.numPoints;
+    widget.event.startTime = event.startTime;
+    widget.event.endTime = event.endTime;
+    widget.event.teacherId = event.teacherId;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final account = context.read<AccountModel>();
-    _startTimeController.text = _startTime.format(context);
-    _endTimeController.text = _endTime.format(context);
-
-    Map<EventType, String> eventTypeNames = {
-      EventType.free: S.of(context).free,
-      EventType.preschool: S.of(context).preschool,
-      EventType.private: S.of(context).private,
-    };
-
-    Map<Frequency?, String> frequencyNames = {
-      null: S.of(context).recurNone,
-      Frequency.daily: S.of(context).recurDaily,
-      Frequency.weekly: S.of(context).recurWeekly,
-      Frequency.monthly: S.of(context).recurMonthly,
-    };
+    final timeZone =
+        context.select<AccountModel, String>((a) => a.myUser!.timeZone);
+    final userType = context.select<AccountModel, UserType>((a) => a.userType);
+    final teacherProfiles =
+        context.select<AccountModel, List<TeacherProfileModel>>(
+            (a) => a.teacherProfileList);
 
     return AlertDialog(
-      title: Text(
-        S.of(context).editEvent,
-        style: Theme.of(context).textTheme.headlineSmall,
-      ),
-      content: SingleChildScrollView(
+      title: Text(S.of(context).editEvent),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: 350,
+          minHeight: 300,
+          maxWidth: 500,
+          maxHeight: 600,
+        ),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DropdownButtonFormField<EventType>(
-                items: widget.eventTypes
-                    .map((eventType) => DropdownMenuItem(
-                          value: eventType,
-                          child: Text(eventTypeNames[eventType]!),
-                        ))
-                    .toList(),
-                onChanged: null,
-                value: _eventType,
-              ),
-              account.userType == UserType.admin
-                  ? DropdownButtonFormField<String>(
-                      items: account.teacherProfileList!
-                          .map((profile) => DropdownMenuItem(
-                                value: profile.profileId,
-                                child: Text(
-                                    '${profile.lastName}, ${profile.firstName}'),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _teacherId = value;
-                        });
-                      },
-                      value: _teacherId,
-                      decoration: InputDecoration(
-                          hintText: 'Teacher',
-                          icon: const Icon(Icons.person_outline),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              setState(() {
-                                _teacherId = null;
-                              });
-                            },
-                          )),
-                    )
-                  : const SizedBox(),
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.text_snippet_outlined),
-                  labelText: S.of(context).eventSummaryLabel,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.event.eventType.getName(context),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(fontStyle: FontStyle.italic),
                 ),
-                initialValue: _summary,
-                onChanged: (value) {
-                  setState(() {
-                    _summary = value;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return S.of(context).eventSummaryValidation;
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                width: 500,
-                child: TextFormField(
+                if (userType == UserType.admin)
+                  DropdownButtonFormField<String>(
+                    items: teacherProfiles
+                        .map((profile) => DropdownMenuItem(
+                              value: profile.profileId,
+                              child: Text(
+                                  '${profile.lastName}, ${profile.firstName}'),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _teacherId = value;
+                      });
+                    },
+                    value: _teacherId,
+                    decoration: InputDecoration(
+                        hintText: S.of(context).teacherTitle,
+                        icon: const Icon(Icons.person),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            setState(() {
+                              _teacherId = null;
+                            });
+                          },
+                        )),
+                  ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.text_fields),
+                    labelText: S.of(context).eventSummaryLabel,
+                  ),
+                  initialValue: _summary,
+                  onChanged: (value) {
+                    setState(() {
+                      _summary = value;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return S.of(context).eventSummaryValidation;
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   decoration: InputDecoration(
-                    icon: const Icon(Icons.text_snippet_outlined),
+                    icon: const Icon(Icons.text_snippet),
                     labelText: S.of(context).eventDescriptionLabel,
                   ),
                   initialValue: _description,
@@ -227,147 +278,158 @@ class _EditEventDialogState extends State<EditEventDialog> {
                     return null;
                   },
                 ),
-              ),
-              _eventType == EventType.private
-                  ? TextFormField(
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(
-                        icon: const Icon(Icons.add),
-                        labelText: S.of(context).eventPointsLabel,
-                      ),
-                      initialValue:
-                          _numPoints != null ? _numPoints.toString() : '',
-                      onChanged: (value) {
-                        setState(() {
-                          _numPoints = int.parse(value);
-                        });
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).eventPointsValidation;
-                        }
-                        return null;
-                      },
-                    )
-                  : const SizedBox(),
-              TextFormField(
-                keyboardType: TextInputType.datetime,
-                readOnly: true,
-                controller: _dayController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.calendar_month),
-                  labelText: S.of(context).eventDateLabel,
-                ),
-                onTap: () {
-                  _selectDay();
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.datetime,
-                readOnly: true,
-                controller: _startTimeController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.watch_later_outlined),
-                  labelText: S.of(context).eventStartLabel,
-                ),
-                onTap: () {
-                  _selectStartTime();
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return S.of(context).eventStartValidation;
-                  }
-                  if (timeOfDayToInt(_startTime) >= timeOfDayToInt(_endTime)) {
-                    return S.of(context).eventValidTimeValidation;
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.datetime,
-                readOnly: true,
-                controller: _endTimeController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.watch_later_outlined),
-                  labelText: S.of(context).eventEndLabel,
-                ),
-                onTap: () {
-                  _selectEndTime();
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return S.of(context).eventEndValidation;
-                  }
-                  return null;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  S.of(context).studentListTitle,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ),
-              Column(
-                children: _studentIds.map(
-                  (id) {
-                    final studentProfile = account.studentProfileMap![id]!;
-                    return Text(
-                        '${studentProfile.lastName} ${studentProfile.firstName}');
-                  },
-                ).toList(),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  S.of(context).recurTitle,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ),
-              SizedBox(
-                width: 500,
-                child: Text(
-                  S.of(context).recurEditNotSupported,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ),
-              DropdownButtonFormField<Frequency>(
-                items: recurFrequencies
-                    .map((f) => DropdownMenuItem(
-                          value: f,
-                          child: Text(frequencyNames[f]!),
-                        ))
-                    .toList(),
-                value: _recurFrequency,
-                onChanged: null,
-              ),
-              if (_recurFrequency != null)
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _recurUntil != null,
-                          onChanged: null,
-                        ),
-                        Text(S.of(context).recurEnd),
-                      ],
-                    ),
-                    if (_recurUntil != null)
-                      TextFormField(
-                        keyboardType: TextInputType.datetime,
-                        readOnly: true,
-                        controller: _recurUntilController,
+                widget.event.eventType == EventType.private
+                    ? TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         decoration: InputDecoration(
-                          icon: const Icon(Icons.calendar_month),
-                          labelText: S.of(context).eventDateLabel,
+                          icon: const Icon(Icons.add),
+                          labelText: S.of(context).eventPointsLabel,
                         ),
-                        onTap: null,
-                      ),
+                        initialValue: _numPoints.toString(),
+                        onChanged: (value) {
+                          setState(() {
+                            _numPoints = int.parse(value);
+                          });
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return S.of(context).eventPointsValidation;
+                          }
+                          return null;
+                        },
+                      )
+                    : const SizedBox.shrink(),
+                const SizedBox(height: 8),
+                Text(
+                  '${S.of(context).timeZoneLabel}: ${timeZone.replaceAll('_', ' ')}',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+                TextFormField(
+                  controller: _startController,
+                  readOnly: true,
+                  keyboardType: TextInputType.datetime,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.access_time),
+                    labelText: S.of(context).eventStartLabel,
+                  ),
+                  onTap: () {
+                    _selectStartTime();
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return S.of(context).eventStartValidation;
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _endController,
+                  readOnly: true,
+                  keyboardType: TextInputType.datetime,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.access_time),
+                    labelText: S.of(context).eventEndLabel,
+                  ),
+                  onTap: () {
+                    _selectEndTime();
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return S.of(context).eventEndValidation;
+                    }
+                    if (!_start.isBefore(_end)) {
+                      return S.of(context).eventValidTimeValidation;
+                    }
+                    if (_end.difference(_start) >= const Duration(hours: 24)) {
+                      return S.of(context).eventTooLongValidation;
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _isRecur,
+                      onChanged: null,
+                      // (value) {
+                      //   setState(() {
+                      //     _isRecur = value!;
+                      //   });
+                      // },
+                    ),
+                    Text(S.of(context).recurTitle),
+                    if (_isLoadingRecurringEvent)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Transform.scale(
+                          scale: 0.5,
+                          child: const CircularProgressIndicator(),
+                        ),
+                      )
                   ],
                 ),
-            ],
+                if (_isRecur)
+                  Column(
+                    children: [
+                      DropdownButtonFormField<Frequency>(
+                        items: recurFrequencies
+                            .map((f) => DropdownMenuItem(
+                                  value: f,
+                                  child: Text(frequencyToString(context, f)),
+                                ))
+                            .toList(),
+                        value: _recurFrequency,
+                        onChanged: null,
+                        // (value) {
+                        //   setState(() {
+                        //     _recurFrequency = value!;
+                        //   });
+                        // },
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _recurUntil != null,
+                            onChanged: null,
+                            // (value) {
+                            //   setState(() {
+                            //     if (value!) {
+                            //       _recurUntil = _end;
+                            //       _recurUntilController.text =
+                            //           DateFormat.yMMMMd(_locale)
+                            //               .format(_recurUntil!);
+                            //     } else {
+                            //       _recurUntil = null;
+                            //     }
+                            //   });
+                            // },
+                          ),
+                          Text(S.of(context).recurEnd),
+                        ],
+                      ),
+                      if (_recurUntil != null)
+                        TextFormField(
+                          controller: _recurUntilController,
+                          readOnly: true,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                            icon: const Icon(Icons.calendar_month),
+                            labelText: S.of(context).recurUntilLabel,
+                          ),
+                          onTap: null,
+                          // () {
+                          //   _selectRecurUntil();
+                          // },
+                        ),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -379,70 +441,50 @@ class _EditEventDialogState extends State<EditEventDialog> {
           },
         ),
         _submitClicked
-            ? const SizedBox(
-                width: 20,
+            ? Transform.scale(
+                scale: 0.5,
+                child: const CircularProgressIndicator(),
               )
-            : ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.shade400,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _submitClicked = true;
-                  });
-                  event_service
-                      .deleteEvent(eventId: widget.event.eventId!)
-                      .then(
-                    (unused) {
-                      widget.onRefresh();
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
-                child: Text(S.of(context).delete),
-              ),
-        _submitClicked
-            ? const CircularProgressIndicator(
-                value: null,
-              )
-            : ElevatedButton(
+            : TextButton(
                 child: Text(S.of(context).confirm),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     setState(() {
                       _submitClicked = true;
                     });
                     final event = EventModel(
                         eventId: widget.event.eventId,
-                        eventType: _eventType,
+                        eventType: widget.event.eventType,
                         summary: _summary,
                         description: _description,
-                        numPoints:
-                            _eventType == EventType.private ? _numPoints : 0,
-                        startTime: tz.TZDateTime(
-                          tz.getLocation(_timeZoneName),
-                          _day.year,
-                          _day.month,
-                          _day.day,
-                          _startTime.hour,
-                          _startTime.minute,
-                        ),
-                        endTime: tz.TZDateTime(
-                          tz.getLocation(_timeZoneName),
-                          _day.year,
-                          _day.month,
-                          _day.day,
-                          _endTime.hour,
-                          _endTime.minute,
-                        ),
-                        timeZone: _timeZoneName,
+                        numPoints: widget.event.eventType == EventType.private
+                            ? _numPoints
+                            : 0,
+                        startTime: _start,
+                        endTime: _end,
+                        timeZone: widget.event.timeZone,
                         teacherId: _teacherId);
-                    event_service.updateEvent(event).then(
-                      (unused) {
-                        widget.onRefresh();
-                        Navigator.of(context).pop();
-                      },
-                    );
+                    try {
+                      await event_service.updateEvent(event);
+                      _updateLocalEvent(event);
+                      widget.onRefresh();
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(S.of(context).editEventSuccess),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(S.of(context).editEventFailure),
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                        ),
+                      );
+                    } finally {
+                      Navigator.of(context).pop();
+                    }
                   }
                 },
               ),

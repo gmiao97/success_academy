@@ -1,153 +1,213 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
 import 'package:success_academy/account/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/profile_model.dart';
+import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:timezone/data/latest_10y.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class ViewEventDialog extends StatefulWidget {
-  const ViewEventDialog({
-    Key? key,
-    required this.event,
-  }) : super(key: key);
-
   final EventModel event;
+
+  const ViewEventDialog({
+    super.key,
+    required this.event,
+  });
 
   @override
   State<ViewEventDialog> createState() => _ViewEventDialogState();
 }
 
 class _ViewEventDialogState extends State<ViewEventDialog> {
-  late AccountModel _accountContext;
-  late DateTime _day;
-  late DateTime? _recurUntil;
-  late String _summary;
-  String? _teacherName;
-  List<String> _studentIds = [];
-  late String _description;
-  int? _numPoints;
-  late TimeOfDay _startTime;
-  late TimeOfDay _endTime;
-  late EventType _eventType;
-  late Frequency? _recurFrequency;
+  EventModel? _recurrenceEvent;
+  TeacherProfileModel? _teacher;
+  List<StudentProfileModel?> _students = [];
+  bool _isLoadingRecurringEvent = true;
 
   @override
   void initState() {
     super.initState();
-    _accountContext = context.read<AccountModel>();
     tz.initializeTimeZones();
-    final RecurrenceRule? rrule = widget.event.recurrence.isNotEmpty
-        ? RecurrenceRule.fromString(widget.event.recurrence[0])
-        : null;
-    setState(() {
-      _day = DateTime(widget.event.startTime.year, widget.event.startTime.month,
-          widget.event.startTime.day);
-      _summary = widget.event.summary;
-      _teacherName = widget.event.teacherId != null
-          ? '${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.lastName} ${_accountContext.teacherProfileModelMap![widget.event.teacherId]!.firstName}'
-          : null;
-      _studentIds = widget.event.studentIdList;
-      _description = widget.event.description;
-      _numPoints = widget.event.numPoints;
-      _startTime = TimeOfDay.fromDateTime(widget.event.startTime);
-      _endTime = TimeOfDay.fromDateTime(widget.event.endTime);
-      _eventType = widget.event.eventType;
-      _recurFrequency = rrule?.frequency;
-      _recurUntil = rrule?.until;
-    });
+    _loadRecurrenceEvent();
+    final account = context.read<AccountModel>();
+    _teacher = account.teacherProfileModelMap[widget.event.teacherId];
+    _students = widget.event.studentIdList
+        .map((id) => account.studentProfileMap[id])
+        .toList();
+  }
+
+  void _loadRecurrenceEvent() async {
+    final recurrenceId = widget.event.recurrenceId;
+    if (recurrenceId != null) {
+      try {
+        final event = await event_service.getEvent(
+          eventId: recurrenceId,
+          location:
+              tz.getLocation(context.read<AccountModel>().myUser!.timeZone),
+        );
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          setState(() {
+            _recurrenceEvent = event;
+            _isLoadingRecurringEvent = false;
+          });
+        });
+      } catch (e) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(S.of(context).failedGetRecurrenceEvent),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        });
+      }
+    } else {
+      _isLoadingRecurringEvent = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Map<EventType, String> eventTypeNames = {
-      EventType.free: S.of(context).free,
-      EventType.preschool: S.of(context).preschool,
-      EventType.private: S.of(context).private,
-    };
-
-    Map<Frequency?, String> frequencyNames = {
-      null: S.of(context).recurNone,
-      Frequency.daily: S.of(context).recurDaily,
-      Frequency.weekly: S.of(context).recurWeekly,
-      Frequency.monthly: S.of(context).recurMonthly,
-    };
+    final locale = context.select<AccountModel, String>((a) => a.locale);
+    final userType = context.select<AccountModel, UserType>((a) => a.userType);
+    final rrule = _recurrenceEvent != null
+        ? RecurrenceRule.fromString(_recurrenceEvent!.recurrence[0])
+        : null;
 
     return AlertDialog(
-      title: Text(
-        S.of(context).viewEvent,
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _summary,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
-            ),
-            Text(eventTypeNames[_eventType]!),
-            Text(S.of(context).eventPointsDisplay(_numPoints ?? 0)),
-            Text(
-              _teacherName ?? '',
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-                '${dateFormatter.format(_day)} | ${_startTime.format(context)} - ${_endTime.format(context)}'),
-            Text(
-                '${frequencyNames[_recurFrequency]!}${_recurUntil != null ? ', ${S.of(context).recurEnd} ${dateFormatter.format(_recurUntil!)}' : ''}'),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                S.of(context).studentListTitle,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            ),
-            Column(
-              children: _studentIds.map(
-                (id) {
-                  final studentProfile =
-                      _accountContext.studentProfileMap![id]!;
-                  return Text(
-                      '${studentProfile.lastName} ${studentProfile.firstName}');
-                },
-              ).toList(),
-            ),
-            const SizedBox(height: 25),
-            Card(
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: 400,
-                  height: 200,
-                  child: SingleChildScrollView(
-                    child: Text(_description),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
+      actions: [
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(S.of(context).close),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ],
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: 350,
+          minHeight: 300,
+          maxWidth: 500,
+          maxHeight: 600,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                widget.event.summary,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                widget.event.eventType.getName(context),
+                style: Theme.of(context)
+                    .textTheme
+                    .labelLarge!
+                    .copyWith(fontStyle: FontStyle.italic),
+              ),
+              Text.rich(
+                TextSpan(
+                  style: Theme.of(context).textTheme.labelLarge,
+                  children: [
+                    const WidgetSpan(child: Icon(Icons.access_time)),
+                    TextSpan(
+                        text:
+                            '${DateFormat.MMMMd(locale).add_jm().format(widget.event.startTime)} - ${DateFormat.MMMMd(locale).add_jm().format(widget.event.endTime)}')
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  style: Theme.of(context).textTheme.labelLarge,
+                  children: [
+                    const WidgetSpan(child: Icon(Icons.repeat)),
+                    _isLoadingRecurringEvent
+                        ? WidgetSpan(
+                            child: Transform.scale(
+                              scale: 0.5,
+                              child: const CircularProgressIndicator(),
+                            ),
+                          )
+                        : TextSpan(text: rruleToString(context, rrule))
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  style: Theme.of(context).textTheme.labelLarge,
+                  children: [
+                    const WidgetSpan(child: Icon(Icons.shopping_cart)),
+                    TextSpan(
+                        text: S
+                            .of(context)
+                            .eventPointsDisplay(widget.event.numPoints))
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${S.of(context).teacherTitle} - ',
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    _teacher != null
+                        ? TextSpan(
+                            text:
+                                '${_teacher!.lastName} ${_teacher!.firstName}',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          )
+                        : TextSpan(
+                            text: S.of(context).unspecified,
+                            style: Theme.of(context).textTheme.labelLarge,
+                          )
+                  ],
+                ),
+              ),
+              if (userType != UserType.student)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.of(context).studentListTitle,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    for (final s in _students)
+                      if (s != null) Text('・${s.lastName} ${s.firstName}'),
+                  ],
+                ),
+              const SizedBox(height: 20),
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 100,
+                ),
+                child: Card(
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(widget.event.description),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

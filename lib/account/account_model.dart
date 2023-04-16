@@ -11,48 +11,21 @@ import 'package:success_academy/services/shared_preferences_service.dart'
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 import 'package:success_academy/services/user_service.dart' as user_service;
 
-// Add loading state to display spinner while initializing user
-enum AuthStatus { signedIn, signedOut, emailVerification, loading }
+enum AuthStatus {
+  signedIn,
+  signedOut,
+  emailVerification,
+  loading,
+}
 
-enum UserType { student, studentNoProfile, teacher, admin }
+enum UserType {
+  student,
+  studentNoProfile,
+  teacher,
+  admin,
+}
 
 class AccountModel extends ChangeNotifier {
-  AccountModel() {
-    init();
-  }
-
-  void init() async {
-    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
-      _authStatus = AuthStatus.loading;
-      notifyListeners();
-      if (firebaseUser != null) {
-        try {
-          await _initAccount(firebaseUser);
-        } catch (e) {
-          await FirebaseAnalytics.instance.logEvent(
-            name: 'initAccount_failed',
-            parameters: {
-              'message': e.toString(),
-            },
-          );
-        }
-        if (!firebaseUser.emailVerified) {
-          if (_authStatus != AuthStatus.emailVerification) {
-            // Only send verification email once on initial auth status change
-            firebaseUser.sendEmailVerification();
-          }
-          _authStatus = AuthStatus.emailVerification;
-        } else {
-          _authStatus = AuthStatus.signedIn;
-        }
-      } else {
-        _signOut();
-      }
-      notifyListeners();
-    });
-    _locale = await shared_preferences_service.getLocale();
-  }
-
   AuthStatus _authStatus = AuthStatus.signedOut;
   String _locale = 'en';
   User? _firebaseUser;
@@ -60,25 +33,28 @@ class AccountModel extends ChangeNotifier {
   StudentProfileModel? _studentProfile;
   TeacherProfileModel? _teacherProfile;
   AdminProfileModel? _adminProfile;
-  List<StudentProfileModel>? _studentProfileList;
-  Map<String, StudentProfileModel>? _studentProfileMap;
-  List<TeacherProfileModel>? _teacherProfileList;
-  Map<String, TeacherProfileModel>? _teacherProfileMap;
+  late List<StudentProfileModel> _studentProfileList;
+  late Map<String, StudentProfileModel> _studentProfileMap;
+  late List<TeacherProfileModel> _teacherProfileList;
+  late Map<String, TeacherProfileModel> _teacherProfileMap;
   List<QueryDocumentSnapshot<Object?>> _subscriptionDocs = [];
   SubscriptionPlan? _subscriptionPlan;
 
+  AccountModel() {
+    init();
+  }
+
   AuthStatus get authStatus => _authStatus;
-  // TODO: Add preferred language and customize welcome email and stripe based on it.
   String get locale => _locale;
   User? get firebaseUser => _firebaseUser;
   MyUserModel? get myUser => _myUser;
   StudentProfileModel? get studentProfile => _studentProfile;
   TeacherProfileModel? get teacherProfile => _teacherProfile;
   AdminProfileModel? get adminProfile => _adminProfile;
-  List<StudentProfileModel>? get studentProfileList => _studentProfileList;
-  Map<String, StudentProfileModel>? get studentProfileMap => _studentProfileMap;
-  List<TeacherProfileModel>? get teacherProfileList => _teacherProfileList;
-  Map<String, TeacherProfileModel>? get teacherProfileModelMap =>
+  List<StudentProfileModel> get studentProfileList => _studentProfileList;
+  Map<String, StudentProfileModel> get studentProfileMap => _studentProfileMap;
+  List<TeacherProfileModel> get teacherProfileList => _teacherProfileList;
+  Map<String, TeacherProfileModel> get teacherProfileModelMap =>
       _teacherProfileMap;
   SubscriptionPlan? get subscriptionPlan => _subscriptionPlan;
   UserType get userType {
@@ -118,6 +94,39 @@ class AccountModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void init() async {
+    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
+      _authStatus = AuthStatus.loading;
+      notifyListeners();
+      if (firebaseUser != null) {
+        try {
+          await _initAccount(firebaseUser);
+        } catch (err) {
+          // TODO: Handle errors and log events
+          await FirebaseAnalytics.instance.logEvent(
+            name: 'initAccount_failed',
+            parameters: {
+              'message': err.toString(),
+            },
+          );
+        }
+        if (!firebaseUser.emailVerified) {
+          if (_authStatus != AuthStatus.emailVerification) {
+            // Only send verification email once on initial auth status change
+            firebaseUser.sendEmailVerification();
+          }
+          _authStatus = AuthStatus.emailVerification;
+        } else {
+          _authStatus = AuthStatus.signedIn;
+        }
+      } else {
+        _signOut();
+      }
+      notifyListeners();
+    });
+    _locale = await shared_preferences_service.getLocale();
+  }
+
   /**
    * Initialize account model with firebase user data, data from 'myUsers'
    * collection, and profile data from shared preferences if existing.
@@ -126,10 +135,10 @@ class AccountModel extends ChangeNotifier {
     _firebaseUser = firebaseUser;
     _studentProfileList = await profile_service.getAllStudentProfiles();
     _studentProfileMap =
-        StudentProfileModel.buildStudentProfileMap(_studentProfileList!);
+        StudentProfileModel.buildStudentProfileMap(_studentProfileList);
     _teacherProfileList = await profile_service.getAllTeacherProfiles();
     _teacherProfileMap =
-        TeacherProfileModel.buildTeacherProfileMap(_teacherProfileList!);
+        TeacherProfileModel.buildTeacherProfileMap(_teacherProfileList);
     _subscriptionDocs =
         await stripe_service.getSubscriptionsForUser(firebaseUser.uid);
 
@@ -195,16 +204,24 @@ class AccountModel extends ChangeNotifier {
       return null;
     }
   }
+
+  bool shouldShowContent() {
+    return userType != UserType.student ||
+        (subscriptionPlan != null &&
+            subscriptionPlan != SubscriptionPlan.monthly);
+  }
 }
 
 class MyUserModel {
-  MyUserModel({required this.referralCode, required this.timeZone});
+  MyUserModel({
+    required this.referralCode,
+    required this.timeZone,
+  });
 
   MyUserModel.fromJson(Map<String, Object?> json)
       : referralCode = json['referral_code'] as String,
         timeZone = json['time_zone'] as String;
 
-  // TODO: Add check to prevent repeats
   final String referralCode;
   String timeZone;
 

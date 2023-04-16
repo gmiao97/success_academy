@@ -21,6 +21,13 @@ String getSubscriptionPlanName(BuildContext context, SubscriptionPlan? plan) {
 }
 
 class StudentProfileModel {
+  String _profileId = '';
+  late String lastName;
+  late String firstName;
+  late DateTime dateOfBirth;
+  int numPoints;
+  String? referrer;
+
   StudentProfileModel() : numPoints = 0;
 
   StudentProfileModel.fromFirestoreJson(
@@ -50,16 +57,6 @@ class StudentProfileModel {
         userId: userId, profileId: json['id'] as String);
     return profile;
   }
-
-  // TODO: Add field to indicate whether student has already had a subscription.
-
-  /// Store the profile document id in order to add it to subscription metadata
-  String _profileId = '';
-  late String lastName;
-  late String firstName;
-  late DateTime dateOfBirth;
-  int numPoints;
-  String? referrer;
 
   String get profileId => _profileId;
 
@@ -96,30 +93,30 @@ class StudentProfileModel {
 }
 
 class TeacherProfileModel {
-  TeacherProfileModel();
+  final String _profileId;
+  final String _lastName;
+  final String _firstName;
 
   TeacherProfileModel.fromJson(String profileId, Map<String, Object?> json)
       : _profileId = profileId,
-        lastName = json['last_name'] as String,
-        firstName = json['first_name'] as String;
-
-  String _profileId = '';
-  late String lastName;
-  late String firstName;
+        _lastName = json['last_name'] as String,
+        _firstName = json['first_name'] as String;
 
   String get profileId => _profileId;
+  String get lastName => _lastName;
+  String get firstName => _firstName;
 
   Map<String, Object?> toJson() {
     return {
-      'last_name': lastName,
-      'first_name': firstName,
+      'last_name': _lastName,
+      'first_name': _firstName,
     };
   }
 
   static Map<String, TeacherProfileModel> buildTeacherProfileMap(
-      List<TeacherProfileModel> teacherProfileList) {
+      List<TeacherProfileModel> teacherProfiles) {
     Map<String, TeacherProfileModel> map = {};
-    for (TeacherProfileModel profile in teacherProfileList) {
+    for (TeacherProfileModel profile in teacherProfiles) {
       map[profile._profileId] = profile;
     }
     return map;
@@ -127,11 +124,23 @@ class TeacherProfileModel {
 }
 
 class AdminProfileModel {
-  AdminProfileModel();
+  final String _profileId;
+  final String _lastName;
+  final String _firstName;
 
-  AdminProfileModel.fromJson(String profileId, Map<String, Object?> json);
+  AdminProfileModel.fromJson(String profileId, Map<String, Object?> json)
+      : _profileId = profileId,
+        _lastName = json['last_name'] as String,
+        _firstName = json['first_name'] as String;
+
+  String get profileId => _profileId;
+  String get lastName => _lastName;
+  String get firstName => _firstName;
 
   Map<String, Object?> toJson() {
-    return {};
+    return {
+      'last_name': _lastName,
+      'first_name': _firstName,
+    };
   }
 }

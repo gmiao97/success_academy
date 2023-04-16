@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
@@ -6,17 +7,16 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
-import 'package:success_academy/utils.dart' as utils;
 
-// TODO: Make UI responsive for different screen sizes
 class ProfileBrowse extends StatefulWidget {
-  const ProfileBrowse({Key? key}) : super(key: key);
+  const ProfileBrowse({super.key});
 
   @override
   State<ProfileBrowse> createState() => _ProfileBrowseState();
 }
 
 class _ProfileBrowseState extends State<ProfileBrowse> {
+  static const maxProfiles = 5;
   List<StudentProfileModel> _studentProfiles = [];
 
   @override
@@ -34,85 +34,109 @@ class _ProfileBrowseState extends State<ProfileBrowse> {
     });
   }
 
+  Widget _buildProfileCard(BuildContext context, StudentProfileModel profile) {
+    final account = context.watch<AccountModel>();
+
+    return CircleAvatar(
+      radius: 100,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      child: InkWell(
+        onTap: () {
+          account.studentProfile = profile;
+        },
+        child: Text(
+          profile.firstName,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return utils.buildLoggedInScaffold(
-      context: context,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+    final account = context.watch<AccountModel>();
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).cardColor,
+        elevation: 1,
+        title: Row(
           children: [
-            Text(
-              S.of(context).selectProfile,
-              style: Theme.of(context).textTheme.headline4,
+            Image.asset(
+              'assets/images/logo.png',
+              width: 40,
+              height: 40,
             ),
-            const SizedBox(height: 50),
-            // TODO: Add error handling.
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (final profile in _studentProfiles)
-                  _buildProfileCard(context, profile),
-                _studentProfiles.length < constants.maxProfileCount
-                    ? const _AddProfileWidget()
-                    : const SizedBox(),
-              ],
+            Text(
+              constants.homePageAppBarName,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ],
+        ),
+        centerTitle: false,
+        actions: [
+          TextButton(
+            onPressed: () {
+              account.locale = account.locale == 'en' ? 'ja' : 'en';
+            },
+            child: Text(account.locale == 'en' ? 'US' : 'JP'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
+            child: Text(S.of(context).signOut),
+          )
+        ],
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  S.of(context).selectProfile,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                const SizedBox(height: 20),
+                OverflowBar(
+                  alignment: MainAxisAlignment.center,
+                  overflowAlignment: OverflowBarAlignment.center,
+                  spacing: 10,
+                  overflowSpacing: 10,
+                  children: [
+                    for (final profile in _studentProfiles)
+                      _buildProfileCard(context, profile),
+                    if (_studentProfiles.length < maxProfiles)
+                      const _AddProfileWidget(),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-Card _buildProfileCard(BuildContext context, StudentProfileModel profile) {
-  final account = context.watch<AccountModel>();
-
-  return Card(
-    elevation: 10.0,
-    child: InkWell(
-      splashColor: Theme.of(context).colorScheme.primary.withAlpha(30),
-      onTap: () {
-        account.studentProfile = profile;
-      },
-      child: SizedBox(
-        width: 200,
-        height: 200,
-        child: Center(
-          child: Text(profile.firstName,
-              style: Theme.of(context).textTheme.headlineMedium),
-        ),
-      ),
-    ),
-  );
-}
-
 class _AddProfileWidget extends StatelessWidget {
-  const _AddProfileWidget({Key? key}) : super(key: key);
+  const _AddProfileWidget();
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 10.0,
+    return CircleAvatar(
+      radius: 100,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       child: InkWell(
-        splashColor: Theme.of(context).colorScheme.primary.withAlpha(30),
         onTap: () {
           Navigator.pushNamed(context, constants.routeCreateProfile);
         },
-        child: SizedBox(
-          width: 200,
-          height: 200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.add,
-                color: Theme.of(context).colorScheme.primary,
-                size: 50,
-              ),
-              Text(S.of(context).addProfile),
-            ],
-          ),
+        child: const Icon(
+          Icons.add,
+          size: 50,
         ),
       ),
     );

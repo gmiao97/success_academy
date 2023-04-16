@@ -2,67 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/main.dart';
-import 'package:success_academy/profile/profile_browse.dart';
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
-import 'package:success_academy/utils.dart' as utils;
 
-class AddPoints extends StatelessWidget {
-  const AddPoints({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    if (account.authStatus == AuthStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          value: null,
-        ),
-      );
-    }
-    if (account.authStatus == AuthStatus.emailVerification) {
-      return const EmailVerificationPage();
-    }
-    if (account.authStatus == AuthStatus.signedOut) {
-      return const HomePage();
-    }
-    if (account.userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
-    }
-
-    return utils.buildStudentProfileScaffold(
-        context: context, body: const _AddPointsForm());
-  }
-}
-
-class _AddPointsForm extends StatefulWidget {
-  const _AddPointsForm({Key? key}) : super(key: key);
+class AddPoints extends StatefulWidget {
+  const AddPoints({super.key});
 
   @override
-  State<_AddPointsForm> createState() => _AddPointsFormState();
+  State<AddPoints> createState() => _AddPointsState();
 }
 
-class _AddPointsFormState extends State<_AddPointsForm> {
+class _AddPointsState extends State<AddPoints> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _stripeRedirectClicked = false;
-  int _numPoints = 100;
-  final Map _pointsCouponMap = {
+  static const Map _pointsCouponMap = {
     1000: 'promo_1MaUbkK9gCxRnlEipn32mBEV',
     2000: 'promo_1MaUbzK9gCxRnlEi5Xd3CAdJ',
     5000: 'promo_1MaUc8K9gCxRnlEiiipU5lt3',
     10000: 'promo_1MaUcHK9gCxRnlEiK2ybiGGA',
   };
+  bool _redirectClicked = false;
+  int _numPoints = 100;
 
-  void _onPointsChanged(value) {
+  void _onPointsChanged(int? value) {
     setState(() {
-      _numPoints = value;
+      _numPoints = value!;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AccountModel>();
+    assert(account.userType == UserType.student);
 
     return Center(
       child: Card(
@@ -76,7 +45,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                 children: [
                   Text(
                     S.of(context).addPoints,
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 25),
                   RichText(
@@ -86,7 +55,7 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                       children: [
                         TextSpan(
                           text: '${account.studentProfile!.numPoints}',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ],
                     ),
@@ -94,35 +63,31 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                   Column(
                     children: [
                       RadioListTile<int>(
-                        title: Text(S.of(context).eventPointsPurchase(100, 10)),
+                        title: Text(S.of(context).pointsPurchase(100, 10)),
                         value: 100,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
-                        title:
-                            Text(S.of(context).eventPointsPurchase(1000, 98)),
+                        title: Text(S.of(context).pointsPurchase(1000, 98)),
                         value: 1000,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
-                        title:
-                            Text(S.of(context).eventPointsPurchase(2000, 194)),
+                        title: Text(S.of(context).pointsPurchase(2000, 194)),
                         value: 2000,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
-                        title:
-                            Text(S.of(context).eventPointsPurchase(5000, 480)),
+                        title: Text(S.of(context).pointsPurchase(5000, 480)),
                         value: 5000,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
-                        title:
-                            Text(S.of(context).eventPointsPurchase(10000, 920)),
+                        title: Text(S.of(context).pointsPurchase(10000, 920)),
                         value: 10000,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
@@ -132,15 +97,15 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                   const SizedBox(
                     height: 30,
                   ),
-                  _stripeRedirectClicked
-                      ? const CircularProgressIndicator(value: null)
-                      : ElevatedButton.icon(
+                  _redirectClicked
+                      ? const CircularProgressIndicator()
+                      : FilledButton.tonalIcon(
                           label: Text(S.of(context).stripePointsPurchase),
                           icon: const Icon(Icons.exit_to_app),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               setState(() {
-                                _stripeRedirectClicked = true;
+                                _redirectClicked = true;
                               });
                               try {
                                 await stripe_service
@@ -150,16 +115,20 @@ class _AddPointsFormState extends State<_AddPointsForm> {
                                             account.studentProfile!.profileId,
                                         quantity: _numPoints,
                                         coupon: _pointsCouponMap[_numPoints]);
-                              } catch (e) {
+                              } catch (err) {
                                 setState(() {
-                                  _stripeRedirectClicked = false;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e.toString()),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
+                                  _redirectClicked = false;
                                 });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        S.of(context).stripeRedirectFailure),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                  ),
+                                );
+                                debugPrint(
+                                    'Failed to start Stripe points purchase: $err');
                               }
                             }
                           },
