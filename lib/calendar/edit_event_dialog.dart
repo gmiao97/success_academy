@@ -419,7 +419,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
                             icon: const Icon(Icons.calendar_month),
-                            labelText: S.of(context).eventDateLabel,
+                            labelText: S.of(context).recurUntilLabel,
                           ),
                           onTap: null,
                           // () {

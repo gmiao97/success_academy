@@ -365,7 +365,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
                             icon: const Icon(Icons.calendar_month),
-                            labelText: S.of(context).eventDateLabel,
+                            labelText: S.of(context).recurUntilLabel,
                           ),
                           onTap: () {
                             _selectRecurUntil();

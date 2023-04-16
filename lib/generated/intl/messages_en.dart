@@ -20,22 +20,18 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(name) => "${name}\'s Calendar";
+  static String m0(numPoints) => "${numPoints} Points";
 
-  static String m1(numPoints) => "${numPoints} Points";
+  static String m1(numPoints, cost) => "${numPoints} Points - \$${cost}";
 
-  static String m2(numPoints, cost) => "${numPoints} Points - \$${cost}";
+  static String m2(until) => " until ${until}";
 
-  static String m3(until) => " until ${until}";
+  static String m3(cost) => "${cost} points will be refunded";
 
-  static String m4(cost) => "${cost} points will be refunded";
-
-  static String m5(timeZone) => "Timezone: ${timeZone}";
-
-  static String m6(cost, balance) =>
+  static String m4(cost, balance) =>
       "${cost} of ${balance} points will be used";
 
-  static String m7(address) =>
+  static String m5(address) =>
       "A verification link has been sent to your email at ${address}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -44,13 +40,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Account settings updated"),
         "addPlan": MessageLookupByLibrary.simpleMessage("Add subscription"),
         "addPoints": MessageLookupByLibrary.simpleMessage("Add points"),
-        "addProfile": MessageLookupByLibrary.simpleMessage("Add profile"),
         "admin": MessageLookupByLibrary.simpleMessage("ADMIN"),
         "agreeToTerms":
             MessageLookupByLibrary.simpleMessage("Agree to terms of use"),
         "allEvents": MessageLookupByLibrary.simpleMessage("All Lessons"),
-        "businessName": MessageLookupByLibrary.simpleMessage("MERCY EDUCATION"),
-        "calendarHeader": m0,
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cancelSignup": MessageLookupByLibrary.simpleMessage("Cancel sign-up"),
         "cancelSignupFailure":
@@ -59,7 +52,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Cannot cancel sign-up for past lesson"),
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("Cancelled sign-up"),
-        "changeProfile": MessageLookupByLibrary.simpleMessage("Change Profile"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
@@ -70,7 +62,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "createEventSuccess":
             MessageLookupByLibrary.simpleMessage("Created lesson"),
         "createProfile": MessageLookupByLibrary.simpleMessage("Create Profile"),
-        "dateOfBirth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
         "dateOfBirthLabel":
             MessageLookupByLibrary.simpleMessage("Student Date of Birth"),
         "dateOfBirthValidation": MessageLookupByLibrary.simpleMessage(
@@ -89,7 +80,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Failed to edit lesson"),
         "editEventSuccess":
             MessageLookupByLibrary.simpleMessage("Edited lesson"),
-        "eventDateLabel": MessageLookupByLibrary.simpleMessage("Date"),
         "eventDescriptionLabel":
             MessageLookupByLibrary.simpleMessage("Description"),
         "eventDescriptionValidation": MessageLookupByLibrary.simpleMessage(
@@ -97,10 +87,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventEndLabel": MessageLookupByLibrary.simpleMessage("End"),
         "eventEndValidation":
             MessageLookupByLibrary.simpleMessage("Please select an end time"),
-        "eventPointsDisplay": m1,
+        "eventPointsDisplay": m0,
         "eventPointsLabel":
             MessageLookupByLibrary.simpleMessage("Number of points"),
-        "eventPointsPurchase": m2,
         "eventPointsValidation": MessageLookupByLibrary.simpleMessage(
             "Please enter number of points"),
         "eventStartLabel": MessageLookupByLibrary.simpleMessage("Start"),
@@ -119,8 +108,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedGetRecurrenceEvent":
             MessageLookupByLibrary.simpleMessage("Failed to load lesson"),
         "filter": MessageLookupByLibrary.simpleMessage("Filter"),
-        "filterTitle":
-            MessageLookupByLibrary.simpleMessage("Display by lesson type"),
         "firstName": MessageLookupByLibrary.simpleMessage("First name"),
         "firstNameHint": MessageLookupByLibrary.simpleMessage("John"),
         "firstNameLabel":
@@ -149,6 +136,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "lessonCalendar":
             MessageLookupByLibrary.simpleMessage("Lesson Calendar"),
         "lessonInfo": MessageLookupByLibrary.simpleMessage("Lesson Info"),
+        "lessonInfoUpdateFailed":
+            MessageLookupByLibrary.simpleMessage("Update failed"),
+        "lessonInfoUpdated": MessageLookupByLibrary.simpleMessage("Updated"),
         "link": MessageLookupByLibrary.simpleMessage("Link"),
         "manageProfile": MessageLookupByLibrary.simpleMessage("Manage Users"),
         "manageSubscription":
@@ -162,8 +152,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Monthly Payment - \$10 USD/month (Private Lesson Only)"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
-        "name": MessageLookupByLibrary.simpleMessage("Name"),
-        "next": MessageLookupByLibrary.simpleMessage("Next"),
         "noPlan": MessageLookupByLibrary.simpleMessage("No subscription plan"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("Please add more points"),
@@ -172,6 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),
+        "pointsPurchase": m1,
         "preschool": MessageLookupByLibrary.simpleMessage("Preschool lesson"),
         "preschoolNum": MessageLookupByLibrary.simpleMessage(
             "Number of preschool lessons completed"),
@@ -182,13 +171,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "promptSave": MessageLookupByLibrary.simpleMessage(
             "Please press the save button"),
         "recurDaily": MessageLookupByLibrary.simpleMessage("Daily"),
-        "recurEditNotSupported": MessageLookupByLibrary.simpleMessage(
-            "Recurring lesson edit/delete not supported yet. Please edit/delete directly in Google Calendar."),
         "recurEnd": MessageLookupByLibrary.simpleMessage("End"),
         "recurMonthly": MessageLookupByLibrary.simpleMessage("Monthly"),
         "recurNone": MessageLookupByLibrary.simpleMessage("No repeat"),
         "recurTitle": MessageLookupByLibrary.simpleMessage("Repeat"),
-        "recurUntil": m3,
+        "recurUntil": m2,
+        "recurUntilLabel": MessageLookupByLibrary.simpleMessage("Until"),
         "recurWeekly": MessageLookupByLibrary.simpleMessage("Weekly"),
         "referralLabel":
             MessageLookupByLibrary.simpleMessage("Enter referral code"),
@@ -197,7 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "referrerHint": MessageLookupByLibrary.simpleMessage("John Smith"),
         "referrerLabel":
             MessageLookupByLibrary.simpleMessage("Name of referrer"),
-        "refundPoints": m4,
+        "refundPoints": m3,
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),
         "settings": MessageLookupByLibrary.simpleMessage("Account Settings"),
@@ -224,25 +212,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "student": MessageLookupByLibrary.simpleMessage("STUDENT"),
         "studentListTitle":
             MessageLookupByLibrary.simpleMessage("Registered students"),
-        "studentProfile":
-            MessageLookupByLibrary.simpleMessage("Student Profile Information"),
+        "switchProfile": MessageLookupByLibrary.simpleMessage("Switch Profile"),
         "teacher": MessageLookupByLibrary.simpleMessage("TEACHER"),
-        "teacherProfile":
-            MessageLookupByLibrary.simpleMessage("Teacher Profile Information"),
         "teacherTitle": MessageLookupByLibrary.simpleMessage("Teacher"),
         "termsOfUse": MessageLookupByLibrary.simpleMessage("Terms of use"),
-        "timeZone": m5,
         "timeZoneLabel": MessageLookupByLibrary.simpleMessage("Time Zone"),
         "timeZoneValidation": MessageLookupByLibrary.simpleMessage(
             "Please select a valid time zone"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
         "unspecified": MessageLookupByLibrary.simpleMessage("Unspecified"),
-        "updateFailed": MessageLookupByLibrary.simpleMessage("Update failed"),
-        "updated": MessageLookupByLibrary.simpleMessage("Updated"),
-        "usePoints": m6,
+        "usePoints": m4,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
-        "verifyEmailMessage": m7,
+        "verifyEmailMessage": m5,
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
       };
 }

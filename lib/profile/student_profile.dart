@@ -44,7 +44,7 @@ class _StudentProfileState extends State<StudentProfile> {
               padding: const EdgeInsets.all(20),
               child: FilledButton.icon(
                 icon: const Icon(Icons.rotate_left),
-                label: Text(S.of(context).changeProfile),
+                label: Text(S.of(context).switchProfile),
                 onPressed: () {
                   account.studentProfile = null;
                 },

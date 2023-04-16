@@ -321,7 +321,7 @@ class EditableZoomInfo extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        S.of(context).updated,
+                        S.of(context).lessonInfoUpdated,
                       ),
                     ),
                   );
@@ -330,7 +330,7 @@ class EditableZoomInfo extends StatelessWidget {
                 debugPrint("Failed to update lesson info: $e");
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(S.of(context).updateFailed),
+                    content: Text(S.of(context).lessonInfoUpdateFailed),
                     backgroundColor: Theme.of(context).colorScheme.error,
                   ),
                 );

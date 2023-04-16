@@ -63,35 +63,31 @@ class _AddPointsState extends State<AddPoints> {
                   Column(
                     children: [
                       RadioListTile<int>(
-                        title: Text(S.of(context).eventPointsPurchase(100, 10)),
+                        title: Text(S.of(context).pointsPurchase(100, 10)),
                         value: 100,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
-                        title:
-                            Text(S.of(context).eventPointsPurchase(1000, 98)),
+                        title: Text(S.of(context).pointsPurchase(1000, 98)),
                         value: 1000,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
-                        title:
-                            Text(S.of(context).eventPointsPurchase(2000, 194)),
+                        title: Text(S.of(context).pointsPurchase(2000, 194)),
                         value: 2000,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
-                        title:
-                            Text(S.of(context).eventPointsPurchase(5000, 480)),
+                        title: Text(S.of(context).pointsPurchase(5000, 480)),
                         value: 5000,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
-                        title:
-                            Text(S.of(context).eventPointsPurchase(10000, 920)),
+                        title: Text(S.of(context).pointsPurchase(10000, 920)),
                         value: 10000,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
