@@ -45,10 +45,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelSignup": MessageLookupByLibrary.simpleMessage("登録解除"),
         "cancelSignupFailure":
             MessageLookupByLibrary.simpleMessage("登録解除に失敗しました"),
-        "cancelSignupPastEvent":
-            MessageLookupByLibrary.simpleMessage("過去のレッスンの登録解除ができません"),
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("登録を解除しました"),
+        "cancelSignupWindowPassed": MessageLookupByLibrary.simpleMessage(
+            "登録解除期間が過ぎました。24時間までに登録解除してください"),
         "close": MessageLookupByLibrary.simpleMessage("閉じる"),
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
@@ -140,7 +140,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
         "noPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションがありません"),
         "notEnoughPoints":
-            MessageLookupByLibrary.simpleMessage("ポイントを追加してください"),
+            MessageLookupByLibrary.simpleMessage("ポイントが足りません。ポイントを追加してください"),
         "openLinkFailure": MessageLookupByLibrary.simpleMessage("リンクを開けませんでした"),
         "password": MessageLookupByLibrary.simpleMessage("パスワード"),
         "pickPlan":
@@ -179,9 +179,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "signedUp": MessageLookupByLibrary.simpleMessage("登録済み"),
         "signup": MessageLookupByLibrary.simpleMessage("登録する"),
         "signupFailure": MessageLookupByLibrary.simpleMessage("登録に失敗しました"),
-        "signupPastEvent":
-            MessageLookupByLibrary.simpleMessage("過去のレッスンに登録できません"),
         "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),
+        "signupWindowPassed":
+            MessageLookupByLibrary.simpleMessage("登録期間が過ぎました。24時間前までに登録してください"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "stripeRedirectFailure":

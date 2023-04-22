@@ -48,10 +48,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelSignup": MessageLookupByLibrary.simpleMessage("Cancel sign-up"),
         "cancelSignupFailure":
             MessageLookupByLibrary.simpleMessage("Failed to cancel sign-up"),
-        "cancelSignupPastEvent": MessageLookupByLibrary.simpleMessage(
-            "Cannot cancel sign-up for past lesson"),
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("Cancelled sign-up"),
+        "cancelSignupWindowPassed": MessageLookupByLibrary.simpleMessage(
+            "Cancel sign-up windown passed. Please cancel at least 24 hours before lesson start"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
@@ -153,8 +153,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
         "noPlan": MessageLookupByLibrary.simpleMessage("No subscription plan"),
-        "notEnoughPoints":
-            MessageLookupByLibrary.simpleMessage("Please add more points"),
+        "notEnoughPoints": MessageLookupByLibrary.simpleMessage(
+            "Not enough points. Please add more points"),
         "openLinkFailure":
             MessageLookupByLibrary.simpleMessage("Failed to open link"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -199,10 +199,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
         "signupFailure":
             MessageLookupByLibrary.simpleMessage("Sign-up unsuccessful"),
-        "signupPastEvent": MessageLookupByLibrary.simpleMessage(
-            "Cannot sign up for past lesson"),
         "signupSuccess":
             MessageLookupByLibrary.simpleMessage("Sign-up successful"),
+        "signupWindowPassed": MessageLookupByLibrary.simpleMessage(
+            "Sign-up window passed. Please sign up at least 24 hours before lesson start"),
         "stripePointsPurchase":
             MessageLookupByLibrary.simpleMessage("Continue to points purchase"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage(

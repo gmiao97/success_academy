@@ -970,21 +970,21 @@ class S {
     );
   }
 
-  /// `Cannot sign up for past lesson`
-  String get signupPastEvent {
+  /// `Sign-up window passed. Please sign up at least 24 hours before lesson start`
+  String get signupWindowPassed {
     return Intl.message(
-      'Cannot sign up for past lesson',
-      name: 'signupPastEvent',
+      'Sign-up window passed. Please sign up at least 24 hours before lesson start',
+      name: 'signupWindowPassed',
       desc: '',
       args: [],
     );
   }
 
-  /// `Cannot cancel sign-up for past lesson`
-  String get cancelSignupPastEvent {
+  /// `Cancel sign-up windown passed. Please cancel at least 24 hours before lesson start`
+  String get cancelSignupWindowPassed {
     return Intl.message(
-      'Cannot cancel sign-up for past lesson',
-      name: 'cancelSignupPastEvent',
+      'Cancel sign-up windown passed. Please cancel at least 24 hours before lesson start',
+      name: 'cancelSignupWindowPassed',
       desc: '',
       args: [],
     );
@@ -1030,10 +1030,10 @@ class S {
     );
   }
 
-  /// `Please add more points`
+  /// `Not enough points. Please add more points`
   String get notEnoughPoints {
     return Intl.message(
-      'Please add more points',
+      'Not enough points. Please add more points',
       name: 'notEnoughPoints',
       desc: '',
       args: [],

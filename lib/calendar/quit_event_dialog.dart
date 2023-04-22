@@ -28,16 +28,17 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final userId =
-        context.select<AccountModel, String>((a) => a.firebaseUser!.uid);
+    final account = context.watch<AccountModel>();
     final studentProfile = context
         .select<AccountModel, StudentProfileModel>((a) => a.studentProfile!);
-    final isPast = widget.event.startTime.isBefore(DateTime.now());
+    final isAtLeast24HoursBefore =
+        widget.event.startTime.difference(DateTime.now()) >
+            const Duration(hours: 24);
 
     return AlertDialog(
       title: Text(S.of(context).cancelSignup),
-      content: isPast
-          ? Text(S.of(context).cancelSignupPastEvent)
+      content: !isAtLeast24HoursBefore
+          ? Text(S.of(context).cancelSignupWindowPassed)
           : Text(S.of(context).refundPoints(widget.event.numPoints)),
       actions: [
         TextButton(
@@ -52,7 +53,7 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                 child: const CircularProgressIndicator(),
               )
             : TextButton(
-                onPressed: isPast
+                onPressed: !isAtLeast24HoursBefore
                     ? null
                     : () async {
                         setState(() {
@@ -62,8 +63,6 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                             studentProfile.profileId, widget.event)) {
                           widget.event.studentIdList.removeWhere(
                               (id) => id == studentProfile.profileId);
-
-                          studentProfile.numPoints += widget.event.numPoints;
                           try {
                             await event_service.updateEvent(widget.event);
                             if (context.mounted) {
@@ -87,8 +86,10 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                             );
                           } finally {
                             // TODO: Handle/log error.
+                            studentProfile.numPoints += widget.event.numPoints;
+                            account.studentProfile = studentProfile;
                             profile_service.updateStudentProfile(
-                                userId, studentProfile);
+                                account.firebaseUser!.uid, studentProfile);
                             Navigator.of(context).pop();
                             widget.refresh();
                           }

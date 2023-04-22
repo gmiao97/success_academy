@@ -28,20 +28,23 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final pointsBalance =
-        context.select<AccountModel, int>((a) => a.studentProfile!.numPoints);
-    final userId =
-        context.select<AccountModel, String>((a) => a.firebaseUser!.uid);
+    final account = context.watch<AccountModel>();
     final studentProfile = context
         .select<AccountModel, StudentProfileModel>((a) => a.studentProfile!);
-    final isPast = widget.event.startTime.isBefore(DateTime.now());
+    final isAtLeast24HoursBefore =
+        widget.event.startTime.difference(DateTime.now()) >
+            const Duration(hours: 24);
+    final enoughPoints =
+        account.studentProfile!.numPoints >= widget.event.numPoints;
 
     return AlertDialog(
       title: Text(S.of(context).signup),
-      content: isPast
-          ? Text(S.of(context).signupPastEvent)
-          : Text(
-              S.of(context).usePoints(widget.event.numPoints, pointsBalance)),
+      content: !isAtLeast24HoursBefore
+          ? Text(S.of(context).signupWindowPassed)
+          : enoughPoints
+              ? Text(S.of(context).usePoints(
+                  widget.event.numPoints, account.studentProfile!.numPoints))
+              : Text(S.of(context).notEnoughPoints),
       actions: [
         TextButton(
           child: Text(S.of(context).cancel),
@@ -55,7 +58,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                 child: const CircularProgressIndicator(),
               )
             : TextButton(
-                onPressed: isPast
+                onPressed: !isAtLeast24HoursBefore || !enoughPoints
                     ? null
                     : () async {
                         setState(() {
@@ -65,7 +68,6 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                             studentProfile.profileId, widget.event)) {
                           widget.event.studentIdList
                               .add(studentProfile.profileId);
-                          studentProfile.numPoints -= widget.event.numPoints;
                           try {
                             await event_service.updateEvent(widget.event);
                             if (context.mounted) {
@@ -87,8 +89,10 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                             );
                           } finally {
                             // TODO: Handle/log error.
+                            studentProfile.numPoints -= widget.event.numPoints;
+                            account.studentProfile = studentProfile;
                             profile_service.updateStudentProfile(
-                                userId, studentProfile);
+                                account.firebaseUser!.uid, studentProfile);
                             Navigator.of(context).pop();
                             widget.refresh();
                           }
