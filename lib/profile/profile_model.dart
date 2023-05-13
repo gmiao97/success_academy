@@ -22,6 +22,7 @@ String getSubscriptionPlanName(BuildContext context, SubscriptionPlan? plan) {
 
 class StudentProfileModel {
   String _profileId = '';
+  String email = '';
   late String lastName;
   late String firstName;
   late DateTime dateOfBirth;
@@ -33,6 +34,7 @@ class StudentProfileModel {
   StudentProfileModel.fromFirestoreJson(
       String profileId, Map<String, Object?> json)
       : _profileId = profileId,
+        email = json['email'] as String,
         lastName = json['last_name'] as String,
         firstName = json['first_name'] as String,
         dateOfBirth = DateTime.parse(json['date_of_birth'] as String),
@@ -43,6 +45,7 @@ class StudentProfileModel {
   StudentProfileModel._fromJson(Map<String, Object?> json,
       {required String userId})
       : _profileId = json['id'] as String,
+        email = json['email'] as String,
         lastName = json['last_name'] as String,
         firstName = json['first_name'] as String,
         dateOfBirth = DateTime.parse(json['date_of_birth'] as String),
@@ -62,6 +65,7 @@ class StudentProfileModel {
 
   Map<String, Object?> toFirestoreJson() {
     return {
+      'email': email,
       'last_name': lastName,
       'first_name': firstName,
       'date_of_birth': constants.dateFormatter.format(dateOfBirth),
@@ -74,6 +78,7 @@ class StudentProfileModel {
   Map<String, Object?> toJson() {
     return {
       'id': _profileId,
+      'email': email,
       'last_name': lastName,
       'first_name': firstName,
       'date_of_birth': constants.dateFormatter.format(dateOfBirth),
@@ -94,20 +99,24 @@ class StudentProfileModel {
 
 class TeacherProfileModel {
   final String _profileId;
+  final String _email;
   final String _lastName;
   final String _firstName;
 
   TeacherProfileModel.fromJson(String profileId, Map<String, Object?> json)
       : _profileId = profileId,
+        _email = json['email'] as String,
         _lastName = json['last_name'] as String,
         _firstName = json['first_name'] as String;
 
   String get profileId => _profileId;
+  String get email => _email;
   String get lastName => _lastName;
   String get firstName => _firstName;
 
   Map<String, Object?> toJson() {
     return {
+      'email': _email,
       'last_name': _lastName,
       'first_name': _firstName,
     };
@@ -125,20 +134,24 @@ class TeacherProfileModel {
 
 class AdminProfileModel {
   final String _profileId;
+  final String _email;
   final String _lastName;
   final String _firstName;
 
   AdminProfileModel.fromJson(String profileId, Map<String, Object?> json)
       : _profileId = profileId,
+        _email = json['email'] as String,
         _lastName = json['last_name'] as String,
         _firstName = json['first_name'] as String;
 
   String get profileId => _profileId;
+  String get email => _email;
   String get lastName => _lastName;
   String get firstName => _firstName;
 
   Map<String, Object?> toJson() {
     return {
+      'email': _email,
       'last_name': _lastName,
       'first_name': _firstName,
     };

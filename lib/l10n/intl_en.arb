@@ -19,6 +19,7 @@
 
   "@_MANAGE_PROFILE": {},
   "id": "ID",
+  "email": "Email",
   "lastName": "Last name",
   "firstName": "First name",
   "privateNum": "Number of points completed from private lessons",

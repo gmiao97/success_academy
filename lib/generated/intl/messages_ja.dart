@@ -74,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "editEventFailure":
             MessageLookupByLibrary.simpleMessage("レッスンの編集ができませんでした"),
         "editEventSuccess": MessageLookupByLibrary.simpleMessage("レッスンを編集しました"),
+        "email": MessageLookupByLibrary.simpleMessage("メアド"),
         "eventDescriptionLabel": MessageLookupByLibrary.simpleMessage("説明"),
         "eventDescriptionValidation":
             MessageLookupByLibrary.simpleMessage("レッスンの説明を入力してください"),

@@ -19,6 +19,7 @@
 
   "@_MANAGE_PROFILE": {},
   "id": "ID",
+  "email": "メアド",
   "lastName": "姓",
   "firstName": "名",
   "privateNum": "完了個別レッスンポイント数",

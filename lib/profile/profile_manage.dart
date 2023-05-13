@@ -170,6 +170,14 @@ class _TeacherTable extends StatelessWidget {
         DataColumn(
           label: Expanded(
             child: Text(
+              S.of(context).email,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
               S.of(context).lastName,
               style: const TextStyle(fontStyle: FontStyle.italic),
             ),
@@ -236,6 +244,14 @@ class _StudentTable extends StatelessWidget {
         DataColumn(
           label: Expanded(
             child: Text(
+              S.of(context).email,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
               S.of(context).lastName,
               style: const TextStyle(fontStyle: FontStyle.italic),
             ),
@@ -294,6 +310,7 @@ class _TeacherData extends DataTableSource {
   DataRow getRow(int index) {
     return DataRow(cells: [
       DataCell(SelectableText(_data[index].profileId)),
+      DataCell(SelectableText(_data[index].email)),
       DataCell(SelectableText(_data[index].lastName)),
       DataCell(SelectableText(_data[index].firstName)),
       DataCell(
@@ -335,6 +352,7 @@ class _StudentData extends DataTableSource {
   DataRow getRow(int index) {
     return DataRow(cells: [
       DataCell(SelectableText(_data[index].profileId)),
+      DataCell(SelectableText(_data[index].email)),
       DataCell(SelectableText(_data[index].lastName)),
       DataCell(SelectableText(_data[index].firstName)),
       DataCell(SelectableText('${_data[index].numPoints}')),

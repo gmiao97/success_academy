@@ -80,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Failed to edit lesson"),
         "editEventSuccess":
             MessageLookupByLibrary.simpleMessage("Edited lesson"),
+        "email": MessageLookupByLibrary.simpleMessage("Email"),
         "eventDescriptionLabel":
             MessageLookupByLibrary.simpleMessage("Description"),
         "eventDescriptionValidation": MessageLookupByLibrary.simpleMessage(

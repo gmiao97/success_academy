@@ -161,6 +161,7 @@ class _SignupFormState extends State<_SignupForm> {
                 setState(() {
                   _redirectClicked = true;
                 });
+                _profileModel.email = account.myUser!.email;
                 final profileDoc = await profile_service.addStudentProfile(
                     account.firebaseUser!.uid, _profileModel);
                 try {
