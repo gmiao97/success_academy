@@ -113,7 +113,6 @@ Future<dynamic> updateEvent(EventModel event) async {
 
 Future<dynamic> emailAttendees(EventModel event,
     {bool isCancel = false}) async {
-  functions.useFunctionsEmulator('localhost', 5001);
   HttpsCallable callable = functions.httpsCallable(
     'email_attendees',
     options: HttpsCallableOptions(

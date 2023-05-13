@@ -13,12 +13,14 @@ final CollectionReference<MyUserModel> _myUserModelRef = db
     );
 
 /// Create document in 'myUsers' collection for user uid if not already existing
-Future<void> createMyUserDocIfNotExist(String userId) async {
+Future<void> createMyUserDocIfNotExist(String userId, String email) async {
   final userDoc = await _myUserModelRef.doc(userId).get();
   if (!userDoc.exists) {
     final localTimeZone = await FlutterNativeTimezone.getLocalTimezone();
     await _myUserModelRef.doc(userId).set(MyUserModel(
-        referralCode: randomAlphaNumeric(8), timeZone: localTimeZone));
+        referralCode: randomAlphaNumeric(8),
+        timeZone: localTimeZone,
+        email: email));
   }
 }
 

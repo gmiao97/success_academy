@@ -293,21 +293,21 @@ class _TeacherData extends DataTableSource {
   @override
   DataRow getRow(int index) {
     return DataRow(cells: [
-      DataCell(Text(_data[index].profileId)),
-      DataCell(Text(_data[index].lastName)),
-      DataCell(Text(_data[index].firstName)),
+      DataCell(SelectableText(_data[index].profileId)),
+      DataCell(SelectableText(_data[index].lastName)),
+      DataCell(SelectableText(_data[index].firstName)),
       DataCell(
-        Text(
+        SelectableText(
           '${_events.where((e) => e.eventType == EventType.free && isTeacherInEvent(_data[index].profileId, e)).length}',
         ),
       ),
       DataCell(
-        Text(
+        SelectableText(
           '${_events.where((e) => e.eventType == EventType.preschool && isTeacherInEvent(_data[index].profileId, e)).length}',
         ),
       ),
       DataCell(
-        Text(
+        SelectableText(
           '${_events.where((e) => e.eventType == EventType.private && isTeacherInEvent(_data[index].profileId, e)).toList().map((event) => event.numPoints).fold(0, (int a, int b) => a + b)}',
         ),
       ),
@@ -334,11 +334,11 @@ class _StudentData extends DataTableSource {
   @override
   DataRow getRow(int index) {
     return DataRow(cells: [
-      DataCell(Text(_data[index].profileId)),
-      DataCell(Text(_data[index].lastName)),
-      DataCell(Text(_data[index].firstName)),
-      DataCell(Text('${_data[index].numPoints}')),
-      DataCell(Text(_data[index].referrer ?? '')),
+      DataCell(SelectableText(_data[index].profileId)),
+      DataCell(SelectableText(_data[index].lastName)),
+      DataCell(SelectableText(_data[index].firstName)),
+      DataCell(SelectableText('${_data[index].numPoints}')),
+      DataCell(SelectableText(_data[index].referrer ?? '')),
     ]);
   }
 }

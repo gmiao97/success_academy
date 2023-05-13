@@ -142,7 +142,8 @@ class AccountModel extends ChangeNotifier {
     _subscriptionDocs =
         await stripe_service.getSubscriptionsForUser(firebaseUser.uid);
 
-    await user_service.createMyUserDocIfNotExist(firebaseUser.uid);
+    await user_service.createMyUserDocIfNotExist(
+        firebaseUser.uid, firebaseUser.email!);
     _myUser = await user_service.getMyUserDoc(firebaseUser.uid);
     await _initProfile(firebaseUser.uid);
   }
@@ -213,21 +214,25 @@ class AccountModel extends ChangeNotifier {
 }
 
 class MyUserModel {
+  final String referralCode;
+  final String email;
+  String timeZone;
+
   MyUserModel({
     required this.referralCode,
+    required this.email,
     required this.timeZone,
   });
 
   MyUserModel.fromJson(Map<String, Object?> json)
       : referralCode = json['referral_code'] as String,
+        email = json['email'] as String,
         timeZone = json['time_zone'] as String;
-
-  final String referralCode;
-  String timeZone;
 
   Map<String, Object?> toJson() {
     return {
       'referral_code': referralCode,
+      'email': email,
       'time_zone': timeZone,
     };
   }
