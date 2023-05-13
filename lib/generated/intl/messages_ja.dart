@@ -42,13 +42,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "agreeToTerms": MessageLookupByLibrary.simpleMessage("利用規約に同意"),
         "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
-        "cancelSignup": MessageLookupByLibrary.simpleMessage("登録解除"),
+        "cancelSignup": MessageLookupByLibrary.simpleMessage("予約キャンセル"),
         "cancelSignupFailure":
-            MessageLookupByLibrary.simpleMessage("登録解除に失敗しました"),
+            MessageLookupByLibrary.simpleMessage("予約キャンセルに失敗しました"),
         "cancelSignupSuccess":
-            MessageLookupByLibrary.simpleMessage("登録を解除しました"),
+            MessageLookupByLibrary.simpleMessage("予約をキャンセルしました"),
         "cancelSignupWindowPassed": MessageLookupByLibrary.simpleMessage(
-            "登録解除期間が過ぎました。24時間までに登録解除してください"),
+            "予約キャンセル期間が過ぎました。24時間までに予約キャンセルしてください"),
         "close": MessageLookupByLibrary.simpleMessage("閉じる"),
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
@@ -176,18 +176,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("トライアル後に入会費50米ドルが請求されます"),
         "signUpFeeDiscount":
             MessageLookupByLibrary.simpleMessage("20%割引ー40米ドル"),
-        "signedUp": MessageLookupByLibrary.simpleMessage("登録済み"),
-        "signup": MessageLookupByLibrary.simpleMessage("登録する"),
-        "signupFailure": MessageLookupByLibrary.simpleMessage("登録に失敗しました"),
-        "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),
+        "signedUp": MessageLookupByLibrary.simpleMessage("予約済み"),
+        "signup": MessageLookupByLibrary.simpleMessage("予約する"),
+        "signupFailure": MessageLookupByLibrary.simpleMessage("予約に失敗しました"),
+        "signupSuccess": MessageLookupByLibrary.simpleMessage("予約できました"),
         "signupWindowPassed":
-            MessageLookupByLibrary.simpleMessage("登録期間が過ぎました。24時間前までに登録してください"),
+            MessageLookupByLibrary.simpleMessage("予約期間が過ぎました。24時間前までに予約してください"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "stripeRedirectFailure":
             MessageLookupByLibrary.simpleMessage("Stripeへのリダイレクトができませんでした"),
         "student": MessageLookupByLibrary.simpleMessage("生徒"),
-        "studentListTitle": MessageLookupByLibrary.simpleMessage("登録されている生徒"),
+        "studentListTitle": MessageLookupByLibrary.simpleMessage("予約されている生徒"),
         "switchProfile": MessageLookupByLibrary.simpleMessage("プロフィールを切り替える"),
         "teacher": MessageLookupByLibrary.simpleMessage("先生"),
         "teacherTitle": MessageLookupByLibrary.simpleMessage("先生"),

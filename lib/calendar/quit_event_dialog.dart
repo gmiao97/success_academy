@@ -73,6 +73,13 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                                 ),
                               );
                             }
+                            // TODO: Handle/log error.
+                            studentProfile.numPoints += widget.event.numPoints;
+                            account.studentProfile = studentProfile;
+                            profile_service.updateStudentProfile(
+                                account.firebaseUser!.uid, studentProfile);
+                            event_service.emailAttendees(widget.event,
+                                isCancel: true);
                           } catch (e) {
                             widget.event.studentIdList
                                 .add(studentProfile.profileId);
@@ -85,11 +92,6 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                               ),
                             );
                           } finally {
-                            // TODO: Handle/log error.
-                            studentProfile.numPoints += widget.event.numPoints;
-                            account.studentProfile = studentProfile;
-                            profile_service.updateStudentProfile(
-                                account.firebaseUser!.uid, studentProfile);
                             Navigator.of(context).pop();
                             widget.refresh();
                           }

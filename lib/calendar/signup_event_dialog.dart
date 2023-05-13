@@ -76,6 +76,13 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                                   content: Text(S.of(context).signupSuccess),
                                 ),
                               );
+                              // TODO: Handle/log error.
+                              studentProfile.numPoints -=
+                                  widget.event.numPoints;
+                              account.studentProfile = studentProfile;
+                              profile_service.updateStudentProfile(
+                                  account.firebaseUser!.uid, studentProfile);
+                              event_service.emailAttendees(widget.event);
                             }
                           } catch (e) {
                             widget.event.studentIdList.removeWhere(
@@ -88,11 +95,6 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                               ),
                             );
                           } finally {
-                            // TODO: Handle/log error.
-                            studentProfile.numPoints -= widget.event.numPoints;
-                            account.studentProfile = studentProfile;
-                            profile_service.updateStudentProfile(
-                                account.firebaseUser!.uid, studentProfile);
                             Navigator.of(context).pop();
                             widget.refresh();
                           }

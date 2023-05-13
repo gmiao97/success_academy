@@ -110,3 +110,25 @@ Future<dynamic> updateEvent(EventModel event) async {
     rethrow;
   }
 }
+
+Future<dynamic> emailAttendees(EventModel event,
+    {bool isCancel = false}) async {
+  functions.useFunctionsEmulator('localhost', 5001);
+  HttpsCallable callable = functions.httpsCallable(
+    'email_attendees',
+    options: HttpsCallableOptions(
+      timeout: const Duration(seconds: 60),
+    ),
+  );
+
+  try {
+    final result = await callable({
+      ...event.toJson(),
+      'isCancel': isCancel,
+    });
+    return result.data;
+  } catch (err) {
+    debugPrint('emailAttendees failed: $err');
+    rethrow;
+  }
+}
