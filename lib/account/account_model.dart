@@ -207,9 +207,7 @@ class AccountModel extends ChangeNotifier {
   }
 
   bool shouldShowContent() {
-    return userType != UserType.student ||
-        (subscriptionPlan != null &&
-            subscriptionPlan != SubscriptionPlan.monthly);
+    return userType != UserType.student || subscriptionPlan != null;
   }
 }
 

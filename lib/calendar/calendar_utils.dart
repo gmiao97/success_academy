@@ -70,8 +70,13 @@ List<EventType> getEventTypesCanView(
     ];
   }
   if (userType == UserType.student) {
-    if (subscription == null || subscription == SubscriptionPlan.monthly) {
+    if (subscription == null) {
       return [];
+    }
+    if (subscription == SubscriptionPlan.monthly) {
+      return [
+        EventType.private,
+      ];
     }
     if (subscription == SubscriptionPlan.minimumPreschool) {
       return [
