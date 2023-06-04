@@ -78,7 +78,8 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                             account.studentProfile = studentProfile;
                             profile_service.updateStudentProfile(
                                 account.firebaseUser!.uid, studentProfile);
-                            event_service.emailAttendees(widget.event,
+                            event_service.emailAttendees(
+                                widget.event, studentProfile.profileId,
                                 isCancel: true);
                           } catch (e) {
                             widget.event.studentIdList

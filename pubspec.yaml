@@ -48,7 +48,7 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   enum_to_string: ^2.0.1
   cloud_functions: ^4.0.7
-  intl: ^0.17.0
+  intl: ^0.18.0
   table_calendar: ^3.0.6
   multi_select_flutter: ^4.1.2
   rrule: ^0.2.10

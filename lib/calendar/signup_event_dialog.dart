@@ -82,7 +82,8 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                               account.studentProfile = studentProfile;
                               profile_service.updateStudentProfile(
                                   account.firebaseUser!.uid, studentProfile);
-                              event_service.emailAttendees(widget.event);
+                              event_service.emailAttendees(
+                                  widget.event, studentProfile.profileId);
                             }
                           } catch (e) {
                             widget.event.studentIdList.removeWhere(

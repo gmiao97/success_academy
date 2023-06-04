@@ -132,7 +132,7 @@ class _StudentProfileState extends State<StudentProfile> {
                         IconButton(
                           onPressed: () {
                             Clipboard.setData(ClipboardData(
-                                text: account.myUser?.referralCode));
+                                text: account.myUser!.referralCode));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(S.of(context).copied),
