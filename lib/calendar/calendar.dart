@@ -436,6 +436,11 @@ class _EventList extends StatelessWidget {
             ),
           ),
         );
+      } else if (isEventFull(event)) {
+        return OutlinedButton(
+          onPressed: null,
+          child: Text(S.of(context).eventFull),
+        );
       } else {
         return OutlinedButton(
           child: Text(S.of(context).signup),

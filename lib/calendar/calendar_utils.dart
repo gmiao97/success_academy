@@ -99,6 +99,13 @@ bool isStudentInEvent(String profileId, EventModel event) {
   return event.studentIdList.contains(profileId);
 }
 
+bool isEventFull(EventModel event) {
+  if (event.eventType == EventType.private && event.studentIdList.isNotEmpty) {
+    return true;
+  }
+  return false;
+}
+
 bool isTeacherInEvent(String profileId, EventModel event) {
   return event.teacherId == profileId;
 }

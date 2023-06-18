@@ -81,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "eventEndLabel": MessageLookupByLibrary.simpleMessage("終了"),
         "eventEndValidation":
             MessageLookupByLibrary.simpleMessage("終了時間を選択してください"),
+        "eventFull": MessageLookupByLibrary.simpleMessage("レッスン満員"),
         "eventPointsDisplay": m0,
         "eventPointsLabel": MessageLookupByLibrary.simpleMessage("ポイント数"),
         "eventPointsValidation":
