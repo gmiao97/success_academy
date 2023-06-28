@@ -13,14 +13,16 @@ class AddPoints extends StatefulWidget {
 
 class _AddPointsState extends State<AddPoints> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  static const Map _pointsCouponMap = {
+  static const Map<int, String> _pointsCouponMap = {
+    700: 'promo_1NNqXoK9gCxRnlEiD3tVodGw',
     1000: 'promo_1MaUbkK9gCxRnlEipn32mBEV',
+    1500: 'promo_1NNqYfK9gCxRnlEiHZ0Im4f0',
     2000: 'promo_1MaUbzK9gCxRnlEi5Xd3CAdJ',
     5000: 'promo_1MaUc8K9gCxRnlEiiipU5lt3',
     10000: 'promo_1MaUcHK9gCxRnlEiK2ybiGGA',
   };
   bool _redirectClicked = false;
-  int _numPoints = 100;
+  int _numPoints = 10;
 
   void _onPointsChanged(int? value) {
     setState(() {
@@ -63,14 +65,32 @@ class _AddPointsState extends State<AddPoints> {
                   Column(
                     children: [
                       RadioListTile<int>(
+                        title: Text(S.of(context).pointsPurchase(10, 1)),
+                        value: 10,
+                        groupValue: _numPoints,
+                        onChanged: _onPointsChanged,
+                      ),
+                      RadioListTile<int>(
                         title: Text(S.of(context).pointsPurchase(100, 10)),
                         value: 100,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),
                       RadioListTile<int>(
+                        title: Text(S.of(context).pointsPurchase(700, 69)),
+                        value: 700,
+                        groupValue: _numPoints,
+                        onChanged: _onPointsChanged,
+                      ),
+                      RadioListTile<int>(
                         title: Text(S.of(context).pointsPurchase(1000, 98)),
                         value: 1000,
+                        groupValue: _numPoints,
+                        onChanged: _onPointsChanged,
+                      ),
+                      RadioListTile<int>(
+                        title: Text(S.of(context).pointsPurchase(1500, 147)),
+                        value: 1500,
                         groupValue: _numPoints,
                         onChanged: _onPointsChanged,
                       ),

@@ -76,7 +76,7 @@ Future<void> startStripePointsCheckoutSession({
   required String userId,
   required String profileId,
   required int quantity,
-  required String coupon,
+  required String? coupon,
 }) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
@@ -90,25 +90,28 @@ Future<void> startStripePointsCheckoutSession({
     }
   }
 
+  Map<String, dynamic> data = {
+    'mode': 'payment',
+    'price': selectedPriceId,
+    'quantity': quantity,
+    'success_url': html.window.location.origin,
+    'cancel_url': html.window.location.origin,
+    'metadata': {
+      'userId': userId,
+      'profileId': profileId,
+      'priceId': selectedPriceId,
+      'numPoints': quantity,
+    },
+  };
+  if (coupon != null) {
+    data['promotion_code'] = coupon;
+  }
+
   final checkoutSessionDoc = await db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')
-      .add(
-    {
-      'mode': 'payment',
-      'price': selectedPriceId,
-      'promotion_code': coupon,
-      'quantity': quantity,
-      'success_url': html.window.location.origin,
-      'cancel_url': html.window.location.origin,
-      'metadata': {
-        'userId': userId,
-        'profileId': profileId,
-        'priceId': selectedPriceId,
-      },
-    },
-  );
+      .add(data);
   Completer completer = Completer();
   checkoutSessionDoc.snapshots().listen(
     (doc) {

@@ -156,22 +156,6 @@ class _EditEventDialogState extends State<EditEventDialog> {
     }
   }
 
-  void _selectRecurUntil() async {
-    final DateTime? day = await showDatePicker(
-      context: context,
-      initialDate: _recurUntil ?? _end,
-      firstDate: widget.firstDay,
-      lastDate: widget.lastDay,
-    );
-    if (day != null) {
-      setState(() {
-        _recurUntil = tz.TZDateTime(_location, day.year, day.month, day.day)
-            .add(const Duration(days: 1));
-        _recurUntilController.text = DateFormat.yMMMMd(_locale).format(day);
-      });
-    }
-  }
-
   // TODO: Use returned event id from Google Calendar API to refresh.
   void _updateLocalEvent(EventModel event) {
     widget.event.summary = event.summary;
