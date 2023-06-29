@@ -73,10 +73,10 @@ class _CalendarState extends State<Calendar> {
     final singleEvents = (await event_service.listEvents(
             location: location,
             timeMin: _currentDay
-                .subtract(const Duration(days: 100))
+                .subtract(const Duration(days: 30))
                 .toIso8601String(),
             timeMax:
-                _currentDay.add(const Duration(days: 100)).toIso8601String(),
+                _currentDay.add(const Duration(days: 90)).toIso8601String(),
             singleEvents: true))
         .where((event) {
       if (!_selectedEventTypes.contains(event.eventType)) {
