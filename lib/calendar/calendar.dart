@@ -93,8 +93,6 @@ class _CalendarState extends State<Calendar> {
       return true;
     }).toList();
 
-    print(singleEvents.length);
-
     setState(() {
       _events.clear();
       _events.addAll(buildEventMap(singleEvents));
