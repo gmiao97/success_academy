@@ -73,8 +73,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.select<AccountModel, String>((a) => a.locale);
-    final userType = context.select<AccountModel, UserType>((a) => a.userType);
+    final account = context.watch<AccountModel>();
     final rrule = _recurrenceEvent != null
         ? RecurrenceRule.fromString(_recurrenceEvent!.recurrence[0])
         : null;
@@ -120,7 +119,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                     const WidgetSpan(child: Icon(Icons.access_time)),
                     TextSpan(
                         text:
-                            '${DateFormat.MMMMd(locale).add_jm().format(widget.event.startTime)} - ${DateFormat.MMMMd(locale).add_jm().format(widget.event.endTime)}')
+                            '${DateFormat.MMMMd(account.locale).add_jm().format(widget.event.startTime)} - ${DateFormat.MMMMd(account.locale).add_jm().format(widget.event.endTime)}')
                   ],
                 ),
               ),
@@ -146,9 +145,23 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                   children: [
                     const WidgetSpan(child: Icon(Icons.shopping_cart)),
                     TextSpan(
-                        text: S
-                            .of(context)
-                            .eventPointsDisplay(widget.event.numPoints))
+                      text: S
+                          .of(context)
+                          .eventPointsDisplay(widget.event.numPoints),
+                      style: account.hasPointsDiscount()
+                          ? Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(decoration: TextDecoration.lineThrough)
+                          : null,
+                    ),
+                    const TextSpan(text: ' '),
+                    account.hasPointsDiscount()
+                        ? TextSpan(
+                            text: S.of(context).eventPointsDisplay(
+                                (widget.event.numPoints * .9).floor()),
+                          )
+                        : const TextSpan(),
                   ],
                 ),
               ),
@@ -176,7 +189,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                   ],
                 ),
               ),
-              if (userType != UserType.student)
+              if (account.userType != UserType.student)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

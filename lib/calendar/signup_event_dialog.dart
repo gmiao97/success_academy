@@ -34,16 +34,19 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
     final isAtLeast24HoursBefore =
         widget.event.startTime.difference(DateTime.now()) >
             const Duration(hours: 24);
-    final enoughPoints =
-        account.studentProfile!.numPoints >= widget.event.numPoints;
+    final numPoints = account.hasPointsDiscount()
+        ? (widget.event.numPoints * .9).floor()
+        : widget.event.numPoints;
+    final enoughPoints = account.studentProfile!.numPoints >= numPoints;
 
     return AlertDialog(
       title: Text(S.of(context).signup),
       content: !isAtLeast24HoursBefore
           ? Text(S.of(context).signupWindowPassed)
           : enoughPoints
-              ? Text(S.of(context).usePoints(
-                  widget.event.numPoints, account.studentProfile!.numPoints))
+              ? Text(S
+                  .of(context)
+                  .usePoints(numPoints, account.studentProfile!.numPoints))
               : Text(S.of(context).notEnoughPoints),
       actions: [
         TextButton(
@@ -77,8 +80,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                                 ),
                               );
                               // TODO: Handle/log error.
-                              studentProfile.numPoints -=
-                                  widget.event.numPoints;
+                              studentProfile.numPoints -= numPoints;
                               account.studentProfile = studentProfile;
                               profile_service.updateStudentProfile(
                                   account.firebaseUser!.uid, studentProfile);

@@ -31,6 +31,9 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
     final account = context.watch<AccountModel>();
     final studentProfile = context
         .select<AccountModel, StudentProfileModel>((a) => a.studentProfile!);
+    final numPoints = account.hasPointsDiscount()
+        ? (widget.event.numPoints * .9).floor()
+        : widget.event.numPoints;
     final isAtLeast24HoursBefore =
         widget.event.startTime.difference(DateTime.now()) >
             const Duration(hours: 24);
@@ -39,7 +42,7 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
       title: Text(S.of(context).cancelSignup),
       content: !isAtLeast24HoursBefore
           ? Text(S.of(context).cancelSignupWindowPassed)
-          : Text(S.of(context).refundPoints(widget.event.numPoints)),
+          : Text(S.of(context).refundPoints(numPoints)),
       actions: [
         TextButton(
           child: Text(S.of(context).cancel),
@@ -74,7 +77,7 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                               );
                             }
                             // TODO: Handle/log error.
-                            studentProfile.numPoints += widget.event.numPoints;
+                            studentProfile.numPoints += numPoints;
                             account.studentProfile = studentProfile;
                             profile_service.updateStudentProfile(
                                 account.firebaseUser!.uid, studentProfile);

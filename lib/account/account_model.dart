@@ -207,7 +207,12 @@ class AccountModel extends ChangeNotifier {
   }
 
   bool shouldShowContent() {
-    return userType != UserType.student || subscriptionPlan != null;
+    return userType != UserType.student || _subscriptionPlan != null;
+  }
+
+  bool hasPointsDiscount() {
+    return _subscriptionPlan == SubscriptionPlan.minimum ||
+        _subscriptionPlan == SubscriptionPlan.minimumPreschool;
   }
 }
 
