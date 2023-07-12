@@ -43,117 +43,119 @@ class _AddPointsState extends State<AddPoints> {
           padding: const EdgeInsets.all(20),
           child: Form(
               key: _formKey,
-              child: Column(
-                children: [
-                  Text(
-                    S.of(context).addPoints,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 25),
-                  RichText(
-                    text: TextSpan(
-                      text: '${S.of(context).eventPointsLabel}     ',
-                      style: Theme.of(context).textTheme.titleMedium,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      S.of(context).addPoints,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 25),
+                    RichText(
+                      text: TextSpan(
+                        text: '${S.of(context).eventPointsLabel}     ',
+                        style: Theme.of(context).textTheme.titleMedium,
+                        children: [
+                          TextSpan(
+                            text: '${account.studentProfile!.numPoints}',
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
                       children: [
-                        TextSpan(
-                          text: '${account.studentProfile!.numPoints}',
-                          style: Theme.of(context).textTheme.headlineSmall,
+                        RadioListTile<int>(
+                          title: Text(S.of(context).pointsPurchase(10, 1)),
+                          value: 10,
+                          groupValue: _numPoints,
+                          onChanged: _onPointsChanged,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(S.of(context).pointsPurchase(100, 10)),
+                          value: 100,
+                          groupValue: _numPoints,
+                          onChanged: _onPointsChanged,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(S.of(context).pointsPurchase(700, 69)),
+                          value: 700,
+                          groupValue: _numPoints,
+                          onChanged: _onPointsChanged,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(S.of(context).pointsPurchase(1000, 98)),
+                          value: 1000,
+                          groupValue: _numPoints,
+                          onChanged: _onPointsChanged,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(S.of(context).pointsPurchase(1500, 147)),
+                          value: 1500,
+                          groupValue: _numPoints,
+                          onChanged: _onPointsChanged,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(S.of(context).pointsPurchase(2000, 194)),
+                          value: 2000,
+                          groupValue: _numPoints,
+                          onChanged: _onPointsChanged,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(S.of(context).pointsPurchase(5000, 480)),
+                          value: 5000,
+                          groupValue: _numPoints,
+                          onChanged: _onPointsChanged,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(S.of(context).pointsPurchase(10000, 920)),
+                          value: 10000,
+                          groupValue: _numPoints,
+                          onChanged: _onPointsChanged,
                         ),
                       ],
                     ),
-                  ),
-                  Column(
-                    children: [
-                      RadioListTile<int>(
-                        title: Text(S.of(context).pointsPurchase(10, 1)),
-                        value: 10,
-                        groupValue: _numPoints,
-                        onChanged: _onPointsChanged,
-                      ),
-                      RadioListTile<int>(
-                        title: Text(S.of(context).pointsPurchase(100, 10)),
-                        value: 100,
-                        groupValue: _numPoints,
-                        onChanged: _onPointsChanged,
-                      ),
-                      RadioListTile<int>(
-                        title: Text(S.of(context).pointsPurchase(700, 69)),
-                        value: 700,
-                        groupValue: _numPoints,
-                        onChanged: _onPointsChanged,
-                      ),
-                      RadioListTile<int>(
-                        title: Text(S.of(context).pointsPurchase(1000, 98)),
-                        value: 1000,
-                        groupValue: _numPoints,
-                        onChanged: _onPointsChanged,
-                      ),
-                      RadioListTile<int>(
-                        title: Text(S.of(context).pointsPurchase(1500, 147)),
-                        value: 1500,
-                        groupValue: _numPoints,
-                        onChanged: _onPointsChanged,
-                      ),
-                      RadioListTile<int>(
-                        title: Text(S.of(context).pointsPurchase(2000, 194)),
-                        value: 2000,
-                        groupValue: _numPoints,
-                        onChanged: _onPointsChanged,
-                      ),
-                      RadioListTile<int>(
-                        title: Text(S.of(context).pointsPurchase(5000, 480)),
-                        value: 5000,
-                        groupValue: _numPoints,
-                        onChanged: _onPointsChanged,
-                      ),
-                      RadioListTile<int>(
-                        title: Text(S.of(context).pointsPurchase(10000, 920)),
-                        value: 10000,
-                        groupValue: _numPoints,
-                        onChanged: _onPointsChanged,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  _redirectClicked
-                      ? const CircularProgressIndicator()
-                      : FilledButton.tonalIcon(
-                          label: Text(S.of(context).stripePointsPurchase),
-                          icon: const Icon(Icons.exit_to_app),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              setState(() {
-                                _redirectClicked = true;
-                              });
-                              try {
-                                await stripe_service
-                                    .startStripePointsCheckoutSession(
-                                        userId: account.firebaseUser!.uid,
-                                        profileId:
-                                            account.studentProfile!.profileId,
-                                        quantity: _numPoints,
-                                        coupon: _pointsCouponMap[_numPoints]);
-                              } catch (err) {
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    _redirectClicked
+                        ? const CircularProgressIndicator()
+                        : FilledButton.tonalIcon(
+                            label: Text(S.of(context).stripePointsPurchase),
+                            icon: const Icon(Icons.exit_to_app),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
                                 setState(() {
-                                  _redirectClicked = false;
+                                  _redirectClicked = true;
                                 });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        S.of(context).stripeRedirectFailure),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.error,
-                                  ),
-                                );
-                                debugPrint(
-                                    'Failed to start Stripe points purchase: $err');
+                                try {
+                                  await stripe_service
+                                      .startStripePointsCheckoutSession(
+                                          userId: account.firebaseUser!.uid,
+                                          profileId:
+                                              account.studentProfile!.profileId,
+                                          quantity: _numPoints,
+                                          coupon: _pointsCouponMap[_numPoints]);
+                                } catch (err) {
+                                  setState(() {
+                                    _redirectClicked = false;
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          S.of(context).stripeRedirectFailure),
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
+                                  );
+                                  debugPrint(
+                                      'Failed to start Stripe points purchase: $err');
+                                }
                               }
-                            }
-                          },
-                        ),
-                ],
+                            },
+                          ),
+                  ],
+                ),
               )),
         ),
       ),
