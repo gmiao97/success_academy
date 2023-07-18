@@ -150,10 +150,10 @@ class S {
     );
   }
 
-  /// `Cancel sign-up windown passed. Please cancel at least 24 hours before lesson start`
+  /// `Cancel sign-up windown passed. Please cancel at least 24 hours before private lesson start or at least 5 minutes before free/preschool lesson start.`
   String get cancelSignupWindowPassed {
     return Intl.message(
-      'Cancel sign-up windown passed. Please cancel at least 24 hours before lesson start',
+      'Cancel sign-up windown passed. Please cancel at least 24 hours before private lesson start or at least 5 minutes before free/preschool lesson start.',
       name: 'cancelSignupWindowPassed',
       desc: '',
       args: [],
@@ -1200,10 +1200,10 @@ class S {
     );
   }
 
-  /// `Sign-up window passed. Please sign up at least 24 hours before lesson start`
+  /// `Sign-up window passed. Please sign up at least 24 hours before private lesson start or at least 5 minutes before free/preschool lesson start.`
   String get signupWindowPassed {
     return Intl.message(
-      'Sign-up window passed. Please sign up at least 24 hours before lesson start',
+      'Sign-up window passed. Please sign up at least 24 hours before private lesson start or at least 5 minutes before free/preschool lesson start.',
       name: 'signupWindowPassed',
       desc: '',
       args: [],

@@ -34,13 +34,15 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
     final numPoints = account.hasPointsDiscount()
         ? (widget.event.numPoints * .9).floor()
         : widget.event.numPoints;
-    final isAtLeast24HoursBefore =
-        widget.event.startTime.difference(DateTime.now()) >
-            const Duration(hours: 24);
+    final canSignUp = widget.event.eventType == EventType.private
+        ? widget.event.startTime.difference(DateTime.now()) >
+            const Duration(hours: 24)
+        : widget.event.startTime.difference(DateTime.now()) >
+            const Duration(minutes: 5);
 
     return AlertDialog(
       title: Text(S.of(context).cancelSignup),
-      content: !isAtLeast24HoursBefore
+      content: !canSignUp
           ? Text(S.of(context).cancelSignupWindowPassed)
           : Text(S.of(context).refundPoints(numPoints)),
       actions: [
@@ -56,7 +58,7 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                 child: const CircularProgressIndicator(),
               )
             : TextButton(
-                onPressed: !isAtLeast24HoursBefore
+                onPressed: !canSignUp
                     ? null
                     : () async {
                         setState(() {

@@ -51,7 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("Cancelled sign-up"),
         "cancelSignupWindowPassed": MessageLookupByLibrary.simpleMessage(
-            "Cancel sign-up windown passed. Please cancel at least 24 hours before lesson start"),
+            "Cancel sign-up windown passed. Please cancel at least 24 hours before private lesson start or at least 5 minutes before free/preschool lesson start."),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "copied": MessageLookupByLibrary.simpleMessage("Code Copied!"),
@@ -204,7 +204,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupSuccess":
             MessageLookupByLibrary.simpleMessage("Sign-up successful"),
         "signupWindowPassed": MessageLookupByLibrary.simpleMessage(
-            "Sign-up window passed. Please sign up at least 24 hours before lesson start"),
+            "Sign-up window passed. Please sign up at least 24 hours before private lesson start or at least 5 minutes before free/preschool lesson start."),
         "stripePointsPurchase":
             MessageLookupByLibrary.simpleMessage("Continue to points purchase"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage(

@@ -31,9 +31,11 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
     final account = context.watch<AccountModel>();
     final studentProfile = context
         .select<AccountModel, StudentProfileModel>((a) => a.studentProfile!);
-    final isAtLeast24HoursBefore =
-        widget.event.startTime.difference(DateTime.now()) >
-            const Duration(hours: 24);
+    final canSignUp = widget.event.eventType == EventType.private
+        ? widget.event.startTime.difference(DateTime.now()) >
+            const Duration(hours: 24)
+        : widget.event.startTime.difference(DateTime.now()) >
+            const Duration(minutes: 5);
     final numPoints = account.hasPointsDiscount()
         ? (widget.event.numPoints * .9).floor()
         : widget.event.numPoints;
@@ -41,7 +43,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
 
     return AlertDialog(
       title: Text(S.of(context).signup),
-      content: !isAtLeast24HoursBefore
+      content: !canSignUp
           ? Text(S.of(context).signupWindowPassed)
           : enoughPoints
               ? Text(S
@@ -61,7 +63,7 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                 child: const CircularProgressIndicator(),
               )
             : TextButton(
-                onPressed: !isAtLeast24HoursBefore || !enoughPoints
+                onPressed: !canSignUp || !enoughPoints
                     ? null
                     : () async {
                         setState(() {

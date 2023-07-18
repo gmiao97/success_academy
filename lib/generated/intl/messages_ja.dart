@@ -48,7 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("予約をキャンセルしました"),
         "cancelSignupWindowPassed": MessageLookupByLibrary.simpleMessage(
-            "予約キャンセル期間が過ぎました。24時間までに予約キャンセルしてください"),
+            "予約キャンセル期間が過ぎました。個別レッスンは24時間までに予約キャンセルしてください。フリーレッスンと未就学児レッスンは5分前までに予約キャンセルしてください。"),
         "close": MessageLookupByLibrary.simpleMessage("閉じる"),
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
@@ -182,8 +182,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup": MessageLookupByLibrary.simpleMessage("予約する"),
         "signupFailure": MessageLookupByLibrary.simpleMessage("予約に失敗しました"),
         "signupSuccess": MessageLookupByLibrary.simpleMessage("予約できました"),
-        "signupWindowPassed":
-            MessageLookupByLibrary.simpleMessage("予約期間が過ぎました。24時間前までに予約してください"),
+        "signupWindowPassed": MessageLookupByLibrary.simpleMessage(
+            "予約期間が過ぎました。個別レッスンは24時間前までに予約してください。フリーレッスンと未就学児レッスンは5分前なでに予約してください。"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "stripeRedirectFailure":
