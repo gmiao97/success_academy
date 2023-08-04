@@ -213,7 +213,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                   elevation: 4,
                   child: Padding(
                     padding: const EdgeInsets.all(8),
-                    child: Text(widget.event.description),
+                    child: SelectableText(widget.event.description),
                   ),
                 ),
               ),
