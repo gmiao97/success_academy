@@ -447,7 +447,9 @@ class _EditEventDialogState extends State<EditEventDialog> {
                         startTime: _start,
                         endTime: _end,
                         timeZone: widget.event.timeZone,
-                        teacherId: _teacherId);
+                        teacherId: _teacherId,
+                        studentIdList: widget.event.studentIdList,
+                        recurrence: widget.event.recurrence);
                     try {
                       await event_service.updateEvent(event);
                       _updateLocalEvent(event);
