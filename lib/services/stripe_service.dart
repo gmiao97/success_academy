@@ -29,6 +29,7 @@ Future<void> startStripeSubscriptionCheckoutSession(
     {required String userId,
     required String profileId,
     required SubscriptionPlan subscriptionPlan,
+    required bool englishOption,
     required bool isReferral}) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
@@ -43,13 +44,26 @@ Future<void> startStripeSubscriptionCheckoutSession(
     }
   }
   Completer completer = Completer();
+  List<Map<String, Object?>> lineItems = [
+    {
+      'price': selectedPriceId,
+      'quantity': 1,
+    },
+  ];
+  if (englishOption) {
+    lineItems.add({
+      'price': 'price_1O5TMrK9gCxRnlEiNLNBBIcf',
+      'quantity': 1,
+    });
+  }
+
   final checkoutSessionDoc = await db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')
       .add(
     {
-      'price': selectedPriceId,
+      'line_items': lineItems,
       'success_url': html.window.location.origin,
       'cancel_url': html.window.location.origin,
       'metadata': {

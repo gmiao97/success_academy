@@ -22,6 +22,7 @@ class _StudentProfileState extends State<StudentProfile> {
   bool _isReferral = false;
   String? _referrer;
   SubscriptionPlan _subscriptionPlan = SubscriptionPlan.minimum;
+  bool _englishOption = false;
 
   @override
   Widget build(BuildContext context) {
@@ -162,12 +163,19 @@ class _StudentProfileState extends State<StudentProfile> {
                     account.subscriptionPlan != null
                         ? ManageSubscription(
                             subscriptionPlan: account.subscriptionPlan!,
+                            englishOption: account.englishOption,
                           )
                         : CreateSubscription(
                             subscriptionPlan: _subscriptionPlan,
+                            englishOption: _englishOption,
                             onSubscriptionPlanChange: (subscription) {
                               setState(() {
                                 _subscriptionPlan = subscription!;
+                              });
+                            },
+                            onEnglishOptionChange: (value) {
+                              setState(() {
+                                _englishOption = value!;
                               });
                             },
                             redirectClicked: _redirectClicked,
@@ -194,6 +202,7 @@ class _StudentProfileState extends State<StudentProfile> {
                                   userId: account.firebaseUser!.uid,
                                   profileId: account.studentProfile!.profileId,
                                   subscriptionPlan: _subscriptionPlan,
+                                  englishOption: _englishOption,
                                   isReferral: _isReferral,
                                 );
                               } catch (e) {
@@ -226,10 +235,12 @@ class _StudentProfileState extends State<StudentProfile> {
 
 class ManageSubscription extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
+  final bool englishOption;
 
   const ManageSubscription({
     super.key,
     required this.subscriptionPlan,
+    required this.englishOption,
   });
 
   @override
@@ -257,6 +268,12 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
               getSubscriptionPlanName(context, widget.subscriptionPlan),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
+            widget.englishOption
+                ? Text(
+                    S.of(context).withEnglishOption,
+                    style: Theme.of(context).textTheme.labelLarge,
+                  )
+                : const SizedBox.shrink(),
             Row(
               children: [
                 FilledButton.tonalIcon(
@@ -296,7 +313,9 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
 
 class CreateSubscription extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
+  final bool englishOption;
   final Function(SubscriptionPlan?) onSubscriptionPlanChange;
+  final Function(bool?) onEnglishOptionChange;
   final bool redirectClicked;
   final Function(bool) setIsReferral;
   final Function(String?) setReferrer;
@@ -305,7 +324,9 @@ class CreateSubscription extends StatefulWidget {
   const CreateSubscription({
     super.key,
     required this.subscriptionPlan,
+    required this.englishOption,
     required this.onSubscriptionPlanChange,
+    required this.onEnglishOptionChange,
     required this.redirectClicked,
     required this.setIsReferral,
     required this.setReferrer,
@@ -349,6 +370,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RadioListTile<SubscriptionPlan>(
                   title: Text(S.of(context).minimumCourse),
@@ -367,6 +389,16 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                   value: SubscriptionPlan.monthly,
                   groupValue: widget.subscriptionPlan,
                   onChanged: widget.onSubscriptionPlanChange,
+                ),
+                CheckboxListTile(
+                  title: Text(S.of(context).englishOption),
+                  value: widget.englishOption,
+                  onChanged: widget.onEnglishOptionChange,
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
+                Text(
+                  S.of(context).onlyFreeLesson,
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
             ),

@@ -81,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "editEventSuccess":
             MessageLookupByLibrary.simpleMessage("Edited lesson"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "englishOption": MessageLookupByLibrary.simpleMessage(
+            "+ English free lessons option - \$40 USD/month"),
         "eventDescriptionLabel":
             MessageLookupByLibrary.simpleMessage("Description"),
         "eventDescriptionValidation": MessageLookupByLibrary.simpleMessage(
@@ -157,6 +159,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noPlan": MessageLookupByLibrary.simpleMessage("No subscription plan"),
         "notEnoughPoints": MessageLookupByLibrary.simpleMessage(
             "Not enough points. Please add more points"),
+        "onlyFreeLesson": MessageLookupByLibrary.simpleMessage(
+            "To only take english lessons, please select the monthly payment plan"),
         "openLinkFailure":
             MessageLookupByLibrary.simpleMessage("Failed to open link"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -227,6 +231,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
         "verifyEmailMessage": m5,
-        "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile")
+        "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile"),
+        "withEnglishOption": MessageLookupByLibrary.simpleMessage(
+            "includes english free lessons option")
       };
 }

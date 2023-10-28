@@ -39,6 +39,7 @@ class AccountModel extends ChangeNotifier {
   late Map<String, TeacherProfileModel> _teacherProfileMap;
   List<QueryDocumentSnapshot<Object?>> _subscriptionDocs = [];
   SubscriptionPlan? _subscriptionPlan;
+  bool _englishOption = false;
 
   AccountModel() {
     init();
@@ -57,6 +58,7 @@ class AccountModel extends ChangeNotifier {
   Map<String, TeacherProfileModel> get teacherProfileModelMap =>
       _teacherProfileMap;
   SubscriptionPlan? get subscriptionPlan => _subscriptionPlan;
+  bool get englishOption => _englishOption;
   UserType get userType {
     if (_adminProfile != null) {
       return UserType.admin;
@@ -91,6 +93,7 @@ class AccountModel extends ChangeNotifier {
     shared_preferences_service.updateStudentProfile(studentProfile);
     _subscriptionPlan =
         _getSubscriptionTypeForProfile(studentProfile?.profileId);
+    _englishOption = _getEnglishOption(studentProfile?.profileId);
     notifyListeners();
   }
 
@@ -169,6 +172,7 @@ class AccountModel extends ChangeNotifier {
         _studentProfile = studentProfile;
         _subscriptionPlan =
             _getSubscriptionTypeForProfile(studentProfile!.profileId);
+        _englishOption = _getEnglishOption(studentProfile.profileId);
       }
     }
   }
@@ -203,6 +207,21 @@ class AccountModel extends ChangeNotifier {
         },
       );
       return null;
+    }
+  }
+
+  bool _getEnglishOption(String? profileId) {
+    if (profileId == null) {
+      return false;
+    }
+    try {
+      return (_subscriptionDocs
+              .firstWhere((doc) =>
+                  doc.get('metadata.profile_id') as String == profileId)
+              .get('items') as List<dynamic>)
+          .any((element) => element['plan']['metadata']['id'] == 'english');
+    } on StateError {
+      return false;
     }
   }
 

@@ -30,6 +30,7 @@
   "editEventFailure": "レッスンの編集ができませんでした",
   "editEventSuccess": "レッスンを編集しました",
   "email": "メアド",
+  "englishOption": "+英語版フリーレッスンオプション・月40米ドル",
   "eventDescriptionLabel": "説明",
   "eventDescriptionValidation": "レッスンの説明を入力してください",
   "eventEndLabel": "終了",
@@ -80,6 +81,7 @@
   "myEvents": "マイレッスン",
   "noPlan": "サブスクリプションがありません",
   "notEnoughPoints": "ポイントが足りません。ポイントを追加してください",
+  "onlyFreeLesson": "英語版フリーレッスンのみを受けたい場合は月会費のみのプランを選んでください",
   "openLinkFailure": "リンクを開けませんでした",
   "password": "パスワード",
   "pickPlan": "サブスクリプションのコースを選択してください",
@@ -131,5 +133,6 @@
   "usePoints": "{balance} ポイントから {cost} ポイントを使う",
   "verifyEmailAction": "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。",
   "verifyEmailMessage": "確認リンクがメールアドレス（{address}）に送信されました",
-  "viewProfile": "プロフィールを見る"
+  "viewProfile": "プロフィールを見る",
+  "withEnglishOption": "英語版フリーレッスンあり"
 }

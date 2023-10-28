@@ -30,6 +30,7 @@
   "editEventFailure": "Failed to edit lesson",
   "editEventSuccess": "Edited lesson",
   "email": "Email",
+  "englishOption": "+ English free lessons option - $40 USD/month",
   "eventDescriptionLabel": "Description",
   "eventDescriptionValidation": "Please enter lesson description",
   "eventEndLabel": "End",
@@ -80,6 +81,7 @@
   "myEvents": "My Lessons",
   "noPlan": "No subscription plan",
   "notEnoughPoints": "Not enough points. Please add more points",
+  "onlyFreeLesson": "To only take english lessons, please select the monthly payment plan",
   "openLinkFailure": "Failed to open link",
   "password": "Password",
   "pickPlan": "Choose a subscription plan",
@@ -131,5 +133,6 @@
   "usePoints": "{cost} of {balance} points will be used",
   "verifyEmailAction": "Please click on the link in your email to continue the registration process. If you don't see a message in your inbox, please check your spam or junk mail folder.",
   "verifyEmailMessage": "A verification link has been sent to your email at {address}",
-  "viewProfile": "View Profile"
+  "viewProfile": "View Profile",
+  "withEnglishOption": "includes english free lessons option"
 }

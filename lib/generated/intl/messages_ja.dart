@@ -75,6 +75,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("レッスンの編集ができませんでした"),
         "editEventSuccess": MessageLookupByLibrary.simpleMessage("レッスンを編集しました"),
         "email": MessageLookupByLibrary.simpleMessage("メアド"),
+        "englishOption":
+            MessageLookupByLibrary.simpleMessage("+英語版フリーレッスンオプション・月40米ドル"),
         "eventDescriptionLabel": MessageLookupByLibrary.simpleMessage("説明"),
         "eventDescriptionValidation":
             MessageLookupByLibrary.simpleMessage("レッスンの説明を入力してください"),
@@ -143,6 +145,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションがありません"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("ポイントが足りません。ポイントを追加してください"),
+        "onlyFreeLesson": MessageLookupByLibrary.simpleMessage(
+            "英語版フリーレッスンのみを受けたい場合は月会費のみのプランを選んでください"),
         "openLinkFailure": MessageLookupByLibrary.simpleMessage("リンクを開けませんでした"),
         "password": MessageLookupByLibrary.simpleMessage("パスワード"),
         "pickPlan":
@@ -203,6 +207,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
         "verifyEmailMessage": m5,
-        "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る")
+        "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る"),
+        "withEnglishOption":
+            MessageLookupByLibrary.simpleMessage("英語版フリーレッスンあり")
       };
 }

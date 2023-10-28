@@ -360,6 +360,16 @@ class S {
     );
   }
 
+  /// `+ English free lessons option - $40 USD/month`
+  String get englishOption {
+    return Intl.message(
+      '+ English free lessons option - \$40 USD/month',
+      name: 'englishOption',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Description`
   String get eventDescriptionLabel {
     return Intl.message(
@@ -855,6 +865,16 @@ class S {
     return Intl.message(
       'Not enough points. Please add more points',
       name: 'notEnoughPoints',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To only take english lessons, please select the monthly payment plan`
+  String get onlyFreeLesson {
+    return Intl.message(
+      'To only take english lessons, please select the monthly payment plan',
+      name: 'onlyFreeLesson',
       desc: '',
       args: [],
     );
@@ -1375,6 +1395,16 @@ class S {
     return Intl.message(
       'View Profile',
       name: 'viewProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `includes english free lessons option`
+  String get withEnglishOption {
+    return Intl.message(
+      'includes english free lessons option',
+      name: 'withEnglishOption',
       desc: '',
       args: [],
     );
