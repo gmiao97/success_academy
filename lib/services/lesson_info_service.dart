@@ -13,19 +13,19 @@ CollectionReference<LessonModel> _lessonModelRef = db
 /**  
   * Get list of all lesson information.
   */
-Future<List<LessonModel>> getLessons({bool includePreschool = true}) {
-  if (!includePreschool) {
-    return _lessonModelRef
-        .where('visibility', isNotEqualTo: 'preschool')
-        .get()
-        .then((querySnapshot) => querySnapshot.docs
-            .map((queryDocumentSnapshot) => queryDocumentSnapshot.data())
-            .toList());
-  } else {
-    return _lessonModelRef.get().then((querySnapshot) => querySnapshot.docs
-        .map((queryDocumentSnapshot) => queryDocumentSnapshot.data())
-        .toList());
-  }
+Future<List<LessonModel>> getLessons(
+    {required bool includePreschool, required bool includeEnglish}) {
+  return _lessonModelRef.get().then((querySnapshot) => querySnapshot.docs
+          .map((queryDocumentSnapshot) => queryDocumentSnapshot.data())
+          .where((lesson) {
+        if (!includePreschool && lesson.visibility == 'preschool') {
+          return false;
+        }
+        if (!includeEnglish && lesson.visibility == 'english') {
+          return false;
+        }
+        return true;
+      }).toList());
 }
 
 /**  

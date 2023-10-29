@@ -26,7 +26,9 @@ class _LessonInfoState extends State<LessonInfo> {
     final account = context.watch<AccountModel>();
     final lessons = await lesson_info_service.getLessons(
         includePreschool: account.userType != UserType.student ||
-            account.subscriptionPlan == SubscriptionPlan.minimumPreschool);
+            account.subscriptionPlan == SubscriptionPlan.minimumPreschool,
+        includeEnglish: account.userType != UserType.student ||
+            account.englishOption == true);
     setState(() {
       _zoomInfo = lessons;
       _zoomInfoLoaded = true;
