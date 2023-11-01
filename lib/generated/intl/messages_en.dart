@@ -38,6 +38,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("Account settings updated"),
+        "addEnglishOption": MessageLookupByLibrary.simpleMessage(
+            "Add english free lessons option - \$40 USD/month to be reflected on next invoice"),
         "addPlan": MessageLookupByLibrary.simpleMessage("Add subscription"),
         "addPoints": MessageLookupByLibrary.simpleMessage("Add points"),
         "admin": MessageLookupByLibrary.simpleMessage("ADMIN"),
@@ -156,6 +158,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Monthly Payment - \$10 USD/month (Private Lesson Only)"),
         "myCode": MessageLookupByLibrary.simpleMessage("Referral Code"),
         "myEvents": MessageLookupByLibrary.simpleMessage("My Lessons"),
+        "noEnglishOption": MessageLookupByLibrary.simpleMessage(
+            "Does not include english free lessons option."),
         "noPlan": MessageLookupByLibrary.simpleMessage("No subscription plan"),
         "notEnoughPoints": MessageLookupByLibrary.simpleMessage(
             "Not enough points. Please add more points"),
@@ -193,6 +197,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Name of referrer"),
         "refundPoints": m3,
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
+        "removeEnglishOption": MessageLookupByLibrary.simpleMessage(
+            "Remove english free lessons option"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),
         "settings": MessageLookupByLibrary.simpleMessage("Account Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
@@ -233,6 +239,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyEmailMessage": m5,
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile"),
         "withEnglishOption": MessageLookupByLibrary.simpleMessage(
-            "includes english free lessons option")
+            "includes english free lessons option - \$40 USD/month")
       };
 }

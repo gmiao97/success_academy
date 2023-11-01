@@ -9,6 +9,8 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:success_academy/profile/profile_model.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
+final FirebaseFunctions functions =
+    FirebaseFunctions.instanceFor(region: 'us-west2');
 
 Future<List<QueryDocumentSnapshot>> getSubscriptionsForUser(
     String userId) async {
@@ -152,5 +154,26 @@ Future<void> redirectToStripePortal() async {
   } catch (err) {
     debugPrint('redirectToStripePortal failed: $err');
     throw HttpException('redirectToStripePortal failed: $err');
+  }
+}
+
+Future<void> updateSubscription(
+    {required String id, required bool deleted}) async {
+  HttpsCallable callable = functions.httpsCallable(
+    'update_subscription',
+    options: HttpsCallableOptions(
+      timeout: const Duration(seconds: 60),
+    ),
+  );
+
+  try {
+    final result = await callable({
+      'id': id,
+      'deleted': deleted,
+    });
+    return result.data;
+  } catch (err) {
+    debugPrint('updateSubscription failed: $err');
+    rethrow;
   }
 }

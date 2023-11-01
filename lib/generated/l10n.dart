@@ -60,6 +60,16 @@ class S {
     );
   }
 
+  /// `Add english free lessons option - $40 USD/month to be reflected on next invoice`
+  String get addEnglishOption {
+    return Intl.message(
+      'Add english free lessons option - \$40 USD/month to be reflected on next invoice',
+      name: 'addEnglishOption',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add subscription`
   String get addPlan {
     return Intl.message(
@@ -850,6 +860,16 @@ class S {
     );
   }
 
+  /// `Does not include english free lessons option.`
+  String get noEnglishOption {
+    return Intl.message(
+      'Does not include english free lessons option.',
+      name: 'noEnglishOption',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No subscription plan`
   String get noPlan {
     return Intl.message(
@@ -1115,6 +1135,16 @@ class S {
     return Intl.message(
       'Reload page',
       name: 'reloadPage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove english free lessons option`
+  String get removeEnglishOption {
+    return Intl.message(
+      'Remove english free lessons option',
+      name: 'removeEnglishOption',
       desc: '',
       args: [],
     );
@@ -1400,10 +1430,10 @@ class S {
     );
   }
 
-  /// `includes english free lessons option`
+  /// `includes english free lessons option - $40 USD/month`
   String get withEnglishOption {
     return Intl.message(
-      'includes english free lessons option',
+      'includes english free lessons option - \$40 USD/month',
       name: 'withEnglishOption',
       desc: '',
       args: [],

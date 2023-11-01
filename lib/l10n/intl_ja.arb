@@ -1,5 +1,6 @@
 {
   "accountUpdated": "アカウント設定を更新しました",
+  "addEnglishOption": "英語版フリーレッスンオプションを追加する・月40米ドルは次のインボイスに反映されます",
   "addPlan": "サブスクリプションを追加",
   "addPoints": "ポイントを追加する",
   "admin": "アドミン",
@@ -79,6 +80,7 @@
   "monthlyCourse": "月会費のみ・月10米ドル (個別レッスンのみ)",
   "myCode": "紹介コード",
   "myEvents": "マイレッスン",
+  "noEnglishOption": "英語版フリーレッスンオプションなし",
   "noPlan": "サブスクリプションがありません",
   "notEnoughPoints": "ポイントが足りません。ポイントを追加してください",
   "onlyFreeLesson": "英語版フリーレッスンのみを受けたい場合は月会費のみのプランを選んでください",
@@ -106,6 +108,7 @@
   "referrerLabel": "紹介者",
   "refundPoints": "{cost} ポイントが還元されます",
   "reloadPage": "再読み込み",
+  "removeEnglishOption": "英語版オプションをなくす",
   "selectProfile": "プロフィールを選択してください",
   "settings": "アカウント設定",
   "signIn": "サインイン",
@@ -134,5 +137,5 @@
   "verifyEmailAction": "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。",
   "verifyEmailMessage": "確認リンクがメールアドレス（{address}）に送信されました",
   "viewProfile": "プロフィールを見る",
-  "withEnglishOption": "英語版フリーレッスンあり"
+  "withEnglishOption": "英語版フリーレッスンあり・月40米ドル"
 }

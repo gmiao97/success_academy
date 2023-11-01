@@ -1,5 +1,6 @@
 {
   "accountUpdated": "Account settings updated",
+  "addEnglishOption": "Add english free lessons option - $40 USD/month to be reflected on next invoice",
   "addPlan": "Add subscription",
   "addPoints": "Add points",
   "admin": "ADMIN",
@@ -79,6 +80,7 @@
   "monthlyCourse": "Monthly Payment - $10 USD/month (Private Lesson Only)",
   "myCode": "Referral Code",
   "myEvents": "My Lessons",
+  "noEnglishOption": "Does not include english free lessons option.",
   "noPlan": "No subscription plan",
   "notEnoughPoints": "Not enough points. Please add more points",
   "onlyFreeLesson": "To only take english lessons, please select the monthly payment plan",
@@ -106,6 +108,7 @@
   "referrerLabel": "Name of referrer",
   "refundPoints": "{cost} points will be refunded",
   "reloadPage": "Reload page",
+  "removeEnglishOption": "Remove english free lessons option",
   "selectProfile": "Select profile",
   "settings": "Account Settings",
   "signIn": "Sign in",
@@ -134,5 +137,5 @@
   "verifyEmailAction": "Please click on the link in your email to continue the registration process. If you don't see a message in your inbox, please check your spam or junk mail folder.",
   "verifyEmailMessage": "A verification link has been sent to your email at {address}",
   "viewProfile": "View Profile",
-  "withEnglishOption": "includes english free lessons option"
+  "withEnglishOption": "includes english free lessons option - $40 USD/month"
 }

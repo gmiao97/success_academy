@@ -39,6 +39,7 @@ class AccountModel extends ChangeNotifier {
   late Map<String, TeacherProfileModel> _teacherProfileMap;
   List<QueryDocumentSnapshot<Object?>> _subscriptionDocs = [];
   SubscriptionPlan? _subscriptionPlan;
+  String? _subscriptionId;
   bool _englishOption = false;
 
   AccountModel() {
@@ -58,6 +59,7 @@ class AccountModel extends ChangeNotifier {
   Map<String, TeacherProfileModel> get teacherProfileModelMap =>
       _teacherProfileMap;
   SubscriptionPlan? get subscriptionPlan => _subscriptionPlan;
+  String? get subscriptionId => _subscriptionId;
   bool get englishOption => _englishOption;
   UserType get userType {
     if (_adminProfile != null) {
@@ -88,11 +90,17 @@ class AccountModel extends ChangeNotifier {
     shared_preferences_service.updateLocale(locale);
   }
 
+  set englishOption(bool englishOption) {
+    _englishOption = englishOption;
+    notifyListeners();
+  }
+
   set studentProfile(StudentProfileModel? studentProfile) {
     _studentProfile = studentProfile;
     shared_preferences_service.updateStudentProfile(studentProfile);
     _subscriptionPlan =
         _getSubscriptionTypeForProfile(studentProfile?.profileId);
+    _subscriptionId = _getSubscriptionId(studentProfile?.profileId);
     _englishOption = _getEnglishOption(studentProfile?.profileId);
     notifyListeners();
   }
@@ -172,6 +180,7 @@ class AccountModel extends ChangeNotifier {
         _studentProfile = studentProfile;
         _subscriptionPlan =
             _getSubscriptionTypeForProfile(studentProfile!.profileId);
+        _subscriptionId = _getSubscriptionId(studentProfile.profileId);
         _englishOption = _getEnglishOption(studentProfile.profileId);
       }
     }
@@ -193,10 +202,13 @@ class AccountModel extends ChangeNotifier {
     try {
       return EnumToString.fromString(
           SubscriptionPlan.values,
-          _subscriptionDocs
-              .firstWhere((doc) =>
-                  doc.get('metadata.profile_id') as String == profileId)
-              .get('items')[0]['plan']['metadata']['id']);
+          (_subscriptionDocs
+                      .firstWhere((doc) =>
+                          doc.get('metadata.profile_id') as String == profileId)
+                      .get('items') as List<dynamic>)
+                  .firstWhere((element) =>
+                      element['plan']['metadata']['id'] != 'english')['plan']
+              ['metadata']['id']);
     } on StateError {
       debugPrint(
           'getSubscriptionTypeForProfile: No subscription found for profile $profileId');
@@ -206,6 +218,20 @@ class AccountModel extends ChangeNotifier {
           'message': 'No subscription found for profile $profileId',
         },
       );
+      return null;
+    }
+  }
+
+  String? _getSubscriptionId(String? profileId) {
+    if (profileId == null) {
+      return null;
+    }
+    try {
+      return _subscriptionDocs
+          .firstWhere(
+              (doc) => doc.get('metadata.profile_id') as String == profileId)
+          .id;
+    } on StateError {
       return null;
     }
   }

@@ -36,6 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("アカウント設定を更新しました"),
+        "addEnglishOption": MessageLookupByLibrary.simpleMessage(
+            "英語版フリーレッスンオプションを追加する・月40米ドルは次のインボイスに反映されます"),
         "addPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションを追加"),
         "addPoints": MessageLookupByLibrary.simpleMessage("ポイントを追加する"),
         "admin": MessageLookupByLibrary.simpleMessage("アドミン"),
@@ -142,6 +144,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("月会費のみ・月10米ドル (個別レッスンのみ)"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
+        "noEnglishOption":
+            MessageLookupByLibrary.simpleMessage("英語版フリーレッスンオプションなし"),
         "noPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションがありません"),
         "notEnoughPoints":
             MessageLookupByLibrary.simpleMessage("ポイントが足りません。ポイントを追加してください"),
@@ -173,6 +177,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "referrerLabel": MessageLookupByLibrary.simpleMessage("紹介者"),
         "refundPoints": m3,
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
+        "removeEnglishOption":
+            MessageLookupByLibrary.simpleMessage("英語版オプションをなくす"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
         "settings": MessageLookupByLibrary.simpleMessage("アカウント設定"),
@@ -209,6 +215,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyEmailMessage": m5,
         "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る"),
         "withEnglishOption":
-            MessageLookupByLibrary.simpleMessage("英語版フリーレッスンあり")
+            MessageLookupByLibrary.simpleMessage("英語版フリーレッスンあり・月40米ドル")
       };
 }

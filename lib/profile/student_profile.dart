@@ -163,7 +163,6 @@ class _StudentProfileState extends State<StudentProfile> {
                     account.subscriptionPlan != null
                         ? ManageSubscription(
                             subscriptionPlan: account.subscriptionPlan!,
-                            englishOption: account.englishOption,
                           )
                         : CreateSubscription(
                             subscriptionPlan: _subscriptionPlan,
@@ -235,12 +234,10 @@ class _StudentProfileState extends State<StudentProfile> {
 
 class ManageSubscription extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
-  final bool englishOption;
 
   const ManageSubscription({
     super.key,
     required this.subscriptionPlan,
-    required this.englishOption,
   });
 
   @override
@@ -252,6 +249,8 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
 
   @override
   Widget build(BuildContext context) {
+    final account = context.watch<AccountModel>();
+
     return Card(
       color: Theme.of(context).colorScheme.background,
       elevation: 4,
@@ -268,12 +267,6 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
               getSubscriptionPlanName(context, widget.subscriptionPlan),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            widget.englishOption
-                ? Text(
-                    S.of(context).withEnglishOption,
-                    style: Theme.of(context).textTheme.labelLarge,
-                  )
-                : const SizedBox.shrink(),
             Row(
               children: [
                 FilledButton.tonalIcon(
@@ -304,6 +297,54 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
                   ),
               ],
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            account.englishOption
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S.of(context).withEnglishOption,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      FilledButton.tonalIcon(
+                        icon: const Icon(Icons.remove_circle_outline),
+                        label: Text(S.of(context).removeEnglishOption),
+                        onPressed: () async {
+                          try {
+                            await stripe_service.updateSubscription(
+                                id: account.subscriptionId!, deleted: true);
+                            account.englishOption = false;
+                          } catch (e) {
+                            debugPrint("Failed to update subscription: $e");
+                          }
+                        },
+                      ),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S.of(context).noEnglishOption,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      FilledButton.tonalIcon(
+                        icon: const Icon(Icons.add),
+                        label: Text(S.of(context).addEnglishOption),
+                        onPressed: () async {
+                          try {
+                            await stripe_service.updateSubscription(
+                                id: account.subscriptionId!, deleted: false);
+                            account.englishOption = true;
+                          } catch (e) {
+                            debugPrint("Failed to update subscription: $e");
+                          }
+                        },
+                      ),
+                    ],
+                  ),
           ],
         ),
       ),
