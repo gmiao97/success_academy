@@ -98,11 +98,7 @@ class AccountModel extends ChangeNotifier {
   set studentProfile(StudentProfileModel? studentProfile) {
     _studentProfile = studentProfile;
     shared_preferences_service.updateStudentProfile(studentProfile);
-    _subscriptionPlan =
-        _getSubscriptionTypeForProfile(studentProfile?.profileId);
-    _subscriptionId = _getSubscriptionId(studentProfile?.profileId);
-    _englishOption = _getEnglishOption(studentProfile?.profileId);
-    notifyListeners();
+    _refreshSubscriptionData();
   }
 
   void init() async {
@@ -249,6 +245,16 @@ class AccountModel extends ChangeNotifier {
     } on StateError {
       return false;
     }
+  }
+
+  void _refreshSubscriptionData() async {
+    _subscriptionDocs =
+        await stripe_service.getSubscriptionsForUser(_firebaseUser!.uid);
+    _subscriptionPlan =
+        _getSubscriptionTypeForProfile(studentProfile?.profileId);
+    _subscriptionId = _getSubscriptionId(studentProfile?.profileId);
+    _englishOption = _getEnglishOption(studentProfile?.profileId);
+    notifyListeners();
   }
 
   bool shouldShowContent() {
