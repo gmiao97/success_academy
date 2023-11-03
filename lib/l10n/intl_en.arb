@@ -1,6 +1,6 @@
 {
   "accountUpdated": "Account settings updated",
-  "addEnglishOption": "Add english free lessons option - $40 USD/month to be reflected on next invoice",
+  "addEnglishOption": "Add english free lessons option - $40 USD/month",
   "addPlan": "Add subscription",
   "addPoints": "Add points",
   "admin": "ADMIN",
@@ -72,6 +72,7 @@
   "lessonInfoUpdateFailed": "Update failed",
   "lessonInfoUpdated": "Updated",
   "link": "Link",
+  "managePayment": "Manage payment methods.",
   "manageProfile": "Manage Users",
   "manageSubscription": "Manage Subscriptions",
   "meetingId": "Meeting ID",

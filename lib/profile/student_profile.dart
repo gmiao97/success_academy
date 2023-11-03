@@ -383,6 +383,7 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
   bool _isReferral = false;
   bool _invalidReferral = false;
   bool _termsOfUseChecked = false;
+  bool _redirectClicked = false;
 
   @override
   void initState() {
@@ -406,6 +407,39 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                FilledButton.tonalIcon(
+                  icon: const Icon(Icons.exit_to_app),
+                  label: Text(S.of(context).managePayment),
+                  onPressed: _redirectClicked
+                      ? null
+                      : () {
+                          setState(() {
+                            _redirectClicked = true;
+                          });
+                          try {
+                            stripe_service.redirectToStripePortal();
+                          } catch (e) {
+                            setState(() {
+                              _redirectClicked = false;
+                            });
+                          }
+                        },
+                ),
+                if (_redirectClicked)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Transform.scale(
+                      scale: 0.5,
+                      child: const CircularProgressIndicator(),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Text(
               S.of(context).pickPlan,
               style: Theme.of(context).textTheme.headlineMedium,

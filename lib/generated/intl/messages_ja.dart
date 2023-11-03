@@ -36,8 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("アカウント設定を更新しました"),
-        "addEnglishOption": MessageLookupByLibrary.simpleMessage(
-            "英語版フリーレッスンオプションを追加する・月40米ドルは次のインボイスに反映されます"),
+        "addEnglishOption":
+            MessageLookupByLibrary.simpleMessage("英語版フリーレッスンオプションを追加する・月40米ドル"),
         "addPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションを追加"),
         "addPoints": MessageLookupByLibrary.simpleMessage("ポイントを追加する"),
         "admin": MessageLookupByLibrary.simpleMessage("アドミン"),
@@ -133,6 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("更新に失敗しました"),
         "lessonInfoUpdated": MessageLookupByLibrary.simpleMessage("更新しました"),
         "link": MessageLookupByLibrary.simpleMessage("リンク"),
+        "managePayment": MessageLookupByLibrary.simpleMessage("支払い方法管理"),
         "manageProfile": MessageLookupByLibrary.simpleMessage("ユーザー管理"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),

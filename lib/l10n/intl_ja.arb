@@ -1,6 +1,6 @@
 {
   "accountUpdated": "アカウント設定を更新しました",
-  "addEnglishOption": "英語版フリーレッスンオプションを追加する・月40米ドルは次のインボイスに反映されます",
+  "addEnglishOption": "英語版フリーレッスンオプションを追加する・月40米ドル",
   "addPlan": "サブスクリプションを追加",
   "addPoints": "ポイントを追加する",
   "admin": "アドミン",
@@ -72,6 +72,7 @@
   "lessonInfoUpdateFailed": "更新に失敗しました",
   "lessonInfoUpdated": "更新しました",
   "link": "リンク",
+  "managePayment": "支払い方法管理",
   "manageProfile": "ユーザー管理",
   "manageSubscription": "サブスクリプション管理",
   "meetingId": "ミーテイングID",

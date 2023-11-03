@@ -39,7 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("Account settings updated"),
         "addEnglishOption": MessageLookupByLibrary.simpleMessage(
-            "Add english free lessons option - \$40 USD/month to be reflected on next invoice"),
+            "Add english free lessons option - \$40 USD/month"),
         "addPlan": MessageLookupByLibrary.simpleMessage("Add subscription"),
         "addPoints": MessageLookupByLibrary.simpleMessage("Add points"),
         "admin": MessageLookupByLibrary.simpleMessage("ADMIN"),
@@ -146,6 +146,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Update failed"),
         "lessonInfoUpdated": MessageLookupByLibrary.simpleMessage("Updated"),
         "link": MessageLookupByLibrary.simpleMessage("Link"),
+        "managePayment":
+            MessageLookupByLibrary.simpleMessage("Manage payment methods."),
         "manageProfile": MessageLookupByLibrary.simpleMessage("Manage Users"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("Manage Subscriptions"),

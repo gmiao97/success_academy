@@ -60,10 +60,10 @@ class S {
     );
   }
 
-  /// `Add english free lessons option - $40 USD/month to be reflected on next invoice`
+  /// `Add english free lessons option - $40 USD/month`
   String get addEnglishOption {
     return Intl.message(
-      'Add english free lessons option - \$40 USD/month to be reflected on next invoice',
+      'Add english free lessons option - \$40 USD/month',
       name: 'addEnglishOption',
       desc: '',
       args: [],
@@ -775,6 +775,16 @@ class S {
     return Intl.message(
       'Link',
       name: 'link',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage payment methods.`
+  String get managePayment {
+    return Intl.message(
+      'Manage payment methods.',
+      name: 'managePayment',
       desc: '',
       args: [],
     );
