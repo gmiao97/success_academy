@@ -180,6 +180,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
         "removeEnglishOption":
             MessageLookupByLibrary.simpleMessage("英語版オプションをなくす"),
+        "searchEmail": MessageLookupByLibrary.simpleMessage("メアドで検索する"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
         "settings": MessageLookupByLibrary.simpleMessage("アカウント設定"),

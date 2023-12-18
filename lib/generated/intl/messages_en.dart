@@ -201,6 +201,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reloadPage": MessageLookupByLibrary.simpleMessage("Reload page"),
         "removeEnglishOption": MessageLookupByLibrary.simpleMessage(
             "Remove english free lessons option"),
+        "searchEmail": MessageLookupByLibrary.simpleMessage("Search by email"),
         "selectProfile": MessageLookupByLibrary.simpleMessage("Select profile"),
         "settings": MessageLookupByLibrary.simpleMessage("Account Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),

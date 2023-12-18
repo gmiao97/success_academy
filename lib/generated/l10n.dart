@@ -1160,6 +1160,16 @@ class S {
     );
   }
 
+  /// `Search by email`
+  String get searchEmail {
+    return Intl.message(
+      'Search by email',
+      name: 'searchEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Select profile`
   String get selectProfile {
     return Intl.message(

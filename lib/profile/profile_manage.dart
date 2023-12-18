@@ -224,65 +224,141 @@ class _TeacherTable extends StatelessWidget {
   }
 }
 
-class _StudentTable extends StatelessWidget {
+class _StudentTable extends StatefulWidget {
+  @override
+  State<_StudentTable> createState() => _StudentTableState();
+}
+
+class _StudentTableState extends State<_StudentTable> {
+  final List<StudentProfileModel> _studentProfiles = [];
+  String? _searchEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    _studentProfiles.addAll(context.read<AccountModel>().studentProfileList);
+  }
+
+  Iterable<Widget> _getSuggestions(SearchController controller) {
+    if (controller.text.isEmpty) {
+      return _studentProfiles.map((e) => ListTile(
+            title: Text(e.email),
+            onTap: () {
+              controller.closeView(e.email);
+              setState(() {
+                _searchEmail = e.email;
+              });
+            },
+          ));
+    }
+    return _studentProfiles
+        .where((e) =>
+            e.email.toLowerCase().contains(controller.text.toLowerCase()))
+        .map((e) => ListTile(
+              title: Text(e.email),
+              onTap: () {
+                controller.closeView(e.email);
+                setState(() {
+                  _searchEmail = e.email;
+                });
+              },
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    final studentProfiles =
-        context.select<AccountModel, List<StudentProfileModel>>(
-            (a) => a.studentProfileList);
-
-    return PaginatedDataTable(
-      columns: <DataColumn>[
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              S.of(context).id,
-              style: const TextStyle(fontStyle: FontStyle.italic),
+    return Column(
+      children: [
+        SearchAnchor(
+          builder: (context, controller) => SearchBar(
+            controller: controller,
+            padding: const MaterialStatePropertyAll<EdgeInsets>(
+              EdgeInsets.symmetric(horizontal: 16.0),
             ),
+            hintText: S.of(context).searchEmail,
+            trailing: [
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  controller.clear();
+                  setState(() {
+                    _searchEmail = null;
+                  });
+                },
+              ),
+            ],
+            onTap: () {
+              controller.openView();
+            },
+            onChanged: (_) {
+              controller.openView();
+            },
+            leading: const Icon(Icons.search),
           ),
+          viewHintText: S.of(context).searchEmail,
+          viewTrailing: const [],
+          suggestionsBuilder: (context, controller) =>
+              _getSuggestions(controller),
         ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              S.of(context).email,
-              style: const TextStyle(fontStyle: FontStyle.italic),
+        PaginatedDataTable(
+          columns: <DataColumn>[
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  S.of(context).id,
+                  style: const TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
             ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              S.of(context).lastName,
-              style: const TextStyle(fontStyle: FontStyle.italic),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  S.of(context).email,
+                  style: const TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
             ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              S.of(context).firstName,
-              style: const TextStyle(fontStyle: FontStyle.italic),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  S.of(context).lastName,
+                  style: const TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
             ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              S.of(context).eventPointsLabel,
-              style: const TextStyle(fontStyle: FontStyle.italic),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  S.of(context).firstName,
+                  style: const TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
             ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              S.of(context).referrerLabel,
-              style: const TextStyle(fontStyle: FontStyle.italic),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  S.of(context).eventPointsLabel,
+                  style: const TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
             ),
-          ),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  S.of(context).referrerLabel,
+                  style: const TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
+            ),
+          ],
+          source: _StudentData(
+              data: _searchEmail?.isEmpty ?? true
+                  ? _studentProfiles
+                  : _studentProfiles
+                      .where((e) => e.email == _searchEmail)
+                      .toList()),
         ),
       ],
-      source: _StudentData(data: studentProfiles),
     );
   }
 }
