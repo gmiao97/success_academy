@@ -41,6 +41,8 @@ class AccountModel extends ChangeNotifier {
   SubscriptionPlan? _subscriptionPlan;
   String? _subscriptionId;
   bool _englishOption = false;
+  String? _pointSubscriptionPriceId;
+  int? _pointSubscriptionQuantity;
 
   AccountModel() {
     init();
@@ -61,6 +63,8 @@ class AccountModel extends ChangeNotifier {
   SubscriptionPlan? get subscriptionPlan => _subscriptionPlan;
   String? get subscriptionId => _subscriptionId;
   bool get englishOption => _englishOption;
+  String? get pointSubscriptionPriceId => _pointSubscriptionPriceId;
+  int? get pointSubscriptionQuantity => _pointSubscriptionQuantity;
   UserType get userType {
     if (_adminProfile != null) {
       return UserType.admin;
@@ -90,8 +94,8 @@ class AccountModel extends ChangeNotifier {
     shared_preferences_service.updateLocale(locale);
   }
 
-  set englishOption(bool englishOption) {
-    _englishOption = englishOption;
+  set pointSubscriptionQuantity(int? pointSubscriptionQuantity) {
+    _pointSubscriptionQuantity = pointSubscriptionQuantity;
     notifyListeners();
   }
 
@@ -178,6 +182,10 @@ class AccountModel extends ChangeNotifier {
             _getSubscriptionTypeForProfile(studentProfile!.profileId);
         _subscriptionId = _getSubscriptionId(studentProfile.profileId);
         _englishOption = _getEnglishOption(studentProfile.profileId);
+        _pointSubscriptionPriceId =
+            _getPointSubscriptionPriceId(studentProfile.profileId);
+        _pointSubscriptionQuantity =
+            _getPointSubscriptionQuantity(studentProfile.profileId);
       }
     }
   }
@@ -199,12 +207,13 @@ class AccountModel extends ChangeNotifier {
       return EnumToString.fromString(
           SubscriptionPlan.values,
           (_subscriptionDocs
-                      .firstWhere((doc) =>
-                          doc.get('metadata.profile_id') as String == profileId)
-                      .get('items') as List<dynamic>)
-                  .firstWhere((element) =>
-                      element['plan']['metadata']['id'] != 'english')['plan']
-              ['metadata']['id']);
+                  .singleWhere((doc) =>
+                      doc.get('metadata.profile_id') as String == profileId)
+                  .get('items') as List<dynamic>)
+              .map((item) => item['price']['metadata']['id'])
+              .where((id) => SubscriptionPlan.values.contains(
+                  EnumToString.fromString(SubscriptionPlan.values, id)))
+              .single);
     } on StateError {
       debugPrint(
           'getSubscriptionTypeForProfile: No subscription found for profile $profileId');
@@ -247,6 +256,40 @@ class AccountModel extends ChangeNotifier {
     }
   }
 
+  String? _getPointSubscriptionPriceId(String? profileId) {
+    if (profileId == null) {
+      return null;
+    }
+    try {
+      return (_subscriptionDocs
+              .firstWhere((doc) =>
+                  doc.get('metadata.profile_id') as String == profileId)
+              .get('items') as List<dynamic>)
+          .singleWhere((element) =>
+              (element['plan']['metadata']['id'] as String)
+                  .contains('point'))['price']['id'];
+    } on StateError {
+      return null;
+    }
+  }
+
+  int? _getPointSubscriptionQuantity(String? profileId) {
+    if (profileId == null) {
+      return null;
+    }
+    try {
+      return (_subscriptionDocs
+              .firstWhere((doc) =>
+                  doc.get('metadata.profile_id') as String == profileId)
+              .get('items') as List<dynamic>)
+          .singleWhere((element) =>
+              (element['plan']['metadata']['id'] as String)
+                  .contains('point'))['quantity'];
+    } on StateError {
+      return null;
+    }
+  }
+
   void _refreshSubscriptionData() async {
     _subscriptionDocs =
         await stripe_service.getSubscriptionsForUser(_firebaseUser!.uid);
@@ -254,6 +297,10 @@ class AccountModel extends ChangeNotifier {
         _getSubscriptionTypeForProfile(studentProfile?.profileId);
     _subscriptionId = _getSubscriptionId(studentProfile?.profileId);
     _englishOption = _getEnglishOption(studentProfile?.profileId);
+    _pointSubscriptionPriceId =
+        _getPointSubscriptionPriceId(studentProfile?.profileId);
+    _pointSubscriptionQuantity =
+        _getPointSubscriptionQuantity(studentProfile?.profileId);
     notifyListeners();
   }
 

@@ -90,6 +90,16 @@ class S {
     );
   }
 
+  /// `Update points subscription`
+  String get addPointsSubscription {
+    return Intl.message(
+      'Update points subscription',
+      name: 'addPointsSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `ADMIN`
   String get admin {
     return Intl.message(
@@ -115,6 +125,16 @@ class S {
     return Intl.message(
       'All Lessons',
       name: 'allEvents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `# lessons/month`
+  String get blockCount {
+    return Intl.message(
+      '# lessons/month',
+      name: 'blockCount',
       desc: '',
       args: [],
     );
@@ -247,6 +267,16 @@ class S {
       name: 'createProfile',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Current point subscription: {quantity}/month`
+  String currentPointSubscription(Object quantity) {
+    return Intl.message(
+      'Current point subscription: $quantity/month',
+      name: 'currentPointSubscription',
+      desc: '',
+      args: [quantity],
     );
   }
 
@@ -650,6 +680,16 @@ class S {
     );
   }
 
+  /// `Supplementary - 170 points per lesson`
+  String get freeSupplementaryPointSubscription {
+    return Intl.message(
+      'Supplementary - 170 points per lesson',
+      name: 'freeSupplementaryPointSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `14 days free trial`
   String get freeTrial {
     return Intl.message(
@@ -890,11 +930,31 @@ class S {
     );
   }
 
+  /// `No point subscription`
+  String get noPointSubscription {
+    return Intl.message(
+      'No point subscription',
+      name: 'noPointSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Not enough points. Please add more points`
   String get notEnoughPoints {
     return Intl.message(
       'Not enough points. Please add more points',
       name: 'notEnoughPoints',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One time purchase`
+  String get oneTimePointsPurchase {
+    return Intl.message(
+      'One time purchase',
+      name: 'oneTimePointsPurchase',
       desc: '',
       args: [],
     );
@@ -920,6 +980,16 @@ class S {
     );
   }
 
+  /// `Order - 280 points per lesson`
+  String get orderPointSubscription {
+    return Intl.message(
+      'Order - 280 points per lesson',
+      name: 'orderPointSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password`
   String get password {
     return Intl.message(
@@ -935,6 +1005,26 @@ class S {
     return Intl.message(
       'Choose a subscription plan',
       name: 'pickPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Points subscription`
+  String get pointSubscriptionTitle {
+    return Intl.message(
+      'Points subscription',
+      name: 'pointSubscriptionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Points will be provisioned on the billing date every month`
+  String get pointSubscriptionTrial {
+    return Intl.message(
+      'Points will be provisioned on the billing date every month',
+      name: 'pointSubscriptionTrial',
       desc: '',
       args: [],
     );
@@ -1155,6 +1245,16 @@ class S {
     return Intl.message(
       'Remove english free lessons option',
       name: 'removeEnglishOption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To remove point subscription, select quantity 0`
+  String get removePointSubscription {
+    return Intl.message(
+      'To remove point subscription, select quantity 0',
+      name: 'removePointSubscription',
       desc: '',
       args: [],
     );
@@ -1395,6 +1495,16 @@ class S {
     return Intl.message(
       'Today',
       name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `type`
+  String get type {
+    return Intl.message(
+      'type',
+      name: 'type',
       desc: '',
       args: [],
     );

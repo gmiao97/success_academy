@@ -31,7 +31,6 @@ Future<void> startStripeSubscriptionCheckoutSession(
     {required String userId,
     required String profileId,
     required SubscriptionPlan subscriptionPlan,
-    required bool englishOption,
     required bool isReferral}) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
@@ -52,12 +51,6 @@ Future<void> startStripeSubscriptionCheckoutSession(
       'quantity': 1,
     },
   ];
-  if (englishOption) {
-    lineItems.add({
-      'price': 'price_1O5TMrK9gCxRnlEiNLNBBIcf',
-      'quantity': 1,
-    });
-  }
 
   final checkoutSessionDoc = await db
       .collection('customers')
@@ -157,8 +150,12 @@ Future<void> redirectToStripePortal() async {
   }
 }
 
-Future<void> updateSubscription(
-    {required String id, required bool deleted}) async {
+Future<void> updateSubscription({
+  required String id,
+  required bool deleted,
+  required String priceId,
+  required int quantity,
+}) async {
   HttpsCallable callable = functions.httpsCallable(
     'update_subscription',
     options: HttpsCallableOptions(
@@ -170,6 +167,8 @@ Future<void> updateSubscription(
     final result = await callable({
       'id': id,
       'deleted': deleted,
+      'priceId': priceId,
+      'quantity': quantity,
     });
     return result.data;
   } catch (err) {

@@ -22,7 +22,6 @@ class _StudentProfileState extends State<StudentProfile> {
   bool _isReferral = false;
   String? _referrer;
   SubscriptionPlan _subscriptionPlan = SubscriptionPlan.minimum;
-  bool _englishOption = false;
 
   @override
   Widget build(BuildContext context) {
@@ -166,15 +165,9 @@ class _StudentProfileState extends State<StudentProfile> {
                           )
                         : CreateSubscription(
                             subscriptionPlan: _subscriptionPlan,
-                            englishOption: _englishOption,
                             onSubscriptionPlanChange: (subscription) {
                               setState(() {
                                 _subscriptionPlan = subscription!;
-                              });
-                            },
-                            onEnglishOptionChange: (value) {
-                              setState(() {
-                                _englishOption = value!;
                               });
                             },
                             redirectClicked: _redirectClicked,
@@ -201,7 +194,6 @@ class _StudentProfileState extends State<StudentProfile> {
                                   userId: account.firebaseUser!.uid,
                                   profileId: account.studentProfile!.profileId,
                                   subscriptionPlan: _subscriptionPlan,
-                                  englishOption: _englishOption,
                                   isReferral: _isReferral,
                                 );
                               } catch (e) {
@@ -249,8 +241,6 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
     return Card(
       color: Theme.of(context).colorScheme.background,
       elevation: 4,
@@ -297,54 +287,6 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
                   ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            account.englishOption
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.of(context).withEnglishOption,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      FilledButton.tonalIcon(
-                        icon: const Icon(Icons.remove_circle_outline),
-                        label: Text(S.of(context).removeEnglishOption),
-                        onPressed: () async {
-                          try {
-                            await stripe_service.updateSubscription(
-                                id: account.subscriptionId!, deleted: true);
-                            account.englishOption = false;
-                          } catch (e) {
-                            debugPrint("Failed to update subscription: $e");
-                          }
-                        },
-                      ),
-                    ],
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.of(context).noEnglishOption,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      FilledButton.tonalIcon(
-                        icon: const Icon(Icons.add),
-                        label: Text(S.of(context).addEnglishOption),
-                        onPressed: () async {
-                          try {
-                            await stripe_service.updateSubscription(
-                                id: account.subscriptionId!, deleted: false);
-                            account.englishOption = true;
-                          } catch (e) {
-                            debugPrint("Failed to update subscription: $e");
-                          }
-                        },
-                      ),
-                    ],
-                  ),
           ],
         ),
       ),
@@ -354,9 +296,7 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
 
 class CreateSubscription extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
-  final bool englishOption;
   final Function(SubscriptionPlan?) onSubscriptionPlanChange;
-  final Function(bool?) onEnglishOptionChange;
   final bool redirectClicked;
   final Function(bool) setIsReferral;
   final Function(String?) setReferrer;
@@ -365,9 +305,7 @@ class CreateSubscription extends StatefulWidget {
   const CreateSubscription({
     super.key,
     required this.subscriptionPlan,
-    required this.englishOption,
     required this.onSubscriptionPlanChange,
-    required this.onEnglishOptionChange,
     required this.redirectClicked,
     required this.setIsReferral,
     required this.setReferrer,
@@ -464,16 +402,6 @@ class _CreateSubscriptionState extends State<CreateSubscription> {
                   value: SubscriptionPlan.monthly,
                   groupValue: widget.subscriptionPlan,
                   onChanged: widget.onSubscriptionPlanChange,
-                ),
-                CheckboxListTile(
-                  title: Text(S.of(context).englishOption),
-                  value: widget.englishOption,
-                  onChanged: widget.onEnglishOptionChange,
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-                Text(
-                  S.of(context).onlyFreeLesson,
-                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
             ),

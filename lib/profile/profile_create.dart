@@ -54,7 +54,6 @@ class _SignupFormState extends State<_SignupForm> {
   final TextEditingController _dateOfBirthController = TextEditingController();
   final StudentProfileModel _profileModel = StudentProfileModel();
   SubscriptionPlan _subscriptionPlan = SubscriptionPlan.minimum;
-  bool _englishOption = false;
   bool _isReferral = false;
   bool _redirectClicked = false;
 
@@ -145,16 +144,10 @@ class _SignupFormState extends State<_SignupForm> {
           const SizedBox(height: 20),
           CreateSubscription(
             subscriptionPlan: _subscriptionPlan,
-            englishOption: _englishOption,
             redirectClicked: _redirectClicked,
             onSubscriptionPlanChange: (selectedSubscription) {
               setState(() {
                 _subscriptionPlan = selectedSubscription!;
-              });
-            },
-            onEnglishOptionChange: (value) {
-              setState(() {
-                _englishOption = value!;
               });
             },
             setIsReferral: (isReferral) {
@@ -176,7 +169,6 @@ class _SignupFormState extends State<_SignupForm> {
                     userId: account.firebaseUser!.uid,
                     profileId: profileDoc.id,
                     subscriptionPlan: _subscriptionPlan,
-                    englishOption: _englishOption,
                     isReferral: _isReferral,
                   );
                 } catch (err) {
