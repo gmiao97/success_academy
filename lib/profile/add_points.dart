@@ -25,59 +25,62 @@ class _AddPointsState extends State<AddPoints> {
           width: 700,
           height: 700,
           padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              OverflowBar(
-                alignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Text(
-                      S.of(context).addPoints,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ToggleButtons(
-                      onPressed: (index) {
-                        setState(() {
-                          for (int i = 0; i < _selectedToggle.length; i++) {
-                            _selectedToggle[i] = i == index;
-                          }
-                        });
-                      },
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      constraints: const BoxConstraints(
-                        minHeight: 40,
-                        minWidth: 160,
-                      ),
-                      isSelected: _selectedToggle,
-                      children: [
-                        Text(S.of(context).oneTimePointsPurchase),
-                        Text(S.of(context).pointSubscriptionTitle),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 25),
-              RichText(
-                text: TextSpan(
-                  text: '${S.of(context).eventPointsLabel}     ',
-                  style: Theme.of(context).textTheme.titleMedium,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                OverflowBar(
+                  alignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextSpan(
-                      text: '${account.studentProfile!.numPoints}',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        S.of(context).addPoints,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ToggleButtons(
+                        onPressed: (index) {
+                          setState(() {
+                            for (int i = 0; i < _selectedToggle.length; i++) {
+                              _selectedToggle[i] = i == index;
+                            }
+                          });
+                        },
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        constraints: const BoxConstraints(
+                          minHeight: 40,
+                          minWidth: 160,
+                        ),
+                        isSelected: _selectedToggle,
+                        children: [
+                          Text(S.of(context).oneTimePointsPurchase),
+                          Text(S.of(context).pointSubscriptionTitle),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-              _selectedToggle[0]
-                  ? const _OneTimePointsPurchase()
-                  : const _SubscriptionPointsPurchase(),
-            ],
+                const SizedBox(height: 25),
+                RichText(
+                  text: TextSpan(
+                    text: '${S.of(context).eventPointsLabel}     ',
+                    style: Theme.of(context).textTheme.titleMedium,
+                    children: [
+                      TextSpan(
+                        text: '${account.studentProfile!.numPoints}',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ],
+                  ),
+                ),
+                _selectedToggle[0]
+                    ? const _OneTimePointsPurchase()
+                    : const _SubscriptionPointsPurchase(),
+              ],
+            ),
           ),
         ),
       ),
