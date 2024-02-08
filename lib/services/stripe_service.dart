@@ -154,6 +154,7 @@ Future<void> updateSubscription({
   required String id,
   required bool deleted,
   required String priceId,
+  String? existingPriceId,
   required int quantity,
 }) async {
   HttpsCallable callable = functions.httpsCallable(
@@ -168,6 +169,7 @@ Future<void> updateSubscription({
       'id': id,
       'deleted': deleted,
       'priceId': priceId,
+      'existingPriceId': existingPriceId,
       'quantity': quantity,
     });
     return result.data;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 
 class AddPoints extends StatefulWidget {
@@ -233,15 +234,33 @@ class _SubscriptionPointsPurchase extends StatefulWidget {
 
 class _SubscriptionPointsPurchaseState
     extends State<_SubscriptionPointsPurchase> {
-  final String _orderPointSubscriptionPriceId =
+  final String _orderPointSubscriptionPrivateOnlyPriceId =
       'price_1ORJuSK9gCxRnlEil2SsaBPY';
-  final String _supplementaryPointSubscriptionPriceId =
+  final String _supplementaryPointSubscriptionPrivateOnlyPriceId =
       'price_1ORQnwK9gCxRnlEiVXVbQUk5';
-  final int _orderPointsPerLesson = 280;
-  final int _supplementaryPointsPerLesson = 170;
-  String _selectedPrice = 'price_1ORJuSK9gCxRnlEil2SsaBPY';
+  final String _orderPointSubscriptionFreeAndPrivatePriceId =
+      'price_1OhO7iK9gCxRnlEi6oyV1cxe';
+  final String _supplementaryPointSubscriptionFreeAndPrivatePriceId =
+      'price_1OhOD6K9gCxRnlEiwx2UOsR0';
+  late final Map<String, int> _priceIdToPointsMap;
+  late String _selectedPrice;
   int _selectedNumber = 2;
   bool _redirectClicked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final account = context.read<AccountModel>();
+    _selectedPrice = account.subscriptionPlan == SubscriptionPlan.monthly
+        ? _orderPointSubscriptionPrivateOnlyPriceId
+        : _orderPointSubscriptionFreeAndPrivatePriceId;
+    _priceIdToPointsMap = {
+      _orderPointSubscriptionPrivateOnlyPriceId: 280,
+      _supplementaryPointSubscriptionPrivateOnlyPriceId: 170,
+      _orderPointSubscriptionFreeAndPrivatePriceId: 252,
+      _supplementaryPointSubscriptionFreeAndPrivatePriceId: 153,
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,24 +283,51 @@ class _SubscriptionPointsPurchaseState
           Text(S.of(context).pointSubscriptionTrial),
           Text(S.of(context).removePointSubscription),
           const SizedBox(height: 25),
-          DropdownMenu<String>(
-            requestFocusOnTap: true,
-            initialSelection: _orderPointSubscriptionPriceId,
-            label: Text(S.of(context).type),
-            onSelected: (value) {
-              setState(() {
-                _selectedPrice = value!;
-              });
-            },
-            dropdownMenuEntries: [
-              DropdownMenuEntry(
-                  value: _orderPointSubscriptionPriceId,
-                  label: S.of(context).orderPointSubscription),
-              DropdownMenuEntry(
-                  value: _supplementaryPointSubscriptionPriceId,
-                  label: S.of(context).freeSupplementaryPointSubscription),
-            ],
-          ),
+          account.subscriptionPlan == SubscriptionPlan.monthly
+              ? DropdownMenu<String>(
+                  requestFocusOnTap: true,
+                  initialSelection: _orderPointSubscriptionPrivateOnlyPriceId,
+                  label: Text(S.of(context).type),
+                  onSelected: (value) {
+                    setState(() {
+                      _selectedPrice = value!;
+                    });
+                  },
+                  dropdownMenuEntries: [
+                    DropdownMenuEntry(
+                        value: _orderPointSubscriptionPrivateOnlyPriceId,
+                        label: S.of(context).orderPointSubscriptionPrivateOnly),
+                    DropdownMenuEntry(
+                        value:
+                            _supplementaryPointSubscriptionPrivateOnlyPriceId,
+                        label: S
+                            .of(context)
+                            .freeSupplementaryPointSubscriptionPrivateOnly),
+                  ],
+                )
+              : DropdownMenu<String>(
+                  requestFocusOnTap: true,
+                  initialSelection:
+                      _orderPointSubscriptionFreeAndPrivatePriceId,
+                  label: Text(S.of(context).type),
+                  onSelected: (value) {
+                    setState(() {
+                      _selectedPrice = value!;
+                    });
+                  },
+                  dropdownMenuEntries: [
+                    DropdownMenuEntry(
+                        value: _orderPointSubscriptionFreeAndPrivatePriceId,
+                        label:
+                            S.of(context).orderPointSubscriptionFreeAndPrivate),
+                    DropdownMenuEntry(
+                        value:
+                            _supplementaryPointSubscriptionFreeAndPrivatePriceId,
+                        label: S
+                            .of(context)
+                            .freeSupplementaryPointSubscriptionFreeAndPrivate),
+                  ],
+                ),
           const SizedBox(
             height: 20,
           ),
@@ -316,10 +362,7 @@ class _SubscriptionPointsPurchaseState
                               _redirectClicked = true;
                             });
                             int pointQuantity = _selectedNumber *
-                                (_selectedPrice ==
-                                        _orderPointSubscriptionPriceId
-                                    ? _orderPointsPerLesson
-                                    : _supplementaryPointsPerLesson);
+                                _priceIdToPointsMap[_selectedPrice]!;
                             await stripe_service.updateSubscription(
                               id: account.subscriptionId!,
                               deleted: _selectedNumber == 0,
@@ -327,6 +370,7 @@ class _SubscriptionPointsPurchaseState
                                   ? account.pointSubscriptionPriceId ??
                                       _selectedPrice
                                   : _selectedPrice,
+                              existingPriceId: account.pointSubscriptionPriceId,
                               quantity: pointQuantity,
                             );
                             account.pointSubscriptionQuantity = pointQuantity;

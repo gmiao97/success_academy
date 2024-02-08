@@ -135,7 +135,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Free Lesson Zoom Info"),
         "freeNum": MessageLookupByLibrary.simpleMessage(
             "Number of free lessons completed"),
-        "freeSupplementaryPointSubscription":
+        "freeSupplementaryPointSubscriptionFreeAndPrivate":
+            MessageLookupByLibrary.simpleMessage(
+                "Supplementary - 153 points per lesson"),
+        "freeSupplementaryPointSubscriptionPrivateOnly":
             MessageLookupByLibrary.simpleMessage(
                 "Supplementary - 170 points per lesson"),
         "freeTrial": MessageLookupByLibrary.simpleMessage("14 days free trial"),
@@ -182,8 +185,12 @@ class MessageLookup extends MessageLookupByLibrary {
             "To only take english lessons, please select the monthly payment plan"),
         "openLinkFailure":
             MessageLookupByLibrary.simpleMessage("Failed to open link"),
-        "orderPointSubscription": MessageLookupByLibrary.simpleMessage(
-            "Order - 280 points per lesson"),
+        "orderPointSubscriptionFreeAndPrivate":
+            MessageLookupByLibrary.simpleMessage(
+                "Order - 252 points per lesson"),
+        "orderPointSubscriptionPrivateOnly":
+            MessageLookupByLibrary.simpleMessage(
+                "Order - 280 points per lesson"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("Choose a subscription plan"),

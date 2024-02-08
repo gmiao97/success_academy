@@ -124,7 +124,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "freeLessonZoomInfo":
             MessageLookupByLibrary.simpleMessage("フリーレッスンZOOM情報"),
         "freeNum": MessageLookupByLibrary.simpleMessage("フリーレッスン完了数"),
-        "freeSupplementaryPointSubscription":
+        "freeSupplementaryPointSubscriptionFreeAndPrivate":
+            MessageLookupByLibrary.simpleMessage("フロー補修・1コマ153ポイント"),
+        "freeSupplementaryPointSubscriptionPrivateOnly":
             MessageLookupByLibrary.simpleMessage("フロー補修・1コマ170ポイント"),
         "freeTrial": MessageLookupByLibrary.simpleMessage("14日間無料トライアル"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
@@ -164,7 +166,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "onlyFreeLesson": MessageLookupByLibrary.simpleMessage(
             "英語版フリーレッスンのみを受けたい場合は月会費のみのプランを選んでください"),
         "openLinkFailure": MessageLookupByLibrary.simpleMessage("リンクを開けませんでした"),
-        "orderPointSubscription":
+        "orderPointSubscriptionFreeAndPrivate":
+            MessageLookupByLibrary.simpleMessage("オーダー・1コマ252ポイント"),
+        "orderPointSubscriptionPrivateOnly":
             MessageLookupByLibrary.simpleMessage("オーダー・1コマ280ポイント"),
         "password": MessageLookupByLibrary.simpleMessage("パスワード"),
         "pickPlan":

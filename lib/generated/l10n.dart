@@ -680,11 +680,21 @@ class S {
     );
   }
 
+  /// `Supplementary - 153 points per lesson`
+  String get freeSupplementaryPointSubscriptionFreeAndPrivate {
+    return Intl.message(
+      'Supplementary - 153 points per lesson',
+      name: 'freeSupplementaryPointSubscriptionFreeAndPrivate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Supplementary - 170 points per lesson`
-  String get freeSupplementaryPointSubscription {
+  String get freeSupplementaryPointSubscriptionPrivateOnly {
     return Intl.message(
       'Supplementary - 170 points per lesson',
-      name: 'freeSupplementaryPointSubscription',
+      name: 'freeSupplementaryPointSubscriptionPrivateOnly',
       desc: '',
       args: [],
     );
@@ -980,11 +990,21 @@ class S {
     );
   }
 
+  /// `Order - 252 points per lesson`
+  String get orderPointSubscriptionFreeAndPrivate {
+    return Intl.message(
+      'Order - 252 points per lesson',
+      name: 'orderPointSubscriptionFreeAndPrivate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Order - 280 points per lesson`
-  String get orderPointSubscription {
+  String get orderPointSubscriptionPrivateOnly {
     return Intl.message(
       'Order - 280 points per lesson',
-      name: 'orderPointSubscription',
+      name: 'orderPointSubscriptionPrivateOnly',
       desc: '',
       args: [],
     );
