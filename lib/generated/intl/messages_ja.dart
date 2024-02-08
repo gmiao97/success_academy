@@ -125,9 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("フリーレッスンZOOM情報"),
         "freeNum": MessageLookupByLibrary.simpleMessage("フリーレッスン完了数"),
         "freeSupplementaryPointSubscriptionFreeAndPrivate":
-            MessageLookupByLibrary.simpleMessage("フロー補修・1コマ153ポイント"),
+            MessageLookupByLibrary.simpleMessage("フリー補修・1コマ153ポイント"),
         "freeSupplementaryPointSubscriptionPrivateOnly":
-            MessageLookupByLibrary.simpleMessage("フロー補修・1コマ170ポイント"),
+            MessageLookupByLibrary.simpleMessage("フリー補修・1コマ170ポイント"),
         "freeTrial": MessageLookupByLibrary.simpleMessage("14日間無料トライアル"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
         "id": MessageLookupByLibrary.simpleMessage("ID"),
