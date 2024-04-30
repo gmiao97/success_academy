@@ -354,51 +354,48 @@ class _SubscriptionPointsPurchaseState
               ? const CircularProgressIndicator(
                   value: null,
                 )
-              : FilledButton.tonal(
-                  onPressed: account.shouldShowContent()
-                      ? () async {
-                          try {
-                            setState(() {
-                              _redirectClicked = true;
-                            });
-                            int pointQuantity = _selectedNumber *
-                                _priceIdToPointsMap[_selectedPrice]!;
-                            await stripe_service.updateSubscription(
-                              id: account.subscriptionId!,
-                              deleted: _selectedNumber == 0,
-                              priceId: _selectedNumber == 0
-                                  ? account.pointSubscriptionPriceId ??
-                                      _selectedPrice
-                                  : _selectedPrice,
-                              existingPriceId: account.pointSubscriptionPriceId,
-                              quantity: pointQuantity,
-                            );
-                            account.pointSubscriptionQuantity = pointQuantity;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(S.of(context).lessonInfoUpdated),
-                              ),
-                            );
-                            setState(() {
-                              _redirectClicked = false;
-                            });
-                          } catch (err) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content:
-                                    Text(S.of(context).lessonInfoUpdateFailed),
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.error,
-                              ),
-                            );
-                            setState(() {
-                              _redirectClicked = false;
-                            });
-                            debugPrint('Failed to update subscription: $err');
-                          }
-                        }
-                      : null,
-                  child: Text(S.of(context).addPointsSubscription),
+              : FilledButton.tonalIcon(
+                  onPressed: account.pointSubscriptionPriceId != null
+                      ? null
+                      : account.shouldShowContent()
+                          ? () async {
+                              try {
+                                setState(() {
+                                  _redirectClicked = true;
+                                });
+                                int pointQuantity = _selectedNumber *
+                                    _priceIdToPointsMap[_selectedPrice]!;
+                                await stripe_service
+                                    .startStripePointSubscriptionCheckoutSession(
+                                  userId: account.firebaseUser!.uid,
+                                  profileId: account.studentProfile!.profileId,
+                                  priceId: _selectedPrice,
+                                  quantity: 10,
+                                );
+                                account.pointSubscriptionQuantity =
+                                    pointQuantity;
+                                setState(() {
+                                  _redirectClicked = false;
+                                });
+                              } catch (err) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        S.of(context).stripeRedirectFailure),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                  ),
+                                );
+                                setState(() {
+                                  _redirectClicked = false;
+                                });
+                                debugPrint(
+                                    'Failed to start Stripe point subscription checkout $err');
+                              }
+                            }
+                          : null,
+                  label: Text(S.of(context).stripePurchase),
+                  icon: const Icon(Icons.exit_to_app),
                 ),
         ],
       ),

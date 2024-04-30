@@ -13,15 +13,11 @@ CollectionReference<LessonModel> _lessonModelRef = db
 /**  
   * Get list of all lesson information.
   */
-Future<List<LessonModel>> getLessons(
-    {required bool includePreschool, required bool includeEnglish}) {
+Future<List<LessonModel>> getLessons({required bool includePreschool}) {
   return _lessonModelRef.get().then((querySnapshot) => querySnapshot.docs
           .map((queryDocumentSnapshot) => queryDocumentSnapshot.data())
           .where((lesson) {
         if (!includePreschool && lesson.visibility == 'preschool') {
-          return false;
-        }
-        if (!includeEnglish && lesson.visibility == 'english') {
           return false;
         }
         return true;

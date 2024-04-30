@@ -90,16 +90,6 @@ class S {
     );
   }
 
-  /// `Update points subscription`
-  String get addPointsSubscription {
-    return Intl.message(
-      'Update points subscription',
-      name: 'addPointsSubscription',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `ADMIN`
   String get admin {
     return Intl.message(

@@ -42,8 +42,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("英語版フリーレッスンオプションを追加する・月40米ドル"),
         "addPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションを追加"),
         "addPoints": MessageLookupByLibrary.simpleMessage("ポイントを追加する"),
-        "addPointsSubscription":
-            MessageLookupByLibrary.simpleMessage("ポイントサブスクリプションを更新する"),
         "admin": MessageLookupByLibrary.simpleMessage("アドミン"),
         "agreeToTerms": MessageLookupByLibrary.simpleMessage("利用規約に同意"),
         "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),

@@ -150,31 +150,43 @@ Future<void> redirectToStripePortal() async {
   }
 }
 
-Future<void> updateSubscription({
-  required String id,
-  required bool deleted,
-  required String priceId,
-  String? existingPriceId,
-  required int quantity,
-}) async {
-  HttpsCallable callable = functions.httpsCallable(
-    'update_subscription',
-    options: HttpsCallableOptions(
-      timeout: const Duration(seconds: 60),
-    ),
-  );
-
-  try {
-    final result = await callable({
-      'id': id,
-      'deleted': deleted,
-      'priceId': priceId,
-      'existingPriceId': existingPriceId,
+Future<void> startStripePointSubscriptionCheckoutSession(
+    {required String userId,
+    required String profileId,
+    required String priceId,
+    required int quantity}) async {
+  Completer completer = Completer();
+  List<Map<String, Object?>> lineItems = [
+    {
+      'price': priceId,
       'quantity': quantity,
-    });
-    return result.data;
-  } catch (err) {
-    debugPrint('updateSubscription failed: $err');
-    rethrow;
-  }
+    },
+  ];
+
+  final checkoutSessionDoc = await db
+      .collection('customers')
+      .doc(userId)
+      .collection('checkout_sessions')
+      .add(
+    {
+      'line_items': lineItems,
+      'success_url': html.window.location.origin,
+      'cancel_url': html.window.location.origin,
+      'metadata': {
+        'profile_id': profileId,
+      },
+    },
+  );
+  checkoutSessionDoc.snapshots().listen(
+    (doc) {
+      if (doc.data()!.containsKey('url')) {
+        html.window.location.replace(doc.data()!['url']);
+        completer.complete();
+      }
+      if (doc.data()!.containsKey('error')) {
+        completer.completeError(Exception(doc.data()!['error']['message']));
+      }
+    },
+  );
+  return completer.future;
 }

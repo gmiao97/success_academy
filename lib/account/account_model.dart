@@ -39,8 +39,6 @@ class AccountModel extends ChangeNotifier {
   late Map<String, TeacherProfileModel> _teacherProfileMap;
   List<QueryDocumentSnapshot<Object?>> _subscriptionDocs = [];
   SubscriptionPlan? _subscriptionPlan;
-  String? _subscriptionId;
-  bool _englishOption = false;
   String? _pointSubscriptionPriceId;
   int? _pointSubscriptionQuantity;
 
@@ -61,8 +59,6 @@ class AccountModel extends ChangeNotifier {
   Map<String, TeacherProfileModel> get teacherProfileModelMap =>
       _teacherProfileMap;
   SubscriptionPlan? get subscriptionPlan => _subscriptionPlan;
-  String? get subscriptionId => _subscriptionId;
-  bool get englishOption => _englishOption;
   String? get pointSubscriptionPriceId => _pointSubscriptionPriceId;
   int? get pointSubscriptionQuantity => _pointSubscriptionQuantity;
   UserType get userType {
@@ -180,8 +176,6 @@ class AccountModel extends ChangeNotifier {
         _studentProfile = studentProfile;
         _subscriptionPlan =
             _getSubscriptionTypeForProfile(studentProfile!.profileId);
-        _subscriptionId = _getSubscriptionId(studentProfile.profileId);
-        _englishOption = _getEnglishOption(studentProfile.profileId);
         _pointSubscriptionPriceId =
             _getPointSubscriptionPriceId(studentProfile.profileId);
         _pointSubscriptionQuantity =
@@ -204,16 +198,15 @@ class AccountModel extends ChangeNotifier {
       return null;
     }
     try {
-      return EnumToString.fromString(
-          SubscriptionPlan.values,
-          (_subscriptionDocs
-                  .singleWhere((doc) =>
-                      doc.get('metadata.profile_id') as String == profileId)
-                  .get('items') as List<dynamic>)
-              .map((item) => item['price']['metadata']['id'])
-              .where((id) => SubscriptionPlan.values.contains(
-                  EnumToString.fromString(SubscriptionPlan.values, id)))
-              .single);
+      return _subscriptionDocs
+          .where((doc) =>
+              doc.get('metadata.profile_id') as String == profileId &&
+              SubscriptionPlan.values
+                  .map((value) => value.name)
+                  .contains(doc.get('items')[0]['price']['metadata']['id']))
+          .map((doc) => EnumToString.fromString(SubscriptionPlan.values,
+              doc['items'][0]['price']['metadata']['id']))
+          .single;
     } on StateError {
       debugPrint(
           'getSubscriptionTypeForProfile: No subscription found for profile $profileId');
@@ -227,47 +220,15 @@ class AccountModel extends ChangeNotifier {
     }
   }
 
-  String? _getSubscriptionId(String? profileId) {
-    if (profileId == null) {
-      return null;
-    }
-    try {
-      return _subscriptionDocs
-          .firstWhere(
-              (doc) => doc.get('metadata.profile_id') as String == profileId)
-          .id;
-    } on StateError {
-      return null;
-    }
-  }
-
-  bool _getEnglishOption(String? profileId) {
-    if (profileId == null) {
-      return false;
-    }
-    try {
-      return (_subscriptionDocs
-              .firstWhere((doc) =>
-                  doc.get('metadata.profile_id') as String == profileId)
-              .get('items') as List<dynamic>)
-          .any((element) => element['plan']['metadata']['id'] == 'english');
-    } on StateError {
-      return false;
-    }
-  }
-
   String? _getPointSubscriptionPriceId(String? profileId) {
     if (profileId == null) {
       return null;
     }
     try {
-      return (_subscriptionDocs
-              .firstWhere((doc) =>
-                  doc.get('metadata.profile_id') as String == profileId)
-              .get('items') as List<dynamic>)
-          .singleWhere((element) =>
-              (element['plan']['metadata']['id'] as String)
-                  .contains('point'))['price']['id'];
+      return _subscriptionDocs.firstWhere((doc) =>
+          doc.get('metadata.profile_id') as String == profileId &&
+          (doc['items'][0]['price']['metadata']['id'] as String)
+              .contains('point'))['items'][0]['price']['id'];
     } on StateError {
       return null;
     }
@@ -278,13 +239,10 @@ class AccountModel extends ChangeNotifier {
       return null;
     }
     try {
-      return (_subscriptionDocs
-              .firstWhere((doc) =>
-                  doc.get('metadata.profile_id') as String == profileId)
-              .get('items') as List<dynamic>)
-          .singleWhere((element) =>
-              (element['plan']['metadata']['id'] as String)
-                  .contains('point'))['quantity'];
+      return _subscriptionDocs.firstWhere((doc) =>
+          doc.get('metadata.profile_id') as String == profileId &&
+          (doc['items'][0]['price']['metadata']['id'] as String)
+              .contains('point'))['items'][0]['quantity'];
     } on StateError {
       return null;
     }
@@ -295,8 +253,6 @@ class AccountModel extends ChangeNotifier {
         await stripe_service.getSubscriptionsForUser(_firebaseUser!.uid);
     _subscriptionPlan =
         _getSubscriptionTypeForProfile(studentProfile?.profileId);
-    _subscriptionId = _getSubscriptionId(studentProfile?.profileId);
-    _englishOption = _getEnglishOption(studentProfile?.profileId);
     _pointSubscriptionPriceId =
         _getPointSubscriptionPriceId(studentProfile?.profileId);
     _pointSubscriptionQuantity =

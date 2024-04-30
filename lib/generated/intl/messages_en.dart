@@ -44,8 +44,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Add english free lessons option - \$40 USD/month"),
         "addPlan": MessageLookupByLibrary.simpleMessage("Add subscription"),
         "addPoints": MessageLookupByLibrary.simpleMessage("Add points"),
-        "addPointsSubscription":
-            MessageLookupByLibrary.simpleMessage("Update points subscription"),
         "admin": MessageLookupByLibrary.simpleMessage("ADMIN"),
         "agreeToTerms":
             MessageLookupByLibrary.simpleMessage("Agree to terms of use"),
