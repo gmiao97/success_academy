@@ -370,7 +370,7 @@ class _SubscriptionPointsPurchaseState
                                   userId: account.firebaseUser!.uid,
                                   profileId: account.studentProfile!.profileId,
                                   priceId: _selectedPrice,
-                                  quantity: 10,
+                                  quantity: pointQuantity,
                                 );
                                 account.pointSubscriptionQuantity =
                                     pointQuantity;
