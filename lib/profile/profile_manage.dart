@@ -19,7 +19,6 @@ class ManageUsers extends StatefulWidget {
 
 class _ManageUsersState extends State<ManageUsers> {
   final List<bool> _selectedToggle = [true, false];
-  List<EventModel> _allEvents = [];
   List<EventModel> _events = [];
   late DateTimeRange _dateRange;
 
@@ -34,44 +33,38 @@ class _ManageUsersState extends State<ManageUsers> {
     final location =
         tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
     _dateRange = DateTimeRange(
-        start: _getDateFromDateTime(tz.TZDateTime.now(location), location)
-            .subtract(const Duration(days: 30)),
-        end: _getDateFromDateTime(tz.TZDateTime.now(location), location));
-    _allEvents = (await event_service.listEvents(
+        start: tz.TZDateTime.now(location).subtract(const Duration(days: 30)),
+        end: tz.TZDateTime.now(location));
+    _events = await event_service.listEvents(
         location: location,
         timeMin: _dateRange.start.toIso8601String(),
         timeMax: _dateRange.end.toIso8601String(),
-        singleEvents: true));
-    _events = _allEvents
-        .where((event) =>
-            event.startTime.isAfter(_dateRange.start) &&
-            event.startTime.isBefore(_dateRange.end))
-        .toList();
-  }
-
-  DateTime _getDateFromDateTime(DateTime dateTime, tz.Location timeZone) {
-    return tz.TZDateTime(timeZone, dateTime.year, dateTime.month, dateTime.day);
+        singleEvents: true);
   }
 
   void _selectDateRange() async {
-    final timeZoneName = context.read<AccountModel>().myUser!.timeZone;
-    final timeZone = tz.getLocation(timeZoneName);
+    final location =
+        tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
 
     final dateRange = await showDateRangePicker(
         context: context,
         firstDate: DateTime(2020, 1, 1),
-        lastDate: tz.TZDateTime.now(timeZone));
+        lastDate: tz.TZDateTime.now(location));
     if (dateRange != null) {
-      setState(() {
-        _dateRange = DateTimeRange(
-            start: _getDateFromDateTime(dateRange.start, timeZone),
-            end: _getDateFromDateTime(dateRange.end, timeZone));
-        _events = _allEvents
-            .where((event) =>
-                event.startTime.isAfter(_dateRange.start) &&
-                event.startTime.isBefore(_dateRange.end))
-            .toList();
-      });
+      final start = tz.TZDateTime.from(dateRange.start, location);
+      final end = tz.TZDateTime.from(dateRange.end, location);
+      await event_service
+          .listEvents(
+              location: location,
+              timeMin: start.toIso8601String(),
+              timeMax: end.toIso8601String(),
+              singleEvents: true)
+          .then((events) => setState(
+                () {
+                  _dateRange = DateTimeRange(start: start, end: end);
+                  _events = events;
+                },
+              ));
     }
   }
 
