@@ -76,7 +76,7 @@ class _CalendarState extends State<Calendar> {
                 .subtract(const Duration(days: 15))
                 .toIso8601String(),
             timeMax:
-                _currentDay.add(const Duration(days: 100)).toIso8601String(),
+                _currentDay.add(const Duration(days: 60)).toIso8601String(),
             singleEvents: true))
         .where((event) {
       if (!_selectedEventTypes.contains(event.eventType)) {
