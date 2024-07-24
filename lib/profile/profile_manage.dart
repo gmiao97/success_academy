@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/account_model.dart';
 import 'package:success_academy/calendar/calendar_utils.dart';
@@ -210,6 +211,7 @@ class _TeacherTable extends StatelessWidget {
         ),
       ],
       source: _TeacherData(
+        context: context,
         data: teacherProfiles,
         events: events,
       ),
@@ -358,11 +360,14 @@ class _StudentTableState extends State<_StudentTable> {
 
 class _TeacherData extends DataTableSource {
   _TeacherData(
-      {required List<TeacherProfileModel> data,
+      {required BuildContext context,
+      required List<TeacherProfileModel> data,
       required List<EventModel> events})
-      : _data = data,
+      : _context = context,
+        _data = data,
         _events = events;
 
+  final BuildContext _context;
   final List<TeacherProfileModel> _data;
   final List<EventModel> _events;
 
@@ -377,6 +382,15 @@ class _TeacherData extends DataTableSource {
 
   @override
   DataRow getRow(int index) {
+    final account = _context.read<AccountModel>();
+
+    final completedPrivateEvents = _events
+        .where((e) =>
+            e.eventType == EventType.private &&
+            isTeacherInEvent(_data[index].profileId, e) &&
+            e.studentIdList.isNotEmpty)
+        .toList();
+
     return DataRow(cells: [
       DataCell(SelectableText(_data[index].profileId)),
       DataCell(SelectableText(_data[index].email)),
@@ -394,7 +408,30 @@ class _TeacherData extends DataTableSource {
       ),
       DataCell(
         SelectableText(
-          '${_events.where((e) => e.eventType == EventType.private && isTeacherInEvent(_data[index].profileId, e)).toList().map((event) => event.numPoints).fold(0, (int a, int b) => a + b)}',
+          '${completedPrivateEvents.map((event) => event.numPoints).fold(0, (int a, int b) => a + b)}',
+        ),
+        onTap: () => showDialog(
+          context: _context,
+          builder: (context) => AlertDialog(
+            content: SizedBox(
+              width: 500,
+              height: 500,
+              child: ListView(
+                children: completedPrivateEvents
+                    .map((event) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(event.summary),
+                            Text(DateFormat.yMd(account.locale)
+                                .add_jm()
+                                .format(event.startTime)),
+                            Text('${event.numPoints}'),
+                          ],
+                        ))
+                    .toList(),
+              ),
+            ),
+          ),
         ),
       ),
     ]);
