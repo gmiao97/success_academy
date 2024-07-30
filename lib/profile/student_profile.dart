@@ -317,7 +317,7 @@ class CreateSubscription extends StatefulWidget {
 }
 
 class _CreateSubscriptionState extends State<CreateSubscription> {
-  final List<String> _validCodes = [];
+  final List<String> _validCodes = ['SRNPUXON'];
   final List<String> _thirtyOffCodes = ['TXFOLTBJ'];
   bool _isReferral = false;
   bool _invalidReferral = false;
