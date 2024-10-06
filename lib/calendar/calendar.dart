@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/calendar_utils.dart';
-import 'package:success_academy/calendar/create_event_dialog.dart';
-import 'package:success_academy/calendar/delete_event_dialog.dart';
-import 'package:success_academy/calendar/edit_event_dialog.dart';
-import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/calendar/quit_event_dialog.dart';
-import 'package:success_academy/calendar/signup_event_dialog.dart';
-import 'package:success_academy/calendar/view_event_dialog.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+import '../account/account_model.dart';
+import '../generated/l10n.dart';
+import '../services/event_service.dart' as event_service;
+import 'calendar_utils.dart';
+import 'create_event_dialog.dart';
+import 'delete_event_dialog.dart';
+import 'edit_event_dialog.dart';
+import 'event_model.dart';
+import 'quit_event_dialog.dart';
+import 'signup_event_dialog.dart';
+import 'view_event_dialog.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});

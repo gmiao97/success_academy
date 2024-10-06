@@ -1,14 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/account/account_settings.dart';
-import 'package:success_academy/calendar/calendar.dart';
-import 'package:success_academy/lesson_info/lesson_info.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/profile/add_points.dart';
-import 'package:success_academy/profile/profile_home.dart';
-import 'package:success_academy/profile/profile_manage.dart';
+
+import '../account/account_model.dart';
+import '../account/account_settings.dart';
+import '../calendar/calendar.dart';
+import '../generated/l10n.dart';
+import '../lesson_info/lesson_info.dart';
+import '../profile/add_points.dart';
+import '../profile/profile_home.dart';
+import '../profile/profile_manage.dart';
 
 class PhoneScaffold extends StatefulWidget {
   const PhoneScaffold({super.key});

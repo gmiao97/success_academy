@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/calendar_utils.dart';
-import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/constants.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/services/event_service.dart' as event_service;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+import '../account/account_model.dart';
+import '../calendar/calendar_utils.dart';
+import '../calendar/event_model.dart';
+import '../constants.dart';
+import '../generated/l10n.dart';
+import '../services/event_service.dart' as event_service;
+import 'profile_model.dart';
 
 class ManageUsers extends StatefulWidget {
   const ManageUsers({super.key});

@@ -1,13 +1,14 @@
 import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/lesson_info/lesson_model.dart';
-import 'package:success_academy/profile/profile_model.dart';
 import 'package:success_academy/services/lesson_info_service.dart'
     as lesson_info_service;
 import 'package:url_launcher/url_launcher.dart';
+
+import '../account/account_model.dart';
+import '../generated/l10n.dart';
+import '../profile/profile_model.dart';
+import 'lesson_model.dart';
 
 class LessonInfo extends StatefulWidget {
   const LessonInfo({super.key});

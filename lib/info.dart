@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/constants.dart';
+
+import 'constants.dart';
+import 'generated/l10n.dart';
 
 class Info extends StatelessWidget {
   const Info({super.key});

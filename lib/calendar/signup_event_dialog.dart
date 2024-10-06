@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/calendar/calendar_utils.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/services/event_service.dart' as event_service;
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
+
+import '../account/account_model.dart';
+import '../generated/l10n.dart';
+import '../profile/profile_model.dart';
+import '../services/event_service.dart' as event_service;
+import 'calendar_utils.dart';
+import 'event_model.dart';
 
 class SignupEventDialog extends StatefulWidget {
   final EventModel event;

@@ -3,14 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/calendar_utils.dart';
-import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/services/event_service.dart' as event_service;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+import '../account/account_model.dart';
+import '../generated/l10n.dart';
+import '../profile/profile_model.dart';
+import '../services/event_service.dart' as event_service;
+import 'calendar_utils.dart';
+import 'event_model.dart';
 
 class EditEventDialog extends StatefulWidget {
   final EventModel event;

@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:random_string/random_string.dart';
-import 'package:success_academy/account/account_model.dart';
+
+import '../account/account_model.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 

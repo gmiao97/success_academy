@@ -3,16 +3,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/i10n.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/common_widgets/my_scaffold.dart';
-import 'package:success_academy/constants.dart' as constants;
-import 'package:success_academy/firebase_options.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/info.dart';
-import 'package:success_academy/landing/landing.dart';
-import 'package:success_academy/landing/verification.dart';
-import 'package:success_academy/profile/profile_browse.dart';
-import 'package:success_academy/profile/profile_create.dart';
+
+import 'account/account_model.dart';
+import 'common_widgets/my_scaffold.dart';
+import 'constants.dart' as constants;
+import 'firebase_options.dart';
+import 'generated/l10n.dart';
+import 'info.dart';
+import 'landing/landing.dart';
+import 'landing/verification.dart';
+import 'profile/profile_browse.dart';
+import 'profile/profile_create.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

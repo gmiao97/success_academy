@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/services/stripe_service.dart' as stripe_service;
+
+import '../account/account_model.dart';
+import '../generated/l10n.dart';
+import '../services/stripe_service.dart' as stripe_service;
+import 'profile_model.dart';
 
 class AddPoints extends StatefulWidget {
   const AddPoints({super.key});

@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:html' as html;
 import 'dart:io';
 
-import 'package:enum_to_string/enum_to_string.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:success_academy/profile/profile_model.dart';
+import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/material.dart';
+
+import '../profile/profile_model.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 final FirebaseFunctions functions =

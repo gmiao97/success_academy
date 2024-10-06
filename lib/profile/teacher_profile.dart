@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/generated/l10n.dart';
+
+import '../account/account_model.dart';
+import '../generated/l10n.dart';
 
 class TeacherProfile extends StatelessWidget {
   const TeacherProfile({super.key});

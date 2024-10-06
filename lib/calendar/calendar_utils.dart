@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/profile/profile_model.dart';
+
+import '../account/account_model.dart';
+import '../generated/l10n.dart';
+import '../profile/profile_model.dart';
+import 'event_model.dart';
 
 String frequencyToString(BuildContext context, Frequency frequency) {
   if (frequency == Frequency.daily) {

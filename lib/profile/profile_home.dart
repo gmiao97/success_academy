@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/profile/admin_profile.dart';
-import 'package:success_academy/profile/student_profile.dart';
-import 'package:success_academy/profile/teacher_profile.dart';
+
+import '../account/account_model.dart';
+import 'admin_profile.dart';
+import 'student_profile.dart';
+import 'teacher_profile.dart';
 
 class ProfileHome extends StatefulWidget {
   const ProfileHome({super.key});

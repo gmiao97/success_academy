@@ -1,7 +1,8 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:success_academy/calendar/event_model.dart';
 import 'package:timezone/timezone.dart' as tz;
+
+import '../calendar/event_model.dart';
 
 final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'us-west2');

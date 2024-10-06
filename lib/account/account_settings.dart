@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/services/user_service.dart' as user_service;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_10y.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+import '../generated/l10n.dart';
+import '../services/user_service.dart' as user_service;
+import 'account_model.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/constants.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/profile/profile_model.dart';
-import 'package:success_academy/profile/student_profile.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
+
+import '../account/account_model.dart';
+import '../constants.dart';
+import '../generated/l10n.dart';
+import 'profile_model.dart';
+import 'student_profile.dart';
 
 class ProfileCreate extends StatelessWidget {
   const ProfileCreate({super.key});
