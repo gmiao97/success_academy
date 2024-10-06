@@ -18,7 +18,7 @@ String frequencyToString(BuildContext context, Frequency frequency) {
   if (frequency == Frequency.monthly) {
     return S.of(context).recurMonthly;
   }
-  return "¯\\_(ツ)_/¯";
+  return '¯\\_(ツ)_/¯';
 }
 
 String rruleToString(BuildContext context, RecurrenceRule? rrule) {
@@ -32,9 +32,9 @@ String rruleToString(BuildContext context, RecurrenceRule? rrule) {
       StringBuffer(frequencyToString(context, rrule.frequency));
   final until = rrule.until;
   if (until != null) {
-    buffer.write(S
-        .of(context)
-        .recurUntil(DateFormat.yMMMMd(locale).format(rrule.until!)));
+    buffer.write(
+      S.of(context).recurUntil(DateFormat.yMMMMd(locale).format(rrule.until!)),
+    );
   }
   return buffer.toString();
 }
@@ -62,7 +62,9 @@ List<EventType> getEventTypesCanEdit(UserType userType) {
 }
 
 List<EventType> getEventTypesCanView(
-    UserType userType, SubscriptionPlan? subscription) {
+  UserType userType,
+  SubscriptionPlan? subscription,
+) {
   if ([UserType.admin, UserType.teacher].contains(userType)) {
     return [
       EventType.free,

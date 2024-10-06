@@ -67,8 +67,11 @@ class _SettingsState extends State<Settings> {
                 suggestionsCallback: (pattern) => tz
                     .timeZoneDatabase.locations.keys
                     .map((timeZone) => timeZone.replaceAll('_', ' '))
-                    .where((timeZone) =>
-                        timeZone.toLowerCase().contains(pattern.toLowerCase())),
+                    .where(
+                      (timeZone) => timeZone
+                          .toLowerCase()
+                          .contains(pattern.toLowerCase()),
+                    ),
                 validator: (String? value) {
                   if (!tz.timeZoneDatabase.locations.keys
                       .contains(value?.replaceAll(' ', '_'))) {
@@ -86,8 +89,9 @@ class _SettingsState extends State<Settings> {
                       final timeZone = _selectedTimeZone?.replaceAll(' ', '_');
                       try {
                         await user_service.updateMyUser(
-                            userId: account.firebaseUser!.uid,
-                            timeZone: timeZone);
+                          userId: account.firebaseUser!.uid,
+                          timeZone: timeZone,
+                        );
                         final updatedMyUser = account.myUser!;
                         updatedMyUser.timeZone =
                             timeZone ?? account.myUser!.timeZone;
@@ -107,7 +111,7 @@ class _SettingsState extends State<Settings> {
                                 Theme.of(context).colorScheme.error,
                           ),
                         );
-                        debugPrint("Failed to update account settings: $e");
+                        debugPrint('Failed to update account settings: $e');
                       }
                     }
                   },

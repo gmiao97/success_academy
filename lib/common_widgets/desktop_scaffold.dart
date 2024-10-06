@@ -208,7 +208,8 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
                     _extended = !_extended;
                   }),
                   icon: Icon(
-                      _extended ? Icons.chevron_left : Icons.chevron_right),
+                    _extended ? Icons.chevron_left : Icons.chevron_right,
+                  ),
                 ),
               ),
               Expanded(

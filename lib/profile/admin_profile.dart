@@ -32,8 +32,10 @@ class AdminProfile extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 30,
-                      child: Text(account.adminProfile!.lastName[0],
-                          style: Theme.of(context).textTheme.headlineMedium),
+                      child: Text(
+                        account.adminProfile!.lastName[0],
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -67,8 +69,11 @@ class AdminProfile extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            Clipboard.setData(ClipboardData(
-                                text: account.myUser!.referralCode));
+                            Clipboard.setData(
+                              ClipboardData(
+                                text: account.myUser!.referralCode,
+                              ),
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(S.of(context).copied),

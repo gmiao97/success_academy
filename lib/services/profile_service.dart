@@ -5,20 +5,24 @@ import '../profile/profile_model.dart';
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
 CollectionReference<StudentProfileModel> _studentProfileModelRefForUser(
-    userId) {
+  userId,
+) {
   return db
       .collection('myUsers')
       .doc(userId)
       .collection('student_profiles')
       .withConverter<StudentProfileModel>(
         fromFirestore: (snapshot, _) => StudentProfileModel.fromFirestoreJson(
-            snapshot.id, snapshot.data()!),
+          snapshot.id,
+          snapshot.data()!,
+        ),
         toFirestore: (profileModel, _) => profileModel.toFirestoreJson(),
       );
 }
 
 CollectionReference<TeacherProfileModel> _teacherProfileModelRefForUser(
-    userId) {
+  userId,
+) {
   return db
       .collection('myUsers')
       .doc(userId)
@@ -50,7 +54,8 @@ CollectionReference<AdminProfileModel> _adminProfileModelRefForUser(userId) {
   */
 Future<List<StudentProfileModel>> getStudentProfilesForUser(String userId) {
   return _studentProfileModelRefForUser(userId).get().then(
-      (querySnapshot) => querySnapshot.docs.map((doc) => doc.data()).toList());
+        (querySnapshot) => querySnapshot.docs.map((doc) => doc.data()).toList(),
+      );
 }
 
 /**  
@@ -60,8 +65,9 @@ Future<List<StudentProfileModel>> getStudentProfilesForUser(String userId) {
   */
 Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
   return _teacherProfileModelRefForUser(userId).limit(1).get().then(
-      (querySnapshot) =>
-          querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null);
+        (querySnapshot) =>
+            querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null,
+      );
 }
 
 /**  
@@ -71,8 +77,9 @@ Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
   */
 Future<AdminProfileModel?> getAdminProfileForUser(String userId) {
   return _adminProfileModelRefForUser(userId).limit(1).get().then(
-      (querySnapshot) =>
-          querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null);
+        (querySnapshot) =>
+            querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null,
+      );
 }
 
 /**  
@@ -87,8 +94,9 @@ Future<List<TeacherProfileModel>> getAllTeacherProfiles() {
         toFirestore: (teacherProfileModel, _) => teacherProfileModel.toJson(),
       )
       .get()
-      .then((querySnapshot) =>
-          querySnapshot.docs.map(((e) => e.data())).toList());
+      .then(
+        (querySnapshot) => querySnapshot.docs.map(((e) => e.data())).toList(),
+      );
 }
 
 /**  
@@ -99,17 +107,22 @@ Future<List<StudentProfileModel>> getAllStudentProfiles() {
       .collectionGroup('student_profiles')
       .withConverter<StudentProfileModel>(
         fromFirestore: (snapshot, _) => StudentProfileModel.fromFirestoreJson(
-            snapshot.id, snapshot.data()!),
+          snapshot.id,
+          snapshot.data()!,
+        ),
         toFirestore: (profileModel, _) => profileModel.toFirestoreJson(),
       )
       .get()
-      .then((querySnapshot) =>
-          querySnapshot.docs.map(((e) => e.data())).toList());
+      .then(
+        (querySnapshot) => querySnapshot.docs.map(((e) => e.data())).toList(),
+      );
 }
 
 /// Check if saved profile in local storage belongs to user
-Future<bool> studentProfileBelongsToUser(
-    {required String userId, required String? profileId}) async {
+Future<bool> studentProfileBelongsToUser({
+  required String userId,
+  required String? profileId,
+}) async {
   if (profileId == null) {
     return false;
   }
@@ -118,8 +131,10 @@ Future<bool> studentProfileBelongsToUser(
 }
 
 /// Get number of points for student profile
-Future<int> getNumberPoints(
-    {required String userId, required String profileId}) async {
+Future<int> getNumberPoints({
+  required String userId,
+  required String profileId,
+}) async {
   return _studentProfileModelRefForUser(userId)
       .doc(profileId)
       .get()
@@ -128,7 +143,9 @@ Future<int> getNumberPoints(
 
 /// Add student profile for specified user
 Future<DocumentReference<StudentProfileModel>> addStudentProfile(
-    String userId, StudentProfileModel profileModel) async {
+  String userId,
+  StudentProfileModel profileModel,
+) async {
   final profileDoc =
       await _studentProfileModelRefForUser(userId).add(profileModel);
   return profileDoc;
@@ -136,7 +153,9 @@ Future<DocumentReference<StudentProfileModel>> addStudentProfile(
 
 /// Update student profile for specified user
 Future<void> updateStudentProfile(
-    String userId, StudentProfileModel profileModel) {
+  String userId,
+  StudentProfileModel profileModel,
+) {
   return _studentProfileModelRefForUser(userId)
       .doc(profileModel.profileId)
       .update(profileModel.toFirestoreJson());

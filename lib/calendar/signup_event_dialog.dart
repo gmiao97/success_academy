@@ -47,9 +47,11 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
       content: !canSignUp
           ? Text(S.of(context).signupWindowPassed)
           : enoughPoints
-              ? Text(S
-                  .of(context)
-                  .usePoints(numPoints, account.studentProfile!.numPoints))
+              ? Text(
+                  S
+                      .of(context)
+                      .usePoints(numPoints, account.studentProfile!.numPoints),
+                )
               : Text(S.of(context).notEnoughPoints),
       actions: [
         TextButton(
@@ -71,7 +73,9 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                           _submitClicked = true;
                         });
                         if (!isStudentInEvent(
-                            studentProfile.profileId, widget.event)) {
+                          studentProfile.profileId,
+                          widget.event,
+                        )) {
                           widget.event.studentIdList
                               .add(studentProfile.profileId);
                           try {
@@ -86,13 +90,18 @@ class _SignupEventDialogState extends State<SignupEventDialog> {
                               studentProfile.numPoints -= numPoints;
                               account.studentProfile = studentProfile;
                               profile_service.updateStudentProfile(
-                                  account.firebaseUser!.uid, studentProfile);
+                                account.firebaseUser!.uid,
+                                studentProfile,
+                              );
                               event_service.emailAttendees(
-                                  widget.event, studentProfile.profileId);
+                                widget.event,
+                                studentProfile.profileId,
+                              );
                             }
                           } catch (e) {
                             widget.event.studentIdList.removeWhere(
-                                (id) => id == studentProfile.profileId);
+                              (id) => id == studentProfile.profileId,
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(S.of(context).signupFailure),

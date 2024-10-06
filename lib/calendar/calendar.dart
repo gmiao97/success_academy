@@ -72,13 +72,11 @@ class _CalendarState extends State<Calendar> {
     final location = tz.getLocation(account.myUser!.timeZone);
 
     final singleEvents = (await event_service.listEvents(
-            location: location,
-            timeMin: _currentDay
-                .subtract(const Duration(days: 15))
-                .toIso8601String(),
-            timeMax:
-                _currentDay.add(const Duration(days: 60)).toIso8601String(),
-            singleEvents: true))
+      location: location,
+      timeMin: _currentDay.subtract(const Duration(days: 15)).toIso8601String(),
+      timeMax: _currentDay.add(const Duration(days: 60)).toIso8601String(),
+      singleEvents: true,
+    ))
         .where((event) {
       if (!_selectedEventTypes.contains(event.eventType)) {
         return false;
@@ -106,8 +104,11 @@ class _CalendarState extends State<Calendar> {
     return _events[day] ?? [];
   }
 
-  void _deleteEventsLocally(
-      {required String eventId, bool isRecurrence = false, DateTime? from}) {
+  void _deleteEventsLocally({
+    required String eventId,
+    bool isRecurrence = false,
+    DateTime? from,
+  }) {
     if (isRecurrence) {
       setState(() {
         for (final eventList in _events.values) {
@@ -131,13 +132,16 @@ class _CalendarState extends State<Calendar> {
   void _onTodayButtonClick() {
     setState(() {
       _focusedDay = _selectedDay = _currentDay = tz.TZDateTime.now(
-          tz.getLocation(context.read<AccountModel>().myUser!.timeZone));
+        tz.getLocation(context.read<AccountModel>().myUser!.timeZone),
+      );
       _selectedEvents = _getEventsForDay(_selectedDay);
     });
   }
 
   void _onEventFiltersChanged(
-      List<EventType> eventTypes, EventDisplay eventDisplay) {
+    List<EventType> eventTypes,
+    EventDisplay eventDisplay,
+  ) {
     setState(() {
       _selectedEventTypes = eventTypes;
       _eventDisplay = eventDisplay;
@@ -364,8 +368,10 @@ class _CalendarHeaderState extends State<_CalendarHeader> {
                           Expanded(
                             child: MultiSelectBottomSheet<EventType>(
                               items: widget.availableEventTypes
-                                  .map((e) =>
-                                      MultiSelectItem(e, e.getName(context)))
+                                  .map(
+                                    (e) =>
+                                        MultiSelectItem(e, e.getName(context)),
+                                  )
                                   .toList(),
                               initialValue: widget.selectedEventTypes,
                               title: Text(
@@ -379,7 +385,9 @@ class _CalendarHeaderState extends State<_CalendarHeader> {
                               maxChildSize: 1.0,
                               onConfirm: (values) {
                                 widget.onEventFiltersChanged(
-                                    values, _eventDisplay);
+                                  values,
+                                  _eventDisplay,
+                                );
                               },
                             ),
                           ),

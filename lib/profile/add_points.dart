@@ -194,11 +194,11 @@ class _OneTimePointsPurchaseState extends State<_OneTimePointsPurchase> {
                               try {
                                 await stripe_service
                                     .startStripePointsCheckoutSession(
-                                        userId: account.firebaseUser!.uid,
-                                        profileId:
-                                            account.studentProfile!.profileId,
-                                        quantity: _numPoints,
-                                        coupon: _pointsCouponMap[_numPoints]);
+                                  userId: account.firebaseUser!.uid,
+                                  profileId: account.studentProfile!.profileId,
+                                  quantity: _numPoints,
+                                  coupon: _pointsCouponMap[_numPoints],
+                                );
                               } catch (err) {
                                 setState(() {
                                   _redirectClicked = false;
@@ -206,13 +206,15 @@ class _OneTimePointsPurchaseState extends State<_OneTimePointsPurchase> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                        S.of(context).stripeRedirectFailure),
+                                      S.of(context).stripeRedirectFailure,
+                                    ),
                                     backgroundColor:
                                         Theme.of(context).colorScheme.error,
                                   ),
                                 );
                                 debugPrint(
-                                    'Failed to start Stripe points purchase: $err');
+                                  'Failed to start Stripe points purchase: $err',
+                                );
                               }
                             }
                           }
@@ -273,7 +275,8 @@ class _SubscriptionPointsPurchaseState
           account.pointSubscriptionPriceId != null
               ? Text(
                   S.of(context).currentPointSubscription(
-                      account.pointSubscriptionQuantity!),
+                        account.pointSubscriptionQuantity!,
+                      ),
                   style: Theme.of(context).textTheme.titleMedium,
                 )
               : Text(
@@ -296,14 +299,15 @@ class _SubscriptionPointsPurchaseState
                   },
                   dropdownMenuEntries: [
                     DropdownMenuEntry(
-                        value: _orderPointSubscriptionPrivateOnlyPriceId,
-                        label: S.of(context).orderPointSubscriptionPrivateOnly),
+                      value: _orderPointSubscriptionPrivateOnlyPriceId,
+                      label: S.of(context).orderPointSubscriptionPrivateOnly,
+                    ),
                     DropdownMenuEntry(
-                        value:
-                            _supplementaryPointSubscriptionPrivateOnlyPriceId,
-                        label: S
-                            .of(context)
-                            .freeSupplementaryPointSubscriptionPrivateOnly),
+                      value: _supplementaryPointSubscriptionPrivateOnlyPriceId,
+                      label: S
+                          .of(context)
+                          .freeSupplementaryPointSubscriptionPrivateOnly,
+                    ),
                   ],
                 )
               : DropdownMenu<String>(
@@ -318,15 +322,16 @@ class _SubscriptionPointsPurchaseState
                   },
                   dropdownMenuEntries: [
                     DropdownMenuEntry(
-                        value: _orderPointSubscriptionFreeAndPrivatePriceId,
-                        label:
-                            S.of(context).orderPointSubscriptionFreeAndPrivate),
+                      value: _orderPointSubscriptionFreeAndPrivatePriceId,
+                      label: S.of(context).orderPointSubscriptionFreeAndPrivate,
+                    ),
                     DropdownMenuEntry(
-                        value:
-                            _supplementaryPointSubscriptionFreeAndPrivatePriceId,
-                        label: S
-                            .of(context)
-                            .freeSupplementaryPointSubscriptionFreeAndPrivate),
+                      value:
+                          _supplementaryPointSubscriptionFreeAndPrivatePriceId,
+                      label: S
+                          .of(context)
+                          .freeSupplementaryPointSubscriptionFreeAndPrivate,
+                    ),
                   ],
                 ),
           const SizedBox(
@@ -382,7 +387,8 @@ class _SubscriptionPointsPurchaseState
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                        S.of(context).stripeRedirectFailure),
+                                      S.of(context).stripeRedirectFailure,
+                                    ),
                                     backgroundColor:
                                         Theme.of(context).colorScheme.error,
                                   ),
@@ -391,7 +397,8 @@ class _SubscriptionPointsPurchaseState
                                   _redirectClicked = false;
                                 });
                                 debugPrint(
-                                    'Failed to start Stripe point subscription checkout $err');
+                                  'Failed to start Stripe point subscription checkout $err',
+                                );
                               }
                             }
                           : null,

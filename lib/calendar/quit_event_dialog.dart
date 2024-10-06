@@ -66,9 +66,12 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                           _submitClicked = true;
                         });
                         if (isStudentInEvent(
-                            studentProfile.profileId, widget.event)) {
+                          studentProfile.profileId,
+                          widget.event,
+                        )) {
                           widget.event.studentIdList.removeWhere(
-                              (id) => id == studentProfile.profileId);
+                            (id) => id == studentProfile.profileId,
+                          );
                           try {
                             await event_service.updateEvent(widget.event);
                             if (context.mounted) {
@@ -83,10 +86,14 @@ class _QuitEventDialogState extends State<QuitEventDialog> {
                             studentProfile.numPoints += numPoints;
                             account.studentProfile = studentProfile;
                             profile_service.updateStudentProfile(
-                                account.firebaseUser!.uid, studentProfile);
+                              account.firebaseUser!.uid,
+                              studentProfile,
+                            );
                             event_service.emailAttendees(
-                                widget.event, studentProfile.profileId,
-                                isCancel: true);
+                              widget.event,
+                              studentProfile.profileId,
+                              isCancel: true,
+                            );
                           } catch (e) {
                             widget.event.studentIdList
                                 .add(studentProfile.profileId);

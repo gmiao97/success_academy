@@ -15,14 +15,16 @@ CollectionReference<LessonModel> _lessonModelRef = db
   * Get list of all lesson information.
   */
 Future<List<LessonModel>> getLessons({required bool includePreschool}) {
-  return _lessonModelRef.get().then((querySnapshot) => querySnapshot.docs
-          .map((queryDocumentSnapshot) => queryDocumentSnapshot.data())
-          .where((lesson) {
-        if (!includePreschool && lesson.visibility == 'preschool') {
-          return false;
-        }
-        return true;
-      }).toList());
+  return _lessonModelRef.get().then(
+        (querySnapshot) => querySnapshot.docs
+            .map((queryDocumentSnapshot) => queryDocumentSnapshot.data())
+            .where((lesson) {
+          if (!includePreschool && lesson.visibility == 'preschool') {
+            return false;
+          }
+          return true;
+        }).toList(),
+      );
 }
 
 /**  

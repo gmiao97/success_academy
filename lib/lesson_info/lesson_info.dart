@@ -26,8 +26,9 @@ class _LessonInfoState extends State<LessonInfo> {
     super.didChangeDependencies();
     final account = context.watch<AccountModel>();
     final lessons = await lesson_info_service.getLessons(
-        includePreschool: account.userType != UserType.student ||
-            account.subscriptionPlan == SubscriptionPlan.minimumPreschool);
+      includePreschool: account.userType != UserType.student ||
+          account.subscriptionPlan == SubscriptionPlan.minimumPreschool,
+    );
     setState(() {
       _zoomInfo = lessons;
       _zoomInfoLoaded = true;
@@ -35,7 +36,9 @@ class _LessonInfoState extends State<LessonInfo> {
   }
 
   Widget _getZoomInfoTable(
-      UserType userType, SubscriptionPlan? subscriptionPlan) {
+    UserType userType,
+    SubscriptionPlan? subscriptionPlan,
+  ) {
     if (userType == UserType.admin) {
       return EditableZoomInfo(
         zoomInfo: _zoomInfo,
@@ -78,8 +81,11 @@ class _LessonInfoState extends State<LessonInfo> {
                       children: [
                         FilledButton.tonalIcon(
                           onPressed: () async {
-                            if (!await launchUrl(Uri.parse(
-                                'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list'))) {
+                            if (!await launchUrl(
+                              Uri.parse(
+                                'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list',
+                              ),
+                            )) {
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -97,8 +103,11 @@ class _LessonInfoState extends State<LessonInfo> {
                         ),
                         FilledButton.tonalIcon(
                           onPressed: () async {
-                            if (!await launchUrl(Uri.parse(
-                                'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list'))) {
+                            if (!await launchUrl(
+                              Uri.parse(
+                                'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list',
+                              ),
+                            )) {
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -120,7 +129,9 @@ class _LessonInfoState extends State<LessonInfo> {
                   !_zoomInfoLoaded
                       ? const CircularProgressIndicator()
                       : _getZoomInfoTable(
-                          account.userType, account.subscriptionPlan),
+                          account.userType,
+                          account.subscriptionPlan,
+                        ),
                 ],
               ),
             ),
@@ -150,42 +161,43 @@ class ZoomInfo extends StatelessWidget {
         SizedBox(
           width: 1000,
           child: PaginatedDataTable(
-              rowsPerPage: 3,
-              columns: <DataColumn>[
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).lesson,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
+            rowsPerPage: 3,
+            columns: <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).lesson,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).link,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).link,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).meetingId,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).meetingId,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      S.of(context).password,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).password,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-              ],
-              source: _ZoomInfoDataSource(context: context, data: zoomInfo)),
+              ),
+            ],
+            source: _ZoomInfoDataSource(context: context, data: zoomInfo),
+          ),
         )
       ],
     );
@@ -212,32 +224,36 @@ class _ZoomInfoDataSource extends DataTableSource {
 
   @override
   DataRow getRow(int i) {
-    return DataRow(cells: [
-      DataCell(Text(data[i].name)),
-      DataCell(InkWell(
-        child: const Text(
-          'Zoom',
-          style: TextStyle(
-            decoration: TextDecoration.underline,
-            color: Colors.blue,
+    return DataRow(
+      cells: [
+        DataCell(Text(data[i].name)),
+        DataCell(
+          InkWell(
+            child: const Text(
+              'Zoom',
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                color: Colors.blue,
+              ),
+            ),
+            onTap: () async {
+              if (!await launchUrl(Uri.parse(data[i].zoomLink))) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                      content: Text(S.of(context).openLinkFailure),
+                    ),
+                  );
+                }
+              }
+            },
           ),
         ),
-        onTap: () async {
-          if (!await launchUrl(Uri.parse(data[i].zoomLink))) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  content: Text(S.of(context).openLinkFailure),
-                ),
-              );
-            }
-          }
-        },
-      )),
-      DataCell(Text(data[i].zoomId)),
-      DataCell(Text(data[i].zoomPassword)),
-    ]);
+        DataCell(Text(data[i].zoomId)),
+        DataCell(Text(data[i].zoomPassword)),
+      ],
+    );
   }
 }
 
@@ -317,7 +333,9 @@ class EditableZoomInfo extends StatelessWidget {
               });
               try {
                 await lesson_info_service.updateLesson(
-                    zoomInfo[i].id, zoomInfo[i]);
+                  zoomInfo[i].id,
+                  zoomInfo[i],
+                );
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -328,7 +346,7 @@ class EditableZoomInfo extends StatelessWidget {
                   );
                 }
               } catch (e) {
-                debugPrint("Failed to update lesson info: $e");
+                debugPrint('Failed to update lesson info: $e');
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(S.of(context).lessonInfoUpdateFailed),

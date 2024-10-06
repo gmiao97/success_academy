@@ -65,8 +65,10 @@ class _StudentProfileState extends State<StudentProfile> {
                       alignment: Alignment.centerLeft,
                       child: CircleAvatar(
                         radius: 30,
-                        child: Text(account.studentProfile!.lastName[0],
-                            style: Theme.of(context).textTheme.headlineMedium),
+                        child: Text(
+                          account.studentProfile!.lastName[0],
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -132,8 +134,11 @@ class _StudentProfileState extends State<StudentProfile> {
                         ),
                         IconButton(
                           onPressed: () {
-                            Clipboard.setData(ClipboardData(
-                                text: account.myUser!.referralCode));
+                            Clipboard.setData(
+                              ClipboardData(
+                                text: account.myUser!.referralCode,
+                              ),
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(S.of(context).copied),
@@ -187,8 +192,9 @@ class _StudentProfileState extends State<StudentProfile> {
                               updatedStudentProfile.referrer = _referrer;
                               try {
                                 await profile_service.updateStudentProfile(
-                                    account.firebaseUser!.uid,
-                                    updatedStudentProfile);
+                                  account.firebaseUser!.uid,
+                                  updatedStudentProfile,
+                                );
                                 account.studentProfile = updatedStudentProfile;
                                 await stripe_service
                                     .startStripeSubscriptionCheckoutSession(
@@ -204,13 +210,15 @@ class _StudentProfileState extends State<StudentProfile> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                        S.of(context).stripeRedirectFailure),
+                                      S.of(context).stripeRedirectFailure,
+                                    ),
                                     backgroundColor:
                                         Theme.of(context).colorScheme.error,
                                   ),
                                 );
                                 debugPrint(
-                                    'Failed to start Stripe subscription checkout $e');
+                                  'Failed to start Stripe subscription checkout $e',
+                                );
                               }
                             },
                           ),

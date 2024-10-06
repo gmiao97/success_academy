@@ -18,10 +18,13 @@ Future<void> createMyUserDocIfNotExist(String userId, String email) async {
   final userDoc = await _myUserModelRef.doc(userId).get();
   if (!userDoc.exists) {
     final localTimeZone = await FlutterNativeTimezone.getLocalTimezone();
-    await _myUserModelRef.doc(userId).set(MyUserModel(
-        referralCode: randomAlphaNumeric(8),
-        timeZone: localTimeZone,
-        email: email));
+    await _myUserModelRef.doc(userId).set(
+          MyUserModel(
+            referralCode: randomAlphaNumeric(8),
+            timeZone: localTimeZone,
+            email: email,
+          ),
+        );
   }
 }
 

@@ -68,8 +68,14 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
 
     _teacherId = widget.teacherId;
     final now = tz.TZDateTime.now(_location);
-    _start = tz.TZDateTime(_location, widget.selectedDay.year,
-        widget.selectedDay.month, widget.selectedDay.day, now.hour, now.minute);
+    _start = tz.TZDateTime(
+      _location,
+      widget.selectedDay.year,
+      widget.selectedDay.month,
+      widget.selectedDay.day,
+      now.hour,
+      now.minute,
+    );
     _end = _start.add(const Duration(hours: 1));
     _startController.text = DateFormat.yMMMMd(_locale).add_jm().format(_start);
     _endController.text = DateFormat.yMMMMd(_locale).add_jm().format(_end);
@@ -78,22 +84,31 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
 
   Future<tz.TZDateTime?> _pickDateTime({required tz.TZDateTime initial}) async {
     DateTime? date = await showDatePicker(
-        context: context,
-        initialDate: initial,
-        firstDate: widget.firstDay,
-        lastDate: widget.lastDay);
+      context: context,
+      initialDate: initial,
+      firstDate: widget.firstDay,
+      lastDate: widget.lastDay,
+    );
     // ignore: use_build_context_synchronously
     if (date == null || !context.mounted) {
       return null;
     }
 
     TimeOfDay? time = await showTimePicker(
-        context: context, initialTime: TimeOfDay.fromDateTime(initial));
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(initial),
+    );
     if (time == null) {
       return null;
     }
     return tz.TZDateTime(
-        _location, date.year, date.month, date.day, time.hour, time.minute);
+      _location,
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
   }
 
   void _selectStartTime() async {
@@ -143,7 +158,8 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     final userType = context.select<AccountModel, UserType>((a) => a.userType);
     final teacherProfiles =
         context.select<AccountModel, List<TeacherProfileModel>>(
-            (a) => a.teacherProfileList);
+      (a) => a.teacherProfileList,
+    );
 
     return AlertDialog(
       title: Text(S.of(context).createEvent),
@@ -162,10 +178,12 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
               children: [
                 DropdownButtonFormField<EventType>(
                   items: _eventTypes
-                      .map((eventType) => DropdownMenuItem(
-                            value: eventType,
-                            child: Text(eventType.getName(context)),
-                          ))
+                      .map(
+                        (eventType) => DropdownMenuItem(
+                          value: eventType,
+                          child: Text(eventType.getName(context)),
+                        ),
+                      )
                       .toList(),
                   onChanged: (value) {
                     setState(() {
@@ -177,11 +195,14 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 if (userType == UserType.admin)
                   DropdownButtonFormField<String>(
                     items: teacherProfiles
-                        .map((profile) => DropdownMenuItem(
-                              value: profile.profileId,
-                              child: Text(
-                                  '${profile.lastName}, ${profile.firstName}'),
-                            ))
+                        .map(
+                          (profile) => DropdownMenuItem(
+                            value: profile.profileId,
+                            child: Text(
+                              '${profile.lastName}, ${profile.firstName}',
+                            ),
+                          ),
+                        )
                         .toList(),
                     onChanged: (value) {
                       setState(() {
@@ -190,16 +211,17 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     },
                     value: _teacherId,
                     decoration: InputDecoration(
-                        hintText: S.of(context).teacherTitle,
-                        icon: const Icon(Icons.person),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            setState(() {
-                              _teacherId = null;
-                            });
-                          },
-                        )),
+                      hintText: S.of(context).teacherTitle,
+                      icon: const Icon(Icons.person),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          setState(() {
+                            _teacherId = null;
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 TextFormField(
                   decoration: InputDecoration(
@@ -326,10 +348,12 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     children: [
                       DropdownButtonFormField<Frequency>(
                         items: recurFrequencies
-                            .map((f) => DropdownMenuItem(
-                                  value: f,
-                                  child: Text(frequencyToString(context, f)),
-                                ))
+                            .map(
+                              (f) => DropdownMenuItem(
+                                value: f,
+                                child: Text(frequencyToString(context, f)),
+                              ),
+                            )
                             .toList(),
                         value: _recurFrequency,
                         onChanged: (value) {
@@ -399,19 +423,22 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                       _submitClicked = true;
                     });
                     final event = EventModel(
-                        eventType: _eventType,
-                        summary: _summary,
-                        description: _description,
-                        numPoints:
-                            _eventType == EventType.private ? _numPoints : 0,
-                        startTime: _start,
-                        endTime: _end,
-                        recurrence: _isRecur
-                            ? buildRecurrence(
-                                frequency: _recurFrequency, until: _recurUntil)
-                            : [],
-                        timeZone: timeZone,
-                        teacherId: _teacherId);
+                      eventType: _eventType,
+                      summary: _summary,
+                      description: _description,
+                      numPoints:
+                          _eventType == EventType.private ? _numPoints : 0,
+                      startTime: _start,
+                      endTime: _end,
+                      recurrence: _isRecur
+                          ? buildRecurrence(
+                              frequency: _recurFrequency,
+                              until: _recurUntil,
+                            )
+                          : [],
+                      timeZone: timeZone,
+                      teacherId: _teacherId,
+                    );
                     try {
                       await event_service.insertEvent(event);
                       widget.onRefresh();

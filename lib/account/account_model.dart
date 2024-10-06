@@ -151,7 +151,9 @@ class AccountModel extends ChangeNotifier {
         await stripe_service.getSubscriptionsForUser(firebaseUser.uid);
 
     await user_service.createMyUserDocIfNotExist(
-        firebaseUser.uid, firebaseUser.email!);
+      firebaseUser.uid,
+      firebaseUser.email!,
+    );
     _myUser = await user_service.getMyUserDoc(firebaseUser.uid);
     await _initProfile(firebaseUser.uid);
   }
@@ -172,7 +174,9 @@ class AccountModel extends ChangeNotifier {
           await shared_preferences_service.loadStudentProfile(userId: userId);
       final studentProfileBelongsToUser =
           await profile_service.studentProfileBelongsToUser(
-              userId: userId, profileId: studentProfile?.profileId);
+        userId: userId,
+        profileId: studentProfile?.profileId,
+      );
       if (studentProfileBelongsToUser) {
         _studentProfile = studentProfile;
         _subscriptionPlan =
@@ -200,17 +204,24 @@ class AccountModel extends ChangeNotifier {
     }
     try {
       return _subscriptionDocs
-          .where((doc) =>
-              doc.get('metadata.profile_id') as String == profileId &&
-              SubscriptionPlan.values
-                  .map((value) => value.name)
-                  .contains(doc.get('items')[0]['price']['metadata']['id']))
-          .map((doc) => EnumToString.fromString(SubscriptionPlan.values,
-              doc['items'][0]['price']['metadata']['id']))
+          .where(
+            (doc) =>
+                doc.get('metadata.profile_id') as String == profileId &&
+                SubscriptionPlan.values
+                    .map((value) => value.name)
+                    .contains(doc.get('items')[0]['price']['metadata']['id']),
+          )
+          .map(
+            (doc) => EnumToString.fromString(
+              SubscriptionPlan.values,
+              doc['items'][0]['price']['metadata']['id'],
+            ),
+          )
           .single;
     } on StateError {
       debugPrint(
-          'getSubscriptionTypeForProfile: No subscription found for profile $profileId');
+        'getSubscriptionTypeForProfile: No subscription found for profile $profileId',
+      );
       FirebaseAnalytics.instance.logEvent(
         name: 'getSubscriptionTypeForProfile',
         parameters: {
@@ -226,10 +237,12 @@ class AccountModel extends ChangeNotifier {
       return null;
     }
     try {
-      return _subscriptionDocs.firstWhere((doc) =>
-          doc.get('metadata.profile_id') as String == profileId &&
-          (doc['items'][0]['price']['metadata']['id'] as String)
-              .contains('point'))['items'][0]['price']['id'];
+      return _subscriptionDocs.firstWhere(
+        (doc) =>
+            doc.get('metadata.profile_id') as String == profileId &&
+            (doc['items'][0]['price']['metadata']['id'] as String)
+                .contains('point'),
+      )['items'][0]['price']['id'];
     } on StateError {
       return null;
     }
@@ -240,10 +253,12 @@ class AccountModel extends ChangeNotifier {
       return null;
     }
     try {
-      return _subscriptionDocs.firstWhere((doc) =>
-          doc.get('metadata.profile_id') as String == profileId &&
-          (doc['items'][0]['price']['metadata']['id'] as String)
-              .contains('point'))['items'][0]['quantity'];
+      return _subscriptionDocs.firstWhere(
+        (doc) =>
+            doc.get('metadata.profile_id') as String == profileId &&
+            (doc['items'][0]['price']['metadata']['id'] as String)
+                .contains('point'),
+      )['items'][0]['quantity'];
     } on StateError {
       return null;
     }

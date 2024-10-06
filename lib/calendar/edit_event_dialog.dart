@@ -115,22 +115,31 @@ class _EditEventDialogState extends State<EditEventDialog> {
 
   Future<tz.TZDateTime?> _pickDateTime({required tz.TZDateTime initial}) async {
     DateTime? date = await showDatePicker(
-        context: context,
-        initialDate: initial,
-        firstDate: widget.firstDay,
-        lastDate: widget.lastDay);
+      context: context,
+      initialDate: initial,
+      firstDate: widget.firstDay,
+      lastDate: widget.lastDay,
+    );
     // ignore: use_build_context_synchronously
     if (date == null || !context.mounted) {
       return null;
     }
 
     TimeOfDay? time = await showTimePicker(
-        context: context, initialTime: TimeOfDay.fromDateTime(initial));
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(initial),
+    );
     if (time == null) {
       return null;
     }
     return tz.TZDateTime(
-        _location, date.year, date.month, date.day, time.hour, time.minute);
+      _location,
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
   }
 
   void _selectStartTime() async {
@@ -174,7 +183,8 @@ class _EditEventDialogState extends State<EditEventDialog> {
     final userType = context.select<AccountModel, UserType>((a) => a.userType);
     final teacherProfiles =
         context.select<AccountModel, List<TeacherProfileModel>>(
-            (a) => a.teacherProfileList);
+      (a) => a.teacherProfileList,
+    );
 
     return AlertDialog(
       title: Text(S.of(context).editEvent),
@@ -201,11 +211,14 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 if (userType == UserType.admin)
                   DropdownButtonFormField<String>(
                     items: teacherProfiles
-                        .map((profile) => DropdownMenuItem(
-                              value: profile.profileId,
-                              child: Text(
-                                  '${profile.lastName}, ${profile.firstName}'),
-                            ))
+                        .map(
+                          (profile) => DropdownMenuItem(
+                            value: profile.profileId,
+                            child: Text(
+                              '${profile.lastName}, ${profile.firstName}',
+                            ),
+                          ),
+                        )
                         .toList(),
                     onChanged: (value) {
                       setState(() {
@@ -214,16 +227,17 @@ class _EditEventDialogState extends State<EditEventDialog> {
                     },
                     value: _teacherId,
                     decoration: InputDecoration(
-                        hintText: S.of(context).teacherTitle,
-                        icon: const Icon(Icons.person),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            setState(() {
-                              _teacherId = null;
-                            });
-                          },
-                        )),
+                      hintText: S.of(context).teacherTitle,
+                      icon: const Icon(Icons.person),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          setState(() {
+                            _teacherId = null;
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 TextFormField(
                   decoration: InputDecoration(
@@ -362,10 +376,12 @@ class _EditEventDialogState extends State<EditEventDialog> {
                     children: [
                       DropdownButtonFormField<Frequency>(
                         items: recurFrequencies
-                            .map((f) => DropdownMenuItem(
-                                  value: f,
-                                  child: Text(frequencyToString(context, f)),
-                                ))
+                            .map(
+                              (f) => DropdownMenuItem(
+                                value: f,
+                                child: Text(frequencyToString(context, f)),
+                              ),
+                            )
                             .toList(),
                         value: _recurFrequency,
                         onChanged: null,
@@ -438,19 +454,20 @@ class _EditEventDialogState extends State<EditEventDialog> {
                       _submitClicked = true;
                     });
                     final event = EventModel(
-                        eventId: widget.event.eventId,
-                        eventType: widget.event.eventType,
-                        summary: _summary,
-                        description: _description,
-                        numPoints: widget.event.eventType == EventType.private
-                            ? _numPoints
-                            : 0,
-                        startTime: _start,
-                        endTime: _end,
-                        timeZone: widget.event.timeZone,
-                        teacherId: _teacherId,
-                        studentIdList: widget.event.studentIdList,
-                        recurrence: widget.event.recurrence);
+                      eventId: widget.event.eventId,
+                      eventType: widget.event.eventType,
+                      summary: _summary,
+                      description: _description,
+                      numPoints: widget.event.eventType == EventType.private
+                          ? _numPoints
+                          : 0,
+                      startTime: _start,
+                      endTime: _end,
+                      timeZone: widget.event.timeZone,
+                      teacherId: _teacherId,
+                      studentIdList: widget.event.studentIdList,
+                      recurrence: widget.event.recurrence,
+                    );
                     try {
                       await event_service.updateEvent(event);
                       _updateLocalEvent(event);

@@ -33,8 +33,9 @@ class StudentProfileModel {
   StudentProfileModel() : numPoints = 0;
 
   StudentProfileModel.fromFirestoreJson(
-      String profileId, Map<String, Object?> json)
-      : _profileId = profileId,
+    String profileId,
+    Map<String, Object?> json,
+  )   : _profileId = profileId,
         email = json['email'] as String,
         lastName = json['last_name'] as String,
         firstName = json['first_name'] as String,
@@ -43,9 +44,10 @@ class StudentProfileModel {
         referrer = json['referrer'] as String?;
 
   /// Used to read profile from shared preferences.
-  StudentProfileModel._fromJson(Map<String, Object?> json,
-      {required String userId})
-      : _profileId = json['id'] as String,
+  StudentProfileModel._fromJson(
+    Map<String, Object?> json, {
+    required String userId,
+  })  : _profileId = json['id'] as String,
         email = json['email'] as String,
         lastName = json['last_name'] as String,
         firstName = json['first_name'] as String,
@@ -53,12 +55,16 @@ class StudentProfileModel {
         numPoints = json['num_points'] as int,
         referrer = json['referrer'] as String?;
 
-  static Future<StudentProfileModel> create(Map<String, Object?> json,
-      {required String userId}) async {
+  static Future<StudentProfileModel> create(
+    Map<String, Object?> json, {
+    required String userId,
+  }) async {
     StudentProfileModel profile =
         StudentProfileModel._fromJson(json, userId: userId);
     profile.numPoints = await profile_service.getNumberPoints(
-        userId: userId, profileId: json['id'] as String);
+      userId: userId,
+      profileId: json['id'] as String,
+    );
     return profile;
   }
 
@@ -89,7 +95,8 @@ class StudentProfileModel {
   }
 
   static Map<String, StudentProfileModel> buildStudentProfileMap(
-      List<StudentProfileModel> studentProfileList) {
+    List<StudentProfileModel> studentProfileList,
+  ) {
     Map<String, StudentProfileModel> map = {};
     for (StudentProfileModel profile in studentProfileList) {
       map[profile._profileId] = profile;
@@ -124,7 +131,8 @@ class TeacherProfileModel {
   }
 
   static Map<String, TeacherProfileModel> buildTeacherProfileMap(
-      List<TeacherProfileModel> teacherProfiles) {
+    List<TeacherProfileModel> teacherProfiles,
+  ) {
     Map<String, TeacherProfileModel> map = {};
     for (TeacherProfileModel profile in teacherProfiles) {
       map[profile._profileId] = profile;

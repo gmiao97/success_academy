@@ -112,8 +112,11 @@ Future<dynamic> updateEvent(EventModel event) async {
   }
 }
 
-Future<dynamic> emailAttendees(EventModel event, String studentId,
-    {bool isCancel = false}) async {
+Future<dynamic> emailAttendees(
+  EventModel event,
+  String studentId, {
+  bool isCancel = false,
+}) async {
   HttpsCallable callable = functions.httpsCallable(
     'email_attendees',
     options: HttpsCallableOptions(

@@ -66,10 +66,11 @@ class _SignupFormState extends State<_SignupForm> {
 
   void _selectDate(BuildContext context) async {
     final DateTime? dateOfBirth = await showDatePicker(
-        context: context,
-        initialDate: _profileModel.dateOfBirth,
-        firstDate: DateTime(1900),
-        lastDate: DateTime.now());
+      context: context,
+      initialDate: _profileModel.dateOfBirth,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
     if (dateOfBirth != null) {
       setState(() {
         _dateOfBirthController.text = dateFormatter.format(dateOfBirth);
@@ -164,7 +165,9 @@ class _SignupFormState extends State<_SignupForm> {
                 });
                 _profileModel.email = account.myUser!.email;
                 final profileDoc = await profile_service.addStudentProfile(
-                    account.firebaseUser!.uid, _profileModel);
+                  account.firebaseUser!.uid,
+                  _profileModel,
+                );
                 try {
                   await stripe_service.startStripeSubscriptionCheckoutSession(
                     userId: account.firebaseUser!.uid,
@@ -183,7 +186,8 @@ class _SignupFormState extends State<_SignupForm> {
                     );
                   });
                   debugPrint(
-                      'Failed to start Stripe subscription checkout $err');
+                    'Failed to start Stripe subscription checkout $err',
+                  );
                 }
               }
             },

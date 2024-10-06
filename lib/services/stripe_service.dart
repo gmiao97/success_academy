@@ -14,7 +14,8 @@ final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'us-west2');
 
 Future<List<QueryDocumentSnapshot>> getSubscriptionsForUser(
-    String userId) async {
+  String userId,
+) async {
   final subscriptionsQuery = await db
       .collection('customers')
       .doc(userId)
@@ -28,11 +29,12 @@ Future<List<QueryDocumentSnapshot>> _getAllPrices() async {
   return pricesQuery.docs.where((doc) => doc.get('active') == true).toList();
 }
 
-Future<void> startStripeSubscriptionCheckoutSession(
-    {required String userId,
-    required String profileId,
-    required SubscriptionPlan subscriptionPlan,
-    required bool isReferral}) async {
+Future<void> startStripeSubscriptionCheckoutSession({
+  required String userId,
+  required String profileId,
+  required SubscriptionPlan subscriptionPlan,
+  required bool isReferral,
+}) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
   for (final doc in priceDocs) {
@@ -151,11 +153,12 @@ Future<void> redirectToStripePortal() async {
   }
 }
 
-Future<void> startStripePointSubscriptionCheckoutSession(
-    {required String userId,
-    required String profileId,
-    required String priceId,
-    required int quantity}) async {
+Future<void> startStripePointSubscriptionCheckoutSession({
+  required String userId,
+  required String profileId,
+  required String priceId,
+  required int quantity,
+}) async {
   Completer completer = Completer();
   List<Map<String, Object?>> lineItems = [
     {

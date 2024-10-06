@@ -17,7 +17,7 @@ enum EventType {
   String getName(BuildContext context) {
     switch (this) {
       case unknown:
-        return "¯\\_(ツ)_/¯";
+        return '¯\\_(ツ)_/¯';
       case free:
         return S.of(context).free;
       case preschool:
@@ -104,9 +104,10 @@ class EventModel {
   });
 
   /// Build object from response returned by Google Calendar API.
-  EventModel.fromJson(Map<String, Object?> json,
-      {required tz.Location location})
-      : eventId = json['id'] as String,
+  EventModel.fromJson(
+    Map<String, Object?> json, {
+    required tz.Location location,
+  })  : eventId = json['id'] as String,
         recurrenceId = json['recurringEventId'] as String?,
         summary = json['summary'] as String,
         description = json['description'] as String,
@@ -123,7 +124,9 @@ class EventModel {
     Map<String, dynamic> extendedProperties =
         (json['extendedProperties'] as Map)['shared'] as Map<String, dynamic>;
     eventType = EnumToString.fromString(
-            EventType.values, extendedProperties['eventType']) ??
+          EventType.values,
+          extendedProperties['eventType'],
+        ) ??
         EventType.unknown;
     teacherId = extendedProperties['teacherId'];
     studentIdList = extendedProperties['studentIdList'] != null
@@ -154,7 +157,10 @@ Map<DateTime, List<EventModel>> buildEventMap(List<EventModel> eventList) {
   for (final event in eventList) {
     // table_calendar DateTimes for each day are in UTC, so this needs to match.
     final localStartDay = DateTime.utc(
-        event.startTime.year, event.startTime.month, event.startTime.day);
+      event.startTime.year,
+      event.startTime.month,
+      event.startTime.day,
+    );
 
     eventMap.putIfAbsent(localStartDay, () => []).add(event);
   }

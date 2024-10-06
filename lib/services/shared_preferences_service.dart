@@ -14,15 +14,18 @@ Future<String> getLocale() async {
   return prefs?.getString('locale') ?? 'en';
 }
 
-Future<StudentProfileModel?> loadStudentProfile(
-    {required String userId}) async {
+Future<StudentProfileModel?> loadStudentProfile({
+  required String userId,
+}) async {
   final prefs = await _getSharedPreferencesInstance();
   final profileJsonString = prefs?.getString('profile');
   if (profileJsonString != null) {
     final profileJson = jsonDecode(profileJsonString);
     if (profileJson != null) {
-      return StudentProfileModel.create(jsonDecode(profileJsonString),
-          userId: userId);
+      return StudentProfileModel.create(
+        jsonDecode(profileJsonString),
+        userId: userId,
+      );
     }
   }
   return null;

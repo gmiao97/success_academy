@@ -172,30 +172,38 @@ class _DeleteEventDialogState extends State<DeleteEventDialog> {
                     switch (_deleteRange) {
                       case _DeleteRange.single:
                         await event_service.deleteEvent(
-                            eventId: widget.event.eventId!);
+                          eventId: widget.event.eventId!,
+                        );
                         widget.deleteEventsLocally(
-                            eventId: widget.event.eventId!);
+                          eventId: widget.event.eventId!,
+                        );
                         break;
                       case _DeleteRange.future:
                         final rrule = RecurrenceRule.fromString(
-                            _recurrenceEvent!.recurrence[0]);
+                          _recurrenceEvent!.recurrence[0],
+                        );
                         final cutoff = widget.event.startTime
                             .subtract(const Duration(seconds: 1));
 
                         _recurrenceEvent!.recurrence = buildRecurrence(
-                            frequency: rrule.frequency, until: cutoff);
+                          frequency: rrule.frequency,
+                          until: cutoff,
+                        );
                         await event_service.updateEvent(_recurrenceEvent!);
                         widget.deleteEventsLocally(
-                            eventId: widget.event.recurrenceId!,
-                            isRecurrence: true,
-                            from: cutoff);
+                          eventId: widget.event.recurrenceId!,
+                          isRecurrence: true,
+                          from: cutoff,
+                        );
                         break;
                       case _DeleteRange.all:
                         await event_service.deleteEvent(
-                            eventId: widget.event.recurrenceId!);
+                          eventId: widget.event.recurrenceId!,
+                        );
                         widget.deleteEventsLocally(
-                            eventId: widget.event.recurrenceId!,
-                            isRecurrence: true);
+                          eventId: widget.event.recurrenceId!,
+                          isRecurrence: true,
+                        );
                         break;
                     }
                     if (context.mounted) {

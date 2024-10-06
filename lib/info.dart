@@ -32,10 +32,12 @@ class Info extends StatelessWidget {
                     ),
                     const Divider(),
                     ...termsOfUse
-                        .map((line) => Text(
-                              line,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ))
+                        .map(
+                          (line) => Text(
+                            line,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        )
                         .toList(),
                   ],
                 ),

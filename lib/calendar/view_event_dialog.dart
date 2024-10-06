@@ -119,8 +119,9 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                   children: [
                     const WidgetSpan(child: Icon(Icons.access_time)),
                     TextSpan(
-                        text:
-                            '${DateFormat.MMMMd(account.locale).add_jm().format(widget.event.startTime)} - ${DateFormat.MMMMd(account.locale).add_jm().format(widget.event.endTime)}')
+                      text:
+                          '${DateFormat.MMMMd(account.locale).add_jm().format(widget.event.startTime)} - ${DateFormat.MMMMd(account.locale).add_jm().format(widget.event.endTime)}',
+                    )
                   ],
                 ),
               ),
@@ -160,7 +161,8 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                     account.hasPointsDiscount()
                         ? TextSpan(
                             text: S.of(context).eventPointsDisplay(
-                                (widget.event.numPoints * .9).floor()),
+                                  (widget.event.numPoints * .9).floor(),
+                                ),
                           )
                         : const TextSpan(),
                   ],

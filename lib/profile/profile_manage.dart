@@ -35,13 +35,15 @@ class _ManageUsersState extends State<ManageUsers> {
     final location =
         tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
     _dateRange = DateTimeRange(
-        start: tz.TZDateTime.now(location).subtract(const Duration(days: 30)),
-        end: tz.TZDateTime.now(location));
+      start: tz.TZDateTime.now(location).subtract(const Duration(days: 30)),
+      end: tz.TZDateTime.now(location),
+    );
     _events = await event_service.listEvents(
-        location: location,
-        timeMin: _dateRange.start.toIso8601String(),
-        timeMax: _dateRange.end.toIso8601String(),
-        singleEvents: true);
+      location: location,
+      timeMin: _dateRange.start.toIso8601String(),
+      timeMax: _dateRange.end.toIso8601String(),
+      singleEvents: true,
+    );
   }
 
   void _selectDateRange() async {
@@ -49,24 +51,28 @@ class _ManageUsersState extends State<ManageUsers> {
         tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
 
     final dateRange = await showDateRangePicker(
-        context: context,
-        firstDate: DateTime(2020, 1, 1),
-        lastDate: tz.TZDateTime.now(location));
+      context: context,
+      firstDate: DateTime(2020, 1, 1),
+      lastDate: tz.TZDateTime.now(location),
+    );
     if (dateRange != null) {
       final start = tz.TZDateTime.from(dateRange.start, location);
       final end = tz.TZDateTime.from(dateRange.end, location);
       await event_service
           .listEvents(
-              location: location,
-              timeMin: start.toIso8601String(),
-              timeMax: end.toIso8601String(),
-              singleEvents: true)
-          .then((events) => setState(
-                () {
-                  _dateRange = DateTimeRange(start: start, end: end);
-                  _events = events;
-                },
-              ));
+            location: location,
+            timeMin: start.toIso8601String(),
+            timeMax: end.toIso8601String(),
+            singleEvents: true,
+          )
+          .then(
+            (events) => setState(
+              () {
+                _dateRange = DateTimeRange(start: start, end: end);
+                _events = events;
+              },
+            ),
+          );
     }
   }
 
@@ -135,22 +141,25 @@ class _TeacherTable extends StatelessWidget {
   final VoidCallback onSelectDateRange;
   final List<EventModel> events;
 
-  const _TeacherTable(
-      {required this.dateRange,
-      required this.onSelectDateRange,
-      required this.events});
+  const _TeacherTable({
+    required this.dateRange,
+    required this.onSelectDateRange,
+    required this.events,
+  });
 
   @override
   Widget build(BuildContext context) {
     final teacherProfiles =
         context.select<AccountModel, List<TeacherProfileModel>>(
-            (a) => a.teacherProfileList);
+      (a) => a.teacherProfileList,
+    );
 
     return PaginatedDataTable(
       header: TextButton.icon(
         icon: const Icon(Icons.edit),
         label: Text(
-            '${dateFormatter.format(dateRange.start)} - ${dateFormatter.format(dateRange.end)}'),
+          '${dateFormatter.format(dateRange.start)} - ${dateFormatter.format(dateRange.end)}',
+        ),
         onPressed: onSelectDateRange,
       ),
       columns: <DataColumn>[
@@ -237,7 +246,24 @@ class _StudentTableState extends State<_StudentTable> {
 
   Iterable<Widget> _getSuggestions(SearchController controller) {
     if (controller.text.isEmpty) {
-      return _studentProfiles.map((e) => ListTile(
+      return _studentProfiles.map(
+        (e) => ListTile(
+          title: Text(e.email),
+          onTap: () {
+            controller.closeView(e.email);
+            setState(() {
+              _searchEmail = e.email;
+            });
+          },
+        ),
+      );
+    }
+    return _studentProfiles
+        .where(
+          (e) => e.email.toLowerCase().contains(controller.text.toLowerCase()),
+        )
+        .map(
+          (e) => ListTile(
             title: Text(e.email),
             onTap: () {
               controller.closeView(e.email);
@@ -245,20 +271,8 @@ class _StudentTableState extends State<_StudentTable> {
                 _searchEmail = e.email;
               });
             },
-          ));
-    }
-    return _studentProfiles
-        .where((e) =>
-            e.email.toLowerCase().contains(controller.text.toLowerCase()))
-        .map((e) => ListTile(
-              title: Text(e.email),
-              onTap: () {
-                controller.closeView(e.email);
-                setState(() {
-                  _searchEmail = e.email;
-                });
-              },
-            ));
+          ),
+        );
   }
 
   @override
@@ -348,11 +362,12 @@ class _StudentTableState extends State<_StudentTable> {
             ),
           ],
           source: _StudentData(
-              data: _searchEmail?.isEmpty ?? true
-                  ? _studentProfiles
-                  : _studentProfiles
-                      .where((e) => e.email == _searchEmail)
-                      .toList()),
+            data: _searchEmail?.isEmpty ?? true
+                ? _studentProfiles
+                : _studentProfiles
+                    .where((e) => e.email == _searchEmail)
+                    .toList(),
+          ),
         ),
       ],
     );
@@ -360,11 +375,11 @@ class _StudentTableState extends State<_StudentTable> {
 }
 
 class _TeacherData extends DataTableSource {
-  _TeacherData(
-      {required BuildContext context,
-      required List<TeacherProfileModel> data,
-      required List<EventModel> events})
-      : _context = context,
+  _TeacherData({
+    required BuildContext context,
+    required List<TeacherProfileModel> data,
+    required List<EventModel> events,
+  })  : _context = context,
         _data = data,
         _events = events;
 
@@ -386,56 +401,64 @@ class _TeacherData extends DataTableSource {
     final account = _context.read<AccountModel>();
 
     final completedPrivateEvents = _events
-        .where((e) =>
-            e.eventType == EventType.private &&
-            isTeacherInEvent(_data[index].profileId, e) &&
-            e.studentIdList.isNotEmpty)
+        .where(
+          (e) =>
+              e.eventType == EventType.private &&
+              isTeacherInEvent(_data[index].profileId, e) &&
+              e.studentIdList.isNotEmpty,
+        )
         .toList();
 
-    return DataRow(cells: [
-      DataCell(SelectableText(_data[index].profileId)),
-      DataCell(SelectableText(_data[index].email)),
-      DataCell(SelectableText(_data[index].lastName)),
-      DataCell(SelectableText(_data[index].firstName)),
-      DataCell(
-        SelectableText(
-          '${_events.where((e) => e.eventType == EventType.free && isTeacherInEvent(_data[index].profileId, e)).length}',
+    return DataRow(
+      cells: [
+        DataCell(SelectableText(_data[index].profileId)),
+        DataCell(SelectableText(_data[index].email)),
+        DataCell(SelectableText(_data[index].lastName)),
+        DataCell(SelectableText(_data[index].firstName)),
+        DataCell(
+          SelectableText(
+            '${_events.where((e) => e.eventType == EventType.free && isTeacherInEvent(_data[index].profileId, e)).length}',
+          ),
         ),
-      ),
-      DataCell(
-        SelectableText(
-          '${_events.where((e) => e.eventType == EventType.preschool && isTeacherInEvent(_data[index].profileId, e)).length}',
+        DataCell(
+          SelectableText(
+            '${_events.where((e) => e.eventType == EventType.preschool && isTeacherInEvent(_data[index].profileId, e)).length}',
+          ),
         ),
-      ),
-      DataCell(
-        SelectableText(
-          '${completedPrivateEvents.map((event) => event.numPoints).fold(0, (int a, int b) => a + b)}',
-        ),
-        onTap: () => showDialog(
-          context: _context,
-          builder: (context) => AlertDialog(
-            content: SizedBox(
-              width: 500,
-              height: 500,
-              child: ListView(
-                children: completedPrivateEvents
-                    .map((event) => Row(
+        DataCell(
+          SelectableText(
+            '${completedPrivateEvents.map((event) => event.numPoints).fold(0, (int a, int b) => a + b)}',
+          ),
+          onTap: () => showDialog(
+            context: _context,
+            builder: (context) => AlertDialog(
+              content: SizedBox(
+                width: 500,
+                height: 500,
+                child: ListView(
+                  children: completedPrivateEvents
+                      .map(
+                        (event) => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(event.summary),
-                            Text(DateFormat.yMd(account.locale)
-                                .add_jm()
-                                .format(event.startTime)),
+                            Text(
+                              DateFormat.yMd(account.locale)
+                                  .add_jm()
+                                  .format(event.startTime),
+                            ),
                             Text('${event.numPoints}'),
                           ],
-                        ))
-                    .toList(),
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
@@ -457,13 +480,15 @@ class _StudentData extends DataTableSource {
 
   @override
   DataRow getRow(int index) {
-    return DataRow(cells: [
-      DataCell(SelectableText(_data[index].profileId)),
-      DataCell(SelectableText(_data[index].email)),
-      DataCell(SelectableText(_data[index].lastName)),
-      DataCell(SelectableText(_data[index].firstName)),
-      DataCell(SelectableText('${_data[index].numPoints}')),
-      DataCell(SelectableText(_data[index].referrer ?? '')),
-    ]);
+    return DataRow(
+      cells: [
+        DataCell(SelectableText(_data[index].profileId)),
+        DataCell(SelectableText(_data[index].email)),
+        DataCell(SelectableText(_data[index].lastName)),
+        DataCell(SelectableText(_data[index].firstName)),
+        DataCell(SelectableText('${_data[index].numPoints}')),
+        DataCell(SelectableText(_data[index].referrer ?? '')),
+      ],
+    );
   }
 }
