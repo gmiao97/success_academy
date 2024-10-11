@@ -1,8 +1,10 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../calendar/event_model.dart';
+
+const isDev = kDebugMode;
 
 final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'us-west2');
@@ -19,7 +21,10 @@ Future<EventModel> getEvent({
   );
 
   try {
-    final result = await callable({'eventId': eventId});
+    final result = await callable({
+      'eventId': eventId,
+      'isDev': isDev,
+    });
     return EventModel.fromJson(result.data, location: location);
   } catch (err) {
     debugPrint('getEvent failed: $err');
@@ -46,6 +51,7 @@ Future<List<EventModel>> listEvents({
       'timeMin': timeMin,
       'timeMax': timeMax,
       'singleEvents': singleEvents,
+      'isDev': isDev,
     });
     return (result.data as List<dynamic>)
         .where((e) => e['status'] != 'cancelled')
@@ -70,6 +76,7 @@ Future<dynamic> deleteEvent({
   try {
     final result = await callable({
       'eventId': eventId,
+      'isDev': isDev,
     });
     return result.data;
   } catch (err) {
@@ -87,7 +94,10 @@ Future<dynamic> insertEvent(EventModel event) async {
   );
 
   try {
-    final result = await callable(event.toJson());
+    final result = await callable({
+      ...event.toJson(),
+      'isDev': isDev,
+    });
     return result.data;
   } catch (err) {
     debugPrint('insertEvent failed: $err');
@@ -104,7 +114,10 @@ Future<dynamic> updateEvent(EventModel event) async {
   );
 
   try {
-    final result = await callable(event.toJson());
+    final result = await callable({
+      ...event.toJson(),
+      'isDev': isDev,
+    });
     return result.data;
   } catch (err) {
     debugPrint('updateEvent failed: $err');
