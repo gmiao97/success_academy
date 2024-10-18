@@ -1,5 +1,7 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/i10n.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +23,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+  if (kDebugMode) {
+    FirebaseFunctions.instanceFor(region: 'us-west2')
+        .useFunctionsEmulator('localhost', 5001);
+  }
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => AccountModel(),
