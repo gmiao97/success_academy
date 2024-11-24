@@ -4,22 +4,22 @@ import 'package:provider/provider.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../account/account_model.dart';
-import '../calendar/calendar_utils.dart';
-import '../calendar/event_model.dart';
-import '../constants.dart';
-import '../generated/l10n.dart';
-import '../services/event_service.dart' as event_service;
-import 'profile_model.dart';
+import '../account_model.dart';
+import '../../calendar/calendar_utils.dart';
+import '../../calendar/event_model.dart';
+import '../../constants.dart';
+import '../../generated/l10n.dart';
+import '../../services/event_service.dart' as event_service;
+import '../../profile/profile_model.dart';
 
-class ManageUsers extends StatefulWidget {
-  const ManageUsers({super.key});
+class ManageUsersPage extends StatefulWidget {
+  const ManageUsersPage({super.key});
 
   @override
-  State<ManageUsers> createState() => _ManageUsersState();
+  State<ManageUsersPage> createState() => _ManageUsersPageState();
 }
 
-class _ManageUsersState extends State<ManageUsers> {
+class _ManageUsersPageState extends State<ManageUsersPage> {
   final List<bool> _selectedToggle = [true, false];
   List<EventModel> _events = [];
   late DateTimeRange _dateRange;

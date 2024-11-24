@@ -4,14 +4,14 @@ import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
 
-import '../account/account_model.dart';
-import '../constants.dart';
-import '../generated/l10n.dart';
-import 'profile_model.dart';
-import 'student_profile.dart';
+import '../../account/account_model.dart';
+import '../../constants.dart';
+import '../../generated/l10n.dart';
+import '../profile_model.dart';
+import 'create_subscription_form.dart';
 
-class ProfileCreate extends StatelessWidget {
-  const ProfileCreate({super.key});
+class ProfileCreatePage extends StatelessWidget {
+  const ProfileCreatePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class _SignupFormState extends State<_SignupForm> {
             },
           ),
           const SizedBox(height: 20),
-          CreateSubscription(
+          CreateSubscriptionForm(
             subscriptionPlan: _subscriptionPlan,
             redirectClicked: _redirectClicked,
             onSubscriptionPlanChange: (selectedSubscription) {

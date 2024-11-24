@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../account/account_model.dart';
-import '../constants.dart' as constants;
-import '../generated/l10n.dart';
-import 'sign_in.dart';
+import '../../account/account_model.dart';
+import '../../constants.dart' as constants;
+import '../../generated/l10n.dart';
+import 'sign_in_dialog.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});

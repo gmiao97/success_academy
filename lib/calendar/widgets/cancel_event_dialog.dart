@@ -3,28 +3,28 @@ import 'package:provider/provider.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 
-import '../account/account_model.dart';
-import '../generated/l10n.dart';
-import '../profile/profile_model.dart';
-import '../services/event_service.dart' as event_service;
-import 'calendar_utils.dart';
-import 'event_model.dart';
+import '../../account/account_model.dart';
+import '../../generated/l10n.dart';
+import '../../profile/profile_model.dart';
+import '../../services/event_service.dart' as event_service;
+import '../calendar_utils.dart';
+import '../event_model.dart';
 
-class QuitEventDialog extends StatefulWidget {
+class CancelEventDialog extends StatefulWidget {
   final EventModel event;
   final VoidCallback refresh;
 
-  const QuitEventDialog({
+  const CancelEventDialog({
     super.key,
     required this.event,
     required this.refresh,
   });
 
   @override
-  State<QuitEventDialog> createState() => _QuitEventDialogState();
+  State<CancelEventDialog> createState() => _CancelEventDialogState();
 }
 
-class _QuitEventDialogState extends State<QuitEventDialog> {
+class _CancelEventDialogState extends State<CancelEventDialog> {
   bool _submitClicked = false;
 
   @override

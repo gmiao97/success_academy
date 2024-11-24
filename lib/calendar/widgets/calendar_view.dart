@@ -8,26 +8,26 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../account/account_model.dart';
-import '../generated/l10n.dart';
-import '../services/event_service.dart' as event_service;
-import 'calendar_utils.dart';
+import '../../account/account_model.dart';
+import '../../generated/l10n.dart';
+import '../../services/event_service.dart' as event_service;
+import '../calendar_utils.dart';
 import 'create_event_dialog.dart';
 import 'delete_event_dialog.dart';
 import 'edit_event_dialog.dart';
-import 'event_model.dart';
-import 'quit_event_dialog.dart';
+import '../event_model.dart';
+import 'cancel_event_dialog.dart';
 import 'signup_event_dialog.dart';
 import 'view_event_dialog.dart';
 
-class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+class CalendarView extends StatefulWidget {
+  const CalendarView({super.key});
 
   @override
-  State<Calendar> createState() => _CalendarState();
+  State<CalendarView> createState() => _CalendarViewState();
 }
 
-class _CalendarState extends State<Calendar> {
+class _CalendarViewState extends State<CalendarView> {
   late final List<EventType> _availableEventTypes;
   late final DateTime _firstDay;
   late final DateTime _lastDay;
@@ -439,7 +439,7 @@ class _EventList extends StatelessWidget {
           label: Text(S.of(context).signedUp),
           onPressed: () => showDialog(
             context: context,
-            builder: (context) => QuitEventDialog(
+            builder: (context) => CancelEventDialog(
               event: event,
               refresh: refreshState,
             ),

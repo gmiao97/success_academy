@@ -7,15 +7,15 @@ import 'package:flutterfire_ui/i10n.dart';
 import 'package:provider/provider.dart';
 
 import 'account/account_model.dart';
-import 'common_widgets/my_scaffold.dart';
+import 'scaffold/widgets/my_scaffold.dart';
 import 'constants.dart' as constants;
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
-import 'info.dart';
-import 'landing/landing.dart';
-import 'landing/verification.dart';
-import 'profile/profile_browse.dart';
-import 'profile/profile_create.dart';
+import 'terms_page.dart';
+import 'landing/widgets/landing_page.dart';
+import 'landing/widgets/email_verification_page.dart';
+import 'profile/widgets/profile_browse_page.dart';
+import 'profile/widgets/profile_create_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,8 +65,8 @@ class App extends StatelessWidget {
       ],
       home: const Root(),
       routes: {
-        constants.routeInfo: (context) => const Info(),
-        constants.routeCreateProfile: (context) => const ProfileCreate(),
+        constants.routeInfo: (context) => const TermsPage(),
+        constants.routeCreateProfile: (context) => const ProfileCreatePage(),
       },
     );
   }
@@ -93,7 +93,7 @@ class Root extends StatelessWidget {
       return const LandingPage();
     }
     if (userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
+      return const ProfileBrowsePage();
     }
     return const MyScaffold();
   }

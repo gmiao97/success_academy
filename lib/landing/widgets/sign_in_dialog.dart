@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:provider/provider.dart';
 
-import '../account/account_model.dart';
-import '../constants.dart' as constants;
+import '../../account/account_model.dart';
+import '../../constants.dart' as constants;
 
 class SignInDialog extends StatelessWidget {
   const SignInDialog({super.key});

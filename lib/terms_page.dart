@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'generated/l10n.dart';
 
-class Info extends StatelessWidget {
-  const Info({super.key});
+class TermsPage extends StatelessWidget {
+  const TermsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

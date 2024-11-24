@@ -2,15 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../account/account_model.dart';
-import '../account/account_settings.dart';
-import '../calendar/calendar.dart';
-import '../constants.dart' as constants;
-import '../generated/l10n.dart';
-import '../lesson_info/lesson_info.dart';
-import '../profile/add_points.dart';
-import '../profile/profile_home.dart';
-import '../profile/profile_manage.dart';
+import '../../account/account_model.dart';
+import '../../account/widgets/settings_page.dart';
+import '../../calendar/widgets/calendar_view.dart';
+import '../../constants.dart' as constants;
+import '../../generated/l10n.dart';
+import '../../lesson_info/widgets/lesson_info_page.dart';
+import '../../profile/widgets/add_points_page.dart';
+import '../../profile/widgets/profile_home_page.dart';
+import '../../account/widgets/manage_users_page.dart';
 
 class DesktopScaffold extends StatefulWidget {
   const DesktopScaffold({super.key});
@@ -30,28 +30,28 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
     switch (context.read<AccountModel>().userType) {
       case UserType.admin:
         _content = [
-          const ProfileHome(),
-          const Calendar(),
-          const LessonInfo(),
-          const ManageUsers(),
-          const Settings()
+          const ProfileHomePage(),
+          const CalendarView(),
+          const LessonInfoPage(),
+          const ManageUsersPage(),
+          const SettingsPage()
         ];
         break;
       case UserType.teacher:
         _content = [
-          const ProfileHome(),
-          const Calendar(),
-          const LessonInfo(),
-          const Settings()
+          const ProfileHomePage(),
+          const CalendarView(),
+          const LessonInfoPage(),
+          const SettingsPage()
         ];
         break;
       case UserType.student:
         _content = [
-          const ProfileHome(),
-          const Calendar(),
-          const LessonInfo(),
-          const AddPoints(),
-          const Settings()
+          const ProfileHomePage(),
+          const CalendarView(),
+          const LessonInfoPage(),
+          const AddPointsPage(),
+          const SettingsPage()
         ];
         break;
       default:

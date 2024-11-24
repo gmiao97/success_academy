@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../account/account_model.dart';
-import '../generated/l10n.dart';
+import '../../account/account_model.dart';
+import '../../generated/l10n.dart';
 
-class TeacherProfile extends StatelessWidget {
-  const TeacherProfile({super.key});
+class AdminProfileView extends StatelessWidget {
+  const AdminProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +33,20 @@ class TeacherProfile extends StatelessWidget {
                     CircleAvatar(
                       radius: 30,
                       child: Text(
-                        account.teacherProfile!.lastName[0],
+                        account.adminProfile!.lastName[0],
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      '${account.teacherProfile!.lastName}, ${account.teacherProfile!.firstName}',
+                      '${account.adminProfile!.lastName}, ${account.adminProfile!.firstName}',
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      S.of(context).teacher,
+                      S.of(context).admin,
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const Divider(),

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../account/account_model.dart';
-import '../generated/l10n.dart';
-import '../services/stripe_service.dart' as stripe_service;
-import 'profile_model.dart';
+import '../../account/account_model.dart';
+import '../../generated/l10n.dart';
+import '../../services/stripe_service.dart' as stripe_service;
+import '../profile_model.dart';
 
-class AddPoints extends StatefulWidget {
-  const AddPoints({super.key});
+class AddPointsPage extends StatefulWidget {
+  const AddPointsPage({super.key});
 
   @override
-  State<AddPoints> createState() => _AddPointsState();
+  State<AddPointsPage> createState() => _AddPointsPageState();
 }
 
-class _AddPointsState extends State<AddPoints> {
+class _AddPointsPageState extends State<AddPointsPage> {
   final List<bool> _selectedToggle = [true, false];
 
   @override
@@ -91,7 +91,7 @@ class _AddPointsState extends State<AddPoints> {
 }
 
 class _OneTimePointsPurchase extends StatefulWidget {
-  const _OneTimePointsPurchase({super.key});
+  const _OneTimePointsPurchase();
 
   @override
   State<_OneTimePointsPurchase> createState() => _OneTimePointsPurchaseState();
@@ -228,7 +228,7 @@ class _OneTimePointsPurchaseState extends State<_OneTimePointsPurchase> {
 }
 
 class _SubscriptionPointsPurchase extends StatefulWidget {
-  const _SubscriptionPointsPurchase({super.key});
+  const _SubscriptionPointsPurchase();
 
   @override
   State<_SubscriptionPointsPurchase> createState() =>

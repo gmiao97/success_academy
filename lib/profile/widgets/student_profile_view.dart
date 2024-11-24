@@ -4,21 +4,21 @@ import 'package:provider/provider.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 import 'package:success_academy/services/stripe_service.dart' as stripe_service;
-import 'package:success_academy/services/user_service.dart' as user_service;
 
-import '../account/account_model.dart';
-import '../constants.dart' as constants;
-import '../generated/l10n.dart';
-import 'profile_model.dart';
+import '../../account/account_model.dart';
+import '../../constants.dart' as constants;
+import '../../generated/l10n.dart';
+import '../profile_model.dart';
+import 'create_subscription_form.dart';
 
-class StudentProfile extends StatefulWidget {
-  const StudentProfile({super.key});
+class StudentProfileView extends StatefulWidget {
+  const StudentProfileView({super.key});
 
   @override
-  State<StudentProfile> createState() => _StudentProfileState();
+  State<StudentProfileView> createState() => _StudentProfileViewState();
 }
 
-class _StudentProfileState extends State<StudentProfile> {
+class _StudentProfileViewState extends State<StudentProfileView> {
   bool _redirectClicked = false;
   bool _isReferral = false;
   String? _referrer;
@@ -166,10 +166,10 @@ class _StudentProfileState extends State<StudentProfile> {
                     ),
                     const SizedBox(height: 20),
                     account.subscriptionPlan != null
-                        ? ManageSubscription(
+                        ? _ManageSubscription(
                             subscriptionPlan: account.subscriptionPlan!,
                           )
-                        : CreateSubscription(
+                        : CreateSubscriptionForm(
                             subscriptionPlan: _subscriptionPlan,
                             onSubscriptionPlanChange: (subscription) {
                               setState(() {
@@ -233,19 +233,19 @@ class _StudentProfileState extends State<StudentProfile> {
   }
 }
 
-class ManageSubscription extends StatefulWidget {
+class _ManageSubscription extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
 
-  const ManageSubscription({
+  const _ManageSubscription({
     super.key,
     required this.subscriptionPlan,
   });
 
   @override
-  State<ManageSubscription> createState() => _ManageSubscriptionState();
+  State<_ManageSubscription> createState() => _ManageSubscriptionState();
 }
 
-class _ManageSubscriptionState extends State<ManageSubscription> {
+class _ManageSubscriptionState extends State<_ManageSubscription> {
   bool _redirectClicked = false;
 
   @override
@@ -295,214 +295,6 @@ class _ManageSubscriptionState extends State<ManageSubscription> {
                     ),
                   ),
               ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CreateSubscription extends StatefulWidget {
-  final SubscriptionPlan subscriptionPlan;
-  final Function(SubscriptionPlan?) onSubscriptionPlanChange;
-  final bool redirectClicked;
-  final Function(bool) setIsReferral;
-  final Function(String?) setReferrer;
-  final VoidCallback onStripeSubmitClicked;
-
-  const CreateSubscription({
-    super.key,
-    required this.subscriptionPlan,
-    required this.onSubscriptionPlanChange,
-    required this.redirectClicked,
-    required this.setIsReferral,
-    required this.setReferrer,
-    required this.onStripeSubmitClicked,
-  });
-
-  @override
-  State<CreateSubscription> createState() => _CreateSubscriptionState();
-}
-
-class _CreateSubscriptionState extends State<CreateSubscription> {
-  final List<String> _validCodes = ['SRNPUXON'];
-  final List<String> _thirtyOffCodes = ['TXFOLTBJ'];
-  bool _isReferral = false;
-  bool _invalidReferral = false;
-  bool _termsOfUseChecked = false;
-  bool _redirectClicked = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
-  void _loadData() async {
-    _validCodes.addAll(await user_service.getReferralCodes());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final account = context.watch<AccountModel>();
-
-    return Card(
-      color: Theme.of(context).colorScheme.background,
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                FilledButton.tonalIcon(
-                  icon: const Icon(Icons.exit_to_app),
-                  label: Text(S.of(context).managePayment),
-                  onPressed: _redirectClicked
-                      ? null
-                      : () {
-                          setState(() {
-                            _redirectClicked = true;
-                          });
-                          try {
-                            stripe_service.redirectToStripePortal();
-                          } catch (e) {
-                            setState(() {
-                              _redirectClicked = false;
-                            });
-                          }
-                        },
-                ),
-                if (_redirectClicked)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Transform.scale(
-                      scale: 0.5,
-                      child: const CircularProgressIndicator(),
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              S.of(context).pickPlan,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RadioListTile<SubscriptionPlan>(
-                  title: Text(S.of(context).minimumCourse),
-                  value: SubscriptionPlan.minimum,
-                  groupValue: widget.subscriptionPlan,
-                  onChanged: widget.onSubscriptionPlanChange,
-                ),
-                RadioListTile<SubscriptionPlan>(
-                  title: Text(S.of(context).minimumPreschoolCourse),
-                  value: SubscriptionPlan.minimumPreschool,
-                  groupValue: widget.subscriptionPlan,
-                  onChanged: widget.onSubscriptionPlanChange,
-                ),
-                RadioListTile<SubscriptionPlan>(
-                  title: Text(S.of(context).monthlyCourse),
-                  value: SubscriptionPlan.monthly,
-                  groupValue: widget.subscriptionPlan,
-                  onChanged: widget.onSubscriptionPlanChange,
-                ),
-              ],
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                icon: const Icon(Icons.percent),
-                labelText: S.of(context).referralLabel,
-                errorText:
-                    _invalidReferral ? S.of(context).referralValidation : null,
-                suffixIcon: _isReferral
-                    ? Icon(Icons.check, color: Theme.of(context).primaryColor)
-                    : null,
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _isReferral = _validCodes.contains(value) &&
-                      account.myUser!.referralCode != value;
-                  widget.setIsReferral(_isReferral);
-                  _invalidReferral = value.isNotEmpty && !_isReferral;
-                });
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                icon: const Icon(Icons.person_add_alt),
-                labelText: S.of(context).referrerLabel,
-                hintText: S.of(context).referrerHint,
-              ),
-              onChanged: (value) => widget.setReferrer(value),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  value: _termsOfUseChecked,
-                  onChanged: (value) {
-                    setState(() {
-                      _termsOfUseChecked = value ?? false;
-                    });
-                  },
-                ),
-                InkWell(
-                  child: Text(
-                    S.of(context).agreeToTerms,
-                    style: const TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, constants.routeInfo);
-                  },
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              S.of(context).freeTrial,
-            ),
-            Text(
-              S.of(context).signUpFee,
-              style: _isReferral
-                  ? const TextStyle(decoration: TextDecoration.lineThrough)
-                  : null,
-            ),
-            if (_isReferral) Text(S.of(context).signUpFeeDiscount),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Row(
-                children: [
-                  FilledButton.tonalIcon(
-                    label: Text(S.of(context).stripePurchase),
-                    icon: const Icon(Icons.exit_to_app),
-                    onPressed: widget.redirectClicked || !_termsOfUseChecked
-                        ? null
-                        : widget.onStripeSubmitClicked,
-                  ),
-                  if (widget.redirectClicked)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Transform.scale(
-                        scale: 0.5,
-                        child: const CircularProgressIndicator(),
-                      ),
-                    ),
-                ],
-              ),
             ),
           ],
         ),

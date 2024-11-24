@@ -4,19 +4,19 @@ import 'package:provider/provider.dart';
 import 'package:success_academy/services/profile_service.dart'
     as profile_service;
 
-import '../account/account_model.dart';
-import '../constants.dart' as constants;
-import '../generated/l10n.dart';
-import 'profile_model.dart';
+import '../../account/account_model.dart';
+import '../../constants.dart' as constants;
+import '../../generated/l10n.dart';
+import '../profile_model.dart';
 
-class ProfileBrowse extends StatefulWidget {
-  const ProfileBrowse({super.key});
+class ProfileBrowsePage extends StatefulWidget {
+  const ProfileBrowsePage({super.key});
 
   @override
-  State<ProfileBrowse> createState() => _ProfileBrowseState();
+  State<ProfileBrowsePage> createState() => _ProfileBrowsePageState();
 }
 
-class _ProfileBrowseState extends State<ProfileBrowse> {
+class _ProfileBrowsePageState extends State<ProfileBrowsePage> {
   static const maxProfiles = 5;
   List<StudentProfileModel> _studentProfiles = [];
 

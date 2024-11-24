@@ -4,18 +4,18 @@ import 'package:provider/provider.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../generated/l10n.dart';
-import '../services/user_service.dart' as user_service;
-import 'account_model.dart';
+import '../../generated/l10n.dart';
+import '../../services/user_service.dart' as user_service;
+import '../account_model.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsPageState extends State<SettingsPage> {
   final TextEditingController _timeZoneController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _selectedTimeZone;

@@ -5,19 +5,19 @@ import 'package:success_academy/services/lesson_info_service.dart'
     as lesson_info_service;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../account/account_model.dart';
-import '../generated/l10n.dart';
-import '../profile/profile_model.dart';
-import 'lesson_model.dart';
+import '../../account/account_model.dart';
+import '../../generated/l10n.dart';
+import '../../profile/profile_model.dart';
+import '../lesson_model.dart';
 
-class LessonInfo extends StatefulWidget {
-  const LessonInfo({super.key});
+class LessonInfoPage extends StatefulWidget {
+  const LessonInfoPage({super.key});
 
   @override
-  State<LessonInfo> createState() => _LessonInfoState();
+  State<LessonInfoPage> createState() => _LessonInfoPageState();
 }
 
-class _LessonInfoState extends State<LessonInfo> {
+class _LessonInfoPageState extends State<LessonInfoPage> {
   bool _zoomInfoLoaded = false;
   List<LessonModel> _zoomInfo = [];
 
