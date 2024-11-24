@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
-import 'generated/l10n.dart';
+import '../../constants.dart';
+import '../../generated/l10n.dart';
 
 class TermsPage extends StatelessWidget {
   const TermsPage({super.key});

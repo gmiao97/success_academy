@@ -1,7 +1,7 @@
 import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/services/lesson_info_service.dart'
+import 'package:success_academy/lesson_info/services/lesson_info_service.dart'
     as lesson_info_service;
 import 'package:url_launcher/url_launcher.dart';
 

@@ -5,7 +5,7 @@ import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../generated/l10n.dart';
-import '../../services/user_service.dart' as user_service;
+import '../services/user_service.dart' as user_service;
 import '../account_model.dart';
 
 class SettingsPage extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/services/profile_service.dart'
+import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
 
 import '../../account/account_model.dart';

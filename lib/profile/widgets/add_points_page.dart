@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../account/account_model.dart';
 import '../../generated/l10n.dart';
-import '../../services/stripe_service.dart' as stripe_service;
+import '../services/purchase_service.dart' as stripe_service;
 import '../profile_model.dart';
 
 class AddPointsPage extends StatefulWidget {

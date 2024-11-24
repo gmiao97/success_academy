@@ -9,7 +9,7 @@ import '../../calendar/calendar_utils.dart';
 import '../../calendar/event_model.dart';
 import '../../constants.dart';
 import '../../generated/l10n.dart';
-import '../../services/event_service.dart' as event_service;
+import '../../calendar/services/event_service.dart' as event_service;
 import '../../profile/profile_model.dart';
 
 class ManageUsersPage extends StatefulWidget {

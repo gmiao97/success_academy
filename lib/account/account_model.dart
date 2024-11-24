@@ -3,12 +3,14 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:success_academy/services/profile_service.dart'
+import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
-import 'package:success_academy/services/shared_preferences_service.dart'
+import 'package:success_academy/account/services/account_service.dart'
     as shared_preferences_service;
-import 'package:success_academy/services/stripe_service.dart' as stripe_service;
-import 'package:success_academy/services/user_service.dart' as user_service;
+import 'package:success_academy/profile/services/purchase_service.dart'
+    as stripe_service;
+import 'package:success_academy/account/services/user_service.dart'
+    as user_service;
 
 import '../profile/profile_model.dart';
 

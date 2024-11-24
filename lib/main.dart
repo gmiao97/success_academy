@@ -11,7 +11,7 @@ import 'scaffold/widgets/my_scaffold.dart';
 import 'constants.dart' as constants;
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
-import 'terms_page.dart';
+import 'landing/widgets/terms_page.dart';
 import 'landing/widgets/landing_page.dart';
 import 'landing/widgets/email_verification_page.dart';
 import 'profile/widgets/profile_browse_page.dart';

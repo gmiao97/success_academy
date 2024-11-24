@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/services/profile_service.dart'
+import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
-import 'package:success_academy/services/stripe_service.dart' as stripe_service;
+import 'package:success_academy/profile/services/purchase_service.dart'
+    as stripe_service;
 
 import '../../account/account_model.dart';
 import '../../constants.dart' as constants;

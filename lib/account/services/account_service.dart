@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../profile/profile_model.dart';
+import '../../profile/profile_model.dart';
 
 void updateLocale(String locale) async {
   final prefs = await _getSharedPreferencesInstance();

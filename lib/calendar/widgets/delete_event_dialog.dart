@@ -6,7 +6,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../../account/account_model.dart';
 import '../../generated/l10n.dart';
-import '../../services/event_service.dart' as event_service;
+import '../services/event_service.dart' as event_service;
 import '../calendar_utils.dart';
 import '../event_model.dart';
 
