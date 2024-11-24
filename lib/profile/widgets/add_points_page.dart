@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
-import '../services/purchase_service.dart' as stripe_service;
 import '../data/profile_model.dart';
+import '../services/purchase_service.dart' as stripe_service;
 
 class AddPointsPage extends StatefulWidget {
   const AddPointsPage({super.key});

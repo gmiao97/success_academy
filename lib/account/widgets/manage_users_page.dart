@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../data/account_model.dart';
 import '../../calendar/calendar_utils.dart';
 import '../../calendar/data/event_model.dart';
+import '../../calendar/services/event_service.dart' as event_service;
 import '../../constants.dart';
 import '../../generated/l10n.dart';
-import '../../calendar/services/event_service.dart' as event_service;
 import '../../profile/data/profile_model.dart';
+import '../data/account_model.dart';
 
 class ManageUsersPage extends StatefulWidget {
   const ManageUsersPage({super.key});

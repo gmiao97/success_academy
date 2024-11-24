@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../account/data/account_model.dart';
+import '../../account/widgets/manage_users_page.dart';
 import '../../account/widgets/settings_page.dart';
 import '../../calendar/widgets/calendar_view.dart';
 import '../../generated/l10n.dart';
 import '../../lesson_info/widgets/lesson_info_page.dart';
 import '../../profile/widgets/add_points_page.dart';
 import '../../profile/widgets/profile_home_page.dart';
-import '../../account/widgets/manage_users_page.dart';
 
 class PhoneScaffold extends StatefulWidget {
   const PhoneScaffold({super.key});
