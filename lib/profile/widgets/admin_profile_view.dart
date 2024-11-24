@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../account/account_model.dart';
+import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
 
 class AdminProfileView extends StatelessWidget {

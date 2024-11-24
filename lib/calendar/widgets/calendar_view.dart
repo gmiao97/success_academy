@@ -8,14 +8,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../../account/account_model.dart';
+import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
 import '../services/event_service.dart' as event_service;
 import '../calendar_utils.dart';
 import 'create_event_dialog.dart';
 import 'delete_event_dialog.dart';
 import 'edit_event_dialog.dart';
-import '../event_model.dart';
+import '../data/event_model.dart';
 import 'cancel_event_dialog.dart';
 import 'signup_event_dialog.dart';
 import 'view_event_dialog.dart';

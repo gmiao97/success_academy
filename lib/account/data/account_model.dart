@@ -12,7 +12,7 @@ import 'package:success_academy/profile/services/purchase_service.dart'
 import 'package:success_academy/account/services/user_service.dart'
     as user_service;
 
-import '../profile/profile_model.dart';
+import '../../profile/data/profile_model.dart';
 
 enum AuthStatus {
   signedIn,

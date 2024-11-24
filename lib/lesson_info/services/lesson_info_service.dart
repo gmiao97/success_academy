@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../lesson_model.dart';
+import '../data/lesson_model.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 

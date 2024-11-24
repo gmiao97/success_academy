@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../account/account_model.dart';
+import '../../account/data/account_model.dart';
 import 'admin_profile_view.dart';
 import 'student_profile_view.dart';
 import 'teacher_profile_view.dart';

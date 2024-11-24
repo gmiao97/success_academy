@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
 
-import '../account/account_model.dart';
+import '../account/data/account_model.dart';
 import '../generated/l10n.dart';
-import '../profile/profile_model.dart';
-import 'event_model.dart';
+import '../profile/data/profile_model.dart';
+import 'data/event_model.dart';
 
 String frequencyToString(BuildContext context, Frequency frequency) {
   if (frequency == Frequency.daily) {

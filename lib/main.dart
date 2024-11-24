@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/i10n.dart';
 import 'package:provider/provider.dart';
 
-import 'account/account_model.dart';
+import 'account/data/account_model.dart';
 import 'scaffold/widgets/my_scaffold.dart';
 import 'constants.dart' as constants;
 import 'firebase_options.dart';

@@ -2,7 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-import '../event_model.dart';
+import '../data/event_model.dart';
 
 const isDev = kDebugMode;
 

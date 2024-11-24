@@ -6,7 +6,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../../generated/l10n.dart';
 import '../services/user_service.dart' as user_service;
-import '../account_model.dart';
+import '../data/account_model.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

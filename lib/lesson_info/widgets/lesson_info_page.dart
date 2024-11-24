@@ -5,10 +5,10 @@ import 'package:success_academy/lesson_info/services/lesson_info_service.dart'
     as lesson_info_service;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../account/account_model.dart';
+import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
-import '../../profile/profile_model.dart';
-import '../lesson_model.dart';
+import '../../profile/data/profile_model.dart';
+import '../data/lesson_model.dart';
 
 class LessonInfoPage extends StatefulWidget {
   const LessonInfoPage({super.key});

@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rrule/rrule.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-import '../generated/l10n.dart';
+import '../../generated/l10n.dart';
 
 enum EventType {
   unknown,

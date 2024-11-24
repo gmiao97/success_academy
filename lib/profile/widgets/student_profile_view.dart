@@ -6,10 +6,10 @@ import 'package:success_academy/profile/services/profile_service.dart'
 import 'package:success_academy/profile/services/purchase_service.dart'
     as stripe_service;
 
-import '../../account/account_model.dart';
+import '../../account/data/account_model.dart';
 import '../../constants.dart' as constants;
 import '../../generated/l10n.dart';
-import '../profile_model.dart';
+import '../data/profile_model.dart';
 import 'create_subscription_form.dart';
 
 class StudentProfileView extends StatefulWidget {

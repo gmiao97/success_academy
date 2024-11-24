@@ -6,12 +6,12 @@ import 'package:rrule/rrule.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../../account/account_model.dart';
+import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
-import '../../profile/profile_model.dart';
+import '../../profile/data/profile_model.dart';
 import '../services/event_service.dart' as event_service;
 import '../calendar_utils.dart';
-import '../event_model.dart';
+import '../data/event_model.dart';
 
 class EditEventDialog extends StatefulWidget {
   final EventModel event;

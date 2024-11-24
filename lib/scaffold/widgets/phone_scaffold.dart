@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../account/account_model.dart';
+import '../../account/data/account_model.dart';
 import '../../account/widgets/settings_page.dart';
 import '../../calendar/widgets/calendar_view.dart';
 import '../../generated/l10n.dart';
