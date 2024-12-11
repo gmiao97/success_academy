@@ -238,7 +238,6 @@ class _ManageSubscription extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
 
   const _ManageSubscription({
-    super.key,
     required this.subscriptionPlan,
   });
 

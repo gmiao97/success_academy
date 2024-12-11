@@ -1,6 +1,8 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
-import 'package:timezone/timezone.dart' as tz;
+
+import 'package:success_academy/helpers/tz_date_time_range.dart';
+import 'package:timezone/timezone.dart' show Location;
 
 import '../data/event_model.dart';
 
@@ -11,7 +13,7 @@ final FirebaseFunctions functions =
 
 Future<EventModel> getEvent({
   required String eventId,
-  required tz.Location location,
+  required Location location,
 }) async {
   HttpsCallable callable = functions.httpsCallable(
     'calendar_functions-get_event',
@@ -33,9 +35,8 @@ Future<EventModel> getEvent({
 }
 
 Future<List<EventModel>> listEvents({
-  required tz.Location location,
-  required String timeMin,
-  required String timeMax,
+  required Location location,
+  required TZDateTimeRange dateTimeRange,
   required bool singleEvents,
 }) async {
   HttpsCallable callable = functions.httpsCallable(
@@ -48,8 +49,8 @@ Future<List<EventModel>> listEvents({
   try {
     final result = await callable({
       'timeZone': location.name,
-      'timeMin': timeMin,
-      'timeMax': timeMax,
+      'timeMin': dateTimeRange.start.toIso8601String(),
+      'timeMax': dateTimeRange.end.toIso8601String(),
       'singleEvents': singleEvents,
       'isDev': isDev,
     });

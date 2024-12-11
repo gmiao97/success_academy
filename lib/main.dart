@@ -1,9 +1,10 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/i10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'account/data/account_model.dart';
@@ -60,7 +61,7 @@ class App extends StatelessWidget {
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        FlutterFireUILocalizations.delegate,
+        FirebaseUILocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       home: const Root(),

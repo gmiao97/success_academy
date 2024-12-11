@@ -53,8 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelSignupSuccess":
             MessageLookupByLibrary.simpleMessage("予約をキャンセルしました"),
         "cancelSignupWindowPassed": MessageLookupByLibrary.simpleMessage(
-          "予約キャンセル期間が過ぎました。個別レッスンは24時間までに予約キャンセルしてください。フリーレッスンと未就学児レッスンは5分前までに予約キャンセルしてください。",
-        ),
+            "予約キャンセル期間が過ぎました。個別レッスンは24時間までに予約キャンセルしてください。フリーレッスンと未就学児レッスンは5分前までに予約キャンセルしてください。"),
         "close": MessageLookupByLibrary.simpleMessage("閉じる"),
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
@@ -163,8 +162,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ポイントが足りません。ポイントを追加してください"),
         "oneTimePointsPurchase": MessageLookupByLibrary.simpleMessage("一回購入"),
         "onlyFreeLesson": MessageLookupByLibrary.simpleMessage(
-          "英語版フリーレッスンのみを受けたい場合は月会費のみのプランを選んでください",
-        ),
+            "英語版フリーレッスンのみを受けたい場合は月会費のみのプランを選んでください"),
         "openLinkFailure": MessageLookupByLibrary.simpleMessage("リンクを開けませんでした"),
         "orderPointSubscriptionFreeAndPrivate":
             MessageLookupByLibrary.simpleMessage("オーダー・1コマ252ポイント"),
@@ -176,8 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pointSubscriptionTitle":
             MessageLookupByLibrary.simpleMessage("サブスクリプション"),
         "pointSubscriptionTrial": MessageLookupByLibrary.simpleMessage(
-          "ポイントは毎月サブスクリプションの請求日に合わせて付与されます",
-        ),
+            "ポイントは毎月サブスクリプションの請求日に合わせて付与されます"),
         "pointsPurchase": m2,
         "preschool": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
         "preschoolNum": MessageLookupByLibrary.simpleMessage("未就学児レッスン完了数"),
@@ -203,8 +200,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeEnglishOption":
             MessageLookupByLibrary.simpleMessage("英語版オプションをなくす"),
         "removePointSubscription": MessageLookupByLibrary.simpleMessage(
-          "ポイントサブスクリプションを消すには0のコマ数を選択してください",
-        ),
+            "ポイントサブスクリプションを消すには0のコマ数を選択してください"),
         "searchEmail": MessageLookupByLibrary.simpleMessage("メアドで検索する"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
@@ -220,8 +216,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signupFailure": MessageLookupByLibrary.simpleMessage("予約に失敗しました"),
         "signupSuccess": MessageLookupByLibrary.simpleMessage("予約できました"),
         "signupWindowPassed": MessageLookupByLibrary.simpleMessage(
-          "予約期間が過ぎました。個別レッスンは24時間前までに予約してください。フリーレッスンと未就学児レッスンは5分前なでに予約してください。",
-        ),
+            "予約期間が過ぎました。個別レッスンは24時間前までに予約してください。フリーレッスンと未就学児レッスンは5分前なでに予約してください。"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "stripeRedirectFailure":
@@ -240,8 +235,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unspecified": MessageLookupByLibrary.simpleMessage("未定"),
         "usePoints": m5,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
-          "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。",
-        ),
+            "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
         "verifyEmailMessage": m6,
         "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る"),
         "withEnglishOption":

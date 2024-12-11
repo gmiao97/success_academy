@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
-import 'package:timezone/data/latest_10y.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
+import 'package:timezone/timezone.dart' as tz show getLocation;
+import 'package:timezone/timezone.dart' show Location, TZDateTime;
 
 import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
@@ -38,19 +39,19 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   final TextEditingController _recurUntilController = TextEditingController();
   final TextEditingController _startController = TextEditingController();
   final TextEditingController _endController = TextEditingController();
-  late final tz.Location _location;
+  late final Location _location;
   late final String _locale;
   late final List<EventType> _eventTypes;
 
-  late tz.TZDateTime _start;
-  late tz.TZDateTime _end;
+  late TZDateTime _start;
+  late TZDateTime _end;
   late String _summary;
   late String _description;
   late EventType _eventType;
   int _numPoints = 0;
   String? _teacherId;
   bool _isRecur = false;
-  tz.TZDateTime? _recurUntil;
+  TZDateTime? _recurUntil;
   Frequency _recurFrequency = Frequency.daily;
   bool _submitClicked = false;
 
@@ -67,8 +68,8 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     assert(_eventTypes.isNotEmpty);
 
     _teacherId = widget.teacherId;
-    final now = tz.TZDateTime.now(_location);
-    _start = tz.TZDateTime(
+    final now = TZDateTime.now(_location);
+    _start = TZDateTime(
       _location,
       widget.selectedDay.year,
       widget.selectedDay.month,
@@ -82,7 +83,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     _eventType = _eventTypes[0];
   }
 
-  Future<tz.TZDateTime?> _pickDateTime({required tz.TZDateTime initial}) async {
+  Future<TZDateTime?> _pickDateTime({required TZDateTime initial}) async {
     DateTime? date = await showDatePicker(
       context: context,
       initialDate: initial,
@@ -101,7 +102,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     if (time == null) {
       return null;
     }
-    return tz.TZDateTime(
+    return TZDateTime(
       _location,
       date.year,
       date.month,
@@ -112,7 +113,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   }
 
   void _selectStartTime() async {
-    final tz.TZDateTime? dateTime = await _pickDateTime(initial: _start);
+    final TZDateTime? dateTime = await _pickDateTime(initial: _start);
     if (dateTime != null) {
       setState(() {
         final delta = _end.difference(_start);
@@ -126,7 +127,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   }
 
   void _selectEndTime() async {
-    final tz.TZDateTime? dateTime = await _pickDateTime(initial: _end);
+    final TZDateTime? dateTime = await _pickDateTime(initial: _end);
     if (dateTime != null) {
       setState(() {
         _end = dateTime;
@@ -144,7 +145,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     );
     if (day != null) {
       setState(() {
-        _recurUntil = tz.TZDateTime(_location, day.year, day.month, day.day)
+        _recurUntil = TZDateTime(_location, day.year, day.month, day.day)
             .add(const Duration(days: 1));
         _recurUntilController.text = DateFormat.yMMMMd(_locale).format(day);
       });
@@ -263,7 +264,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     ? TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
+                          FilteringTextInputFormatter.digitsOnly,
                         ],
                         decoration: InputDecoration(
                           icon: const Icon(Icons.add),

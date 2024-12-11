@@ -1,5 +1,6 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/auth.dart';
 import 'package:provider/provider.dart';
 
 import '../../account/data/account_model.dart';
@@ -24,12 +25,11 @@ class SignInDialog extends StatelessWidget {
           maxWidth: 500,
           maxHeight: 500,
         ),
-        child: const SignInScreen(
-          providerConfigs: [
-            EmailProviderConfiguration(),
-            GoogleProviderConfiguration(
-              clientId: constants.googleAuthProviderConfigurationClientId,
-            ),
+        child: SignInScreen(
+          providers: [
+            EmailAuthProvider(),
+            GoogleProvider(
+                clientId: constants.googleAuthProviderConfigurationClientId),
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
+import 'package:timezone/timezone.dart' show TZDateTime;
 
 import '../account/data/account_model.dart';
 import '../generated/l10n.dart';
@@ -39,10 +40,14 @@ String rruleToString(BuildContext context, RecurrenceRule? rrule) {
   return buffer.toString();
 }
 
-List<String> buildRecurrence({required Frequency frequency, DateTime? until}) {
+List<String> buildRecurrence({
+  required Frequency frequency,
+  TZDateTime? until,
+}) {
   return [
-    RecurrenceRule(frequency: frequency, until: until?.toUtc())
-        .toString(options: const RecurrenceRuleToStringOptions(isTimeUtc: true))
+    RecurrenceRule(frequency: frequency, until: until?.toUtc()).toString(
+      options: const RecurrenceRuleToStringOptions(isTimeUtc: true),
+    ),
   ];
 }
 

@@ -1,12 +1,13 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/calendar/data/event_data_source.dart';
+import 'package:success_academy/helpers/tz_date_time_range.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:timezone/data/latest_10y.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
+import 'package:timezone/timezone.dart' as tz show getLocation;
+import 'package:timezone/timezone.dart' show Location, TZDateTime;
 
 import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
@@ -20,26 +21,40 @@ import 'edit_event_dialog.dart';
 import 'signup_event_dialog.dart';
 import 'view_event_dialog.dart';
 
-class CalendarView extends StatefulWidget {
+class CalendarView extends StatelessWidget {
   const CalendarView({super.key});
 
   @override
-  State<CalendarView> createState() => _CalendarViewState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => EventDataSource(
+        timeZone: context.read<AccountModel>().myUser!.timeZone,
+      ),
+      child: _CalendarView(),
+    );
+  }
 }
 
-class _CalendarViewState extends State<CalendarView> {
+class _CalendarView extends StatefulWidget {
+  const _CalendarView();
+
+  @override
+  State<_CalendarView> createState() => _CalendarViewState();
+}
+
+class _CalendarViewState extends State<_CalendarView> {
   late final List<EventType> _availableEventTypes;
   late final DateTime _firstDay;
   late final DateTime _lastDay;
-  final Map<DateTime, List<EventModel>> _events = HashMap(
-    equals: (a, b) => isSameDay(a, b),
-    hashCode: (e) => DateUtils.dateOnly(e).hashCode,
-  );
-  late DateTime _currentDay;
-  late DateTime _focusedDay;
-  late DateTime _selectedDay;
+  late final Location _location;
+
+  late TZDateTime _currentDay;
+  late TZDateTime _focusedDay;
+  late TZDateTime _selectedDay;
   late List<EventType> _selectedEventTypes;
+
   List<EventModel> _selectedEvents = [];
+  Map<DateTime, List<EventModel>> _events = {};
   EventDisplay _eventDisplay = EventDisplay.all;
   bool _showLoadingIndicator = false;
 
@@ -48,8 +63,8 @@ class _CalendarViewState extends State<CalendarView> {
     super.initState();
     tz.initializeTimeZones();
     final account = context.read<AccountModel>();
-    _currentDay = _focusedDay = _selectedDay =
-        tz.TZDateTime.now(tz.getLocation(account.myUser!.timeZone));
+    _location = tz.getLocation(account.myUser!.timeZone);
+    _currentDay = _focusedDay = _selectedDay = _getCurrentDate();
     _firstDay = _currentDay.subtract(const Duration(days: 365));
     _lastDay = _currentDay.add(const Duration(days: 365));
     _availableEventTypes = _selectedEventTypes =
@@ -59,8 +74,7 @@ class _CalendarViewState extends State<CalendarView> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    final account = context.watch<AccountModel>();
-    _currentDay = tz.TZDateTime.now(tz.getLocation(account.myUser!.timeZone));
+    _currentDay = _getCurrentDate();
     _setEvents();
   }
 
@@ -69,13 +83,13 @@ class _CalendarViewState extends State<CalendarView> {
       _showLoadingIndicator = true;
     });
     final account = context.read<AccountModel>();
-    final location = tz.getLocation(account.myUser!.timeZone);
+    final eventDataSource = context.read<EventDataSource>();
 
-    final singleEvents = (await event_service.listEvents(
-      location: location,
-      timeMin: _currentDay.subtract(const Duration(days: 15)).toIso8601String(),
-      timeMax: _currentDay.add(const Duration(days: 60)).toIso8601String(),
-      singleEvents: true,
+    final singleEvents = (await eventDataSource.loadData(
+      TZDateTimeRange(
+        start: _currentDay.subtract(const Duration(days: 15)),
+        end: _currentDay.add(const Duration(days: 60)),
+      ),
     ))
         .where((event) {
       if (!_selectedEventTypes.contains(event.eventType)) {
@@ -93,15 +107,14 @@ class _CalendarViewState extends State<CalendarView> {
     }).toList();
 
     setState(() {
-      _events.clear();
-      _events.addAll(buildEventMap(singleEvents));
+      _events = buildEventMap(singleEvents);
       _selectedEvents = _getEventsForDay(_selectedDay);
       _showLoadingIndicator = false;
     });
   }
 
   List<EventModel> _getEventsForDay(DateTime day) {
-    return _events[day] ?? [];
+    return _events[DateUtils.dateOnly(day)] ?? [];
   }
 
   void _deleteEventsLocally({
@@ -131,9 +144,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   void _onTodayButtonClick() {
     setState(() {
-      _focusedDay = _selectedDay = _currentDay = tz.TZDateTime.now(
-        tz.getLocation(context.read<AccountModel>().myUser!.timeZone),
-      );
+      _focusedDay = _selectedDay = _currentDay = _getCurrentDate();
       _selectedEvents = _getEventsForDay(_selectedDay);
     });
   }
@@ -151,14 +162,31 @@ class _CalendarViewState extends State<CalendarView> {
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
-      _selectedDay = selectedDay;
-      _focusedDay = focusedDay;
+      _selectedDay = TZDateTime(
+        _location,
+        selectedDay.year,
+        selectedDay.month,
+        selectedDay.day,
+      );
+      _focusedDay = TZDateTime(
+        _location,
+        focusedDay.year,
+        focusedDay.month,
+        focusedDay.day,
+      );
       _selectedEvents = _getEventsForDay(_selectedDay);
     });
   }
 
-  void _onPageChanged(focusedDay) {
-    _focusedDay = focusedDay;
+  TZDateTime _getCurrentDate() {
+    return TZDateTime.from(
+      DateUtils.dateOnly(
+        TZDateTime.now(
+          _location,
+        ),
+      ),
+      _location,
+    );
   }
 
   @override
@@ -203,7 +231,6 @@ class _CalendarViewState extends State<CalendarView> {
             firstDay: _firstDay,
             lastDay: _lastDay,
             selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
-            onPageChanged: _onPageChanged,
             onDaySelected: _onDaySelected,
             eventLoader: _getEventsForDay,
           ),

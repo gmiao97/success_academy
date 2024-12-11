@@ -19,22 +19,17 @@ class DefaultFirebaseOptions {
     if (kIsWeb) {
       return web;
     }
-    // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
         return ios;
-      case TargetPlatform.macOS:
+      default:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
     }
-
-    throw UnsupportedError(
-      'DefaultFirebaseOptions are not supported for this platform.',
-    );
   }
 
   static const FirebaseOptions web = FirebaseOptions(
@@ -61,7 +56,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '954737248617',
     projectId: 'success-academy-5eed2',
     storageBucket: 'success-academy-5eed2.appspot.com',
-    iosClientId: '954737248617-s72s7e9706tcupisl21ph0hek29oltgd.apps.googleusercontent.com',
+    iosClientId:
+        '954737248617-s72s7e9706tcupisl21ph0hek29oltgd.apps.googleusercontent.com',
     iosBundleId: 'com.successacademy.app',
   );
 }

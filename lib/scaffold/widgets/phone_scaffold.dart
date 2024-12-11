@@ -32,7 +32,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           const CalendarView(),
           const LessonInfoPage(),
           const ManageUsersPage(),
-          const SettingsPage()
+          const SettingsPage(),
         ];
         break;
       case UserType.teacher:
@@ -40,7 +40,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           const ProfileHomePage(),
           const CalendarView(),
           const LessonInfoPage(),
-          const SettingsPage()
+          const SettingsPage(),
         ];
         break;
       case UserType.student:
@@ -49,7 +49,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           const CalendarView(),
           const LessonInfoPage(),
           const AddPointsPage(),
-          const SettingsPage()
+          const SettingsPage(),
         ];
         break;
       default:

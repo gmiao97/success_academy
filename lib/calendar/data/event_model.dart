@@ -4,7 +4,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rrule/rrule.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/timezone.dart' show Location, TZDateTime;
 
 import '../../generated/l10n.dart';
 
@@ -71,7 +71,7 @@ enum EventDisplay {
 List<Frequency> recurFrequencies = [
   Frequency.daily,
   Frequency.weekly,
-  Frequency.monthly
+  Frequency.monthly,
 ];
 
 class EventModel {
@@ -79,8 +79,8 @@ class EventModel {
   String? recurrenceId;
   String summary;
   String description;
-  tz.TZDateTime startTime;
-  tz.TZDateTime endTime;
+  TZDateTime startTime;
+  TZDateTime endTime;
   String timeZone;
 
   List<String> recurrence;
@@ -106,15 +106,14 @@ class EventModel {
   /// Build object from response returned by Google Calendar API.
   EventModel.fromJson(
     Map<String, Object?> json, {
-    required tz.Location location,
+    required Location location,
   })  : eventId = json['id'] as String,
         recurrenceId = json['recurringEventId'] as String?,
         summary = json['summary'] as String,
         description = json['description'] as String,
         startTime =
-            tz.TZDateTime.parse(location, (json['start'] as Map)['dateTime']),
-        endTime =
-            tz.TZDateTime.parse(location, (json['end'] as Map)['dateTime']),
+            TZDateTime.parse(location, (json['start'] as Map)['dateTime']),
+        endTime = TZDateTime.parse(location, (json['end'] as Map)['dateTime']),
         recurrence = json['recurrence'] != null
             ? (json['recurrence'] as List<dynamic>)
                 .map((e) => (e as String).replaceAll('WKST=SU', 'WKST=MO'))
@@ -150,19 +149,21 @@ class EventModel {
       'numPoints': numPoints,
     };
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is EventModel && eventId != null && other.eventId == eventId;
+
+  @override
+  int get hashCode => eventId.hashCode;
 }
 
 Map<DateTime, List<EventModel>> buildEventMap(List<EventModel> eventList) {
   Map<DateTime, List<EventModel>> eventMap = {};
   for (final event in eventList) {
-    // table_calendar DateTimes for each day are in UTC, so this needs to match.
-    final localStartDay = DateTime.utc(
-      event.startTime.year,
-      event.startTime.month,
-      event.startTime.day,
-    );
-
-    eventMap.putIfAbsent(localStartDay, () => []).add(event);
+    eventMap
+        .putIfAbsent(DateUtils.dateOnly(event.startTime), () => [])
+        .add(event);
   }
   eventMap.forEach((key, value) {
     value.sort(((a, b) => a.startTime.compareTo(b.startTime)));

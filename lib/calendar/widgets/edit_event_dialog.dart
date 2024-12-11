@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
-import 'package:timezone/data/latest_10y.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
+import 'package:timezone/timezone.dart' as tz show getLocation;
+import 'package:timezone/timezone.dart' show Location, TZDateTime;
 
 import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
@@ -36,18 +37,18 @@ class _EditEventDialogState extends State<EditEventDialog> {
   final TextEditingController _recurUntilController = TextEditingController();
   final TextEditingController _startController = TextEditingController();
   final TextEditingController _endController = TextEditingController();
-  late final tz.Location _location;
+  late final Location _location;
   late final String _locale;
 
-  late tz.TZDateTime _start;
-  late tz.TZDateTime _end;
+  late TZDateTime _start;
+  late TZDateTime _end;
   late String _summary;
   late String _description;
   late int _numPoints;
   String? _teacherId;
   late bool _isRecur;
   Frequency _recurFrequency = Frequency.daily;
-  tz.TZDateTime? _recurUntil;
+  TZDateTime? _recurUntil;
   bool _submitClicked = false;
   bool _isLoadingRecurringEvent = true;
 
@@ -90,7 +91,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
           setState(() {
             _isLoadingRecurringEvent = false;
             if (rrule.until != null) {
-              _recurUntil = tz.TZDateTime.from(rrule.until!, _location);
+              _recurUntil = TZDateTime.from(rrule.until!, _location);
               _recurUntilController.text =
                   DateFormat.yMMMMd(_locale).format(_recurUntil!);
             }
@@ -113,7 +114,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
     }
   }
 
-  Future<tz.TZDateTime?> _pickDateTime({required tz.TZDateTime initial}) async {
+  Future<TZDateTime?> _pickDateTime({required TZDateTime initial}) async {
     DateTime? date = await showDatePicker(
       context: context,
       initialDate: initial,
@@ -132,7 +133,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
     if (time == null) {
       return null;
     }
-    return tz.TZDateTime(
+    return TZDateTime(
       _location,
       date.year,
       date.month,
@@ -143,7 +144,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
   }
 
   void _selectStartTime() async {
-    final tz.TZDateTime? dateTime = await _pickDateTime(initial: _start);
+    final TZDateTime? dateTime = await _pickDateTime(initial: _start);
     if (dateTime != null) {
       setState(() {
         final delta = _end.difference(_start);
@@ -157,7 +158,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
   }
 
   void _selectEndTime() async {
-    final tz.TZDateTime? dateTime = await _pickDateTime(initial: _end);
+    final TZDateTime? dateTime = await _pickDateTime(initial: _end);
     if (dateTime != null) {
       setState(() {
         _end = dateTime;
@@ -281,7 +282,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                     ? TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
+                          FilteringTextInputFormatter.digitsOnly,
                         ],
                         decoration: InputDecoration(
                           icon: const Icon(Icons.add),
@@ -368,7 +369,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
                           scale: 0.5,
                           child: const CircularProgressIndicator(),
                         ),
-                      )
+                      ),
                   ],
                 ),
                 if (_isRecur)

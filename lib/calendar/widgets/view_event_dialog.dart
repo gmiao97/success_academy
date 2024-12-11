@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
-import 'package:timezone/data/latest_10y.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
+import 'package:timezone/timezone.dart' as tz show getLocation;
 
 import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';

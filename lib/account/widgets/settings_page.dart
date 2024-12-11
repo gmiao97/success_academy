@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
-import 'package:timezone/data/latest_10y.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
+import 'package:timezone/timezone.dart' as tz show timeZoneDatabase;
 
 import '../../generated/l10n.dart';
 import '../data/account_model.dart';
@@ -46,38 +45,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 25),
-              TypeAheadFormField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: _timeZoneController,
-                  decoration: InputDecoration(
-                    icon: const Icon(Icons.public),
-                    labelText: S.of(context).timeZoneLabel,
-                  ),
-                ),
-                onSuggestionSelected: <String>(suggestion) {
-                  _timeZoneController.text = suggestion;
-                  // Update timeZone in myUser model, Update in firestore.
-                },
-                onSaved: (value) {
-                  _selectedTimeZone = value;
-                },
-                itemBuilder: (context, suggestion) => ListTile(
-                  title: Text(suggestion as String),
-                ),
-                suggestionsCallback: (pattern) => tz
-                    .timeZoneDatabase.locations.keys
-                    .map((timeZone) => timeZone.replaceAll('_', ' '))
-                    .where(
-                      (timeZone) => timeZone
-                          .toLowerCase()
-                          .contains(pattern.toLowerCase()),
-                    ),
-                validator: (String? value) {
-                  if (!tz.timeZoneDatabase.locations.keys
-                      .contains(value?.replaceAll(' ', '_'))) {
-                    return S.of(context).timeZoneValidation;
+              Text(S.of(context).timeZoneLabel),
+              Autocomplete(
+                optionsBuilder: (textEditingValue) {
+                  if (textEditingValue.text.isEmpty) {
+                    return tz.timeZoneDatabase.locations.keys;
                   }
-                  return null;
+                  return tz.timeZoneDatabase.locations.keys.where(
+                    (timeZone) => timeZone.toLowerCase().contains(
+                          textEditingValue.text
+                              .toLowerCase()
+                              .replaceAll(' ', '_'),
+                        ),
+                  );
+                },
+                initialValue: TextEditingValue(text: account.myUser!.timeZone),
+                onSelected: (selection) {
+                  _selectedTimeZone = selection;
                 },
               ),
               Padding(
@@ -117,7 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                   child: Text(S.of(context).confirm),
                 ),
-              )
+              ),
             ],
           ),
         ),

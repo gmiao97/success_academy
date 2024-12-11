@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:timezone/data/latest_10y.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:success_academy/helpers/tz_date_time_range.dart';
+import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
+import 'package:timezone/timezone.dart' as tz show getLocation;
+import 'package:timezone/timezone.dart' show TZDateTime;
 
 import '../../calendar/calendar_utils.dart';
 import '../../calendar/data/event_model.dart';
@@ -22,7 +24,7 @@ class ManageUsersPage extends StatefulWidget {
 class _ManageUsersPageState extends State<ManageUsersPage> {
   final List<bool> _selectedToggle = [true, false];
   List<EventModel> _events = [];
-  late DateTimeRange _dateRange;
+  late TZDateTimeRange _dateRange;
 
   @override
   void initState() {
@@ -34,14 +36,13 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
   void _init() async {
     final location =
         tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
-    _dateRange = DateTimeRange(
-      start: tz.TZDateTime.now(location).subtract(const Duration(days: 30)),
-      end: tz.TZDateTime.now(location),
+    _dateRange = TZDateTimeRange(
+      start: TZDateTime.now(location).subtract(const Duration(days: 30)),
+      end: TZDateTime.now(location),
     );
     _events = await event_service.listEvents(
       location: location,
-      timeMin: _dateRange.start.toIso8601String(),
-      timeMax: _dateRange.end.toIso8601String(),
+      dateTimeRange: _dateRange,
       singleEvents: true,
     );
   }
@@ -52,23 +53,25 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
 
     final dateRange = await showDateRangePicker(
       context: context,
-      firstDate: DateTime(2020, 1, 1),
-      lastDate: tz.TZDateTime.now(location),
+      firstDate: TZDateTime(location, 2020, 1, 1),
+      lastDate: TZDateTime.now(location),
     );
     if (dateRange != null) {
-      final start = tz.TZDateTime.from(dateRange.start, location);
-      final end = tz.TZDateTime.from(dateRange.end, location);
+      final start = TZDateTime.from(dateRange.start, location);
+      final end = TZDateTime.from(dateRange.end, location);
       await event_service
           .listEvents(
             location: location,
-            timeMin: start.toIso8601String(),
-            timeMax: end.toIso8601String(),
+            dateTimeRange: TZDateTimeRange(
+              start: start,
+              end: end,
+            ),
             singleEvents: true,
           )
           .then(
             (events) => setState(
               () {
-                _dateRange = DateTimeRange(start: start, end: end);
+                _dateRange = TZDateTimeRange(start: start, end: end);
                 _events = events;
               },
             ),
