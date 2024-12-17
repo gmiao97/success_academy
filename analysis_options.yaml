@@ -25,6 +25,8 @@ linter:
     avoid_print: true
     directives_ordering: true
     hash_and_equals: true
+    omit_local_variable_types: true
+    prefer_final_locals: true
     prefer_single_quotes: true
     require_trailing_commas: true
 
