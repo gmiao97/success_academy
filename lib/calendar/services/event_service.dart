@@ -86,7 +86,10 @@ Future<dynamic> deleteEvent({
   }
 }
 
-Future<dynamic> insertEvent(EventModel event) async {
+Future<dynamic> insertEvent(
+  EventModel event, {
+  required Location location,
+}) async {
   HttpsCallable callable = functions.httpsCallable(
     'calendar_functions-insert_event',
     options: HttpsCallableOptions(
@@ -99,7 +102,7 @@ Future<dynamic> insertEvent(EventModel event) async {
       ...event.toJson(),
       'isDev': isDev,
     });
-    return result.data;
+    return EventModel.fromJson(result.data, location: location);
   } catch (err) {
     debugPrint('insertEvent failed: $err');
     rethrow;

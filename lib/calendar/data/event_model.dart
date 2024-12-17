@@ -158,7 +158,7 @@ class EventModel {
   int get hashCode => eventId.hashCode;
 }
 
-Map<DateTime, List<EventModel>> buildEventMap(List<EventModel> eventList) {
+Map<DateTime, List<EventModel>> buildEventMap(Iterable<EventModel> eventList) {
   Map<DateTime, List<EventModel>> eventMap = {};
   for (final event in eventList) {
     eventMap

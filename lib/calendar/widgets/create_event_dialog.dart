@@ -19,7 +19,6 @@ class CreateEventDialog extends StatefulWidget {
   final DateTime firstDay;
   final DateTime lastDay;
   final DateTime selectedDay;
-  final VoidCallback onRefresh;
 
   const CreateEventDialog({
     super.key,
@@ -27,7 +26,6 @@ class CreateEventDialog extends StatefulWidget {
     required this.firstDay,
     required this.lastDay,
     required this.selectedDay,
-    required this.onRefresh,
   });
 
   @override
@@ -441,8 +439,10 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                       teacherId: _teacherId,
                     );
                     try {
-                      await event_service.insertEvent(event);
-                      widget.onRefresh();
+                      final newEvent = await event_service.insertEvent(
+                        event,
+                        location: _location,
+                      );
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

@@ -13,7 +13,6 @@ import '../../account/data/account_model.dart';
 import '../../generated/l10n.dart';
 import '../calendar_utils.dart';
 import '../data/event_model.dart';
-import '../services/event_service.dart' as event_service;
 import 'cancel_event_dialog.dart';
 import 'create_event_dialog.dart';
 import 'delete_event_dialog.dart';
@@ -47,14 +46,17 @@ class _CalendarViewState extends State<_CalendarView> {
   late final DateTime _firstDay;
   late final DateTime _lastDay;
   late final Location _location;
+  late final EventDataSource _eventDataSource;
 
   late TZDateTime _currentDay;
   late TZDateTime _focusedDay;
   late TZDateTime _selectedDay;
+  late TZDateTimeRange _eventsDateTimeRange;
   late List<EventType> _selectedEventTypes;
 
+  final Set<EventModel> _allEvents = {};
   List<EventModel> _selectedEvents = [];
-  Map<DateTime, List<EventModel>> _events = {};
+  Map<DateTime, List<EventModel>> _displayedEvents = {};
   EventDisplay _eventDisplay = EventDisplay.all;
   bool _showLoadingIndicator = false;
 
@@ -65,8 +67,8 @@ class _CalendarViewState extends State<_CalendarView> {
     final account = context.read<AccountModel>();
     _location = tz.getLocation(account.myUser!.timeZone);
     _currentDay = _focusedDay = _selectedDay = _getCurrentDate();
-    _firstDay = _currentDay.subtract(const Duration(days: 365));
-    _lastDay = _currentDay.add(const Duration(days: 365));
+    _firstDay = _currentDay.subtract(const Duration(days: 1000));
+    _lastDay = _currentDay.add(const Duration(days: 1000));
     _availableEventTypes = _selectedEventTypes =
         getEventTypesCanView(account.userType, account.subscriptionPlan);
   }
@@ -74,47 +76,55 @@ class _CalendarViewState extends State<_CalendarView> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    _currentDay = _getCurrentDate();
-    _setEvents();
+    _eventDataSource = context.watch<EventDataSource>();
+    _eventsDateTimeRange = TZDateTimeRange(
+      start: _focusedDay.subtract(Duration(days: 21)),
+      end: _focusedDay.add(Duration(days: 21)),
+    );
+    _loadEvents(_eventsDateTimeRange);
   }
 
-  void _setEvents() async {
+  void _loadEvents(TZDateTimeRange dateTimeRange) async {
     setState(() {
       _showLoadingIndicator = true;
     });
-    final account = context.read<AccountModel>();
-    final eventDataSource = context.read<EventDataSource>();
 
-    final singleEvents = (await eventDataSource.loadData(
-      TZDateTimeRange(
-        start: _currentDay.subtract(const Duration(days: 15)),
-        end: _currentDay.add(const Duration(days: 60)),
+    _allEvents.addAll(
+      await _eventDataSource.loadDataByKey(
+        dateTimeRange,
       ),
-    ))
-        .where((event) {
-      if (!_selectedEventTypes.contains(event.eventType)) {
-        return false;
-      }
-      if (_eventDisplay == EventDisplay.mine) {
-        if (account.userType == UserType.teacher) {
-          return isTeacherInEvent(account.teacherProfile!.profileId, event);
-        }
-        if (account.userType == UserType.student) {
-          return isStudentInEvent(account.studentProfile!.profileId, event);
-        }
-      }
-      return true;
-    }).toList();
+    );
+    _filterEvents();
 
     setState(() {
-      _events = buildEventMap(singleEvents);
+      _displayedEvents = buildEventMap(_allEvents);
       _selectedEvents = _getEventsForDay(_selectedDay);
       _showLoadingIndicator = false;
     });
   }
 
+  void _filterEvents() {
+    final account = context.read<AccountModel>();
+    _displayedEvents = buildEventMap(
+      _allEvents.where((event) {
+        if (!_selectedEventTypes.contains(event.eventType)) {
+          return false;
+        }
+        if (_eventDisplay == EventDisplay.mine) {
+          if (account.userType == UserType.teacher) {
+            return isTeacherInEvent(account.teacherProfile!.profileId, event);
+          }
+          if (account.userType == UserType.student) {
+            return isStudentInEvent(account.studentProfile!.profileId, event);
+          }
+        }
+        return true;
+      }).toList(),
+    );
+  }
+
   List<EventModel> _getEventsForDay(DateTime day) {
-    return _events[DateUtils.dateOnly(day)] ?? [];
+    return _displayedEvents[DateUtils.dateOnly(day)] ?? [];
   }
 
   void _deleteEventsLocally({
@@ -124,7 +134,7 @@ class _CalendarViewState extends State<_CalendarView> {
   }) {
     if (isRecurrence) {
       setState(() {
-        for (final eventList in _events.values) {
+        for (final eventList in _displayedEvents.values) {
           eventList.removeWhere((e) {
             if (from != null) {
               return e.startTime.isAfter(from) && e.recurrenceId == eventId;
@@ -135,7 +145,7 @@ class _CalendarViewState extends State<_CalendarView> {
       });
     } else {
       setState(() {
-        for (final eventList in _events.values) {
+        for (final eventList in _displayedEvents.values) {
           eventList.removeWhere((e) => e.eventId == eventId);
         }
       });
@@ -157,7 +167,7 @@ class _CalendarViewState extends State<_CalendarView> {
       _selectedEventTypes = eventTypes;
       _eventDisplay = eventDisplay;
     });
-    _setEvents();
+    _filterEvents();
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -176,6 +186,35 @@ class _CalendarViewState extends State<_CalendarView> {
       );
       _selectedEvents = _getEventsForDay(_selectedDay);
     });
+  }
+
+  void _onPageChanged(DateTime focusedDay) {
+    _focusedDay = TZDateTime(
+      _location,
+      focusedDay.year,
+      focusedDay.month,
+      focusedDay.day,
+    );
+    if (_focusedDay
+        .subtract(Duration(days: 7))
+        .isBefore(_eventsDateTimeRange.start)) {
+      _eventsDateTimeRange = TZDateTimeRange(
+        start: _focusedDay.subtract(const Duration(days: 42)),
+        end: _eventsDateTimeRange.end,
+      );
+      _loadEvents(
+        _eventsDateTimeRange,
+      );
+    }
+    if (_focusedDay.add(Duration(days: 14)).isAfter(_eventsDateTimeRange.end)) {
+      _eventsDateTimeRange = TZDateTimeRange(
+        start: _eventsDateTimeRange.start,
+        end: _focusedDay.add(const Duration(days: 42)),
+      );
+      _loadEvents(
+        _eventsDateTimeRange,
+      );
+    }
   }
 
   TZDateTime _getCurrentDate() {
@@ -232,6 +271,7 @@ class _CalendarViewState extends State<_CalendarView> {
             lastDay: _lastDay,
             selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
             onDaySelected: _onDaySelected,
+            onPageChanged: _onPageChanged,
             eventLoader: _getEventsForDay,
           ),
         ),
@@ -270,7 +310,6 @@ class _CalendarViewState extends State<_CalendarView> {
                           firstDay: _firstDay,
                           lastDay: _lastDay,
                           selectedDay: _selectedDay,
-                          onRefresh: _setEvents,
                         ),
                       ),
                       icon: const Icon(Icons.add),

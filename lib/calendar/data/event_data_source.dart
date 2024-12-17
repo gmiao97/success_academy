@@ -14,45 +14,52 @@ final class EventDataSource extends ChangeNotifier
   final String timeZone;
   final Set<EventModel> _eventsCache = {};
 
-  TZDateTimeRange? _dateTimeRange;
+  TZDateTimeRange? _cacheDateTimeRange;
 
-  /// Loads event data that has a start timestamp between [dateTimeRange].
   @override
-  Future<Set<EventModel>> loadData(TZDateTimeRange dateTimeRange) async {
-    if (_dateTimeRange == null) {
-      _dateTimeRange = dateTimeRange;
+  Future<Set<EventModel>> loadData() async {
+    return _eventsCache;
+  }
+
+  /// Loads event data that falls within [dateTimeRange].
+  ///
+  /// Includes events with an end timestamp greater than `dateTimeRange.start`
+  /// and with a start timestamp less than `dateTimeRange.end`.
+  @override
+  Future<Set<EventModel>> loadDataByKey(TZDateTimeRange dateTimeRange) async {
+    if (_cacheDateTimeRange == null) {
+      _cacheDateTimeRange = dateTimeRange;
       await fetchAndStoreData();
       return Future.value(_eventsCache);
     }
 
-    TZDateTime newStart = _dateTimeRange!.start;
-    TZDateTime newEnd = _dateTimeRange!.end;
-    if (dateTimeRange.start.isBefore(_dateTimeRange!.start)) {
-      await _fetchAndStoreData(
+    TZDateTime newStart = _cacheDateTimeRange!.start;
+    TZDateTime newEnd = _cacheDateTimeRange!.end;
+    if (dateTimeRange.start.isBefore(_cacheDateTimeRange!.start)) {
+      await fetchAndStoreDataByKey(
         TZDateTimeRange(
           start: dateTimeRange.start,
-          end: _dateTimeRange!.start,
+          end: _cacheDateTimeRange!.start,
         ),
       );
       newStart = dateTimeRange.start;
     }
-    if (dateTimeRange.end.isAfter(_dateTimeRange!.end)) {
-      await _fetchAndStoreData(
-        DateTimeRange(
-          start: dateTimeRange.end,
-          end: _dateTimeRange!.end,
+    if (dateTimeRange.end.isAfter(_cacheDateTimeRange!.end)) {
+      await fetchAndStoreDataByKey(
+        TZDateTimeRange(
+          start: _cacheDateTimeRange!.end,
+          end: dateTimeRange.end,
         ),
       );
       newEnd = dateTimeRange.end;
     }
-    _dateTimeRange = TZDateTimeRange(start: newStart, end: newEnd);
+    _cacheDateTimeRange = TZDateTimeRange(start: newStart, end: newEnd);
     return Future.value(
       _eventsCache
           .where(
             (event) =>
-                event.startTime.isAtSameMomentAs(dateTimeRange.start) ||
-                (event.startTime.isAfter(dateTimeRange.start) &&
-                    event.startTime.isBefore(dateTimeRange.end)),
+                event.endTime.isAfter(dateTimeRange.start) &&
+                event.startTime.isBefore(dateTimeRange.end),
           )
           .toSet(),
     );
@@ -64,18 +71,19 @@ final class EventDataSource extends ChangeNotifier
     _eventsCache.addAll(
       await event_service.listEvents(
         location: tz.getLocation(timeZone),
-        dateTimeRange: _dateTimeRange!,
+        dateTimeRange: _cacheDateTimeRange!,
         singleEvents: true,
       ),
     );
     return;
   }
 
-  Future<void> _fetchAndStoreData(DateTimeRange dateTimeRange) async {
+  @override
+  Future<void> fetchAndStoreDataByKey(TZDateTimeRange dateTimeRange) async {
     _eventsCache.addAll(
       await event_service.listEvents(
         location: tz.getLocation(timeZone),
-        dateTimeRange: _dateTimeRange!,
+        dateTimeRange: dateTimeRange,
         singleEvents: true,
       ),
     );
