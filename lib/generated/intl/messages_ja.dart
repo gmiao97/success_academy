@@ -20,35 +20,40 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ja';
 
-  static String m0(numPoints) => "${numPoints} ポイント";
+  static String m0(quantity) => "現在のポイントサブスクリプション：${quantity}/月";
 
-  static String m1(numPoints, cost) => "${numPoints} ポイント - ${cost}米ドル";
+  static String m1(numPoints) => "${numPoints} ポイント";
 
-  static String m2(until) => "${until}まで";
+  static String m2(numPoints, cost) => "${numPoints} ポイント - ${cost}米ドル";
 
-  static String m3(cost) => "${cost} ポイントが還元されます";
+  static String m3(until) => "${until}まで";
 
-  static String m4(cost, balance) => "${balance} ポイントから ${cost} ポイントを使う";
+  static String m4(cost) => "${cost} ポイントが還元されます";
 
-  static String m5(address) => "確認リンクがメールアドレス（${address}）に送信されました";
+  static String m5(cost, balance) => "${balance} ポイントから ${cost} ポイントを使う";
+
+  static String m6(address) => "確認リンクがメールアドレス（${address}）に送信されました";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountUpdated":
             MessageLookupByLibrary.simpleMessage("アカウント設定を更新しました"),
+        "addEnglishOption":
+            MessageLookupByLibrary.simpleMessage("英語版フリーレッスンオプションを追加する・月40米ドル"),
         "addPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションを追加"),
         "addPoints": MessageLookupByLibrary.simpleMessage("ポイントを追加する"),
         "admin": MessageLookupByLibrary.simpleMessage("アドミン"),
         "agreeToTerms": MessageLookupByLibrary.simpleMessage("利用規約に同意"),
         "allEvents": MessageLookupByLibrary.simpleMessage("すべてのレッスン"),
+        "blockCount": MessageLookupByLibrary.simpleMessage("コマ数/月"),
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
-        "cancelSignup": MessageLookupByLibrary.simpleMessage("登録解除"),
+        "cancelSignup": MessageLookupByLibrary.simpleMessage("予約キャンセル"),
         "cancelSignupFailure":
-            MessageLookupByLibrary.simpleMessage("登録解除に失敗しました"),
-        "cancelSignupPastEvent":
-            MessageLookupByLibrary.simpleMessage("過去のレッスンの登録解除ができません"),
+            MessageLookupByLibrary.simpleMessage("予約キャンセルに失敗しました"),
         "cancelSignupSuccess":
-            MessageLookupByLibrary.simpleMessage("登録を解除しました"),
+            MessageLookupByLibrary.simpleMessage("予約をキャンセルしました"),
+        "cancelSignupWindowPassed": MessageLookupByLibrary.simpleMessage(
+            "予約キャンセル期間が過ぎました。個別レッスンは24時間までに予約キャンセルしてください。フリーレッスンと未就学児レッスンは5分前までに予約キャンセルしてください。"),
         "close": MessageLookupByLibrary.simpleMessage("閉じる"),
         "confirm": MessageLookupByLibrary.simpleMessage("決定"),
         "copied": MessageLookupByLibrary.simpleMessage("コードをコピーしました"),
@@ -59,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "createEventSuccess":
             MessageLookupByLibrary.simpleMessage("レッスンを作成しました"),
         "createProfile": MessageLookupByLibrary.simpleMessage("プロフィール作成"),
+        "currentPointSubscription": m0,
         "dateOfBirthLabel": MessageLookupByLibrary.simpleMessage("生徒生年月日"),
         "dateOfBirthValidation":
             MessageLookupByLibrary.simpleMessage("生徒の生年月日を選択してください"),
@@ -74,13 +80,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "editEventFailure":
             MessageLookupByLibrary.simpleMessage("レッスンの編集ができませんでした"),
         "editEventSuccess": MessageLookupByLibrary.simpleMessage("レッスンを編集しました"),
+        "email": MessageLookupByLibrary.simpleMessage("メアド"),
+        "englishOption":
+            MessageLookupByLibrary.simpleMessage("+英語版フリーレッスンオプション・月40米ドル"),
         "eventDescriptionLabel": MessageLookupByLibrary.simpleMessage("説明"),
         "eventDescriptionValidation":
             MessageLookupByLibrary.simpleMessage("レッスンの説明を入力してください"),
         "eventEndLabel": MessageLookupByLibrary.simpleMessage("終了"),
         "eventEndValidation":
             MessageLookupByLibrary.simpleMessage("終了時間を選択してください"),
-        "eventPointsDisplay": m0,
+        "eventFull": MessageLookupByLibrary.simpleMessage("レッスン満員"),
+        "eventPointsDisplay": m1,
         "eventPointsLabel": MessageLookupByLibrary.simpleMessage("ポイント数"),
         "eventPointsValidation":
             MessageLookupByLibrary.simpleMessage("ポイント数を入力してください"),
@@ -112,6 +122,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "freeLessonZoomInfo":
             MessageLookupByLibrary.simpleMessage("フリーレッスンZOOM情報"),
         "freeNum": MessageLookupByLibrary.simpleMessage("フリーレッスン完了数"),
+        "freeSupplementaryPointSubscriptionFreeAndPrivate":
+            MessageLookupByLibrary.simpleMessage("フリー補修・1コマ153ポイント"),
+        "freeSupplementaryPointSubscriptionPrivateOnly":
+            MessageLookupByLibrary.simpleMessage("フリー補修・1コマ170ポイント"),
         "freeTrial": MessageLookupByLibrary.simpleMessage("14日間無料トライアル"),
         "goBack": MessageLookupByLibrary.simpleMessage("戻る"),
         "id": MessageLookupByLibrary.simpleMessage("ID"),
@@ -127,6 +141,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("更新に失敗しました"),
         "lessonInfoUpdated": MessageLookupByLibrary.simpleMessage("更新しました"),
         "link": MessageLookupByLibrary.simpleMessage("リンク"),
+        "managePayment": MessageLookupByLibrary.simpleMessage("支払い方法管理"),
         "manageProfile": MessageLookupByLibrary.simpleMessage("ユーザー管理"),
         "manageSubscription":
             MessageLookupByLibrary.simpleMessage("サブスクリプション管理"),
@@ -138,14 +153,29 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("月会費のみ・月10米ドル (個別レッスンのみ)"),
         "myCode": MessageLookupByLibrary.simpleMessage("紹介コード"),
         "myEvents": MessageLookupByLibrary.simpleMessage("マイレッスン"),
+        "noEnglishOption":
+            MessageLookupByLibrary.simpleMessage("英語版フリーレッスンオプションなし"),
         "noPlan": MessageLookupByLibrary.simpleMessage("サブスクリプションがありません"),
+        "noPointSubscription":
+            MessageLookupByLibrary.simpleMessage("ポイントサブスクリプションなし"),
         "notEnoughPoints":
-            MessageLookupByLibrary.simpleMessage("ポイントを追加してください"),
+            MessageLookupByLibrary.simpleMessage("ポイントが足りません。ポイントを追加してください"),
+        "oneTimePointsPurchase": MessageLookupByLibrary.simpleMessage("一回購入"),
+        "onlyFreeLesson": MessageLookupByLibrary.simpleMessage(
+            "英語版フリーレッスンのみを受けたい場合は月会費のみのプランを選んでください"),
         "openLinkFailure": MessageLookupByLibrary.simpleMessage("リンクを開けませんでした"),
+        "orderPointSubscriptionFreeAndPrivate":
+            MessageLookupByLibrary.simpleMessage("オーダー・1コマ252ポイント"),
+        "orderPointSubscriptionPrivateOnly":
+            MessageLookupByLibrary.simpleMessage("オーダー・1コマ280ポイント"),
         "password": MessageLookupByLibrary.simpleMessage("パスワード"),
         "pickPlan":
             MessageLookupByLibrary.simpleMessage("サブスクリプションのコースを選択してください"),
-        "pointsPurchase": m1,
+        "pointSubscriptionTitle":
+            MessageLookupByLibrary.simpleMessage("サブスクリプション"),
+        "pointSubscriptionTrial": MessageLookupByLibrary.simpleMessage(
+            "ポイントは毎月サブスクリプションの請求日に合わせて付与されます"),
+        "pointsPurchase": m2,
         "preschool": MessageLookupByLibrary.simpleMessage("未就学児レッスン"),
         "preschoolNum": MessageLookupByLibrary.simpleMessage("未就学児レッスン完了数"),
         "private": MessageLookupByLibrary.simpleMessage("個別レッスン"),
@@ -157,7 +187,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "recurMonthly": MessageLookupByLibrary.simpleMessage("毎月"),
         "recurNone": MessageLookupByLibrary.simpleMessage("繰り返さない"),
         "recurTitle": MessageLookupByLibrary.simpleMessage("繰り返し"),
-        "recurUntil": m2,
+        "recurUntil": m3,
         "recurUntilLabel": MessageLookupByLibrary.simpleMessage("最終日"),
         "recurWeekly": MessageLookupByLibrary.simpleMessage("毎週"),
         "referralLabel": MessageLookupByLibrary.simpleMessage("紹介コードを入力してください"),
@@ -165,8 +195,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("入力された紹介コードは無効です"),
         "referrerHint": MessageLookupByLibrary.simpleMessage("山田太郎"),
         "referrerLabel": MessageLookupByLibrary.simpleMessage("紹介者"),
-        "refundPoints": m3,
+        "refundPoints": m4,
         "reloadPage": MessageLookupByLibrary.simpleMessage("再読み込み"),
+        "removeEnglishOption":
+            MessageLookupByLibrary.simpleMessage("英語版オプションをなくす"),
+        "removePointSubscription": MessageLookupByLibrary.simpleMessage(
+            "ポイントサブスクリプションを消すには0のコマ数を選択してください"),
+        "searchEmail": MessageLookupByLibrary.simpleMessage("メアドで検索する"),
         "selectProfile":
             MessageLookupByLibrary.simpleMessage("プロフィールを選択してください"),
         "settings": MessageLookupByLibrary.simpleMessage("アカウント設定"),
@@ -176,18 +211,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("トライアル後に入会費50米ドルが請求されます"),
         "signUpFeeDiscount":
             MessageLookupByLibrary.simpleMessage("20%割引ー40米ドル"),
-        "signedUp": MessageLookupByLibrary.simpleMessage("登録済み"),
-        "signup": MessageLookupByLibrary.simpleMessage("登録する"),
-        "signupFailure": MessageLookupByLibrary.simpleMessage("登録に失敗しました"),
-        "signupPastEvent":
-            MessageLookupByLibrary.simpleMessage("過去のレッスンに登録できません"),
-        "signupSuccess": MessageLookupByLibrary.simpleMessage("登録できました"),
+        "signedUp": MessageLookupByLibrary.simpleMessage("予約済み"),
+        "signup": MessageLookupByLibrary.simpleMessage("予約する"),
+        "signupFailure": MessageLookupByLibrary.simpleMessage("予約に失敗しました"),
+        "signupSuccess": MessageLookupByLibrary.simpleMessage("予約できました"),
+        "signupWindowPassed": MessageLookupByLibrary.simpleMessage(
+            "予約期間が過ぎました。個別レッスンは24時間前までに予約してください。フリーレッスンと未就学児レッスンは5分前なでに予約してください。"),
         "stripePointsPurchase": MessageLookupByLibrary.simpleMessage("ポイント購入へ"),
         "stripePurchase": MessageLookupByLibrary.simpleMessage("サブスクリプション購入へ"),
         "stripeRedirectFailure":
             MessageLookupByLibrary.simpleMessage("Stripeへのリダイレクトができませんでした"),
         "student": MessageLookupByLibrary.simpleMessage("生徒"),
-        "studentListTitle": MessageLookupByLibrary.simpleMessage("登録されている生徒"),
+        "studentListTitle": MessageLookupByLibrary.simpleMessage("予約されている生徒"),
         "switchProfile": MessageLookupByLibrary.simpleMessage("プロフィールを切り替える"),
         "teacher": MessageLookupByLibrary.simpleMessage("先生"),
         "teacherTitle": MessageLookupByLibrary.simpleMessage("先生"),
@@ -196,11 +231,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeZoneValidation":
             MessageLookupByLibrary.simpleMessage("有効の時間帯を選択してください"),
         "today": MessageLookupByLibrary.simpleMessage("今日"),
+        "type": MessageLookupByLibrary.simpleMessage("種類"),
         "unspecified": MessageLookupByLibrary.simpleMessage("未定"),
-        "usePoints": m4,
+        "usePoints": m5,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
-        "verifyEmailMessage": m5,
-        "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る")
+        "verifyEmailMessage": m6,
+        "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る"),
+        "withEnglishOption":
+            MessageLookupByLibrary.simpleMessage("英語版フリーレッスンあり・月40米ドル")
       };
 }

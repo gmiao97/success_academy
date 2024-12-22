@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/calendar/event_model.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/profile/profile_model.dart';
+import 'package:timezone/timezone.dart' show TZDateTime;
+
+import '../account/data/account_model.dart';
+import '../generated/l10n.dart';
+import '../profile/data/profile_model.dart';
+import 'data/event_model.dart';
 
 String frequencyToString(BuildContext context, Frequency frequency) {
   if (frequency == Frequency.daily) {
@@ -17,7 +19,7 @@ String frequencyToString(BuildContext context, Frequency frequency) {
   if (frequency == Frequency.monthly) {
     return S.of(context).recurMonthly;
   }
-  return "¯\\_(ツ)_/¯";
+  return '¯\\_(ツ)_/¯';
 }
 
 String rruleToString(BuildContext context, RecurrenceRule? rrule) {
@@ -31,17 +33,21 @@ String rruleToString(BuildContext context, RecurrenceRule? rrule) {
       StringBuffer(frequencyToString(context, rrule.frequency));
   final until = rrule.until;
   if (until != null) {
-    buffer.write(S
-        .of(context)
-        .recurUntil(DateFormat.yMMMMd(locale).format(rrule.until!)));
+    buffer.write(
+      S.of(context).recurUntil(DateFormat.yMMMMd(locale).format(rrule.until!)),
+    );
   }
   return buffer.toString();
 }
 
-List<String> buildRecurrence({required Frequency frequency, DateTime? until}) {
+List<String> buildRecurrence({
+  required Frequency frequency,
+  TZDateTime? until,
+}) {
   return [
-    RecurrenceRule(frequency: frequency, until: until?.toUtc())
-        .toString(options: const RecurrenceRuleToStringOptions(isTimeUtc: true))
+    RecurrenceRule(frequency: frequency, until: until?.toUtc()).toString(
+      options: const RecurrenceRuleToStringOptions(isTimeUtc: true),
+    ),
   ];
 }
 
@@ -61,7 +67,9 @@ List<EventType> getEventTypesCanEdit(UserType userType) {
 }
 
 List<EventType> getEventTypesCanView(
-    UserType userType, SubscriptionPlan? subscription) {
+  UserType userType,
+  SubscriptionPlan? subscription,
+) {
   if ([UserType.admin, UserType.teacher].contains(userType)) {
     return [
       EventType.free,
@@ -70,8 +78,13 @@ List<EventType> getEventTypesCanView(
     ];
   }
   if (userType == UserType.student) {
-    if (subscription == null || subscription == SubscriptionPlan.monthly) {
+    if (subscription == null) {
       return [];
+    }
+    if (subscription == SubscriptionPlan.monthly) {
+      return [
+        EventType.private,
+      ];
     }
     if (subscription == SubscriptionPlan.minimumPreschool) {
       return [
@@ -92,6 +105,13 @@ List<EventType> getEventTypesCanView(
 
 bool isStudentInEvent(String profileId, EventModel event) {
   return event.studentIdList.contains(profileId);
+}
+
+bool isEventFull(EventModel event) {
+  if (event.eventType == EventType.private && event.studentIdList.isNotEmpty) {
+    return true;
+  }
+  return false;
 }
 
 bool isTeacherInEvent(String profileId, EventModel event) {

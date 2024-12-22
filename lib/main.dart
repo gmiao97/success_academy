@@ -1,18 +1,22 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/i10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:success_academy/account/account_model.dart';
-import 'package:success_academy/common_widgets/my_scaffold.dart';
-import 'package:success_academy/constants.dart' as constants;
-import 'package:success_academy/firebase_options.dart';
-import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/info.dart';
-import 'package:success_academy/landing/landing.dart';
-import 'package:success_academy/landing/verification.dart';
-import 'package:success_academy/profile/profile_browse.dart';
-import 'package:success_academy/profile/profile_create.dart';
+
+import 'account/data/account_model.dart';
+import 'constants.dart' as constants;
+import 'firebase_options.dart';
+import 'generated/l10n.dart';
+import 'landing/widgets/email_verification_page.dart';
+import 'landing/widgets/landing_page.dart';
+import 'landing/widgets/terms_page.dart';
+import 'profile/widgets/profile_browse_page.dart';
+import 'profile/widgets/profile_create_page.dart';
+import 'scaffold/widgets/my_scaffold.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +24,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+  if (kDebugMode) {
+    FirebaseFunctions.instanceFor(region: 'us-west2')
+        .useFunctionsEmulator('localhost', 5001);
+  }
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => AccountModel(),
@@ -52,13 +61,13 @@ class App extends StatelessWidget {
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        FlutterFireUILocalizations.delegate,
+        FirebaseUILocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       home: const Root(),
       routes: {
-        constants.routeInfo: (context) => const Info(),
-        constants.routeCreateProfile: (context) => const ProfileCreate(),
+        constants.routeInfo: (context) => const TermsPage(),
+        constants.routeCreateProfile: (context) => const ProfileCreatePage(),
       },
     );
   }
@@ -85,7 +94,7 @@ class Root extends StatelessWidget {
       return const LandingPage();
     }
     if (userType == UserType.studentNoProfile) {
-      return const ProfileBrowse();
+      return const ProfileBrowsePage();
     }
     return const MyScaffold();
   }
