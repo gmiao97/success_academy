@@ -419,7 +419,7 @@ packages:
     source: hosted
     version: "0.3.3"
   google_sign_in:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_sign_in
       sha256: fad6ddc80c427b0bba705f2116204ce1173e09cf299f85e053d57a55e5b2dd56
@@ -483,7 +483,7 @@ packages:
     source: hosted
     version: "0.19.0"
   intl_utils:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: intl_utils
       sha256: c2b1f5c72c25512cbeef5ab015c008fc50fe7e04813ba5541c25272300484bf4
