@@ -47,8 +47,8 @@ Future<void> startStripeSubscriptionCheckoutSession({
       debugPrint('No metadata.id field found for price ${doc.id}');
     }
   }
-  Completer completer = Completer();
-  List<Map<String, Object?>> lineItems = [
+  final completer = Completer();
+  final lineItems = [
     {
       'price': selectedPriceId,
       'quantity': 1,
@@ -102,7 +102,7 @@ Future<void> startStripePointsCheckoutSession({
     }
   }
 
-  Map<String, dynamic> data = {
+  final data = {
     'mode': 'payment',
     'price': selectedPriceId,
     'quantity': quantity,
@@ -124,7 +124,7 @@ Future<void> startStripePointsCheckoutSession({
       .doc(userId)
       .collection('checkout_sessions')
       .add(data);
-  Completer completer = Completer();
+  final completer = Completer();
   checkoutSessionDoc.snapshots().listen(
     (doc) {
       if (doc.data()!.containsKey('url')) {
@@ -140,7 +140,7 @@ Future<void> startStripePointsCheckoutSession({
 }
 
 Future<void> redirectToStripePortal() async {
-  HttpsCallable getStripePortalCallable =
+  final getStripePortalCallable =
       FirebaseFunctions.instanceFor(region: 'us-west2')
           .httpsCallable('ext-firestore-stripe-payments-createPortalLink');
   try {

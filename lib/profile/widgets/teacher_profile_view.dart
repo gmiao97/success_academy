@@ -81,7 +81,7 @@ class TeacherProfileView extends StatelessWidget {
                             );
                           },
                           icon: const Icon(Icons.copy),
-                        )
+                        ),
                       ],
                     ),
                   ],

@@ -11,9 +11,7 @@ CollectionReference<LessonModel> _lessonModelRef = db
       toFirestore: (profileModel, _) => profileModel.toJson(),
     );
 
-/**  
-  * Get list of all lesson information.
-  */
+/// Get list of all lesson information.
 Future<List<LessonModel>> getLessons({required bool includePreschool}) {
   return _lessonModelRef.get().then(
         (querySnapshot) => querySnapshot.docs
@@ -27,9 +25,7 @@ Future<List<LessonModel>> getLessons({required bool includePreschool}) {
       );
 }
 
-/**  
-  * Update given lesson.
-  */
+/// Update given lesson.
 Future<void> updateLesson(String id, LessonModel data) {
   return db.collection('lessons').doc(id).update(data.toJson());
 }

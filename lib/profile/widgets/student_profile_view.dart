@@ -147,7 +147,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                             );
                           },
                           icon: const Icon(Icons.copy),
-                        )
+                        ),
                       ],
                     ),
                     RichText(
@@ -189,8 +189,9 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                                 _redirectClicked = true;
                               });
                               final updatedStudentProfile =
-                                  account.studentProfile!;
-                              updatedStudentProfile.referrer = _referrer;
+                                  account.studentProfile!
+                                    ..referrer = _referrer
+                                    ..dateOfBirth;
                               try {
                                 await profile_service.updateStudentProfile(
                                   account.firebaseUser!.uid,
@@ -251,7 +252,7 @@ class _ManageSubscriptionState extends State<_ManageSubscription> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.surface,
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(20),

@@ -121,7 +121,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                     TextSpan(
                       text:
                           '${DateFormat.MMMMd(account.locale).add_jm().format(widget.event.startTime)} - ${DateFormat.MMMMd(account.locale).add_jm().format(widget.event.endTime)}',
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -137,7 +137,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                               child: const CircularProgressIndicator(),
                             ),
                           )
-                        : TextSpan(text: rruleToString(context, rrule))
+                        : TextSpan(text: rruleToString(context, rrule)),
                   ],
                 ),
               ),
@@ -188,7 +188,7 @@ class _ViewEventDialogState extends State<ViewEventDialog> {
                         : TextSpan(
                             text: S.of(context).unspecified,
                             style: Theme.of(context).textTheme.labelLarge,
-                          )
+                          ),
                   ],
                 ),
               ),

@@ -177,7 +177,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
               await FirebaseAuth.instance.signOut();
             },
             child: Text(S.of(context).signOut),
-          )
+          ),
         ],
       ),
       drawer: Drawer(
@@ -203,7 +203,7 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
                     });
                   },
                   child: Text(S.of(context).addPlan),
-                )
+                ),
               ],
             ),
     );

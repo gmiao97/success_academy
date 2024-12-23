@@ -236,7 +236,7 @@ class _CalendarViewState extends State<_CalendarView> {
       children: [
         _showLoadingIndicator
             ? LinearProgressIndicator(
-                backgroundColor: Theme.of(context).colorScheme.background,
+                backgroundColor: Theme.of(context).colorScheme.surface,
               )
             : const SizedBox(height: 4),
         Card(
@@ -466,7 +466,7 @@ class _CalendarHeaderState extends State<_CalendarHeader> {
               onPressed: widget.onTodayButtonClick,
             ),
           ],
-        )
+        ),
       ],
     );
   }

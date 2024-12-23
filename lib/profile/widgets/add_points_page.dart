@@ -45,7 +45,7 @@ class _AddPointsPageState extends State<AddPointsPage> {
                       child: ToggleButtons(
                         onPressed: (index) {
                           setState(() {
-                            for (int i = 0; i < _selectedToggle.length; i++) {
+                            for (var i = 0; i < _selectedToggle.length; i++) {
                               _selectedToggle[i] = i == index;
                             }
                           });
@@ -369,7 +369,7 @@ class _SubscriptionPointsPurchaseState
                                 setState(() {
                                   _redirectClicked = true;
                                 });
-                                int pointQuantity = _selectedNumber *
+                                final pointQuantity = _selectedNumber *
                                     _priceIdToPointsMap[_selectedPrice]!;
                                 await stripe_service
                                     .startStripePointSubscriptionCheckoutSession(

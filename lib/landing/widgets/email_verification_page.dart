@@ -44,7 +44,7 @@ class EmailVerificationPage extends StatelessWidget {
               await FirebaseAuth.instance.signOut();
             },
             child: Text(S.of(context).signOut),
-          )
+          ),
         ],
       ),
       body: Padding(

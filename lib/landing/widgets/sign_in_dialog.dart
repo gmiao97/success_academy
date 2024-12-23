@@ -29,7 +29,8 @@ class SignInDialog extends StatelessWidget {
           providers: [
             EmailAuthProvider(),
             GoogleProvider(
-                clientId: constants.googleAuthProviderConfigurationClientId),
+              clientId: constants.googleAuthProviderConfigurationClientId,
+            ),
           ],
         ),
       ),

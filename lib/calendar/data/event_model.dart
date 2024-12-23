@@ -120,7 +120,7 @@ class EventModel {
                 .toList()
             : [],
         timeZone = (json['start'] as Map)['timeZone'] as String {
-    Map<String, dynamic> extendedProperties =
+    final extendedProperties =
         (json['extendedProperties'] as Map)['shared'] as Map<String, dynamic>;
     eventType = EnumToString.fromString(
           EventType.values,
@@ -159,7 +159,7 @@ class EventModel {
 }
 
 Map<DateTime, List<EventModel>> buildEventMap(Iterable<EventModel> eventList) {
-  Map<DateTime, List<EventModel>> eventMap = {};
+  final eventMap = <DateTime, List<EventModel>>{};
   for (final event in eventList) {
     eventMap
         .putIfAbsent(DateUtils.dateOnly(event.startTime), () => [])

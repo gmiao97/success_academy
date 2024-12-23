@@ -35,11 +35,10 @@ Future<MyUserModel?> getMyUserDoc(String userId) async {
 }
 
 Future<void> updateMyUser({required String userId, String? timeZone}) {
-  Map<String, Object?> json = {};
-  if (timeZone != null) {
-    json['time_zone'] = timeZone;
+  if (timeZone == null) {
+    return Future.value();
   }
-  return _myUserModelRef.doc(userId).update(json);
+  return _myUserModelRef.doc(userId).update({'time_zone': timeZone});
 }
 
 Future<List<String>> getReferralCodes() async {

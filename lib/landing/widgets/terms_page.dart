@@ -31,14 +31,12 @@ class TermsPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const Divider(),
-                    ...termsOfUse
-                        .map(
-                          (line) => Text(
-                            line,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        )
-                        .toList(),
+                    ...termsOfUse.map(
+                      (line) => Text(
+                        line,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
                   ],
                 ),
               ),

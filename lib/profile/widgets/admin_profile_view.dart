@@ -81,7 +81,7 @@ class AdminProfileView extends StatelessWidget {
                             );
                           },
                           icon: const Icon(Icons.copy),
-                        )
+                        ),
                       ],
                     ),
                   ],

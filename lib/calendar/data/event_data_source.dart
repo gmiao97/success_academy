@@ -31,7 +31,6 @@ final class EventDataSource extends ChangeNotifier
   @override
   Future<Set<EventModel>> loadDataByKey(TZDateTimeRange dateTimeRange) async {
     await fetchAndStoreDataByKey(dateTimeRange);
-    debugPrint('$_cachedDateTimeRanges');
     return Future.value(
       _eventsCache
           .where(

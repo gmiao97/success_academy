@@ -198,7 +198,7 @@ class ZoomInfo extends StatelessWidget {
             ],
             source: _ZoomInfoDataSource(context: context, data: zoomInfo),
           ),
-        )
+        ),
       ],
     );
   }

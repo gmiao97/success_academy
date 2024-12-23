@@ -194,7 +194,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
               await FirebaseAuth.instance.signOut();
             },
             child: Text(S.of(context).signOut),
-          )
+          ),
         ],
       ),
       body: Row(
@@ -216,7 +216,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
                 child: NavigationRail(
                   selectedIndex: _selectedIndex,
                   extended: _extended,
-                  backgroundColor: Theme.of(context).colorScheme.background,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   groupAlignment: -0.8,
                   onDestinationSelected: (index) {
                     setState(() {
@@ -256,7 +256,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
                     });
                   },
                   child: Text(S.of(context).addPlan),
-                )
+                ),
               ],
             ),
     );

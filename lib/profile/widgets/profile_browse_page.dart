@@ -87,7 +87,7 @@ class _ProfileBrowsePageState extends State<ProfileBrowsePage> {
               await FirebaseAuth.instance.signOut();
             },
             child: Text(S.of(context).signOut),
-          )
+          ),
         ],
       ),
       body: Center(

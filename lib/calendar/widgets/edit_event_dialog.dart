@@ -115,7 +115,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
   }
 
   Future<TZDateTime?> _pickDateTime({required TZDateTime initial}) async {
-    DateTime? date = await showDatePicker(
+    final date = await showDatePicker(
       context: context,
       initialDate: initial,
       firstDate: widget.firstDay,
@@ -126,7 +126,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
       return null;
     }
 
-    TimeOfDay? time = await showTimePicker(
+    final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(initial),
     );
@@ -144,7 +144,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
   }
 
   void _selectStartTime() async {
-    final TZDateTime? dateTime = await _pickDateTime(initial: _start);
+    final dateTime = await _pickDateTime(initial: _start);
     if (dateTime != null) {
       setState(() {
         final delta = _end.difference(_start);
@@ -158,7 +158,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
   }
 
   void _selectEndTime() async {
-    final TZDateTime? dateTime = await _pickDateTime(initial: _end);
+    final dateTime = await _pickDateTime(initial: _end);
     if (dateTime != null) {
       setState(() {
         _end = dateTime;

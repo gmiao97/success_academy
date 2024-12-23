@@ -77,9 +77,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           timeZone: timeZone,
                         );
                         final updatedMyUser = account.myUser!;
-                        updatedMyUser.timeZone =
-                            timeZone ?? account.myUser!.timeZone;
-                        account.myUser = updatedMyUser;
+                        account.myUser = updatedMyUser
+                          ..timeZone = timeZone ?? account.myUser!.timeZone;
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

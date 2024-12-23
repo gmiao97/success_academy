@@ -29,8 +29,7 @@ String rruleToString(BuildContext context, RecurrenceRule? rrule) {
 
   final locale = context.select<AccountModel, String>((a) => a.locale);
 
-  StringBuffer buffer =
-      StringBuffer(frequencyToString(context, rrule.frequency));
+  final buffer = StringBuffer(frequencyToString(context, rrule.frequency));
   final until = rrule.until;
   if (until != null) {
     buffer.write(

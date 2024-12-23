@@ -66,7 +66,7 @@ class _SignupFormState extends State<_SignupForm> {
   }
 
   void _selectDate(BuildContext context) async {
-    final DateTime? dateOfBirth = await showDatePicker(
+    final dateOfBirth = await showDatePicker(
       context: context,
       initialDate: _profileModel.dateOfBirth,
       firstDate: DateTime(1900),

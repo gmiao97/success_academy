@@ -54,7 +54,7 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
     final account = context.watch<AccountModel>();
 
     return Card(
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.surface,
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -172,7 +172,7 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
                   onTap: () {
                     Navigator.pushNamed(context, constants.routeInfo);
                   },
-                )
+                ),
               ],
             ),
             const SizedBox(

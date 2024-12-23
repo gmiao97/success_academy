@@ -137,10 +137,8 @@ class AccountModel extends ChangeNotifier {
     _locale = await shared_preferences_service.getLocale();
   }
 
-  /**
-   * Initialize account model with firebase user data, data from 'myUsers'
-   * collection, and profile data from shared preferences if existing.
-   */
+  /// Initialize account model with firebase user data, data from 'myUsers'
+  /// collection, and profile data from shared preferences if existing.
   Future<void> _initAccount(User firebaseUser) async {
     _firebaseUser = firebaseUser;
     _studentProfileList = await profile_service.getAllStudentProfiles();

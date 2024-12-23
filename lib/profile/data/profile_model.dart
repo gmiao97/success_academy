@@ -59,13 +59,12 @@ class StudentProfileModel {
     Map<String, Object?> json, {
     required String userId,
   }) async {
-    StudentProfileModel profile =
-        StudentProfileModel._fromJson(json, userId: userId);
-    profile.numPoints = await profile_service.getNumberPoints(
-      userId: userId,
-      profileId: json['id'] as String,
-    );
-    return profile;
+    final profile = StudentProfileModel._fromJson(json, userId: userId);
+    return profile
+      ..numPoints = await profile_service.getNumberPoints(
+        userId: userId,
+        profileId: json['id'] as String,
+      );
   }
 
   String get profileId => _profileId;
@@ -97,10 +96,10 @@ class StudentProfileModel {
   static Map<String, StudentProfileModel> buildStudentProfileMap(
     List<StudentProfileModel> studentProfileList,
   ) {
-    Map<String, StudentProfileModel> map = {};
-    for (StudentProfileModel profile in studentProfileList) {
-      map[profile._profileId] = profile;
-    }
+    final map = Map<String, StudentProfileModel>.fromIterable(
+      studentProfileList,
+      key: (profile) => profile._profileId,
+    );
     return map;
   }
 }
@@ -133,10 +132,10 @@ class TeacherProfileModel {
   static Map<String, TeacherProfileModel> buildTeacherProfileMap(
     List<TeacherProfileModel> teacherProfiles,
   ) {
-    Map<String, TeacherProfileModel> map = {};
-    for (TeacherProfileModel profile in teacherProfiles) {
-      map[profile._profileId] = profile;
-    }
+    final map = Map<String, TeacherProfileModel>.fromIterable(
+      teacherProfiles,
+      key: (profile) => profile._profileId,
+    );
     return map;
   }
 }

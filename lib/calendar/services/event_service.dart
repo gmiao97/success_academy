@@ -6,7 +6,7 @@ import 'package:timezone/timezone.dart' show Location;
 
 import '../data/event_model.dart';
 
-const isDev = kDebugMode;
+const isDev = false;
 
 final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'us-west2');

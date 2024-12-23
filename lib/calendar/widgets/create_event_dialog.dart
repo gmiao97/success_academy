@@ -82,7 +82,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   }
 
   Future<TZDateTime?> _pickDateTime({required TZDateTime initial}) async {
-    DateTime? date = await showDatePicker(
+    final date = await showDatePicker(
       context: context,
       initialDate: initial,
       firstDate: widget.firstDay,
@@ -93,7 +93,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
       return null;
     }
 
-    TimeOfDay? time = await showTimePicker(
+    final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(initial),
     );
@@ -111,7 +111,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   }
 
   void _selectStartTime() async {
-    final TZDateTime? dateTime = await _pickDateTime(initial: _start);
+    final dateTime = await _pickDateTime(initial: _start);
     if (dateTime != null) {
       setState(() {
         final delta = _end.difference(_start);
@@ -125,7 +125,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   }
 
   void _selectEndTime() async {
-    final TZDateTime? dateTime = await _pickDateTime(initial: _end);
+    final dateTime = await _pickDateTime(initial: _end);
     if (dateTime != null) {
       setState(() {
         _end = dateTime;
@@ -135,7 +135,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   }
 
   void _selectRecurUntil() async {
-    final DateTime? day = await showDatePicker(
+    final day = await showDatePicker(
       context: context,
       initialDate: _recurUntil ?? _end,
       firstDate: widget.firstDay,
