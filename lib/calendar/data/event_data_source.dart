@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
-import 'package:timezone/timezone.dart' as tz show getLocation;
 
 import '../../data/data_source.dart';
 import '../services/event_service.dart' as event_service;
@@ -8,9 +7,14 @@ import 'event_model.dart';
 
 final class EventDataSource extends ChangeNotifier
     implements DataSource<Set<EventModel>, TZDateTimeRange> {
-  EventDataSource({required this.timeZone});
+  EventDataSource._();
 
-  final String timeZone;
+  factory EventDataSource() {
+    return _instance;
+  }
+
+  static final EventDataSource _instance = EventDataSource._();
+
   final Set<EventModel> _eventsCache = {};
   final List<TZDateTimeRange> _cachedDateTimeRanges = [];
 
@@ -27,6 +31,7 @@ final class EventDataSource extends ChangeNotifier
   @override
   Future<Set<EventModel>> loadDataByKey(TZDateTimeRange dateTimeRange) async {
     await fetchAndStoreDataByKey(dateTimeRange);
+    debugPrint('$_cachedDateTimeRanges');
     return Future.value(
       _eventsCache
           .where(
@@ -41,11 +46,11 @@ final class EventDataSource extends ChangeNotifier
   @override
   Future<void> fetchAndStoreData() async {
     _eventsCache.clear();
-    for (final dateRangeRange in _cachedDateTimeRanges) {
+    for (final dateTimeRange in _cachedDateTimeRanges) {
       _eventsCache.addAll(
         await event_service.listEvents(
-          location: tz.getLocation(timeZone),
-          dateTimeRange: dateRangeRange,
+          location: dateTimeRange.start.location,
+          dateTimeRange: dateTimeRange,
           singleEvents: true,
         ),
       );
@@ -57,7 +62,7 @@ final class EventDataSource extends ChangeNotifier
   Future<void> fetchAndStoreDataByKey(TZDateTimeRange dateTimeRange) async {
     _eventsCache.addAll(
       await event_service.listEvents(
-        location: tz.getLocation(timeZone),
+        location: dateTimeRange.start.location,
         dateTimeRange: dateTimeRange,
         singleEvents: true,
       ),

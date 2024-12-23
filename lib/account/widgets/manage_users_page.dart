@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/calendar/data/event_data_source.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
 import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
 import 'package:timezone/timezone.dart' as tz show getLocation;
@@ -8,42 +9,54 @@ import 'package:timezone/timezone.dart' show TZDateTime;
 
 import '../../calendar/calendar_utils.dart';
 import '../../calendar/data/event_model.dart';
-import '../../calendar/services/event_service.dart' as event_service;
 import '../../constants.dart';
 import '../../generated/l10n.dart';
 import '../../profile/data/profile_model.dart';
 import '../data/account_model.dart';
 
-class ManageUsersPage extends StatefulWidget {
+class ManageUsersPage extends StatelessWidget {
   const ManageUsersPage({super.key});
 
   @override
-  State<ManageUsersPage> createState() => _ManageUsersPageState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => EventDataSource(),
+      child: _ManageUsersPage(),
+    );
+  }
 }
 
-class _ManageUsersPageState extends State<ManageUsersPage> {
+class _ManageUsersPage extends StatefulWidget {
+  @override
+  State<_ManageUsersPage> createState() => _ManageUsersPageState();
+}
+
+class _ManageUsersPageState extends State<_ManageUsersPage> {
+  late final EventDataSource _eventDataSource;
   final List<bool> _selectedToggle = [true, false];
-  List<EventModel> _events = [];
+  final List<EventModel> _events = [];
   late TZDateTimeRange _dateRange;
 
   @override
   void initState() {
     super.initState();
     tz.initializeTimeZones();
-    _init();
   }
 
-  void _init() async {
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
     final location =
         tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
+    _eventDataSource = context.watch<EventDataSource>();
     _dateRange = TZDateTimeRange(
       start: TZDateTime.now(location).subtract(const Duration(days: 30)),
       end: TZDateTime.now(location),
     );
-    _events = await event_service.listEvents(
-      location: location,
-      dateTimeRange: _dateRange,
-      singleEvents: true,
+    _events.addAll(
+      await _eventDataSource.loadDataByKey(
+        _dateRange,
+      ),
     );
   }
 
@@ -59,20 +72,20 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
     if (dateRange != null) {
       final start = TZDateTime.from(dateRange.start, location);
       final end = TZDateTime.from(dateRange.end, location);
-      await event_service
-          .listEvents(
-            location: location,
-            dateTimeRange: TZDateTimeRange(
+      await _eventDataSource
+          .loadDataByKey(
+            TZDateTimeRange(
               start: start,
               end: end,
             ),
-            singleEvents: true,
           )
           .then(
             (events) => setState(
               () {
                 _dateRange = TZDateTimeRange(start: start, end: end);
-                _events = events;
+                _events
+                  ..clear()
+                  ..addAll(events);
               },
             ),
           );
@@ -99,7 +112,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
               child: ToggleButtons(
                 onPressed: (index) {
                   setState(() {
-                    for (int i = 0; i < _selectedToggle.length; i++) {
+                    for (var i = 0; i < _selectedToggle.length; i++) {
                       _selectedToggle[i] = i == index;
                     }
                   });
@@ -285,7 +298,7 @@ class _StudentTableState extends State<_StudentTable> {
         SearchAnchor(
           builder: (context, controller) => SearchBar(
             controller: controller,
-            padding: const MaterialStatePropertyAll<EdgeInsets>(
+            padding: const WidgetStatePropertyAll<EdgeInsets>(
               EdgeInsets.symmetric(horizontal: 16.0),
             ),
             hintText: S.of(context).searchEmail,

@@ -159,8 +159,8 @@ Future<void> startStripePointSubscriptionCheckoutSession({
   required String priceId,
   required int quantity,
 }) async {
-  Completer completer = Completer();
-  List<Map<String, Object?>> lineItems = [
+  final completer = Completer();
+  final lineItems = [
     {
       'price': priceId,
       'quantity': quantity,

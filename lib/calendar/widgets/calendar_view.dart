@@ -26,17 +26,13 @@ class CalendarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EventDataSource(
-        timeZone: context.read<AccountModel>().myUser!.timeZone,
-      ),
+      create: (context) => EventDataSource(),
       child: _CalendarView(),
     );
   }
 }
 
 class _CalendarView extends StatefulWidget {
-  const _CalendarView();
-
   @override
   State<_CalendarView> createState() => _CalendarViewState();
 }
