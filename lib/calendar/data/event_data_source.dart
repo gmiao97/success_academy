@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
 import 'package:timezone/timezone.dart' as tz show getLocation;
-import 'package:timezone/timezone.dart' show TZDateTime;
 
 import '../../data/data_source.dart';
 import '../services/event_service.dart' as event_service;
@@ -13,8 +12,7 @@ final class EventDataSource extends ChangeNotifier
 
   final String timeZone;
   final Set<EventModel> _eventsCache = {};
-
-  TZDateTimeRange? _cacheDateTimeRange;
+  final List<TZDateTimeRange> _cachedDateTimeRanges = [];
 
   @override
   Future<Set<EventModel>> loadData() async {
@@ -23,37 +21,12 @@ final class EventDataSource extends ChangeNotifier
 
   /// Loads event data that falls within [dateTimeRange].
   ///
-  /// Includes events with an end timestamp greater than `dateTimeRange.start`
-  /// and with a start timestamp less than `dateTimeRange.end`.
+  /// Includes events with any overlap with [dateTimeRange] i.e. an end
+  /// timestamp greater than `dateTimeRange.start` and a start timestamp less
+  /// than `dateTimeRange.end`.
   @override
   Future<Set<EventModel>> loadDataByKey(TZDateTimeRange dateTimeRange) async {
-    if (_cacheDateTimeRange == null) {
-      _cacheDateTimeRange = dateTimeRange;
-      await fetchAndStoreData();
-      return Future.value(_eventsCache);
-    }
-
-    TZDateTime newStart = _cacheDateTimeRange!.start;
-    TZDateTime newEnd = _cacheDateTimeRange!.end;
-    if (dateTimeRange.start.isBefore(_cacheDateTimeRange!.start)) {
-      await fetchAndStoreDataByKey(
-        TZDateTimeRange(
-          start: dateTimeRange.start,
-          end: _cacheDateTimeRange!.start,
-        ),
-      );
-      newStart = dateTimeRange.start;
-    }
-    if (dateTimeRange.end.isAfter(_cacheDateTimeRange!.end)) {
-      await fetchAndStoreDataByKey(
-        TZDateTimeRange(
-          start: _cacheDateTimeRange!.end,
-          end: dateTimeRange.end,
-        ),
-      );
-      newEnd = dateTimeRange.end;
-    }
-    _cacheDateTimeRange = TZDateTimeRange(start: newStart, end: newEnd);
+    await fetchAndStoreDataByKey(dateTimeRange);
     return Future.value(
       _eventsCache
           .where(
@@ -68,13 +41,15 @@ final class EventDataSource extends ChangeNotifier
   @override
   Future<void> fetchAndStoreData() async {
     _eventsCache.clear();
-    _eventsCache.addAll(
-      await event_service.listEvents(
-        location: tz.getLocation(timeZone),
-        dateTimeRange: _cacheDateTimeRange!,
-        singleEvents: true,
-      ),
-    );
+    for (final dateRangeRange in _cachedDateTimeRanges) {
+      _eventsCache.addAll(
+        await event_service.listEvents(
+          location: tz.getLocation(timeZone),
+          dateTimeRange: dateRangeRange,
+          singleEvents: true,
+        ),
+      );
+    }
     return;
   }
 
@@ -87,6 +62,8 @@ final class EventDataSource extends ChangeNotifier
         singleEvents: true,
       ),
     );
+    _cachedDateTimeRanges.add(dateTimeRange);
+    mergeTZDateTimeRanges(_cachedDateTimeRanges);
     return;
   }
 }

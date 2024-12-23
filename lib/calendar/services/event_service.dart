@@ -15,7 +15,7 @@ Future<EventModel> getEvent({
   required String eventId,
   required Location location,
 }) async {
-  HttpsCallable callable = functions.httpsCallable(
+  final callable = functions.httpsCallable(
     'calendar_functions-get_event',
     options: HttpsCallableOptions(
       timeout: const Duration(seconds: 60),
@@ -39,7 +39,7 @@ Future<List<EventModel>> listEvents({
   required TZDateTimeRange dateTimeRange,
   required bool singleEvents,
 }) async {
-  HttpsCallable callable = functions.httpsCallable(
+  final callable = functions.httpsCallable(
     'calendar_functions-list_events',
     options: HttpsCallableOptions(
       timeout: const Duration(seconds: 60),
@@ -67,7 +67,7 @@ Future<List<EventModel>> listEvents({
 Future<dynamic> deleteEvent({
   required String eventId,
 }) async {
-  HttpsCallable callable = functions.httpsCallable(
+  final callable = functions.httpsCallable(
     'calendar_functions-delete_event',
     options: HttpsCallableOptions(
       timeout: const Duration(seconds: 60),
@@ -90,7 +90,7 @@ Future<dynamic> insertEvent(
   EventModel event, {
   required Location location,
 }) async {
-  HttpsCallable callable = functions.httpsCallable(
+  final callable = functions.httpsCallable(
     'calendar_functions-insert_event',
     options: HttpsCallableOptions(
       timeout: const Duration(seconds: 60),
@@ -110,7 +110,7 @@ Future<dynamic> insertEvent(
 }
 
 Future<dynamic> updateEvent(EventModel event) async {
-  HttpsCallable callable = functions.httpsCallable(
+  final callable = functions.httpsCallable(
     'calendar_functions-update_event',
     options: HttpsCallableOptions(
       timeout: const Duration(seconds: 60),
@@ -134,7 +134,7 @@ Future<dynamic> emailAttendees(
   String studentId, {
   bool isCancel = false,
 }) async {
-  HttpsCallable callable = functions.httpsCallable(
+  final callable = functions.httpsCallable(
     'email_attendees',
     options: HttpsCallableOptions(
       timeout: const Duration(seconds: 60),
