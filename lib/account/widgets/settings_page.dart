@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/account/services/user_service.dart'
+    as user_service;
+import 'package:success_academy/generated/l10n.dart';
 import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
 import 'package:timezone/timezone.dart' as tz show timeZoneDatabase;
-
-import '../../generated/l10n.dart';
-import '../data/account_model.dart';
-import '../services/user_service.dart' as user_service;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

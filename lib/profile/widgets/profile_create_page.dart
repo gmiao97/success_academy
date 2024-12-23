@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/constants.dart';
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
 import 'package:success_academy/profile/services/purchase_service.dart'
     as stripe_service;
-
-import '../../account/data/account_model.dart';
-import '../../constants.dart';
-import '../../generated/l10n.dart';
-import '../data/profile_model.dart';
-import 'create_subscription_form.dart';
+import 'package:success_academy/profile/widgets/create_subscription_form.dart';
 
 class ProfileCreatePage extends StatelessWidget {
   const ProfileCreatePage({super.key});
@@ -65,7 +64,7 @@ class _SignupFormState extends State<_SignupForm> {
     _profileModel.dateOfBirth = DateTime.now();
   }
 
-  void _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final dateOfBirth = await showDatePicker(
       context: context,
       initialDate: _profileModel.dateOfBirth,

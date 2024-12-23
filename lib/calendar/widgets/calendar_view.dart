@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/data/event_data_source.dart';
+import 'package:success_academy/calendar/data/event_model.dart';
+import 'package:success_academy/calendar/widgets/cancel_event_dialog.dart';
+import 'package:success_academy/calendar/widgets/create_event_dialog.dart';
+import 'package:success_academy/calendar/widgets/delete_event_dialog.dart';
+import 'package:success_academy/calendar/widgets/edit_event_dialog.dart';
+import 'package:success_academy/calendar/widgets/signup_event_dialog.dart';
+import 'package:success_academy/calendar/widgets/view_event_dialog.dart';
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
 import 'package:timezone/timezone.dart' as tz show getLocation;
 import 'package:timezone/timezone.dart' show Location, TZDateTime;
-
-import '../../account/data/account_model.dart';
-import '../../generated/l10n.dart';
-import '../calendar_utils.dart';
-import '../data/event_model.dart';
-import 'cancel_event_dialog.dart';
-import 'create_event_dialog.dart';
-import 'delete_event_dialog.dart';
-import 'edit_event_dialog.dart';
-import 'signup_event_dialog.dart';
-import 'view_event_dialog.dart';
 
 class CalendarView extends StatelessWidget {
   const CalendarView({super.key});
@@ -70,7 +69,7 @@ class _CalendarViewState extends State<_CalendarView> {
   }
 
   @override
-  void didChangeDependencies() async {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     _eventDataSource = context.watch<EventDataSource>();
     _eventsDateTimeRange = TZDateTimeRange(
@@ -80,7 +79,7 @@ class _CalendarViewState extends State<_CalendarView> {
     _loadEvents(_eventsDateTimeRange);
   }
 
-  void _loadEvents(TZDateTimeRange dateTimeRange) async {
+  Future<void> _loadEvents(TZDateTimeRange dateTimeRange) async {
     setState(() {
       _showLoadingIndicator = true;
     });
@@ -192,7 +191,7 @@ class _CalendarViewState extends State<_CalendarView> {
       focusedDay.day,
     );
     if (_focusedDay
-        .subtract(Duration(days: 7))
+        .subtract(const Duration(days: 7))
         .isBefore(_eventsDateTimeRange.start)) {
       _eventsDateTimeRange = TZDateTimeRange(
         start: _focusedDay.subtract(const Duration(days: 42)),
@@ -202,7 +201,9 @@ class _CalendarViewState extends State<_CalendarView> {
         _eventsDateTimeRange,
       );
     }
-    if (_focusedDay.add(Duration(days: 14)).isAfter(_eventsDateTimeRange.end)) {
+    if (_focusedDay
+        .add(const Duration(days: 14))
+        .isAfter(_eventsDateTimeRange.end)) {
       _eventsDateTimeRange = TZDateTimeRange(
         start: _eventsDateTimeRange.start,
         end: _focusedDay.add(const Duration(days: 42)),
@@ -234,11 +235,12 @@ class _CalendarViewState extends State<_CalendarView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _showLoadingIndicator
-            ? LinearProgressIndicator(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-              )
-            : const SizedBox(height: 4),
+        if (_showLoadingIndicator)
+          LinearProgressIndicator(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+          )
+        else
+          const SizedBox(height: 4),
         Card(
           child: TableCalendar(
             headerStyle: const HeaderStyle(

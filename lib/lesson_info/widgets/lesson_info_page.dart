@@ -1,14 +1,13 @@
 import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/lesson_info/data/lesson_model.dart';
 import 'package:success_academy/lesson_info/services/lesson_info_service.dart'
     as lesson_info_service;
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../account/data/account_model.dart';
-import '../../generated/l10n.dart';
-import '../../profile/data/profile_model.dart';
-import '../data/lesson_model.dart';
 
 class LessonInfoPage extends StatefulWidget {
   const LessonInfoPage({super.key});
@@ -22,7 +21,7 @@ class _LessonInfoPageState extends State<LessonInfoPage> {
   List<LessonModel> _zoomInfo = [];
 
   @override
-  void didChangeDependencies() async {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     final account = context.watch<AccountModel>();
     final lessons = await lesson_info_service.getLessons(
@@ -126,12 +125,13 @@ class _LessonInfoPageState extends State<LessonInfoPage> {
                       ],
                     ),
                   ),
-                  !_zoomInfoLoaded
-                      ? const CircularProgressIndicator()
-                      : _getZoomInfoTable(
-                          account.userType,
-                          account.subscriptionPlan,
-                        ),
+                  if (!_zoomInfoLoaded)
+                    const CircularProgressIndicator()
+                  else
+                    _getZoomInfoTable(
+                      account.userType,
+                      account.subscriptionPlan,
+                    ),
                 ],
               ),
             ),
@@ -319,16 +319,12 @@ class EditableZoomInfo extends StatelessWidget {
                 switch (k) {
                   case 'name':
                     zoomInfo[i].name = v;
-                    break;
                   case 'zoom_link':
                     zoomInfo[i].zoomLink = v;
-                    break;
                   case 'zoom_id':
                     zoomInfo[i].zoomId = v;
-                    break;
                   case 'zoom_pw':
                     zoomInfo[i].zoomPassword = v;
-                    break;
                 }
               });
               try {
@@ -355,7 +351,7 @@ class EditableZoomInfo extends StatelessWidget {
                 );
               }
             },
-            onSubmitted: ((value) {
+            onSubmitted: (value) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -363,7 +359,7 @@ class EditableZoomInfo extends StatelessWidget {
                   ),
                 ),
               );
-            }),
+            },
           ),
         ),
       ],

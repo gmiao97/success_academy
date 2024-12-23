@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
 import 'package:success_academy/calendar/data/event_data_source.dart';
+import 'package:success_academy/calendar/data/event_model.dart';
+import 'package:success_academy/constants.dart';
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
 import 'package:timezone/timezone.dart' as tz show getLocation;
 import 'package:timezone/timezone.dart' show TZDateTime;
-
-import '../../calendar/calendar_utils.dart';
-import '../../calendar/data/event_model.dart';
-import '../../constants.dart';
-import '../../generated/l10n.dart';
-import '../../profile/data/profile_model.dart';
-import '../data/account_model.dart';
 
 class ManageUsersPage extends StatelessWidget {
   const ManageUsersPage({super.key});
@@ -44,7 +43,7 @@ class _ManageUsersPageState extends State<_ManageUsersPage> {
   }
 
   @override
-  void didChangeDependencies() async {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     final location =
         tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
@@ -60,7 +59,7 @@ class _ManageUsersPageState extends State<_ManageUsersPage> {
     );
   }
 
-  void _selectDateRange() async {
+  Future<void> _selectDateRange() async {
     final location =
         tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
 

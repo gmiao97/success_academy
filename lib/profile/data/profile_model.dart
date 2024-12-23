@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
-
-import '../../constants.dart' as constants;
-import '../../generated/l10n.dart';
 
 // Corresponds to metadata field 'id' in price in Stripe dashboard
 enum SubscriptionPlan { minimum, minimumPreschool, monthly }

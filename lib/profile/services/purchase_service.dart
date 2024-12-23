@@ -6,8 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-
-import '../data/profile_model.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 final FirebaseFunctions functions =

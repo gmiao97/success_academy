@@ -3,16 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/calendar/calendar_utils.dart';
+import 'package:success_academy/calendar/data/event_model.dart';
+import 'package:success_academy/calendar/services/event_service.dart'
+    as event_service;
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
 import 'package:timezone/timezone.dart' as tz show getLocation;
 import 'package:timezone/timezone.dart' show Location, TZDateTime;
-
-import '../../account/data/account_model.dart';
-import '../../generated/l10n.dart';
-import '../../profile/data/profile_model.dart';
-import '../calendar_utils.dart';
-import '../data/event_model.dart';
-import '../services/event_service.dart' as event_service;
 
 class EditEventDialog extends StatefulWidget {
   final EventModel event;
@@ -76,7 +76,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
     _loadRecurrenceEvent();
   }
 
-  void _loadRecurrenceEvent() async {
+  Future<void> _loadRecurrenceEvent() async {
     final recurrenceId = widget.event.recurrenceId;
     if (recurrenceId != null) {
       _isRecur = true;
@@ -143,7 +143,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
     );
   }
 
-  void _selectStartTime() async {
+  Future<void> _selectStartTime() async {
     final dateTime = await _pickDateTime(initial: _start);
     if (dateTime != null) {
       setState(() {
@@ -157,7 +157,7 @@ class _EditEventDialogState extends State<EditEventDialog> {
     }
   }
 
-  void _selectEndTime() async {
+  Future<void> _selectEndTime() async {
     final dateTime = await _pickDateTime(initial: _end);
     if (dateTime != null) {
       setState(() {
@@ -278,30 +278,31 @@ class _EditEventDialogState extends State<EditEventDialog> {
                     return null;
                   },
                 ),
-                widget.event.eventType == EventType.private
-                    ? TextFormField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        decoration: InputDecoration(
-                          icon: const Icon(Icons.add),
-                          labelText: S.of(context).eventPointsLabel,
-                        ),
-                        initialValue: _numPoints.toString(),
-                        onChanged: (value) {
-                          setState(() {
-                            _numPoints = int.parse(value);
-                          });
-                        },
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return S.of(context).eventPointsValidation;
-                          }
-                          return null;
-                        },
-                      )
-                    : const SizedBox.shrink(),
+                if (widget.event.eventType == EventType.private)
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    decoration: InputDecoration(
+                      icon: const Icon(Icons.add),
+                      labelText: S.of(context).eventPointsLabel,
+                    ),
+                    initialValue: _numPoints.toString(),
+                    onChanged: (value) {
+                      setState(() {
+                        _numPoints = int.parse(value);
+                      });
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return S.of(context).eventPointsValidation;
+                      }
+                      return null;
+                    },
+                  )
+                else
+                  const SizedBox.shrink(),
                 const SizedBox(height: 8),
                 Text(
                   '${S.of(context).timeZoneLabel}: ${timeZone.replaceAll('_', ' ')}',
@@ -442,57 +443,58 @@ class _EditEventDialogState extends State<EditEventDialog> {
             Navigator.of(context).pop();
           },
         ),
-        _submitClicked
-            ? Transform.scale(
-                scale: 0.5,
-                child: const CircularProgressIndicator(),
-              )
-            : TextButton(
-                child: Text(S.of(context).confirm),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    setState(() {
-                      _submitClicked = true;
-                    });
-                    final event = EventModel(
-                      eventId: widget.event.eventId,
-                      eventType: widget.event.eventType,
-                      summary: _summary,
-                      description: _description,
-                      numPoints: widget.event.eventType == EventType.private
-                          ? _numPoints
-                          : 0,
-                      startTime: _start,
-                      endTime: _end,
-                      timeZone: widget.event.timeZone,
-                      teacherId: _teacherId,
-                      studentIdList: widget.event.studentIdList,
-                      recurrence: widget.event.recurrence,
+        if (_submitClicked)
+          Transform.scale(
+            scale: 0.5,
+            child: const CircularProgressIndicator(),
+          )
+        else
+          TextButton(
+            child: Text(S.of(context).confirm),
+            onPressed: () async {
+              if (_formKey.currentState!.validate()) {
+                setState(() {
+                  _submitClicked = true;
+                });
+                final event = EventModel(
+                  eventId: widget.event.eventId,
+                  eventType: widget.event.eventType,
+                  summary: _summary,
+                  description: _description,
+                  numPoints: widget.event.eventType == EventType.private
+                      ? _numPoints
+                      : 0,
+                  startTime: _start,
+                  endTime: _end,
+                  timeZone: widget.event.timeZone,
+                  teacherId: _teacherId,
+                  studentIdList: widget.event.studentIdList,
+                  recurrence: widget.event.recurrence,
+                );
+                try {
+                  await event_service.updateEvent(event);
+                  _updateLocalEvent(event);
+                  widget.onRefresh();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(S.of(context).editEventSuccess),
+                      ),
                     );
-                    try {
-                      await event_service.updateEvent(event);
-                      _updateLocalEvent(event);
-                      widget.onRefresh();
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(S.of(context).editEventSuccess),
-                          ),
-                        );
-                      }
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(S.of(context).editEventFailure),
-                          backgroundColor: Theme.of(context).colorScheme.error,
-                        ),
-                      );
-                    } finally {
-                      Navigator.of(context).pop();
-                    }
                   }
-                },
-              ),
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(S.of(context).editEventFailure),
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                    ),
+                  );
+                } finally {
+                  Navigator.of(context).pop();
+                }
+              }
+            },
+          ),
       ],
     );
   }

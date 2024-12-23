@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../account/data/account_model.dart';
-import '../../account/widgets/manage_users_page.dart';
-import '../../account/widgets/settings_page.dart';
-import '../../calendar/widgets/calendar_view.dart';
-import '../../generated/l10n.dart';
-import '../../lesson_info/widgets/lesson_info_page.dart';
-import '../../profile/widgets/add_points_page.dart';
-import '../../profile/widgets/profile_home_page.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/account/widgets/manage_users_page.dart';
+import 'package:success_academy/account/widgets/settings_page.dart';
+import 'package:success_academy/calendar/widgets/calendar_view.dart';
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/lesson_info/widgets/lesson_info_page.dart';
+import 'package:success_academy/profile/widgets/add_points_page.dart';
+import 'package:success_academy/profile/widgets/profile_home_page.dart';
 
 class PhoneScaffold extends StatefulWidget {
   const PhoneScaffold({super.key});
@@ -34,7 +33,6 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           const ManageUsersPage(),
           const SettingsPage(),
         ];
-        break;
       case UserType.teacher:
         _content = [
           const ProfileHomePage(),
@@ -42,7 +40,6 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           const LessonInfoPage(),
           const SettingsPage(),
         ];
-        break;
       case UserType.student:
         _content = [
           const ProfileHomePage(),
@@ -51,7 +48,6 @@ class _PhoneScaffoldState extends State<PhoneScaffold> {
           const AddPointsPage(),
           const SettingsPage(),
         ];
-        break;
       default:
         _content = [];
         break;

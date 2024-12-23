@@ -1,13 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
-
-import '../../account/data/account_model.dart';
-import '../../constants.dart' as constants;
-import '../../generated/l10n.dart';
-import '../data/profile_model.dart';
 
 class ProfileBrowsePage extends StatefulWidget {
   const ProfileBrowsePage({super.key});
@@ -26,7 +25,7 @@ class _ProfileBrowsePageState extends State<ProfileBrowsePage> {
     initProfiles();
   }
 
-  void initProfiles() async {
+  Future<void> initProfiles() async {
     final account = context.watch<AccountModel>();
     final studentProfiles = await profile_service
         .getStudentProfilesForUser(account.firebaseUser!.uid);

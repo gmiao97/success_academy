@@ -1,12 +1,10 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
-
+import 'package:success_academy/calendar/data/event_model.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
 import 'package:timezone/timezone.dart' show Location;
 
-import '../data/event_model.dart';
-
-const isDev = false;
+const isDev = kDebugMode;
 
 final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'us-west2');

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:success_academy/calendar/data/event_model.dart';
+import 'package:success_academy/calendar/services/event_service.dart'
+    as event_service;
+import 'package:success_academy/data/data_source.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
-
-import '../../data/data_source.dart';
-import '../services/event_service.dart' as event_service;
-import 'event_model.dart';
 
 final class EventDataSource extends ChangeNotifier
     implements DataSource<Set<EventModel>, TZDateTimeRange> {

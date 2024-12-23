@@ -7,12 +7,11 @@ import 'package:success_academy/account/services/account_service.dart'
     as shared_preferences_service;
 import 'package:success_academy/account/services/user_service.dart'
     as user_service;
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
 import 'package:success_academy/profile/services/purchase_service.dart'
     as stripe_service;
-
-import '../../profile/data/profile_model.dart';
 
 enum AuthStatus {
   signedIn,
@@ -104,7 +103,7 @@ class AccountModel extends ChangeNotifier {
     _refreshSubscriptionData();
   }
 
-  void init() async {
+  Future<void> init() async {
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
       _authStatus = AuthStatus.loading;
       notifyListeners();
@@ -264,7 +263,7 @@ class AccountModel extends ChangeNotifier {
     }
   }
 
-  void _refreshSubscriptionData() async {
+  Future<void> _refreshSubscriptionData() async {
     _subscriptionDocs =
         await stripe_service.getSubscriptionsForUser(_firebaseUser!.uid);
     _subscriptionPlan =
