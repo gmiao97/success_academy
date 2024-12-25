@@ -76,9 +76,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           userId: account.firebaseUser!.uid,
                           timeZone: timeZone,
                         );
-                        final updatedMyUser = account.myUser!;
-                        account.myUser = updatedMyUser
+                        final updatedMyUser = account.myUser!
                           ..timeZone = timeZone ?? account.myUser!.timeZone;
+                        account.myUser = updatedMyUser;
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

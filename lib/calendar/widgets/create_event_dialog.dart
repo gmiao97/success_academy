@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +20,7 @@ class CreateEventDialog extends StatefulWidget {
   final DateTime firstDay;
   final DateTime lastDay;
   final DateTime selectedDay;
+  final AsyncValueSetter<EventModel> onEventCreated;
 
   const CreateEventDialog({
     super.key,
@@ -26,6 +28,7 @@ class CreateEventDialog extends StatefulWidget {
     required this.firstDay,
     required this.lastDay,
     required this.selectedDay,
+    required this.onEventCreated,
   });
 
   @override
@@ -444,6 +447,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     event,
                     location: _location,
                   );
+                  await widget.onEventCreated(newEvent);
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

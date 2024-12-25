@@ -8,14 +8,12 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:success_academy/profile/data/profile_model.dart';
 
-final FirebaseFirestore db = FirebaseFirestore.instance;
-final FirebaseFunctions functions =
-    FirebaseFunctions.instanceFor(region: 'us-west2');
+final FirebaseFirestore _db = FirebaseFirestore.instance;
 
 Future<List<QueryDocumentSnapshot>> getSubscriptionsForUser(
   String userId,
 ) async {
-  final subscriptionsQuery = await db
+  final subscriptionsQuery = await _db
       .collection('customers')
       .doc(userId)
       .collection('subscriptions')
@@ -24,7 +22,7 @@ Future<List<QueryDocumentSnapshot>> getSubscriptionsForUser(
 }
 
 Future<List<QueryDocumentSnapshot>> _getAllPrices() async {
-  final pricesQuery = await db.collectionGroup('prices').get();
+  final pricesQuery = await _db.collectionGroup('prices').get();
   return pricesQuery.docs.where((doc) => doc.get('active') == true).toList();
 }
 
@@ -54,7 +52,7 @@ Future<void> startStripeSubscriptionCheckoutSession({
     },
   ];
 
-  final checkoutSessionDoc = await db
+  final checkoutSessionDoc = await _db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')
@@ -118,7 +116,7 @@ Future<void> startStripePointsCheckoutSession({
     data['promotion_code'] = coupon;
   }
 
-  final checkoutSessionDoc = await db
+  final checkoutSessionDoc = await _db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')
@@ -166,7 +164,7 @@ Future<void> startStripePointSubscriptionCheckoutSession({
     },
   ];
 
-  final checkoutSessionDoc = await db
+  final checkoutSessionDoc = await _db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')

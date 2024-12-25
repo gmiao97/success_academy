@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/data/account_model.dart';
@@ -37,12 +38,14 @@ class _CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<_CalendarView> {
+  static final Logger _logger = Logger();
+
   late final List<EventType> _availableEventTypes;
   late final DateTime _firstDay;
   late final DateTime _lastDay;
   late final Location _location;
-  late final EventsDataSource _eventsDataSource;
 
+  late EventsDataSource _eventsDataSource;
   late TZDateTime _currentDay;
   late TZDateTime _focusedDay;
   late TZDateTime _selectedDay;
@@ -122,31 +125,6 @@ class _CalendarViewState extends State<_CalendarView> {
     return _displayedEvents[DateUtils.dateOnly(day)] ?? [];
   }
 
-  void _deleteEventsLocally({
-    required String eventId,
-    bool isRecurrence = false,
-    DateTime? from,
-  }) {
-    if (isRecurrence) {
-      setState(() {
-        for (final eventList in _displayedEvents.values) {
-          eventList.removeWhere((e) {
-            if (from != null) {
-              return e.startTime.isAfter(from) && e.recurrenceId == eventId;
-            }
-            return e.recurrenceId == eventId;
-          });
-        }
-      });
-    } else {
-      setState(() {
-        for (final eventList in _displayedEvents.values) {
-          eventList.removeWhere((e) => e.eventId == eventId);
-        }
-      });
-    }
-  }
-
   void _onTodayButtonClick() {
     setState(() {
       _focusedDay = _selectedDay = _currentDay = _getCurrentDate();
@@ -221,6 +199,40 @@ class _CalendarViewState extends State<_CalendarView> {
       ),
       _location,
     );
+  }
+
+  Future<void> _onEventCreated(EventModel event) async {
+    if (event.recurrence.isEmpty) {
+      _eventsDataSource.storeEvent(event);
+    } else {
+      await _eventsDataSource.storeInstances(event);
+    }
+  }
+
+  // TODO: Update cache to optimistically remove events.
+  void _deleteEventsLocally({
+    required String eventId,
+    bool isRecurrence = false,
+    DateTime? from,
+  }) {
+    if (isRecurrence) {
+      setState(() {
+        for (final eventList in _displayedEvents.values) {
+          eventList.removeWhere((e) {
+            if (from != null) {
+              return e.startTime.isAfter(from) && e.recurrenceId == eventId;
+            }
+            return e.recurrenceId == eventId;
+          });
+        }
+      });
+    } else {
+      setState(() {
+        for (final eventList in _displayedEvents.values) {
+          eventList.removeWhere((e) => e.eventId == eventId);
+        }
+      });
+    }
   }
 
   @override
@@ -306,6 +318,7 @@ class _CalendarViewState extends State<_CalendarView> {
                           firstDay: _firstDay,
                           lastDay: _lastDay,
                           selectedDay: _selectedDay,
+                          onEventCreated: _onEventCreated,
                         ),
                       ),
                       icon: const Icon(Icons.add),

@@ -58,12 +58,12 @@ class StudentProfileModel {
     Map<String, Object?> json, {
     required String userId,
   }) async {
-    final profile = StudentProfileModel._fromJson(json, userId: userId);
-    return profile
+    final profile = StudentProfileModel._fromJson(json, userId: userId)
       ..numPoints = await profile_service.getNumberPoints(
         userId: userId,
         profileId: json['id'] as String,
       );
+    return profile;
   }
 
   String get profileId => _profileId;

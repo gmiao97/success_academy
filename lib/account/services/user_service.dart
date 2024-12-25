@@ -3,9 +3,9 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:random_string/random_string.dart';
 import 'package:success_academy/account/data/account_model.dart';
 
-final FirebaseFirestore db = FirebaseFirestore.instance;
+final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-final CollectionReference<MyUserModel> _myUserModelRef = db
+final CollectionReference<MyUserModel> _myUserModelRef = _db
     .collection('myUsers')
     .withConverter<MyUserModel>(
       fromFirestore: (snapshot, _) => MyUserModel.fromJson(snapshot.data()!),

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:success_academy/lesson_info/data/lesson_model.dart';
 
-final FirebaseFirestore db = FirebaseFirestore.instance;
+final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-CollectionReference<LessonModel> _lessonModelRef = db
+CollectionReference<LessonModel> _lessonModelRef = _db
     .collection('lessons')
     .withConverter<LessonModel>(
       fromFirestore: (snapshot, _) => LessonModel.fromJson(snapshot.data()!),
@@ -26,5 +26,5 @@ Future<List<LessonModel>> getLessons({required bool includePreschool}) {
 
 /// Update given lesson.
 Future<void> updateLesson(String id, LessonModel data) {
-  return db.collection('lessons').doc(id).update(data.toJson());
+  return _db.collection('lessons').doc(id).update(data.toJson());
 }

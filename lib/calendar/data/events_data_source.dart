@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:success_academy/calendar/data/event_model.dart';
 import 'package:success_academy/calendar/data/events_cache.dart';
 import 'package:success_academy/calendar/services/event_service.dart'
@@ -7,16 +8,16 @@ import 'package:success_academy/data/data_source.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
 
 /// [DataSource] to handle fetching and caching of event data.
-///
-/// The current implementation maintains an in-memory cache.
 final class EventsDataSource extends ChangeNotifier
     implements DataSource<Set<EventModel>, TZDateTimeRange> {
+  static final Logger _logger = Logger();
+
   final EventsCache _eventsCache = EventsCache();
   final List<TZDateTimeRange> _cachedDateTimeRanges = [];
 
   List<TZDateTimeRange> get cachedDateTimeRanges => _cachedDateTimeRanges;
 
-  /// Loads all currently cached events.
+  /// Loads all currently stored events.
   @override
   Future<Set<EventModel>> loadData() async {
     return _eventsCache.events;
@@ -73,5 +74,30 @@ final class EventsDataSource extends ChangeNotifier
     _cachedDateTimeRanges.add(dateTimeRange);
     mergeTZDateTimeRanges(_cachedDateTimeRanges);
     return;
+  }
+
+  /// Stores [event] in local storage.
+  void storeEvent(EventModel event) {
+    if (_eventsCache.add(event)) {
+      notifyListeners();
+    }
+  }
+
+  /// Fetches instances of recurring [event] and stores them in local storage.
+  Future<void> storeInstances(EventModel event) async {
+    if (event.recurrence.isEmpty) {
+      _logger.w('Called storeInstances with a non-recurrence event');
+      return Future.value();
+    }
+    for (final dateTimeRange in _cachedDateTimeRanges) {
+      _eventsCache.addAll(
+        await event_service.listInstances(
+          eventId: event.eventId!,
+          location: dateTimeRange.start.location,
+          dateTimeRange: dateTimeRange,
+        ),
+      );
+    }
+    notifyListeners();
   }
 }
