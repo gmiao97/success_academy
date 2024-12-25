@@ -25,7 +25,7 @@ class CalendarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EventDataSource(),
+      create: (context) => EventsDataSource(singleEvents: true),
       child: _CalendarView(),
     );
   }
@@ -41,7 +41,7 @@ class _CalendarViewState extends State<_CalendarView> {
   late final DateTime _firstDay;
   late final DateTime _lastDay;
   late final Location _location;
-  late final EventDataSource _eventDataSource;
+  late final EventsDataSource _eventsDataSource;
 
   late TZDateTime _currentDay;
   late TZDateTime _focusedDay;
@@ -71,7 +71,7 @@ class _CalendarViewState extends State<_CalendarView> {
   @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
-    _eventDataSource = context.watch<EventDataSource>();
+    _eventsDataSource = context.watch<EventsDataSource>();
     _eventsDateTimeRange = TZDateTimeRange(
       start: _focusedDay.subtract(Duration(days: 21)),
       end: _focusedDay.add(Duration(days: 21)),
@@ -85,7 +85,7 @@ class _CalendarViewState extends State<_CalendarView> {
     });
 
     _allEvents.addAll(
-      await _eventDataSource.loadDataByKey(
+      await _eventsDataSource.loadDataByKey(
         dateTimeRange,
       ),
     );

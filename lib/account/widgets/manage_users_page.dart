@@ -19,7 +19,7 @@ class ManageUsersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EventDataSource(),
+      create: (context) => EventsDataSource(singleEvents: true),
       child: _ManageUsersPage(),
     );
   }
@@ -31,7 +31,7 @@ class _ManageUsersPage extends StatefulWidget {
 }
 
 class _ManageUsersPageState extends State<_ManageUsersPage> {
-  late final EventDataSource _eventDataSource;
+  late final EventsDataSource _eventsDataSource;
   final List<bool> _selectedToggle = [true, false];
   final List<EventModel> _events = [];
   late TZDateTimeRange _dateRange;
@@ -47,13 +47,13 @@ class _ManageUsersPageState extends State<_ManageUsersPage> {
     super.didChangeDependencies();
     final location =
         tz.getLocation(context.read<AccountModel>().myUser!.timeZone);
-    _eventDataSource = context.watch<EventDataSource>();
+    _eventsDataSource = context.watch<EventsDataSource>();
     _dateRange = TZDateTimeRange(
       start: TZDateTime.now(location).subtract(const Duration(days: 30)),
       end: TZDateTime.now(location),
     );
     _events.addAll(
-      await _eventDataSource.loadDataByKey(
+      await _eventsDataSource.loadDataByKey(
         _dateRange,
       ),
     );
@@ -71,7 +71,7 @@ class _ManageUsersPageState extends State<_ManageUsersPage> {
     if (dateRange != null) {
       final start = TZDateTime.from(dateRange.start, location);
       final end = TZDateTime.from(dateRange.end, location);
-      await _eventDataSource
+      await _eventsDataSource
           .loadDataByKey(
             TZDateTimeRange(
               start: start,

@@ -5,19 +5,27 @@ import 'package:success_academy/calendar/services/event_service.dart'
 import 'package:success_academy/data/data_source.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
 
-final class EventDataSource extends ChangeNotifier
+final class EventsDataSource extends ChangeNotifier
     implements DataSource<Set<EventModel>, TZDateTimeRange> {
-  EventDataSource._();
+  EventsDataSource._(bool singleEvents) : _singleEvents = singleEvents;
 
-  factory EventDataSource() {
-    return _instance;
+  factory EventsDataSource({required bool singleEvents}) {
+    if (singleEvents) {
+      return _singleEventsInstance;
+    } else {
+      return _recurrenceInstance;
+    }
   }
 
-  static final EventDataSource _instance = EventDataSource._();
+  static final EventsDataSource _singleEventsInstance =
+      EventsDataSource._(true);
+  static final EventsDataSource _recurrenceInstance = EventsDataSource._(false);
 
+  final bool _singleEvents;
   final Set<EventModel> _eventsCache = {};
   final List<TZDateTimeRange> _cachedDateTimeRanges = [];
 
+  /// Loads all currently cached events.
   @override
   Future<Set<EventModel>> loadData() async {
     return _eventsCache;
@@ -42,6 +50,7 @@ final class EventDataSource extends ChangeNotifier
     );
   }
 
+  /// Refetches and stores events according to [_cachedDateTimeRanges].
   @override
   Future<void> fetchAndStoreData() async {
     _eventsCache.clear();
@@ -50,20 +59,21 @@ final class EventDataSource extends ChangeNotifier
         await event_service.listEvents(
           location: dateTimeRange.start.location,
           dateTimeRange: dateTimeRange,
-          singleEvents: true,
+          singleEvents: _singleEvents,
         ),
       );
     }
     return;
   }
 
+  /// Fetches and stores event data by [dateTimeRange].
   @override
   Future<void> fetchAndStoreDataByKey(TZDateTimeRange dateTimeRange) async {
     _eventsCache.addAll(
       await event_service.listEvents(
         location: dateTimeRange.start.location,
         dateTimeRange: dateTimeRange,
-        singleEvents: true,
+        singleEvents: _singleEvents,
       ),
     );
     _cachedDateTimeRanges.add(dateTimeRange);
