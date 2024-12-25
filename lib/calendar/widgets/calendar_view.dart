@@ -46,14 +46,13 @@ class _CalendarViewState extends State<_CalendarView> {
   late TZDateTime _currentDay;
   late TZDateTime _focusedDay;
   late TZDateTime _selectedDay;
-  late TZDateTimeRange _eventsDateTimeRange;
   late List<EventType> _selectedEventTypes;
 
   final Set<EventModel> _allEvents = {};
   List<EventModel> _selectedEvents = [];
   Map<DateTime, List<EventModel>> _displayedEvents = {};
   EventDisplay _eventDisplay = EventDisplay.all;
-  bool _showLoadingIndicator = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -72,16 +71,17 @@ class _CalendarViewState extends State<_CalendarView> {
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     _eventsDataSource = context.watch<EventsDataSource>();
-    _eventsDateTimeRange = TZDateTimeRange(
-      start: _focusedDay.subtract(Duration(days: 21)),
-      end: _focusedDay.add(Duration(days: 21)),
+    _loadEvents(
+      TZDateTimeRange(
+        start: _focusedDay.subtract(Duration(days: 10)),
+        end: _focusedDay.add(Duration(days: 20)),
+      ),
     );
-    _loadEvents(_eventsDateTimeRange);
   }
 
   Future<void> _loadEvents(TZDateTimeRange dateTimeRange) async {
     setState(() {
-      _showLoadingIndicator = true;
+      _isLoading = true;
     });
 
     _allEvents.addAll(
@@ -94,7 +94,7 @@ class _CalendarViewState extends State<_CalendarView> {
     setState(() {
       _displayedEvents = buildEventMap(_allEvents);
       _selectedEvents = _getEventsForDay(_selectedDay);
-      _showLoadingIndicator = false;
+      _isLoading = false;
     });
   }
 
@@ -190,26 +190,24 @@ class _CalendarViewState extends State<_CalendarView> {
       focusedDay.month,
       focusedDay.day,
     );
-    if (_focusedDay
-        .subtract(const Duration(days: 7))
-        .isBefore(_eventsDateTimeRange.start)) {
-      _eventsDateTimeRange = TZDateTimeRange(
-        start: _focusedDay.subtract(const Duration(days: 42)),
-        end: _eventsDateTimeRange.end,
-      );
+
+    // The calendar events data source contains a single continuous date time
+    // range.
+    final cachedDateTimeRange = _eventsDataSource.cachedDateTimeRanges[0];
+    if (_focusedDay.isBefore(cachedDateTimeRange.start)) {
       _loadEvents(
-        _eventsDateTimeRange,
+        TZDateTimeRange(
+          start: _focusedDay.subtract(const Duration(days: 30)),
+          end: _eventsDataSource.cachedDateTimeRanges[0].end,
+        ),
       );
     }
-    if (_focusedDay
-        .add(const Duration(days: 14))
-        .isAfter(_eventsDateTimeRange.end)) {
-      _eventsDateTimeRange = TZDateTimeRange(
-        start: _eventsDateTimeRange.start,
-        end: _focusedDay.add(const Duration(days: 42)),
-      );
+    if (_focusedDay.isAfter(cachedDateTimeRange.end)) {
       _loadEvents(
-        _eventsDateTimeRange,
+        TZDateTimeRange(
+          start: cachedDateTimeRange.start,
+          end: _focusedDay.add(const Duration(days: 30)),
+        ),
       );
     }
   }
@@ -235,7 +233,7 @@ class _CalendarViewState extends State<_CalendarView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (_showLoadingIndicator)
+        if (_isLoading)
           LinearProgressIndicator(
             backgroundColor: Theme.of(context).colorScheme.surface,
           )

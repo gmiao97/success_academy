@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart' show TZDateTime;
 
+/// Encapsulates a start and end [TZDateTime] that represent the range of dates.
 class TZDateTimeRange extends DateTimeRange {
   TZDateTimeRange({required TZDateTime start, required TZDateTime end})
       : super(start: start, end: end);
@@ -10,8 +11,23 @@ class TZDateTimeRange extends DateTimeRange {
 
   @override
   TZDateTime get end => super.end as TZDateTime;
+
+  /// Returns whether [dateTimeRange] has overlap with this [TZDateTimeRange].
+  bool overlaps(DateTimeRange dateTimeRange) {
+    return !(start.isAfter(dateTimeRange.end) ||
+        end.isBefore(dateTimeRange.start));
+  }
+
+  /// Returns whether [dateTimeRange] is fully contained in this
+  /// [TZDateTimeRange].
+  bool contains(DateTimeRange dateTimeRange) {
+    return !dateTimeRange.start.isBefore(start) &&
+        !dateTimeRange.end.isAfter(end);
+  }
 }
 
+/// Merges any overlapping [TZDateTimeRange]s in [dateTimeRanges] and returns a
+/// sorted list of the result.
 List<TZDateTimeRange> mergeTZDateTimeRanges(
   List<TZDateTimeRange> dateTimeRanges,
 ) {
@@ -23,16 +39,18 @@ List<TZDateTimeRange> mergeTZDateTimeRanges(
   final mergedDateTimeRanges = <TZDateTimeRange>[];
   var merged = dateTimeRanges[0];
   for (var i = 1; i < dateTimeRanges.length; i++) {
-    if (dateTimeRanges[i].start.isAfter(merged.end)) {
-      mergedDateTimeRanges.add(merged);
-      merged = dateTimeRanges[i];
-    } else {
+    if (merged.overlaps(dateTimeRanges[i])) {
       merged = TZDateTimeRange(
-        start: merged.start,
+        start: merged.start.isBefore(dateTimeRanges[i].start)
+            ? merged.start
+            : dateTimeRanges[i].start,
         end: merged.end.isAfter(dateTimeRanges[i].end)
             ? merged.end
             : dateTimeRanges[i].end,
       );
+    } else {
+      mergedDateTimeRanges.add(merged);
+      merged = dateTimeRanges[i];
     }
   }
   mergedDateTimeRanges.add(merged);

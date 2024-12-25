@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:success_academy/calendar/data/event_model.dart';
+import 'package:success_academy/calendar/data/events_cache.dart';
 import 'package:success_academy/calendar/services/event_service.dart'
     as event_service;
 import 'package:success_academy/data/data_source.dart';
@@ -10,21 +11,15 @@ import 'package:success_academy/helpers/tz_date_time_range.dart';
 /// The current implementation maintains an in-memory cache.
 final class EventsDataSource extends ChangeNotifier
     implements DataSource<Set<EventModel>, TZDateTimeRange> {
-  EventsDataSource._();
-
-  factory EventsDataSource() {
-    return _instance;
-  }
-
-  static final EventsDataSource _instance = EventsDataSource._();
-
-  final Set<EventModel> _eventsCache = {};
+  final EventsCache _eventsCache = EventsCache();
   final List<TZDateTimeRange> _cachedDateTimeRanges = [];
+
+  List<TZDateTimeRange> get cachedDateTimeRanges => _cachedDateTimeRanges;
 
   /// Loads all currently cached events.
   @override
   Future<Set<EventModel>> loadData() async {
-    return _eventsCache;
+    return _eventsCache.events;
   }
 
   /// Loads event data that falls within [dateTimeRange].
@@ -34,9 +29,12 @@ final class EventsDataSource extends ChangeNotifier
   /// than `dateTimeRange.end`.
   @override
   Future<Set<EventModel>> loadDataByKey(TZDateTimeRange dateTimeRange) async {
-    await fetchAndStoreDataByKey(dateTimeRange);
+    if (_cachedDateTimeRanges
+        .every((range) => !range.contains(dateTimeRange))) {
+      await fetchAndStoreDataByKey(dateTimeRange);
+    }
     return Future.value(
-      _eventsCache
+      _eventsCache.events
           .where(
             (event) =>
                 event.endTime.isAfter(dateTimeRange.start) &&
