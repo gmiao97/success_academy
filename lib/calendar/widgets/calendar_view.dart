@@ -4,8 +4,8 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/data/account_model.dart';
 import 'package:success_academy/calendar/calendar_utils.dart';
-import 'package:success_academy/calendar/data/event_data_source.dart';
 import 'package:success_academy/calendar/data/event_model.dart';
+import 'package:success_academy/calendar/data/events_data_source.dart';
 import 'package:success_academy/calendar/widgets/cancel_event_dialog.dart';
 import 'package:success_academy/calendar/widgets/create_event_dialog.dart';
 import 'package:success_academy/calendar/widgets/delete_event_dialog.dart';
@@ -25,7 +25,7 @@ class CalendarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EventsDataSource(singleEvents: true),
+      create: (context) => EventsDataSource(),
       child: _CalendarView(),
     );
   }

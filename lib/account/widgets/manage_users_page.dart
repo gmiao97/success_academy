@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/data/account_model.dart';
 import 'package:success_academy/calendar/calendar_utils.dart';
-import 'package:success_academy/calendar/data/event_data_source.dart';
 import 'package:success_academy/calendar/data/event_model.dart';
+import 'package:success_academy/calendar/data/events_data_source.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
@@ -19,7 +19,7 @@ class ManageUsersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EventsDataSource(singleEvents: true),
+      create: (context) => EventsDataSource(),
       child: _ManageUsersPage(),
     );
   }

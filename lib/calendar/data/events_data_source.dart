@@ -5,23 +5,19 @@ import 'package:success_academy/calendar/services/event_service.dart'
 import 'package:success_academy/data/data_source.dart';
 import 'package:success_academy/helpers/tz_date_time_range.dart';
 
+/// [DataSource] to handle fetching and caching of event data.
+///
+/// The current implementation maintains an in-memory cache.
 final class EventsDataSource extends ChangeNotifier
     implements DataSource<Set<EventModel>, TZDateTimeRange> {
-  EventsDataSource._(bool singleEvents) : _singleEvents = singleEvents;
+  EventsDataSource._();
 
-  factory EventsDataSource({required bool singleEvents}) {
-    if (singleEvents) {
-      return _singleEventsInstance;
-    } else {
-      return _recurrenceInstance;
-    }
+  factory EventsDataSource() {
+    return _instance;
   }
 
-  static final EventsDataSource _singleEventsInstance =
-      EventsDataSource._(true);
-  static final EventsDataSource _recurrenceInstance = EventsDataSource._(false);
+  static final EventsDataSource _instance = EventsDataSource._();
 
-  final bool _singleEvents;
   final Set<EventModel> _eventsCache = {};
   final List<TZDateTimeRange> _cachedDateTimeRanges = [];
 
@@ -59,7 +55,7 @@ final class EventsDataSource extends ChangeNotifier
         await event_service.listEvents(
           location: dateTimeRange.start.location,
           dateTimeRange: dateTimeRange,
-          singleEvents: _singleEvents,
+          singleEvents: true,
         ),
       );
     }
@@ -73,7 +69,7 @@ final class EventsDataSource extends ChangeNotifier
       await event_service.listEvents(
         location: dateTimeRange.start.location,
         dateTimeRange: dateTimeRange,
-        singleEvents: _singleEvents,
+        singleEvents: true,
       ),
     );
     _cachedDateTimeRanges.add(dateTimeRange);

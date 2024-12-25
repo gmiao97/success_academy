@@ -6,7 +6,10 @@ import 'package:timezone/timezone.dart';
 final location = getLocation('America/New_York');
 
 void main() {
-  initializeTimeZones();
+  setUpAll(() {
+    initializeTimeZones();
+  });
+
   group('Test mergeTZDateTimeRanges', () {
     test('no overlap, should return same list, sorted', () {
       final dateTimeRanges = [
