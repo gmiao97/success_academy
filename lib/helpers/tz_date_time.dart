@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart' show TZDateTime;
 
+extension DateTimeUtils on TZDateTime {
+  /// Returns [TZDateTime] of the most recent [weekday] of the same week.
+  ///
+  /// The [weekday] may be 0 for Sunday, 1 for Monday, etc. up to 7 for Sunday.
+  TZDateTime mostRecentWeekday(int weekday) =>
+      TZDateTime(location, year, month, day - (this.weekday - weekday) % 7);
+}
+
 /// Encapsulates a start and end [TZDateTime] that represent the range of dates.
 class TZDateTimeRange extends DateTimeRange {
   TZDateTimeRange({required TZDateTime start, required TZDateTime end})

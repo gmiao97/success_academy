@@ -2,7 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:success_academy/calendar/data/event_model.dart';
-import 'package:success_academy/helpers/tz_date_time_range.dart';
+import 'package:success_academy/helpers/tz_date_time.dart';
 import 'package:timezone/timezone.dart' show Location;
 
 const isDev = kDebugMode;

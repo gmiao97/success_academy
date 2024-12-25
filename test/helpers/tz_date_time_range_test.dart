@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:success_academy/helpers/tz_date_time_range.dart';
+import 'package:success_academy/helpers/tz_date_time.dart';
 import 'package:timezone/data/latest_10y.dart';
 import 'package:timezone/timezone.dart';
 

@@ -5,7 +5,7 @@ import 'package:success_academy/calendar/data/events_cache.dart';
 import 'package:success_academy/calendar/services/event_service.dart'
     as event_service;
 import 'package:success_academy/data/data_source.dart';
-import 'package:success_academy/helpers/tz_date_time_range.dart';
+import 'package:success_academy/helpers/tz_date_time.dart';
 
 /// [DataSource] to handle fetching and caching of event data.
 final class EventsDataSource extends ChangeNotifier

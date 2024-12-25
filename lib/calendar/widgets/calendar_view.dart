@@ -13,7 +13,7 @@ import 'package:success_academy/calendar/widgets/edit_event_dialog.dart';
 import 'package:success_academy/calendar/widgets/signup_event_dialog.dart';
 import 'package:success_academy/calendar/widgets/view_event_dialog.dart';
 import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/helpers/tz_date_time_range.dart';
+import 'package:success_academy/helpers/tz_date_time.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
 import 'package:timezone/timezone.dart' as tz show getLocation;
@@ -71,12 +71,7 @@ class _CalendarViewState extends State<_CalendarView> {
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     _eventsDataSource = context.watch<EventsDataSource>();
-    _loadEvents(
-      TZDateTimeRange(
-        start: _focusedDay.subtract(Duration(days: 10)),
-        end: _focusedDay.add(Duration(days: 20)),
-      ),
-    );
+    _onPageChanged(_focusedDay);
   }
 
   Future<void> _loadEvents(TZDateTimeRange dateTimeRange) async {
@@ -160,30 +155,43 @@ class _CalendarViewState extends State<_CalendarView> {
     });
   }
 
-  void _onPageChanged(DateTime focusedDay) {
-    _focusedDay = TZDateTime(
+  Future<void> _onPageChanged(DateTime focusedDay) async {
+    _focusedDay = _selectedDay = TZDateTime(
       _location,
       focusedDay.year,
       focusedDay.month,
       focusedDay.day,
     );
 
+    // Display events for currently visible date range.
+    await _loadEvents(
+      TZDateTimeRange(
+        start: _focusedDay.mostRecentWeekday(0),
+        end: _focusedDay.mostRecentWeekday(0).add(const Duration(days: 7)),
+      ),
+    );
+
+    // Prefetch the next pages of data.
     // The calendar events data source contains a single continuous date time
     // range.
     final cachedDateTimeRange = _eventsDataSource.cachedDateTimeRanges[0];
-    if (_focusedDay.isBefore(cachedDateTimeRange.start)) {
-      _loadEvents(
+    if (_focusedDay
+        .subtract(const Duration(days: 10))
+        .isBefore(cachedDateTimeRange.start)) {
+      _eventsDataSource.fetchAndStoreDataByKey(
         TZDateTimeRange(
-          start: _focusedDay.subtract(const Duration(days: 30)),
+          start: _focusedDay.subtract(const Duration(days: 50)),
           end: _eventsDataSource.cachedDateTimeRanges[0].end,
         ),
       );
     }
-    if (_focusedDay.isAfter(cachedDateTimeRange.end)) {
-      _loadEvents(
+    if (_focusedDay
+        .add(const Duration(days: 10))
+        .isAfter(cachedDateTimeRange.end)) {
+      _eventsDataSource.fetchAndStoreDataByKey(
         TZDateTimeRange(
           start: cachedDateTimeRange.start,
-          end: _focusedDay.add(const Duration(days: 30)),
+          end: _focusedDay.add(const Duration(days: 50)),
         ),
       );
     }

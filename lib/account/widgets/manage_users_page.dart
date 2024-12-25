@@ -7,7 +7,7 @@ import 'package:success_academy/calendar/data/event_model.dart';
 import 'package:success_academy/calendar/data/events_data_source.dart';
 import 'package:success_academy/constants.dart';
 import 'package:success_academy/generated/l10n.dart';
-import 'package:success_academy/helpers/tz_date_time_range.dart';
+import 'package:success_academy/helpers/tz_date_time.dart';
 import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
 import 'package:timezone/timezone.dart' as tz show getLocation;
