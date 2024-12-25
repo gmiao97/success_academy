@@ -10,6 +10,12 @@ import 'package:success_academy/generated/l10n.dart';
 import 'package:timezone/data/latest_10y.dart' as tz show initializeTimeZones;
 import 'package:timezone/timezone.dart' as tz show getLocation;
 
+typedef OnDeleteEventCallback = Function({
+  required String eventId,
+  bool isRecurrence,
+  DateTime? start,
+});
+
 enum _DeleteRange {
   single,
   future,
@@ -28,18 +34,14 @@ enum _DeleteRange {
 }
 
 class DeleteEventDialog extends StatefulWidget {
-  final EventModel event;
-  final void Function({
-    required String eventId,
-    bool isRecurrence,
-    DateTime? from,
-  }) deleteEventsLocally;
-
   const DeleteEventDialog({
     super.key,
     required this.event,
-    required this.deleteEventsLocally,
+    required this.onDeleteEvent,
   });
+
+  final EventModel event;
+  final OnDeleteEventCallback onDeleteEvent;
 
   @override
   State<DeleteEventDialog> createState() => _DeleteEventDialogState();
@@ -175,7 +177,7 @@ class _DeleteEventDialogState extends State<DeleteEventDialog> {
                     await event_service.deleteEvent(
                       eventId: widget.event.eventId!,
                     );
-                    widget.deleteEventsLocally(
+                    widget.onDeleteEvent(
                       eventId: widget.event.eventId!,
                     );
                   case _DeleteRange.future:
@@ -190,16 +192,16 @@ class _DeleteEventDialogState extends State<DeleteEventDialog> {
                       until: cutoff,
                     );
                     await event_service.updateEvent(_recurrenceEvent!);
-                    widget.deleteEventsLocally(
+                    widget.onDeleteEvent(
                       eventId: widget.event.recurrenceId!,
                       isRecurrence: true,
-                      from: cutoff,
+                      start: cutoff,
                     );
                   case _DeleteRange.all:
                     await event_service.deleteEvent(
                       eventId: widget.event.recurrenceId!,
                     );
-                    widget.deleteEventsLocally(
+                    widget.onDeleteEvent(
                       eventId: widget.event.recurrenceId!,
                       isRecurrence: true,
                     );

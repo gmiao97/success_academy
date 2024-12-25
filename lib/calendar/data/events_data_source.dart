@@ -30,8 +30,7 @@ final class EventsDataSource extends ChangeNotifier
   /// than `dateTimeRange.end`.
   @override
   Future<Set<EventModel>> loadDataByKey(TZDateTimeRange dateTimeRange) async {
-    if (_cachedDateTimeRanges
-        .every((range) => !range.contains(dateTimeRange))) {
+    if (!_cachedDateTimeRanges.any((range) => range.contains(dateTimeRange))) {
       await fetchAndStoreDataByKey(dateTimeRange);
     }
     return Future.value(
@@ -48,9 +47,9 @@ final class EventsDataSource extends ChangeNotifier
   /// Refetches and stores events according to [_cachedDateTimeRanges].
   @override
   Future<void> fetchAndStoreData() async {
-    _eventsCache.clear();
+    _eventsCache.clearAll();
     for (final dateTimeRange in _cachedDateTimeRanges) {
-      _eventsCache.addAll(
+      _eventsCache.storeAll(
         await event_service.listEvents(
           location: dateTimeRange.start.location,
           dateTimeRange: dateTimeRange,
@@ -64,13 +63,15 @@ final class EventsDataSource extends ChangeNotifier
   /// Fetches and stores event data by [dateTimeRange].
   @override
   Future<void> fetchAndStoreDataByKey(TZDateTimeRange dateTimeRange) async {
-    _eventsCache.addAll(
-      await event_service.listEvents(
-        location: dateTimeRange.start.location,
-        dateTimeRange: dateTimeRange,
-        singleEvents: true,
-      ),
-    );
+    _eventsCache
+      ..clearRange(dateTimeRange)
+      ..storeAll(
+        await event_service.listEvents(
+          location: dateTimeRange.start.location,
+          dateTimeRange: dateTimeRange,
+          singleEvents: true,
+        ),
+      );
     _cachedDateTimeRanges.add(dateTimeRange);
     mergeTZDateTimeRanges(_cachedDateTimeRanges);
     return;
@@ -78,9 +79,8 @@ final class EventsDataSource extends ChangeNotifier
 
   /// Stores [event] in local storage.
   void storeEvent(EventModel event) {
-    if (_eventsCache.add(event)) {
-      notifyListeners();
-    }
+    _eventsCache.storeAll([event]);
+    notifyListeners();
   }
 
   /// Fetches instances of recurring [event] and stores them in local storage.
@@ -90,7 +90,7 @@ final class EventsDataSource extends ChangeNotifier
       return Future.value();
     }
     for (final dateTimeRange in _cachedDateTimeRanges) {
-      _eventsCache.addAll(
+      _eventsCache.storeAll(
         await event_service.listInstances(
           eventId: event.eventId!,
           location: dateTimeRange.start.location,
@@ -98,6 +98,38 @@ final class EventsDataSource extends ChangeNotifier
         ),
       );
     }
+    notifyListeners();
+  }
+
+  void removeEvent({
+    required String eventId,
+    bool isRecurrence = false,
+    DateTime? start,
+  }) {
+    List<String> eventsToRemove;
+    if (isRecurrence) {
+      eventsToRemove = _eventsCache.events
+          .where((e) {
+            if (start != null) {
+              return !e.startTime.isBefore(start) && e.recurrenceId == eventId;
+            }
+            return e.recurrenceId == eventId;
+          })
+          .map(
+            (e) => e.eventId,
+          )
+          .nonNulls
+          .toList();
+    } else {
+      eventsToRemove = _eventsCache.events
+          .where((e) => e.eventId == eventId)
+          .map(
+            (e) => e.eventId,
+          )
+          .nonNulls
+          .toList();
+    }
+    _eventsCache.removeAll(eventsToRemove);
     notifyListeners();
   }
 }

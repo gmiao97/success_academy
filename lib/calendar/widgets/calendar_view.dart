@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:success_academy/account/data/account_model.dart';
@@ -38,8 +37,6 @@ class _CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<_CalendarView> {
-  static final Logger _logger = Logger();
-
   late final List<EventType> _availableEventTypes;
   late final DateTime _firstDay;
   late final DateTime _lastDay;
@@ -87,11 +84,13 @@ class _CalendarViewState extends State<_CalendarView> {
       _isLoading = true;
     });
 
-    _allEvents.addAll(
-      await _eventsDataSource.loadDataByKey(
-        dateTimeRange,
-      ),
-    );
+    _allEvents
+      ..clear()
+      ..addAll(
+        await _eventsDataSource.loadDataByKey(
+          dateTimeRange,
+        ),
+      );
     _filterEvents();
 
     setState(() {
@@ -209,32 +208,6 @@ class _CalendarViewState extends State<_CalendarView> {
     }
   }
 
-  // TODO: Update cache to optimistically remove events.
-  void _deleteEventsLocally({
-    required String eventId,
-    bool isRecurrence = false,
-    DateTime? from,
-  }) {
-    if (isRecurrence) {
-      setState(() {
-        for (final eventList in _displayedEvents.values) {
-          eventList.removeWhere((e) {
-            if (from != null) {
-              return e.startTime.isAfter(from) && e.recurrenceId == eventId;
-            }
-            return e.recurrenceId == eventId;
-          });
-        }
-      });
-    } else {
-      setState(() {
-        for (final eventList in _displayedEvents.values) {
-          eventList.removeWhere((e) => e.eventId == eventId);
-        }
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final locale = context.select<AccountModel, String>((a) => a.locale);
@@ -302,7 +275,7 @@ class _CalendarViewState extends State<_CalendarView> {
                 refreshState: () {
                   setState(() {});
                 },
-                deleteEventsLocally: _deleteEventsLocally,
+                onDeleteEvent: _eventsDataSource.removeEvent,
               ),
               if (canEditEvents(userType))
                 Align(
@@ -486,23 +459,19 @@ class _CalendarHeaderState extends State<_CalendarHeader> {
 }
 
 class _EventList extends StatelessWidget {
-  final List<EventModel> events;
-  final DateTime firstDay;
-  final DateTime lastDay;
-  final VoidCallback refreshState;
-  final void Function({
-    required String eventId,
-    bool isRecurrence,
-    DateTime? from,
-  }) deleteEventsLocally;
-
   const _EventList({
     required this.events,
     required this.firstDay,
     required this.lastDay,
     required this.refreshState,
-    required this.deleteEventsLocally,
+    required this.onDeleteEvent,
   });
+
+  final List<EventModel> events;
+  final DateTime firstDay;
+  final DateTime lastDay;
+  final VoidCallback refreshState;
+  final OnDeleteEventCallback onDeleteEvent;
 
   Widget _getEventActions(BuildContext context, EventModel event) {
     final account = context.read<AccountModel>();
@@ -562,7 +531,7 @@ class _EventList extends StatelessWidget {
                   context: context,
                   builder: (context) => DeleteEventDialog(
                     event: event,
-                    deleteEventsLocally: deleteEventsLocally,
+                    onDeleteEvent: onDeleteEvent,
                   ),
                 ),
               ),
@@ -594,7 +563,7 @@ class _EventList extends StatelessWidget {
                 context: context,
                 builder: (context) => DeleteEventDialog(
                   event: event,
-                  deleteEventsLocally: deleteEventsLocally,
+                  onDeleteEvent: onDeleteEvent,
                 ),
               ),
             ),
