@@ -86,18 +86,17 @@ class _CalendarViewState extends State<_CalendarView> {
           dateTimeRange,
         ),
       );
-    _filterEvents();
 
     setState(() {
-      _displayedEvents = buildEventMap(_allEvents);
+      _displayedEvents = _getFilteredEvents();
       _selectedEvents = _getEventsForDay(_selectedDay);
       _isLoading = false;
     });
   }
 
-  void _filterEvents() {
+  Map<DateTime, List<EventModel>> _getFilteredEvents() {
     final account = context.read<AccountModel>();
-    _displayedEvents = buildEventMap(
+    return buildEventMap(
       _allEvents.where((event) {
         if (!_selectedEventTypes.contains(event.eventType)) {
           return false;
@@ -133,8 +132,9 @@ class _CalendarViewState extends State<_CalendarView> {
     setState(() {
       _selectedEventTypes = eventTypes;
       _eventDisplay = eventDisplay;
+      _displayedEvents = _getFilteredEvents();
+      _selectedEvents = _getEventsForDay(_selectedDay);
     });
-    _filterEvents();
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -156,12 +156,14 @@ class _CalendarViewState extends State<_CalendarView> {
   }
 
   Future<void> _onPageChanged(DateTime focusedDay) async {
-    _focusedDay = _selectedDay = TZDateTime(
-      _location,
-      focusedDay.year,
-      focusedDay.month,
-      focusedDay.day,
-    );
+    setState(() {
+      _focusedDay = _selectedDay = TZDateTime(
+        _location,
+        focusedDay.year,
+        focusedDay.month,
+        focusedDay.day,
+      );
+    });
 
     // Display events for currently visible date range.
     await _loadEvents(
