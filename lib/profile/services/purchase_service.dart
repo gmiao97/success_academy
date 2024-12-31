@@ -6,17 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 
-import '../data/profile_model.dart';
-
-final FirebaseFirestore db = FirebaseFirestore.instance;
-final FirebaseFunctions functions =
-    FirebaseFunctions.instanceFor(region: 'us-west2');
+final FirebaseFirestore _db = FirebaseFirestore.instance;
 
 Future<List<QueryDocumentSnapshot>> getSubscriptionsForUser(
   String userId,
 ) async {
-  final subscriptionsQuery = await db
+  final subscriptionsQuery = await _db
       .collection('customers')
       .doc(userId)
       .collection('subscriptions')
@@ -25,7 +22,7 @@ Future<List<QueryDocumentSnapshot>> getSubscriptionsForUser(
 }
 
 Future<List<QueryDocumentSnapshot>> _getAllPrices() async {
-  final pricesQuery = await db.collectionGroup('prices').get();
+  final pricesQuery = await _db.collectionGroup('prices').get();
   return pricesQuery.docs.where((doc) => doc.get('active') == true).toList();
 }
 
@@ -47,15 +44,15 @@ Future<void> startStripeSubscriptionCheckoutSession({
       debugPrint('No metadata.id field found for price ${doc.id}');
     }
   }
-  Completer completer = Completer();
-  List<Map<String, Object?>> lineItems = [
+  final completer = Completer();
+  final lineItems = [
     {
       'price': selectedPriceId,
       'quantity': 1,
     },
   ];
 
-  final checkoutSessionDoc = await db
+  final checkoutSessionDoc = await _db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')
@@ -102,7 +99,7 @@ Future<void> startStripePointsCheckoutSession({
     }
   }
 
-  Map<String, dynamic> data = {
+  final data = {
     'mode': 'payment',
     'price': selectedPriceId,
     'quantity': quantity,
@@ -119,12 +116,12 @@ Future<void> startStripePointsCheckoutSession({
     data['promotion_code'] = coupon;
   }
 
-  final checkoutSessionDoc = await db
+  final checkoutSessionDoc = await _db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')
       .add(data);
-  Completer completer = Completer();
+  final completer = Completer();
   checkoutSessionDoc.snapshots().listen(
     (doc) {
       if (doc.data()!.containsKey('url')) {
@@ -140,7 +137,7 @@ Future<void> startStripePointsCheckoutSession({
 }
 
 Future<void> redirectToStripePortal() async {
-  HttpsCallable getStripePortalCallable =
+  final getStripePortalCallable =
       FirebaseFunctions.instanceFor(region: 'us-west2')
           .httpsCallable('ext-firestore-stripe-payments-createPortalLink');
   try {
@@ -159,15 +156,15 @@ Future<void> startStripePointSubscriptionCheckoutSession({
   required String priceId,
   required int quantity,
 }) async {
-  Completer completer = Completer();
-  List<Map<String, Object?>> lineItems = [
+  final completer = Completer();
+  final lineItems = [
     {
       'price': priceId,
       'quantity': quantity,
     },
   ];
 
-  final checkoutSessionDoc = await db
+  final checkoutSessionDoc = await _db
       .collection('customers')
       .doc(userId)
       .collection('checkout_sessions')

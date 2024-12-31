@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 
-import '../data/profile_model.dart';
-
-final FirebaseFirestore db = FirebaseFirestore.instance;
+final FirebaseFirestore _db = FirebaseFirestore.instance;
 
 CollectionReference<StudentProfileModel> _studentProfileModelRefForUser(
   userId,
 ) {
-  return db
+  return _db
       .collection('myUsers')
       .doc(userId)
       .collection('student_profiles')
@@ -23,7 +22,7 @@ CollectionReference<StudentProfileModel> _studentProfileModelRefForUser(
 CollectionReference<TeacherProfileModel> _teacherProfileModelRefForUser(
   userId,
 ) {
-  return db
+  return _db
       .collection('myUsers')
       .doc(userId)
       .collection('teacher_profile')
@@ -35,7 +34,7 @@ CollectionReference<TeacherProfileModel> _teacherProfileModelRefForUser(
 }
 
 CollectionReference<AdminProfileModel> _adminProfileModelRefForUser(userId) {
-  return db
+  return _db
       .collection('myUsers')
       .doc(userId)
       .collection('admin_profile')
@@ -46,23 +45,19 @@ CollectionReference<AdminProfileModel> _adminProfileModelRefForUser(userId) {
       );
 }
 
-/**  
-  * Get list of query snapshots for all profiles under the user
-  * 
-  * Returns list of document snapshots for each profile under 'profiles 
-  * subcollection in the user doc under 'myUsers' collection. 
-  */
+/// Get list of query snapshots for all profiles under the user
+///
+/// Returns list of document snapshots for each profile under 'profiles
+/// subcollection in the user doc under 'myUsers' collection.
 Future<List<StudentProfileModel>> getStudentProfilesForUser(String userId) {
   return _studentProfileModelRefForUser(userId).get().then(
         (querySnapshot) => querySnapshot.docs.map((doc) => doc.data()).toList(),
       );
 }
 
-/**  
-  * Get teacher profile under the user
-  * 
-  * There should only be a single teacher profile under a user. 
-  */
+/// Get teacher profile under the user
+///
+/// There should only be a single teacher profile under a user.
 Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
   return _teacherProfileModelRefForUser(userId).limit(1).get().then(
         (querySnapshot) =>
@@ -70,11 +65,9 @@ Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
       );
 }
 
-/**  
-  * Get admin profile under the user
-  * 
-  * There should only be a single admin profile under a user. 
-  */
+/// Get admin profile under the user
+///
+/// There should only be a single admin profile under a user.
 Future<AdminProfileModel?> getAdminProfileForUser(String userId) {
   return _adminProfileModelRefForUser(userId).limit(1).get().then(
         (querySnapshot) =>
@@ -82,11 +75,9 @@ Future<AdminProfileModel?> getAdminProfileForUser(String userId) {
       );
 }
 
-/**  
-  * Get all teacher profiles
-  */
+/// Get all teacher profiles
 Future<List<TeacherProfileModel>> getAllTeacherProfiles() {
-  return db
+  return _db
       .collectionGroup('teacher_profile')
       .withConverter<TeacherProfileModel>(
         fromFirestore: (snapshot, _) =>
@@ -99,11 +90,9 @@ Future<List<TeacherProfileModel>> getAllTeacherProfiles() {
       );
 }
 
-/**  
-  * Get all student profiles
-  */
+/// Get all student profiles
 Future<List<StudentProfileModel>> getAllStudentProfiles() {
-  return db
+  return _db
       .collectionGroup('student_profiles')
       .withConverter<StudentProfileModel>(
         fromFirestore: (snapshot, _) => StudentProfileModel.fromFirestoreJson(

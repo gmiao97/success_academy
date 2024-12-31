@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/generated/l10n.dart';
 import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
-
-import '../../constants.dart' as constants;
-import '../../generated/l10n.dart';
 
 // Corresponds to metadata field 'id' in price in Stripe dashboard
 enum SubscriptionPlan { minimum, minimumPreschool, monthly }
@@ -59,12 +58,11 @@ class StudentProfileModel {
     Map<String, Object?> json, {
     required String userId,
   }) async {
-    StudentProfileModel profile =
-        StudentProfileModel._fromJson(json, userId: userId);
-    profile.numPoints = await profile_service.getNumberPoints(
-      userId: userId,
-      profileId: json['id'] as String,
-    );
+    final profile = StudentProfileModel._fromJson(json, userId: userId)
+      ..numPoints = await profile_service.getNumberPoints(
+        userId: userId,
+        profileId: json['id'] as String,
+      );
     return profile;
   }
 
@@ -97,10 +95,10 @@ class StudentProfileModel {
   static Map<String, StudentProfileModel> buildStudentProfileMap(
     List<StudentProfileModel> studentProfileList,
   ) {
-    Map<String, StudentProfileModel> map = {};
-    for (StudentProfileModel profile in studentProfileList) {
-      map[profile._profileId] = profile;
-    }
+    final map = Map<String, StudentProfileModel>.fromIterable(
+      studentProfileList,
+      key: (profile) => profile._profileId,
+    );
     return map;
   }
 }
@@ -133,10 +131,10 @@ class TeacherProfileModel {
   static Map<String, TeacherProfileModel> buildTeacherProfileMap(
     List<TeacherProfileModel> teacherProfiles,
   ) {
-    Map<String, TeacherProfileModel> map = {};
-    for (TeacherProfileModel profile in teacherProfiles) {
-      map[profile._profileId] = profile;
-    }
+    final map = Map<String, TeacherProfileModel>.fromIterable(
+      teacherProfiles,
+      key: (profile) => profile._profileId,
+    );
     return map;
   }
 }

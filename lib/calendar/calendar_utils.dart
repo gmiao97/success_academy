@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rrule/rrule.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/calendar/data/event_model.dart';
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:timezone/timezone.dart' show TZDateTime;
-
-import '../account/data/account_model.dart';
-import '../generated/l10n.dart';
-import '../profile/data/profile_model.dart';
-import 'data/event_model.dart';
 
 String frequencyToString(BuildContext context, Frequency frequency) {
   if (frequency == Frequency.daily) {
@@ -29,8 +28,7 @@ String rruleToString(BuildContext context, RecurrenceRule? rrule) {
 
   final locale = context.select<AccountModel, String>((a) => a.locale);
 
-  StringBuffer buffer =
-      StringBuffer(frequencyToString(context, rrule.frequency));
+  final buffer = StringBuffer(frequencyToString(context, rrule.frequency));
   final until = rrule.until;
   if (until != null) {
     buffer.write(

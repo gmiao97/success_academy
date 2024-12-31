@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/account/data/account_model.dart';
 import 'package:success_academy/account/services/user_service.dart'
     as user_service;
+import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:success_academy/profile/services/purchase_service.dart'
     as stripe_service;
-
-import '../../account/data/account_model.dart';
-import '../../constants.dart' as constants;
-import '../../generated/l10n.dart';
-import '../data/profile_model.dart';
 
 class CreateSubscriptionForm extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
@@ -45,7 +44,7 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
     _loadData();
   }
 
-  void _loadData() async {
+  Future<void> _loadData() async {
     _validCodes.addAll(await user_service.getReferralCodes());
   }
 
@@ -54,7 +53,7 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
     final account = context.watch<AccountModel>();
 
     return Card(
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.surface,
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -172,7 +171,7 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
                   onTap: () {
                     Navigator.pushNamed(context, constants.routeInfo);
                   },
-                )
+                ),
               ],
             ),
             const SizedBox(

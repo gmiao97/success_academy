@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../constants.dart';
-import '../../generated/l10n.dart';
+import 'package:success_academy/constants.dart';
+import 'package:success_academy/generated/l10n.dart';
 
 class TermsPage extends StatelessWidget {
   const TermsPage({super.key});
@@ -31,14 +30,12 @@ class TermsPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const Divider(),
-                    ...termsOfUse
-                        .map(
-                          (line) => Text(
-                            line,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        )
-                        .toList(),
+                    ...termsOfUse.map(
+                      (line) => Text(
+                        line,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
                   ],
                 ),
               ),

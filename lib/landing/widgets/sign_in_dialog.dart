@@ -2,9 +2,8 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../account/data/account_model.dart';
-import '../../constants.dart' as constants;
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/constants.dart' as constants;
 
 class SignInDialog extends StatelessWidget {
   const SignInDialog({super.key});
@@ -29,7 +28,8 @@ class SignInDialog extends StatelessWidget {
           providers: [
             EmailAuthProvider(),
             GoogleProvider(
-                clientId: constants.googleAuthProviderConfigurationClientId),
+              clientId: constants.googleAuthProviderConfigurationClientId,
+            ),
           ],
         ),
       ),

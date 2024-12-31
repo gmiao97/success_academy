@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:success_academy/account/data/account_model.dart';
+import 'package:success_academy/constants.dart' as constants;
+import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:success_academy/profile/services/profile_service.dart'
     as profile_service;
 import 'package:success_academy/profile/services/purchase_service.dart'
     as stripe_service;
-
-import '../../account/data/account_model.dart';
-import '../../constants.dart' as constants;
-import '../../generated/l10n.dart';
-import '../data/profile_model.dart';
-import 'create_subscription_form.dart';
+import 'package:success_academy/profile/widgets/create_subscription_form.dart';
 
 class StudentProfileView extends StatefulWidget {
   const StudentProfileView({super.key});
@@ -147,7 +146,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                             );
                           },
                           icon: const Icon(Icons.copy),
-                        )
+                        ),
                       ],
                     ),
                     RichText(
@@ -166,63 +165,64 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    account.subscriptionPlan != null
-                        ? _ManageSubscription(
-                            subscriptionPlan: account.subscriptionPlan!,
-                          )
-                        : CreateSubscriptionForm(
-                            subscriptionPlan: _subscriptionPlan,
-                            onSubscriptionPlanChange: (subscription) {
-                              setState(() {
-                                _subscriptionPlan = subscription!;
-                              });
-                            },
-                            redirectClicked: _redirectClicked,
-                            setIsReferral: (isReferral) {
-                              _isReferral = isReferral;
-                            },
-                            setReferrer: (name) {
-                              _referrer = name;
-                            },
-                            onStripeSubmitClicked: () async {
-                              setState(() {
-                                _redirectClicked = true;
-                              });
-                              final updatedStudentProfile =
-                                  account.studentProfile!;
-                              updatedStudentProfile.referrer = _referrer;
-                              try {
-                                await profile_service.updateStudentProfile(
-                                  account.firebaseUser!.uid,
-                                  updatedStudentProfile,
-                                );
-                                account.studentProfile = updatedStudentProfile;
-                                await stripe_service
-                                    .startStripeSubscriptionCheckoutSession(
-                                  userId: account.firebaseUser!.uid,
-                                  profileId: account.studentProfile!.profileId,
-                                  subscriptionPlan: _subscriptionPlan,
-                                  isReferral: _isReferral,
-                                );
-                              } catch (e) {
-                                setState(() {
-                                  _redirectClicked = false;
-                                });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      S.of(context).stripeRedirectFailure,
-                                    ),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.error,
-                                  ),
-                                );
-                                debugPrint(
-                                  'Failed to start Stripe subscription checkout $e',
-                                );
-                              }
-                            },
-                          ),
+                    if (account.subscriptionPlan != null)
+                      _ManageSubscription(
+                        subscriptionPlan: account.subscriptionPlan!,
+                      )
+                    else
+                      CreateSubscriptionForm(
+                        subscriptionPlan: _subscriptionPlan,
+                        onSubscriptionPlanChange: (subscription) {
+                          setState(() {
+                            _subscriptionPlan = subscription!;
+                          });
+                        },
+                        redirectClicked: _redirectClicked,
+                        setIsReferral: (isReferral) {
+                          _isReferral = isReferral;
+                        },
+                        setReferrer: (name) {
+                          _referrer = name;
+                        },
+                        onStripeSubmitClicked: () async {
+                          setState(() {
+                            _redirectClicked = true;
+                          });
+                          final updatedStudentProfile = account.studentProfile!
+                            ..referrer = _referrer
+                            ..dateOfBirth;
+                          try {
+                            await profile_service.updateStudentProfile(
+                              account.firebaseUser!.uid,
+                              updatedStudentProfile,
+                            );
+                            account.studentProfile = updatedStudentProfile;
+                            await stripe_service
+                                .startStripeSubscriptionCheckoutSession(
+                              userId: account.firebaseUser!.uid,
+                              profileId: account.studentProfile!.profileId,
+                              subscriptionPlan: _subscriptionPlan,
+                              isReferral: _isReferral,
+                            );
+                          } catch (e) {
+                            setState(() {
+                              _redirectClicked = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  S.of(context).stripeRedirectFailure,
+                                ),
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.error,
+                              ),
+                            );
+                            debugPrint(
+                              'Failed to start Stripe subscription checkout $e',
+                            );
+                          }
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -251,7 +251,7 @@ class _ManageSubscriptionState extends State<_ManageSubscription> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.surface,
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(20),
