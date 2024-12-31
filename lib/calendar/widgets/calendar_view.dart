@@ -210,7 +210,7 @@ class _CalendarViewState extends State<_CalendarView> {
     );
   }
 
-  Future<void> _onEventCreated(EventModel event) async {
+  Future<void> _onCreateEvent(EventModel event) async {
     if (event.recurrence.isEmpty) {
       _eventsDataSource.storeEvent(event);
     } else {
@@ -301,7 +301,7 @@ class _CalendarViewState extends State<_CalendarView> {
                           firstDay: _firstDay,
                           lastDay: _lastDay,
                           selectedDay: _selectedDay,
-                          onEventCreated: _onEventCreated,
+                          onCreateEvent: _onCreateEvent,
                         ),
                       ),
                       icon: const Icon(Icons.add),
@@ -531,7 +531,6 @@ class _EventList extends StatelessWidget {
                     event: event,
                     firstDay: firstDay,
                     lastDay: lastDay,
-                    onRefresh: refreshState,
                   ),
                 ),
               ),
@@ -563,7 +562,6 @@ class _EventList extends StatelessWidget {
                   event: event,
                   firstDay: firstDay,
                   lastDay: lastDay,
-                  onRefresh: () {},
                 ),
               ),
             ),

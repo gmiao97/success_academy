@@ -20,7 +20,7 @@ class CreateEventDialog extends StatefulWidget {
   final DateTime firstDay;
   final DateTime lastDay;
   final DateTime selectedDay;
-  final AsyncValueSetter<EventModel> onEventCreated;
+  final AsyncValueSetter<EventModel> onCreateEvent;
 
   const CreateEventDialog({
     super.key,
@@ -28,7 +28,7 @@ class CreateEventDialog extends StatefulWidget {
     required this.firstDay,
     required this.lastDay,
     required this.selectedDay,
-    required this.onEventCreated,
+    required this.onCreateEvent,
   });
 
   @override
@@ -447,7 +447,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     event,
                     location: _location,
                   );
-                  await widget.onEventCreated(newEvent);
+                  await widget.onCreateEvent(newEvent);
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

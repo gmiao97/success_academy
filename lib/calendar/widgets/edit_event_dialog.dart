@@ -18,14 +18,12 @@ class EditEventDialog extends StatefulWidget {
   final EventModel event;
   final DateTime firstDay;
   final DateTime lastDay;
-  final VoidCallback onRefresh;
 
   const EditEventDialog({
     super.key,
     required this.event,
     required this.firstDay,
     required this.lastDay,
-    required this.onRefresh,
   });
 
   @override
@@ -474,7 +472,6 @@ class _EditEventDialogState extends State<EditEventDialog> {
                 try {
                   await event_service.updateEvent(event);
                   _updateLocalEvent(event);
-                  widget.onRefresh();
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
