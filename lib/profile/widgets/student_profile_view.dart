@@ -20,7 +20,7 @@ class StudentProfileView extends StatefulWidget {
 
 class _StudentProfileViewState extends State<StudentProfileView> {
   bool _redirectClicked = false;
-  bool _isReferral = false;
+  String? _referralType;
   String? _referrer;
   SubscriptionPlan _subscriptionPlan = SubscriptionPlan.minimum;
 
@@ -178,8 +178,8 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                           });
                         },
                         redirectClicked: _redirectClicked,
-                        setIsReferral: (isReferral) {
-                          _isReferral = isReferral;
+                        setReferralType: (referralType) {
+                          _referralType = referralType;
                         },
                         setReferrer: (name) {
                           _referrer = name;
@@ -202,7 +202,7 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                               userId: account.firebaseUser!.uid,
                               profileId: account.studentProfile!.profileId,
                               subscriptionPlan: _subscriptionPlan,
-                              isReferral: _isReferral,
+                              referralType: _referralType,
                             );
                           } catch (e) {
                             setState(() {

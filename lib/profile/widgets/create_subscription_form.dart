@@ -5,6 +5,7 @@ import 'package:success_academy/account/services/user_service.dart'
     as user_service;
 import 'package:success_academy/constants.dart' as constants;
 import 'package:success_academy/generated/l10n.dart';
+import 'package:success_academy/helpers/subscription.dart';
 import 'package:success_academy/profile/data/profile_model.dart';
 import 'package:success_academy/profile/services/purchase_service.dart'
     as stripe_service;
@@ -13,8 +14,8 @@ class CreateSubscriptionForm extends StatefulWidget {
   final SubscriptionPlan subscriptionPlan;
   final Function(SubscriptionPlan?) onSubscriptionPlanChange;
   final bool redirectClicked;
-  final Function(bool) setIsReferral;
-  final Function(String?) setReferrer;
+  final ValueSetter<String?> setReferralType;
+  final ValueSetter<String?> setReferrer;
   final VoidCallback onStripeSubmitClicked;
 
   const CreateSubscriptionForm({
@@ -22,7 +23,7 @@ class CreateSubscriptionForm extends StatefulWidget {
     required this.subscriptionPlan,
     required this.onSubscriptionPlanChange,
     required this.redirectClicked,
-    required this.setIsReferral,
+    required this.setReferralType,
     required this.setReferrer,
     required this.onStripeSubmitClicked,
   });
@@ -33,7 +34,7 @@ class CreateSubscriptionForm extends StatefulWidget {
 
 class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
   final List<String> _validCodes = ['SRNPUXON'];
-  bool _isReferral = false;
+  String? _referralType;
   bool _invalidReferral = false;
   bool _termsOfUseChecked = false;
   bool _redirectClicked = false;
@@ -126,16 +127,22 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
                 labelText: S.of(context).referralLabel,
                 errorText:
                     _invalidReferral ? S.of(context).referralValidation : null,
-                suffixIcon: _isReferral
+                suffixIcon: _referralType != null
                     ? Icon(Icons.check, color: Theme.of(context).primaryColor)
                     : null,
               ),
               onChanged: (value) {
                 setState(() {
-                  _isReferral = _validCodes.contains(value) &&
-                      account.myUser!.referralCode != value;
-                  widget.setIsReferral(_isReferral);
-                  _invalidReferral = value.isNotEmpty && !_isReferral;
+                  if (value == freeSignUpFeeCode) {
+                    _referralType = referralTypeFree;
+                  } else if (_validCodes.contains(value) &&
+                      account.myUser!.referralCode != value) {
+                    _referralType = referralType20;
+                  } else {
+                    _referralType = null;
+                  }
+                  widget.setReferralType(_referralType);
+                  _invalidReferral = value.isNotEmpty && _referralType == null;
                 });
               },
             ),
@@ -182,11 +189,14 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
             ),
             Text(
               S.of(context).signUpFee,
-              style: _isReferral
+              style: _referralType != null
                   ? const TextStyle(decoration: TextDecoration.lineThrough)
                   : null,
             ),
-            if (_isReferral) Text(S.of(context).signUpFeeDiscount),
+            if (_referralType == referralType20)
+              Text(S.of(context).signUpFeeDiscount20),
+            if (_referralType == referralTypeFree)
+              Text(S.of(context).signUpFeeDiscount100),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(

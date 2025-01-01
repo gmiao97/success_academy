@@ -209,7 +209,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
         "signUpFee":
             MessageLookupByLibrary.simpleMessage("トライアル後に入会費50米ドルが請求されます"),
-        "signUpFeeDiscount":
+        "signUpFeeDiscount100":
+            MessageLookupByLibrary.simpleMessage("100%割引ー0米ドル"),
+        "signUpFeeDiscount20":
             MessageLookupByLibrary.simpleMessage("20%割引ー40米ドル"),
         "signedUp": MessageLookupByLibrary.simpleMessage("予約済み"),
         "signup": MessageLookupByLibrary.simpleMessage("予約する"),
