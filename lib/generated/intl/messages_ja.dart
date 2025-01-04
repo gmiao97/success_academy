@@ -122,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "freeLessonZoomInfo":
             MessageLookupByLibrary.simpleMessage("フリーレッスンZOOM情報"),
         "freeNum": MessageLookupByLibrary.simpleMessage("フリーレッスン完了数"),
+        "freePoints": MessageLookupByLibrary.simpleMessage("200ポイント無料"),
         "freeSupplementaryPointSubscriptionFreeAndPrivate":
             MessageLookupByLibrary.simpleMessage("フリー補修・1コマ153ポイント"),
         "freeSupplementaryPointSubscriptionPrivateOnly":

@@ -188,6 +188,9 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
               S.of(context).freeTrial,
             ),
             Text(
+              S.of(context).freePoints,
+            ),
+            Text(
               S.of(context).signUpFee,
               style: _referralType != null
                   ? const TextStyle(decoration: TextDecoration.lineThrough)

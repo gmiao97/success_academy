@@ -133,6 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Free Lesson Zoom Info"),
         "freeNum": MessageLookupByLibrary.simpleMessage(
             "Number of free lessons completed"),
+        "freePoints": MessageLookupByLibrary.simpleMessage("200 points free"),
         "freeSupplementaryPointSubscriptionFreeAndPrivate":
             MessageLookupByLibrary.simpleMessage(
                 "Supplementary - 153 points per lesson"),

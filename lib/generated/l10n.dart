@@ -670,6 +670,16 @@ class S {
     );
   }
 
+  /// `200 points free`
+  String get freePoints {
+    return Intl.message(
+      '200 points free',
+      name: 'freePoints',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Supplementary - 153 points per lesson`
   String get freeSupplementaryPointSubscriptionFreeAndPrivate {
     return Intl.message(
