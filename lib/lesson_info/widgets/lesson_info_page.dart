@@ -82,7 +82,7 @@ class _LessonInfoPageState extends State<LessonInfoPage> {
                           onPressed: () async {
                             if (!await launchUrl(
                               Uri.parse(
-                                'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#list',
+                                'https://drive.google.com/embeddedfolderview?id=1z5WUmx_lFVRy3YbmtEUH-tIqrwsaP8au#grid',
                               ),
                             )) {
                               if (context.mounted) {
@@ -104,7 +104,7 @@ class _LessonInfoPageState extends State<LessonInfoPage> {
                           onPressed: () async {
                             if (!await launchUrl(
                               Uri.parse(
-                                'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#list',
+                                'https://drive.google.com/embeddedfolderview?id=1EMhq3GkTEfsk5NiSHpqyZjS4H2N_aSak#grid',
                               ),
                             )) {
                               if (context.mounted) {
