@@ -190,7 +190,8 @@ class _StudentProfileViewState extends State<StudentProfileView> {
                           });
                           final updatedStudentProfile = account.studentProfile!
                             ..referrer = _referrer
-                            ..dateOfBirth;
+                            ..dateOfBirth
+                            ..numPoints = 200;
                           try {
                             await profile_service.updateStudentProfile(
                               account.firebaseUser!.uid,
