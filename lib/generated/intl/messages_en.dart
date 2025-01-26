@@ -133,6 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Free Lesson Zoom Info"),
         "freeNum": MessageLookupByLibrary.simpleMessage(
             "Number of free lessons completed"),
+        "freePoints": MessageLookupByLibrary.simpleMessage("200 points free"),
         "freeSupplementaryPointSubscriptionFreeAndPrivate":
             MessageLookupByLibrary.simpleMessage(
                 "Supplementary - 153 points per lesson"),
@@ -234,7 +235,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
         "signUpFee": MessageLookupByLibrary.simpleMessage(
             "\$50 USD sign-up fee due after trial"),
-        "signUpFeeDiscount":
+        "signUpFeeDiscount100":
+            MessageLookupByLibrary.simpleMessage("100% off - \$0 USD"),
+        "signUpFeeDiscount20":
             MessageLookupByLibrary.simpleMessage("20% off - \$40 USD"),
         "signedUp": MessageLookupByLibrary.simpleMessage("Signed-up"),
         "signup": MessageLookupByLibrary.simpleMessage("Sign up"),

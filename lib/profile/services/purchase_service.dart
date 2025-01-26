@@ -30,7 +30,7 @@ Future<void> startStripeSubscriptionCheckoutSession({
   required String userId,
   required String profileId,
   required SubscriptionPlan subscriptionPlan,
-  required bool isReferral,
+  required String? referralType,
 }) async {
   String? selectedPriceId;
   final priceDocs = await _getAllPrices();
@@ -63,7 +63,7 @@ Future<void> startStripeSubscriptionCheckoutSession({
       'cancel_url': html.window.location.origin,
       'metadata': {
         'profile_id': profileId,
-        'is_referral': isReferral,
+        'referral_type': referralType ?? 'none',
       },
     },
   );

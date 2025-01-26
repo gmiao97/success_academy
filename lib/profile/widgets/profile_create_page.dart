@@ -55,7 +55,7 @@ class _SignupFormState extends State<_SignupForm> {
   final TextEditingController _dateOfBirthController = TextEditingController();
   final StudentProfileModel _profileModel = StudentProfileModel();
   SubscriptionPlan _subscriptionPlan = SubscriptionPlan.minimum;
-  bool _isReferral = false;
+  String? _referralType;
   bool _redirectClicked = false;
 
   @override
@@ -152,8 +152,8 @@ class _SignupFormState extends State<_SignupForm> {
                 _subscriptionPlan = selectedSubscription!;
               });
             },
-            setIsReferral: (isReferral) {
-              _isReferral = isReferral;
+            setReferralType: (referralType) {
+              _referralType = referralType;
             },
             setReferrer: (name) {
               _profileModel.referrer = name;
@@ -163,7 +163,9 @@ class _SignupFormState extends State<_SignupForm> {
                 setState(() {
                   _redirectClicked = true;
                 });
-                _profileModel.email = account.myUser!.email;
+                _profileModel
+                  ..email = account.myUser!.email
+                  ..numPoints = 200;
                 final profileDoc = await profile_service.addStudentProfile(
                   account.firebaseUser!.uid,
                   _profileModel,
@@ -173,7 +175,7 @@ class _SignupFormState extends State<_SignupForm> {
                     userId: account.firebaseUser!.uid,
                     profileId: profileDoc.id,
                     subscriptionPlan: _subscriptionPlan,
-                    isReferral: _isReferral,
+                    referralType: _referralType,
                   );
                 } catch (err) {
                   setState(() {

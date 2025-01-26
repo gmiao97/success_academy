@@ -670,6 +670,16 @@ class S {
     );
   }
 
+  /// `200 points free`
+  String get freePoints {
+    return Intl.message(
+      '200 points free',
+      name: 'freePoints',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Supplementary - 153 points per lesson`
   String get freeSupplementaryPointSubscriptionFreeAndPrivate {
     return Intl.message(
@@ -1330,11 +1340,21 @@ class S {
     );
   }
 
+  /// `100% off - $0 USD`
+  String get signUpFeeDiscount100 {
+    return Intl.message(
+      '100% off - \$0 USD',
+      name: 'signUpFeeDiscount100',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `20% off - $40 USD`
-  String get signUpFeeDiscount {
+  String get signUpFeeDiscount20 {
     return Intl.message(
       '20% off - \$40 USD',
-      name: 'signUpFeeDiscount',
+      name: 'signUpFeeDiscount20',
       desc: '',
       args: [],
     );
