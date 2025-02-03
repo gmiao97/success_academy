@@ -5,107 +5,98 @@ final FirebaseFirestore _db = FirebaseFirestore.instance;
 
 CollectionReference<StudentProfileModel> _studentProfileModelRefForUser(
   userId,
-) {
-  return _db
-      .collection('myUsers')
-      .doc(userId)
-      .collection('student_profiles')
-      .withConverter<StudentProfileModel>(
-        fromFirestore: (snapshot, _) => StudentProfileModel.fromFirestoreJson(
-          snapshot.id,
-          snapshot.data()!,
-        ),
-        toFirestore: (profileModel, _) => profileModel.toFirestoreJson(),
-      );
-}
+) =>
+    _db
+        .collection('myUsers')
+        .doc(userId)
+        .collection('student_profiles')
+        .withConverter<StudentProfileModel>(
+          fromFirestore: (snapshot, _) => StudentProfileModel.fromFirestoreJson(
+            snapshot.id,
+            snapshot.data()!,
+          ),
+          toFirestore: (profileModel, _) => profileModel.toFirestoreJson(),
+        );
 
 CollectionReference<TeacherProfileModel> _teacherProfileModelRefForUser(
   userId,
-) {
-  return _db
-      .collection('myUsers')
-      .doc(userId)
-      .collection('teacher_profile')
-      .withConverter<TeacherProfileModel>(
-        fromFirestore: (snapshot, _) =>
-            TeacherProfileModel.fromJson(snapshot.id, snapshot.data()!),
-        toFirestore: (teacherProfileModel, _) => teacherProfileModel.toJson(),
-      );
-}
+) =>
+    _db
+        .collection('myUsers')
+        .doc(userId)
+        .collection('teacher_profile')
+        .withConverter<TeacherProfileModel>(
+          fromFirestore: (snapshot, _) =>
+              TeacherProfileModel.fromJson(snapshot.id, snapshot.data()!),
+          toFirestore: (teacherProfileModel, _) => teacherProfileModel.toJson(),
+        );
 
-CollectionReference<AdminProfileModel> _adminProfileModelRefForUser(userId) {
-  return _db
-      .collection('myUsers')
-      .doc(userId)
-      .collection('admin_profile')
-      .withConverter<AdminProfileModel>(
-        fromFirestore: (snapshot, _) =>
-            AdminProfileModel.fromJson(snapshot.id, snapshot.data()!),
-        toFirestore: (adminProfileModel, _) => adminProfileModel.toJson(),
-      );
-}
+CollectionReference<AdminProfileModel> _adminProfileModelRefForUser(userId) =>
+    _db
+        .collection('myUsers')
+        .doc(userId)
+        .collection('admin_profile')
+        .withConverter<AdminProfileModel>(
+          fromFirestore: (snapshot, _) =>
+              AdminProfileModel.fromJson(snapshot.id, snapshot.data()!),
+          toFirestore: (adminProfileModel, _) => adminProfileModel.toJson(),
+        );
 
 /// Get list of query snapshots for all profiles under the user
 ///
 /// Returns list of document snapshots for each profile under 'profiles
 /// subcollection in the user doc under 'myUsers' collection.
-Future<List<StudentProfileModel>> getStudentProfilesForUser(String userId) {
-  return _studentProfileModelRefForUser(userId).get().then(
-        (querySnapshot) => querySnapshot.docs.map((doc) => doc.data()).toList(),
-      );
-}
+Future<List<StudentProfileModel>> getStudentProfilesForUser(String userId) =>
+    _studentProfileModelRefForUser(userId).get().then(
+          (querySnapshot) =>
+              querySnapshot.docs.map((doc) => doc.data()).toList(),
+        );
 
 /// Get teacher profile under the user
 ///
 /// There should only be a single teacher profile under a user.
-Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) {
-  return _teacherProfileModelRefForUser(userId).limit(1).get().then(
-        (querySnapshot) =>
-            querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null,
-      );
-}
+Future<TeacherProfileModel?> getTeacherProfileForUser(String userId) =>
+    _teacherProfileModelRefForUser(userId).limit(1).get().then(
+          (querySnapshot) =>
+              querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null,
+        );
 
 /// Get admin profile under the user
 ///
 /// There should only be a single admin profile under a user.
-Future<AdminProfileModel?> getAdminProfileForUser(String userId) {
-  return _adminProfileModelRefForUser(userId).limit(1).get().then(
-        (querySnapshot) =>
-            querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null,
-      );
-}
+Future<AdminProfileModel?> getAdminProfileForUser(String userId) =>
+    _adminProfileModelRefForUser(userId).limit(1).get().then(
+          (querySnapshot) =>
+              querySnapshot.size != 0 ? querySnapshot.docs[0].data() : null,
+        );
 
 /// Get all teacher profiles
-Future<List<TeacherProfileModel>> getAllTeacherProfiles() {
-  return _db
-      .collectionGroup('teacher_profile')
-      .withConverter<TeacherProfileModel>(
-        fromFirestore: (snapshot, _) =>
-            TeacherProfileModel.fromJson(snapshot.id, snapshot.data()!),
-        toFirestore: (teacherProfileModel, _) => teacherProfileModel.toJson(),
-      )
-      .get()
-      .then(
-        (querySnapshot) => querySnapshot.docs.map(((e) => e.data())).toList(),
-      );
-}
+Future<List<TeacherProfileModel>> getAllTeacherProfiles() => _db
+    .collectionGroup('teacher_profile')
+    .withConverter<TeacherProfileModel>(
+      fromFirestore: (snapshot, _) =>
+          TeacherProfileModel.fromJson(snapshot.id, snapshot.data()!),
+      toFirestore: (teacherProfileModel, _) => teacherProfileModel.toJson(),
+    )
+    .get()
+    .then(
+      (querySnapshot) => querySnapshot.docs.map(((e) => e.data())).toList(),
+    );
 
 /// Get all student profiles
-Future<List<StudentProfileModel>> getAllStudentProfiles() {
-  return _db
-      .collectionGroup('student_profiles')
-      .withConverter<StudentProfileModel>(
-        fromFirestore: (snapshot, _) => StudentProfileModel.fromFirestoreJson(
-          snapshot.id,
-          snapshot.data()!,
-        ),
-        toFirestore: (profileModel, _) => profileModel.toFirestoreJson(),
-      )
-      .get()
-      .then(
-        (querySnapshot) => querySnapshot.docs.map(((e) => e.data())).toList(),
-      );
-}
+Future<List<StudentProfileModel>> getAllStudentProfiles() => _db
+    .collectionGroup('student_profiles')
+    .withConverter<StudentProfileModel>(
+      fromFirestore: (snapshot, _) => StudentProfileModel.fromFirestoreJson(
+        snapshot.id,
+        snapshot.data()!,
+      ),
+      toFirestore: (profileModel, _) => profileModel.toFirestoreJson(),
+    )
+    .get()
+    .then(
+      (querySnapshot) => querySnapshot.docs.map(((e) => e.data())).toList(),
+    );
 
 /// Check if saved profile in local storage belongs to user
 Future<bool> studentProfileBelongsToUser({
@@ -123,12 +114,11 @@ Future<bool> studentProfileBelongsToUser({
 Future<int> getNumberPoints({
   required String userId,
   required String profileId,
-}) async {
-  return _studentProfileModelRefForUser(userId)
-      .doc(profileId)
-      .get()
-      .then((profile) => profile.data()!.numPoints);
-}
+}) async =>
+    _studentProfileModelRefForUser(userId)
+        .doc(profileId)
+        .get()
+        .then((profile) => profile.data()!.numPoints);
 
 /// Add student profile for specified user
 Future<DocumentReference<StudentProfileModel>> addStudentProfile(
@@ -144,8 +134,7 @@ Future<DocumentReference<StudentProfileModel>> addStudentProfile(
 Future<void> updateStudentProfile(
   String userId,
   StudentProfileModel profileModel,
-) {
-  return _studentProfileModelRefForUser(userId)
-      .doc(profileModel.profileId)
-      .update(profileModel.toFirestoreJson());
-}
+) =>
+    _studentProfileModelRefForUser(userId)
+        .doc(profileModel.profileId)
+        .update(profileModel.toFirestoreJson());

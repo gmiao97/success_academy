@@ -275,14 +275,12 @@ class AccountModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool shouldShowContent() {
-    return userType != UserType.student || _subscriptionPlan != null;
-  }
+  bool shouldShowContent() =>
+      userType != UserType.student || _subscriptionPlan != null;
 
-  bool hasPointsDiscount() {
-    return _subscriptionPlan == SubscriptionPlan.minimum ||
-        _subscriptionPlan == SubscriptionPlan.minimumPreschool;
-  }
+  bool hasPointsDiscount() =>
+      _subscriptionPlan == SubscriptionPlan.minimum ||
+      _subscriptionPlan == SubscriptionPlan.minimumPreschool;
 }
 
 class MyUserModel {
@@ -301,11 +299,9 @@ class MyUserModel {
         email = json['email'] as String,
         timeZone = json['time_zone'] as String;
 
-  Map<String, Object?> toJson() {
-    return {
-      'referral_code': referralCode,
-      'email': email,
-      'time_zone': timeZone,
-    };
-  }
+  Map<String, Object?> toJson() => {
+        'referral_code': referralCode,
+        'email': email,
+        'time_zone': timeZone,
+      };
 }

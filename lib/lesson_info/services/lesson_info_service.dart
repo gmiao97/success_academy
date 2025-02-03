@@ -11,20 +11,18 @@ CollectionReference<LessonModel> _lessonModelRef = _db
     );
 
 /// Get list of all lesson information.
-Future<List<LessonModel>> getLessons({required bool includePreschool}) {
-  return _lessonModelRef.get().then(
-        (querySnapshot) => querySnapshot.docs
-            .map((queryDocumentSnapshot) => queryDocumentSnapshot.data())
-            .where((lesson) {
-          if (!includePreschool && lesson.visibility == 'preschool') {
-            return false;
-          }
-          return true;
-        }).toList(),
-      );
-}
+Future<List<LessonModel>> getLessons({required bool includePreschool}) =>
+    _lessonModelRef.get().then(
+          (querySnapshot) => querySnapshot.docs
+              .map((queryDocumentSnapshot) => queryDocumentSnapshot.data())
+              .where((lesson) {
+            if (!includePreschool && lesson.visibility == 'preschool') {
+              return false;
+            }
+            return true;
+          }).toList(),
+        );
 
 /// Update given lesson.
-Future<void> updateLesson(String id, LessonModel data) {
-  return _db.collection('lessons').doc(id).update(data.toJson());
-}
+Future<void> updateLesson(String id, LessonModel data) =>
+    _db.collection('lessons').doc(id).update(data.toJson());

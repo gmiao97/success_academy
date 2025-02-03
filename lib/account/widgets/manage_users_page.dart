@@ -17,12 +17,10 @@ class ManageUsersPage extends StatelessWidget {
   const ManageUsersPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EventsDataSource(),
-      child: _ManageUsersPage(),
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => EventsDataSource(),
+        child: _ManageUsersPage(),
+      );
 }
 
 class _ManageUsersPage extends StatefulWidget {
@@ -92,63 +90,61 @@ class _ManageUsersPageState extends State<_ManageUsersPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        OverflowBar(
-          alignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                S.of(context).manageProfile,
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ToggleButtons(
-                onPressed: (index) {
-                  setState(() {
-                    for (var i = 0; i < _selectedToggle.length; i++) {
-                      _selectedToggle[i] = i == index;
-                    }
-                  });
-                },
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                constraints: const BoxConstraints(
-                  minHeight: 40,
-                  minWidth: 80,
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          OverflowBar(
+            alignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  S.of(context).manageProfile,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
-                isSelected: _selectedToggle,
-                children: [
-                  Text(S.of(context).student),
-                  Text(S.of(context).teacher),
-                ],
               ),
-            ),
-          ],
-        ),
-        Expanded(
-          child: Card(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: _selectedToggle[0]
-                    ? _StudentTable()
-                    : _TeacherTable(
-                        dateRange: _dateRange,
-                        onSelectDateRange: _selectDateRange,
-                        events: _events,
-                      ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ToggleButtons(
+                  onPressed: (index) {
+                    setState(() {
+                      for (var i = 0; i < _selectedToggle.length; i++) {
+                        _selectedToggle[i] = i == index;
+                      }
+                    });
+                  },
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  constraints: const BoxConstraints(
+                    minHeight: 40,
+                    minWidth: 80,
+                  ),
+                  isSelected: _selectedToggle,
+                  children: [
+                    Text(S.of(context).student),
+                    Text(S.of(context).teacher),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Card(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: _selectedToggle[0]
+                      ? _StudentTable()
+                      : _TeacherTable(
+                          dateRange: _dateRange,
+                          onSelectDateRange: _selectDateRange,
+                          events: _events,
+                        ),
+                ),
               ),
             ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 class _TeacherTable extends StatelessWidget {
@@ -291,102 +287,100 @@ class _StudentTableState extends State<_StudentTable> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SearchAnchor(
-          builder: (context, controller) => SearchBar(
-            controller: controller,
-            padding: const WidgetStatePropertyAll<EdgeInsets>(
-              EdgeInsets.symmetric(horizontal: 16.0),
+  Widget build(BuildContext context) => Column(
+        children: [
+          SearchAnchor(
+            builder: (context, controller) => SearchBar(
+              controller: controller,
+              padding: const WidgetStatePropertyAll<EdgeInsets>(
+                EdgeInsets.symmetric(horizontal: 16.0),
+              ),
+              hintText: S.of(context).searchEmail,
+              trailing: [
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    controller.clear();
+                    setState(() {
+                      _searchEmail = null;
+                    });
+                  },
+                ),
+              ],
+              onTap: () {
+                controller.openView();
+              },
+              onChanged: (_) {
+                controller.openView();
+              },
+              leading: const Icon(Icons.search),
             ),
-            hintText: S.of(context).searchEmail,
-            trailing: [
-              IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  controller.clear();
-                  setState(() {
-                    _searchEmail = null;
-                  });
-                },
+            viewHintText: S.of(context).searchEmail,
+            viewTrailing: const [],
+            suggestionsBuilder: (context, controller) =>
+                _getSuggestions(controller),
+          ),
+          PaginatedDataTable(
+            columns: <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).id,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).email,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).lastName,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).firstName,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).eventPointsLabel,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    S.of(context).referrerLabel,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
               ),
             ],
-            onTap: () {
-              controller.openView();
-            },
-            onChanged: (_) {
-              controller.openView();
-            },
-            leading: const Icon(Icons.search),
+            source: _StudentData(
+              data: _searchEmail?.isEmpty ?? true
+                  ? _studentProfiles
+                  : _studentProfiles
+                      .where((e) => e.email == _searchEmail)
+                      .toList(),
+            ),
           ),
-          viewHintText: S.of(context).searchEmail,
-          viewTrailing: const [],
-          suggestionsBuilder: (context, controller) =>
-              _getSuggestions(controller),
-        ),
-        PaginatedDataTable(
-          columns: <DataColumn>[
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  S.of(context).id,
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  S.of(context).email,
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  S.of(context).lastName,
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  S.of(context).firstName,
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  S.of(context).eventPointsLabel,
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  S.of(context).referrerLabel,
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-          ],
-          source: _StudentData(
-            data: _searchEmail?.isEmpty ?? true
-                ? _studentProfiles
-                : _studentProfiles
-                    .where((e) => e.email == _searchEmail)
-                    .toList(),
-          ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 class _TeacherData extends DataTableSource {
@@ -494,16 +488,14 @@ class _StudentData extends DataTableSource {
   int get selectedRowCount => 0;
 
   @override
-  DataRow getRow(int index) {
-    return DataRow(
-      cells: [
-        DataCell(SelectableText(_data[index].profileId)),
-        DataCell(SelectableText(_data[index].email)),
-        DataCell(SelectableText(_data[index].lastName)),
-        DataCell(SelectableText(_data[index].firstName)),
-        DataCell(SelectableText('${_data[index].numPoints}')),
-        DataCell(SelectableText(_data[index].referrer ?? '')),
-      ],
-    );
-  }
+  DataRow getRow(int index) => DataRow(
+        cells: [
+          DataCell(SelectableText(_data[index].profileId)),
+          DataCell(SelectableText(_data[index].email)),
+          DataCell(SelectableText(_data[index].lastName)),
+          DataCell(SelectableText(_data[index].firstName)),
+          DataCell(SelectableText('${_data[index].numPoints}')),
+          DataCell(SelectableText(_data[index].referrer ?? '')),
+        ],
+      );
 }
