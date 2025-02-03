@@ -16,8 +16,8 @@ class PointTransactionDao {
           .doc(studentProfileId)
           .collection('point_transactions')
           .withConverter(
-            fromFirestore: (snapshot, _) =>
-                PointTransactionModel.fromJson(snapshot.data()!),
+            fromFirestore: (doc, _) =>
+                PointTransactionModel.fromJson(doc.data()!),
             toFirestore: (model, _) => model.toJson(),
           );
 
@@ -31,14 +31,12 @@ class PointTransactionDao {
   Future<List<PointTransactionModel>> list({
     required String userId,
     required String studentProfileId,
-  }) async {
-    final snapshot =
-        await _pointTransactionsRef(userId, studentProfileId).get();
-    return snapshot.docs
-        .map(
-          (e) => e.data(),
-        )
-        .sortedBy((e) => e.timestamp)
-        .toList();
-  }
+  }) async =>
+      (await _pointTransactionsRef(userId, studentProfileId).get())
+          .docs
+          .map(
+            (e) => e.data(),
+          )
+          .sortedBy((e) => e.timestamp)
+          .toList();
 }

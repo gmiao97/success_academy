@@ -69,23 +69,20 @@ class _ManageUsersPageState extends State<_ManageUsersPage> {
     if (dateRange != null) {
       final start = TZDateTime.from(dateRange.start, location);
       final end = TZDateTime.from(dateRange.end, location);
-      await _eventsDataSource
-          .loadDataByKey(
-            TZDateTimeRange(
-              start: start,
-              end: end,
-            ),
-          )
-          .then(
-            (events) => setState(
-              () {
-                _dateRange = TZDateTimeRange(start: start, end: end);
-                _events
-                  ..clear()
-                  ..addAll(events);
-              },
-            ),
-          );
+      final events = await _eventsDataSource.loadDataByKey(
+        TZDateTimeRange(
+          start: start,
+          end: end,
+        ),
+      );
+      setState(
+        () {
+          _dateRange = TZDateTimeRange(start: start, end: end);
+          _events
+            ..clear()
+            ..addAll(events);
+        },
+      );
     }
   }
 
