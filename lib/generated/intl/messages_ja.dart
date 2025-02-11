@@ -30,9 +30,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(cost) => "${cost} ポイントが還元されます";
 
-  static String m5(cost, balance) => "${balance} ポイントから ${cost} ポイントを使う";
+  static String m5(percent, cost) => "${percent}%割引 - ${cost}米ドル";
 
-  static String m6(address) => "確認リンクがメールアドレス（${address}）に送信されました";
+  static String m6(cost, balance) => "${balance} ポイントから ${cost} ポイントを使う";
+
+  static String m7(address) => "確認リンクがメールアドレス（${address}）に送信されました";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -210,10 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signOut": MessageLookupByLibrary.simpleMessage("サインアウト"),
         "signUpFee":
             MessageLookupByLibrary.simpleMessage("トライアル後に入会費50米ドルが請求されます"),
-        "signUpFeeDiscount100":
-            MessageLookupByLibrary.simpleMessage("100%割引ー0米ドル"),
-        "signUpFeeDiscount20":
-            MessageLookupByLibrary.simpleMessage("20%割引ー40米ドル"),
+        "signUpFeeDiscount": m5,
         "signedUp": MessageLookupByLibrary.simpleMessage("予約済み"),
         "signup": MessageLookupByLibrary.simpleMessage("予約する"),
         "signupFailure": MessageLookupByLibrary.simpleMessage("予約に失敗しました"),
@@ -236,10 +235,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "today": MessageLookupByLibrary.simpleMessage("今日"),
         "type": MessageLookupByLibrary.simpleMessage("種類"),
         "unspecified": MessageLookupByLibrary.simpleMessage("未定"),
-        "usePoints": m5,
+        "usePoints": m6,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "登録を続けるには確認リンクをクリックしてください。受信トレイにメールがない場合は迷惑メールかゴミ箱に入ってる可能性があるのでご確認ください。"),
-        "verifyEmailMessage": m6,
+        "verifyEmailMessage": m7,
         "viewProfile": MessageLookupByLibrary.simpleMessage("プロフィールを見る"),
         "withEnglishOption":
             MessageLookupByLibrary.simpleMessage("英語版フリーレッスンあり・月40米ドル")

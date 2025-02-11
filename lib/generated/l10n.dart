@@ -1340,23 +1340,13 @@ class S {
     );
   }
 
-  /// `100% off - $0 USD`
-  String get signUpFeeDiscount100 {
+  /// `{percent}% off - ${cost} USD`
+  String signUpFeeDiscount(Object percent, Object cost) {
     return Intl.message(
-      '100% off - \$0 USD',
-      name: 'signUpFeeDiscount100',
+      '$percent% off - \$$cost USD',
+      name: 'signUpFeeDiscount',
       desc: '',
-      args: [],
-    );
-  }
-
-  /// `20% off - $40 USD`
-  String get signUpFeeDiscount20 {
-    return Intl.message(
-      '20% off - \$40 USD',
-      name: 'signUpFeeDiscount20',
-      desc: '',
-      args: [],
+      args: [percent, cost],
     );
   }
 

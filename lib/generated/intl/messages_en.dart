@@ -30,10 +30,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(cost) => "${cost} points will be refunded";
 
-  static String m5(cost, balance) =>
+  static String m5(percent, cost) => "${percent}% off - \$${cost} USD";
+
+  static String m6(cost, balance) =>
       "${cost} of ${balance} points will be used";
 
-  static String m6(address) =>
+  static String m7(address) =>
       "A verification link has been sent to your email at ${address}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -235,10 +237,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
         "signUpFee": MessageLookupByLibrary.simpleMessage(
             "\$50 USD sign-up fee due after trial"),
-        "signUpFeeDiscount100":
-            MessageLookupByLibrary.simpleMessage("100% off - \$0 USD"),
-        "signUpFeeDiscount20":
-            MessageLookupByLibrary.simpleMessage("20% off - \$40 USD"),
+        "signUpFeeDiscount": m5,
         "signedUp": MessageLookupByLibrary.simpleMessage("Signed-up"),
         "signup": MessageLookupByLibrary.simpleMessage("Sign up"),
         "signupFailure":
@@ -266,10 +265,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "today": MessageLookupByLibrary.simpleMessage("Today"),
         "type": MessageLookupByLibrary.simpleMessage("type"),
         "unspecified": MessageLookupByLibrary.simpleMessage("Unspecified"),
-        "usePoints": m5,
+        "usePoints": m6,
         "verifyEmailAction": MessageLookupByLibrary.simpleMessage(
             "Please click on the link in your email to continue the registration process. If you don\'t see a message in your inbox, please check your spam or junk mail folder."),
-        "verifyEmailMessage": m6,
+        "verifyEmailMessage": m7,
         "viewProfile": MessageLookupByLibrary.simpleMessage("View Profile"),
         "withEnglishOption": MessageLookupByLibrary.simpleMessage(
             "includes english free lessons option - \$40 USD/month")

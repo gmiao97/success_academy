@@ -135,6 +135,8 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
                 setState(() {
                   if (value == freeSignUpFeeCode) {
                     _referralType = referralTypeFree;
+                  } else if (value == fiftyOffSignUpFeeCode) {
+                    _referralType = referralType50;
                   } else if (_validCodes.contains(value) &&
                       account.myUser!.referralCode != value) {
                     _referralType = referralType20;
@@ -197,9 +199,11 @@ class _CreateSubscriptionFormState extends State<CreateSubscriptionForm> {
                   : null,
             ),
             if (_referralType == referralType20)
-              Text(S.of(context).signUpFeeDiscount20),
+              Text(S.of(context).signUpFeeDiscount(20, 40)),
+            if (_referralType == referralType50)
+              Text(S.of(context).signUpFeeDiscount(50, 25)),
             if (_referralType == referralTypeFree)
-              Text(S.of(context).signUpFeeDiscount100),
+              Text(S.of(context).signUpFeeDiscount(100, 0)),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(
